@@ -1,0 +1,50 @@
+# O estimador de bayes
+
+Considere o problema de tomar alguma decisão sobre $\theta$ utilizando uma estatística $T(\mathbf{x})$.
+
+Podemos determinar o quão ruim é a nossa decisão definindo uma função de perda $\mathcal{L}(\theta,T)$, com as seguintes características:
+
+-   $\mathcal{L}(\theta,T)=0$ sempre que $T$ for a decisão correta em relação à $\theta$
+
+-   $\mathcal{L}(\theta,T)>0$ em caso contrário.
+
+Por exemplo, se $T$ for um estimador para $\theta$, a decisão correta seria ter $T=\theta$. Além disso, quanto mais afastado $T$ estiver de $\theta$, pior é a decisão e maior deveria ser a perda.
+
+No problema de estimação pontual, é usual utilizar a perda quadrática: $$\mathcal{L}(\theta,T)=(T-\theta)^2,$$ cujo esboço do gráfico é dado abaixo:
+
+```{r}
+plot.new()
+plot.window(xlim=c(-2,2), ylim=c(0,4))
+curve( x^2,-2,2, lwd = 2, add = T)
+axis(1, at = c(-2,-1,0,1,2), labels = c(expression(theta -2),expression(theta -1),expression(theta),expression(theta +1),expression(theta +2) ))
+axis(2)
+title( ylab = 'Perda quadrática',xlab = 'T')
+```
+
+Para uma decisão $T$ podemos calcular a perda média $$R_T(\theta)=E(L(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}$$ A função acima é conhecida como risco da decisão $T$ e é variável em $\theta$. Seu uso é simples: se $R_T(\theta)<R_U(\theta)$, então em média a decisão $T$ tem menor perda que $U$. Assim, a melhor escolha entre as duas decisão é $U$.
+
+O risco associado à perda quadrática é denominado erro quadrático médio:
+
+$$R_T(\theta)=E(T-\theta)^2= Var(T)+(E(T|\theta)-\theta)^2$$ Ele possui papel importante na inferência pontual frequentista, como por exemplo, para definir o melhor estimador não viciado de variância uniformemente mínima.
+
+O risco de Bayes da decisão $T$ é o valor esperado do seu respectivo risco \textit{a priori}, $$r_T=\int R(\theta)f(\theta)d\theta,$$ sendo portanto uma constante. Qualquer decisão com o menor risco para todo $\theta$ também tem o menor risco de Bayes. Dizemos que $T$ é o estimador de Bayes se $r_T<r_U$ para qualquer decisão $U$.
+
+::: {.alert .alert-success}
+<strong>Teorema</strong>
+
+O estimador $T$ que minimiza $$\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\theta$$ é o estimador de Bayes.
+:::
+
+::: {.alert .alert-info}
+<strong>Exemplo</strong>
+
+Vamos encontrar o estimador de Bayes para a perda quadrática. Temos que
+
+$$\begin{align*}\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\theta&=\int (T(\mathbf{x})-\theta)^2f(\theta|\mathbf{x})d\theta\\
+    &=T(\mathbf{x})^2 +\int \theta^2f(\theta|\mathbf{x})d\theta-2T(\mathbf{x})\int \theta f(\theta|\mathbf{x})d\theta\\
+    &= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x})\\
+    &= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x}) \pm E(\theta|\mathbf{x})^2\\
+    &=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +E(\theta^2|\mathbf{x})-E(\theta|\mathbf{x})^2\\
+    &=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +Var(\theta|\mathbf{x})
+\end{align*}$$ A função acima é minimizada em $T(\mathbf{x})=E(\theta|\mathbf{x})$. Disto, mostra-se que $$r_T\geq Var(\theta|\mathbf{x})$$ e a variância da posteriori pode ser utilizada como medida de erro. Como a unidade deste erro está ap quadrado, é usual utilizarmos o desvio padrão da posteriori como medida de erro.
+:::

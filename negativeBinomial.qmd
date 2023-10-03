@@ -1,0 +1,76 @@
+# Binomial negativa
+
+## O modelo binomial negativo 
+A distribuição Poisson é muito comum em problemas de contagem. Como sua esperança e variância são iguais, o termo sobredispersão foi cunhado na literatura como uma variância maior que a média, o que seria indício de que o modelo Poisson não é adequado (de modo análogo, há o conceito de subdispersão, mas não é um fenômeno comum). 
+
+Dizemos que $X|\rho,\phi\sim\hbox{Binomial Negativa}$ se 
+
+$$p(x|\rho,\phi)=\frac{\Gamma(\phi+x)}{x!\Gamma(\phi)}\rho^\phi(1-\rho)^x,$$
+onde $x\in\mathbb{N}$, $\rho\in(0,1)$ e $\phi>0$.
+
+Existem diversos motivos para considerar o modelo binomial negativo uma alternativa quando o modelo Poisson não parece ser adequado. Primeiro, temos que $E(X|\rho,\phi)=\phi(1-\rho)/\rho$ e $Var(X|\rho,\phi)=E(X|\rho,\phi)/\rho$,
+logo, a sobredispersão está presente no modelo. Além disso, se
+$X|\lambda\sim\hbox{Poisson}(\lambda)$ e $\lambda\sim\hbox{Gama}(\phi, \rho/(1-\rho))$, então $X|\phi,\rho\sim\hbox{Binomial Negativa}(\phi,\rho)$ logo, este modelo é uma mistura do modelo Poisson. Por último, fazendo
+$$\mu=\phi\frac{1-\rho}{\rho}\Rightarrow \rho(\phi)=\frac{\phi}{\phi+\mu},$$
+pode-de mostrar que
+$$\lim_{\phi\rightarrow\infty}p(x|\phi)=\frac{e^{-\mu}\mu^x}{x!}$$
+ou seja, o modelo Poisson também pode ser vist como um caso limite do binomial negativo.
+
+## Priori para $\phi$ condicionado
+
+Quando $\phi$ é conhecido, a verossimilhança do modelo se torna
+
+$$L(\rho|\phi)\propto \rho^{n\phi}(1-\rho)^{\sum_{i=1}^n x_i},$$
+logo, o modelo Beta$(a,b)$ é conjugado, com a posteriori dada por 
+$$\rho|\boldsymbol{x},\phi\sim\hbox{Beta}\left(n\phi+a,\sum_{i=1}^n x_i+b\right).$$
+
+A priori de Jeffreys é dada por
+
+$$\pi(\rho)\propto \frac{1}{\rho(1-\rho)^{1/2}},$$
+o que implica na posteriori
+$$\rho|\boldsymbol{x},\phi\sim\hbox{Beta}\left(n\phi,\sum_{i=1}^n x_i+\frac{1}{2}\right).$$
+
+## Priori para $\phi$
+
+Seja $\pi(\phi)\pi(\rho)$ a priori para $(\phi,\rho)$. Então, teremos que
+
+$$\pi(\phi,\rho|\boldsymbol{x})\propto \frac{\prod_{i=1}^n\Gamma(\phi+x_i)}{\Gamma(\phi)^n}\rho^{n\phi}(1-\rho)^{\sum_{i=1}^n x_i}\pi(\phi)\pi(\rho).$$
+
+Assumindo qualquer uma das prioris da seção anterior, teremos 
+
+$$\pi(\phi,\rho|\boldsymbol{x})\propto \frac{\prod_{i=1}^n\Gamma(\phi+x_i)}{\Gamma(\phi)^n}B\left(a_0+n\phi,b_0+\sum_{i=1}^nx_i\right)\pi(\phi)\pi(\rho|\phi,\boldsymbol{x}),$$
+
+logo,
+
+$$\pi(\phi|\boldsymbol{x})\propto \frac{\prod_{i=1}^n\Gamma(\phi+x_i)}{\Gamma(\phi)^n}B\left(a_0+n\phi,b_0+\sum_{i=1}^nx_i\right)\pi(\phi)$$
+
+Como a posteriori de $\phi$ não é uma distribuição conhecida, precisamos construir um simulador. O algoritmo Metropolis-Hastings é uma boa escolha, uma vez que a constante de proporcionalidade da densidade é desconhecida.
+
+<div class='alert alert-success'>
+<strong>Algoritmo Metropolis-Hastings</strong>
+
+O Metropolis-Hastings simula se utiliza de uma distribuição que sabemos simular (denominada proposta) para gerar uma cadeia de Markov cuja distribuição estacionária é a distribuição de interesse. 
+
+Na $j$-ésima itereção, a simulação do valor proposto $\phi^*$ é baseada no valor atual da cadeia, $\phi^{(j-1)}$. Como $\phi>0$, a proposta $\phi^*\sim \hbox{Gamma}(\tau\phi^{(j-1)},\tau)$ é adequada
+uma vez que
+$$E(\phi^*)=\phi^{(j-1)}$$
+e
+$$\sqrt{Var(\phi^*)}=\frac{\phi^{(j-1)}}{\tau}$$
+Acima, $\tau$ é denominado *tunning* (afinação em tradução livre) e deve ser escolhido para que a cadeia tenha o número de aceites da proposta controlado (algo em torno de 23% ).
+
+Abaixo, segue o algoritmo
+
+1. Faça $j=0$ e escolha um valor para $\phi^{(0)}$ (a estimativa de máxima verossimilhança, por exemplo). Faça um contador de aceites, começando com $k=0$. 
+
+2. Para o passo $j$:
+  + Simule $\phi^*\sim\hbox{Gama}(\tau\phi^{j-1},\tau)$
+  + Calcule
+  
+  $$prob = \frac{\pi(\phi^*|\boldsymbol{x})}{\pi(\phi^{(j-1)}|\boldsymbol{x})}\frac{g(\phi^{(j-1)}|\tau\phi^*,\tau)}{g(\phi^*|\tau\phi^{(j-1)},\tau)},$$
+onde $g(.|a,b)$ é a função densidade do modelo gama. 
+  + Simule $u\sim\hbox{Uniforme}(0,1)$. Se $u<prob$, faça $\phi^{(j)}=\phi^*$ e $k=k+1$ (houve um aceite). Senão, faça $\phi^{(j)}=\phi^{(j-1)}$.   
+</div>
+
+
+
+

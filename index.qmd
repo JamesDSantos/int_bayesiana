@@ -1,0 +1,4 @@
+# Preface {.unnumbered}
+
+Este material foi criado para a disciplina Introdução à Inferência Bayesiana, do curso de bacharelado em Estatística, da Universidade Federal do Amazonas. 
+

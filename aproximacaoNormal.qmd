@@ -1,0 +1,142 @@
+# Aproximação normal e seu uso com o Metropolis-Hastings
+
+## Aproximação da posteriori pela distribuição normal
+Assuma que $\boldsymbol{\theta}\in\mathbb{R}^q$. Seja $\ell(\boldsymbol{\theta})=\log L(\boldsymbol{\theta})$ a função log-verossimilhança e $\hat{\boldsymbol{\theta}}$ a estimativa de máxima verossimilhaça para $\boldsymbol{\theta}$. Considere a seguinte aproximação de $\ell(\boldsymbol{\theta})$ em séries de Taylor
+
+$$\ell(\boldsymbol{\theta})\approx  \ell(\hat{\boldsymbol{\theta}})+\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\mathcal{H}(\hat{\boldsymbol{\theta}})(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})$$
+onde $\boldsymbol{\theta}$ é a matriz hessiana (de derivadas segunda) aplicada em $\hat{\boldsymbol{\theta}}$. 
+Deste modo, teremos que
+$$\pi(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}\pi(\boldsymbol{\theta})$$
+
+Utilizando a priori imprópria $\pi(\boldsymbol{\theta})$, temos que $\boldsymbol{\theta}|\boldsymbol{x}\approx \hbox{Normal}(\hat{\boldsymbol{\theta}},-\mathcal{H}(\hat{\boldsymbol{\theta}})^{-1})$.
+
+Note que as informações necessárias para a aproximação da posteriori acima podem ser obtidas via função `optim`.
+
+<div class='alert alert-info'>
+<strong>Exemplo </strong> A amostra abaixo foi simulada do modelo Gama$(\alpha,\beta)$ (o valor dos parâmetros foram omitidos de propósito)
+
+```{r echo = F}
+set.seed(1)
+x <- rgamma(20,2,3)
+```
+
+```{r}
+x
+```
+
+Como $\alpha,\beta>0$, considere que
+$\alpha=\exp\{\theta_1\}$ e $\beta=\exp\{\theta_2\}$ (deste modo, $\boldsymbol{\theta}\in\mathbb{R}^2$). 
+
+A função de log-verossimilhança deste modelo é
+```{r}
+logveross <- function(theta){ sum(dgamma(x, exp(theta[1]), exp(theta[2]), log = T))
+}
+```
+
+Podemos utilizar a função `optim` para obter as estimativas de máxima verossimilhança e a matriz hessiana. Contudo, primeiro devemos observar que esta função é um minimizador, logo, queremos que $\boldsymbol{\theta}$ que minimize $-\ell({\boldsymbol{\theta}})$.
+
+```{r}
+opt <- optim( c(0,0), function(q) -logveross(q), hessian = T)
+opt
+```
+
+No objeto `opt`, a lista `par` é o vetor com  as estimativas de máxima verossimilhança, enquanto que `hessian` é o valor de $-\mathcal{H}(\hat{\boldsymbol{\theta}})$.
+
+A inversa de `opt$hessian` vai dar a matriz de covariância entre $\theta_1$ e $\theta_2$ a posteriori.
+
+```{r}
+Sigma <- solve(opt$hessian)
+Sigma
+```
+Agora, podemos simular $\theta_1$ e $\theta_2$ a posteriori:
+
+```{r}
+require(mvtnorm)
+theta_sim <- rmvnorm(500, opt$par, Sigma)
+```
+
+Por último, podemos fazer inferências sobre $\alpha=\exp\{\theta_1\}$ e $\beta=\exp\{\theta_2\}$:
+
+```{r}
+# intervalos de credibilidade para alfa
+quantile(exp(theta_sim[,1]), c(.025,.975))
+
+# intervalos de credibilidade para beta
+quantile(exp(theta_sim[,2]), c(.025,.975))
+
+```
+</div>
+
+## Metropolis revisitado
+
+A diferença entre o algoritmo Metropolis e o Metropolis-Hastings está na escolha da distribuição proposta. No primeiro, a proposta é simétrica,
+$$g(x|y)=g(y|x).$$
+Com isso, teremos que 
+$$\frac{f(x)}{f(y)}\frac{g(y|x)}{g(x|y)}=\frac{f(x)}{f(y)}$$
+e a probabilidade de aceitação da cadeia é baseada somente na distribuição alvo $f$.
+
+No algoritmo Metropolis, é comum escolher a distribuição proposta como  sendo uma normal. Uma escolha razoável é utilizar como proposta aproximação normal vista na seção anterior.
+
+<div class='alert alert-info'>
+<strong>Exemplo </strong> Consideremos novamente a amostra do exemplo anterior. A função de verossimilhança é
+$$L(\theta)=\prod_{i=1}^n \frac{\beta(\theta_2)^{\alpha(\theta_1)}}{\Gamma(\alpha(\theta_1))} x_i^{\alpha(\theta_1)-1}e^{-\beta(\theta_2)x_i}$$
+onde $\alpha(\theta_1)=e^{\theta_1}$, $\beta(\theta_2)=e^{\theta_2}$. Além disso ,considere ad prioris independentes
+$\theta_i\sim\hbox{Normal}(0,100)$.
+Então, devemos simular do modelo
+
+$$\pi(\theta|\boldsymbol{x})\propto \left[\frac{\beta(\theta_2)^{\alpha(\theta_1)}}{\Gamma(\alpha(\theta_1))}\right]^n \left[\prod_{i=1}^n x_i\right]^{\alpha(\theta_1)}e^{-\beta(\theta_2)\sum_{i=1}^{n}x_i}e^{-\frac{1}{200}(\theta_1^2 + \theta_2^2)}$$
+
+A posteriori aproximada, que encontramos no exemplo anterior é 
+$$\boldsymbol{\theta}|\boldsymbol{x}\approx N \left[ \left(\begin{array}{c}1,24\\1,56 \end{array}\right),\left(\begin{array}{cc}0,09 & 0,09\\0,09 &0,11\end{array}\right)\right]$$
+
+Vamos aproveitar a estrutura de covariâncias acima para usar a proposta
+
+$$\boldsymbol{\theta}^*|\boldsymbol{x}\sim N \left[ \boldsymbol{\theta}^{(j-1)},\tau\left(\begin{array}{cc}0,09 & 0,09\\0,09 &0,11\end{array}\right)\right]$$
+onde $\boldsymbol{\theta}^*$ é o candidato gerado e $\boldsymbol{\theta}^{(j)}$ é o estado atual da cadeia e $\tau$ é o **tunning** da cadeia.
+
+```{r}
+B <- 10000 # número de iterações
+theta <- array(NA_real_, c(B,2))
+
+theta[1,] <- opt$par # valor inicial da cadeia é a emv
+tau <- 1             # tunning
+cont <- 0            # contador de aceites
+
+for(j in 2:B){
+  #simule um candidato
+  theta_cand <- rmvnorm(1, theta[j-1,], tau*Sigma)
+  
+  # calcule a probabilidade do salto
+  lnum <- logveross(theta_cand) +
+    sum(dnorm(theta_cand[1,],0,10, log = T))
+  
+  lden <- logveross(theta[j-1,]) +
+    sum(dnorm(theta[j-1,],0,10, log = T))
+  
+  prob <- exp( lnum - lden)
+  
+  # verifique o salto
+  u <- runif(1)
+  if( u < prob){
+    theta[j, ] <- theta_cand
+    cont <- cont+1
+  } else {
+    theta[j,] <- theta[j-1,]
+  }
+}
+
+cont/B
+
+theta_sim <- theta[ seq(B/2, B, 15),]
+acf(theta_sim)
+```
+
+
+Por fim, as estimativas intervalares para $(\alpha,\beta)$ são  
+
+```{r}
+quantile(exp(theta_sim[,1]), c(.025,.975))
+
+# intervalos de credibilidade para beta
+quantile(exp(theta_sim[,2]), c(.025,.975))
+```
