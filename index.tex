@@ -227,7 +227,7 @@
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, breakable, interior hidden, boxrule=0pt, sharp corners, enhanced, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, breakable, interior hidden]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -1592,6 +1592,329 @@ Por fim, as estimativas intervalares para \((\alpha,\beta)\) são
 
 \bookmarksetup{startatroot}
 
+\hypertarget{misturas-de-distribuiuxe7uxf5es}{%
+\chapter{Misturas de
+distribuições}\label{misturas-de-distribuiuxe7uxf5es}}
+
+Dizemos que \(X\sim f(.)\) é uma mistura se existe uma variável \(Z\)
+tal que
+
+\[f(x)=\int f(x|z)f(z)dz.\]
+
+A variável \(Z\) é denominada latente e a função \(f(x,z)\) é denominada
+modelo aumentado.
+
+Seja \((X_1,Z_1),\ldots,(X_n,Y_n)\) uma amostra aleatória do modelo
+aumentado \(f(x,z|\theta)\) e seja \(\pi(\theta)\) a priori para
+\(\theta\). Existem situações nas quais é mais fácil simular do modelo
+\[\pi(\theta,\boldsymbol{z}|\boldsymbol{x})\varpropto f(\boldsymbol{x},\boldsymbol{z}|\theta)\pi(\theta).\]
+
+A distribuição de \(\theta\) (ou \(\boldsymbol{Z}\)) dado as demais
+variáveis do modelo é denominada condicional completa, que neste
+problema são:
+
+\[f(\boldsymbol{z}|\boldsymbol{x},\theta)\] e
+\[\pi(\theta|\boldsymbol{z},\boldsymbol{x},\theta)\]
+
+Em particular, se é fácil simular das condicionais completas, podemos
+utilizar o Amostrador de Gibbs, que consiste no seguinte algoritmo:
+
+Amostrador de Gibbs
+
+Inicie a cadeia com fazendo \(j=0\) e escolhendo \(\theta^{(0)}\)
+
+No \(j\)-ésimo passo:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Simule
+  \(\boldsymbol{z^{(j)}}\sim f(\boldsymbol{z}|\boldsymbol{x},\theta^{(j-1)})\)
+\item
+  Simule \(\theta^{(j)}\sim \pi(\theta|\boldsymbol{z},\boldsymbol{x})\)
+\end{enumerate}
+
+O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição
+estacionária é \(\pi(\theta,\boldsymbol{z}|\boldsymbol{x})\)
+
+\hypertarget{modelos-com-inflauxe7uxe3o-de-zeros}{%
+\section{Modelos com inflação de
+zeros}\label{modelos-com-inflauxe7uxe3o-de-zeros}}
+
+Quando são observados mais zeros do que o esperado pelo modelo de
+contagem assumido para a verossimilhança, é usual considerar um modelo
+com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma
+variável \(Z|p\sim\hbox{Bernoulli}(\rho)\) tal que:
+
+\[X=\left\{\begin{array}{ll}0, & \hbox{se }Z=1\ \\ Y,&\hbox{se }Z=0\end{array}\right.\]
+onde \(Y\sim h(.|\theta)\) é o modelo de contagem. Apenas \(X\) é
+observado e, como
+
+\[\begin{align}P(X=0|\theta,p)&=P(X=0|Z=0,\theta)P(Z=0|\rho)+P(X=0|Z=1,\theta)P(Z=1|\rho)\\&=(1-\rho)h(0|\theta)+\rho\end{align}\]
+a probabilidade de observar um zero está entre \(h(0|\theta)\) e 1, o
+que caracteriza a inflação.
+
+Agora, considere um modelo inflacionado de zeros aumentado:
+
+\[f(x,z|\theta,\rho)=f(x|z,\theta)f(z|\rho)=f(x|z,\theta)\rho^z(1-\rho)^{1-z}.\]
+Note que
+
+\[f(x|z,\theta)=\left\{
+\begin{array}{ll}
+h(x|\theta),&\hbox{ se }z=0,\\
+I(x=0),&\hbox{ se }z=1\\
+\end{array}\right.\] logo, a distribuição conjunta
+\(f(x,z|\theta,\rho)\) é dada por
+
+\[\begin{array}{c|cc}\hline & x=0 & \hbox{qualquer }x> 0 \\ \hline
+z=0 & h(0|\theta)(1-\rho) & h(x|\theta)(1-\rho) \\
+z=1 & \rho & 0 \\ \hline
+\end{array}
+\] Então,
+
+\[\begin{align}
+\prod_{i=1}^n f(x_i,z_i|\theta,\rho)&=\prod_{i=1}^n [h(0|\theta)(1-\rho)]^{I(x_i=0,z_i=0)}[h(x_i|\theta)(1-\rho)]^{I(x_i>0,z_i=0)}\rho^{I(x_i=0,z_i=1)}\\
+&=\prod_{i=1}^n [h(x_i|\theta)(1-\rho)]^{I(z_i=0)}\rho^{I(x_i=0,z_i=1)}\\
+&=\prod_{i=1}^n(1-\rho)^{I(z_i=0)}\rho^{I(x_i=0,z_i=1)}\prod_{i=1}^n [h(x_i|\theta)]^{I(z_i=0)}\end{align}\]
+e, notando que \(I(z_i=0)=1-z_i,\)
+
+\[\begin{align}
+\prod_{i=1}^n f(x_i,z_i|\theta,\rho)&=
+(1-\rho)^{n-\sum_{i=1}^n z_i}\rho^{\sum_{i=1}^n z_iI(x_i=0)}\prod_{i=1}^n [h(x_i|\theta)]^{1-z_i}\end{align}\]
+
+Considere, a priori, que \(\theta\) e \(\rho\) são independentes. Seja
+\(\pi(\theta)\) a priori para \(\theta\) e considere que
+\(\rho\sim\hbox{Beta}(a,b)\). Então, as condicionais completas para
+\(\theta\) e \(\rho\) são
+
+\[\begin{align}
+\pi(\theta|\rho,\boldsymbol{z},\boldsymbol{x})&\propto \prod_{i=1}^n h(x_i|\theta)^{1-z_i}\pi(\theta),\\
+\pi(\rho|\theta,\boldsymbol{z},\boldsymbol{x})&\propto \rho^{\sum_{i=1}^n z_iI(x_i=0)+a-1}(1-\rho)^{n-\sum_{i=1}^n z_i+b-1},\\
+\end{align}\]
+
+Para a condicional completa de \(z_i\), notemos que
+\[P(Z_i=1|x_i>0)=\frac{P(Z_i=1,X_i>0)}{P(X_i>0)}=0,\] e que
+
+\[P(Z_i=z|x_i=0)= \left\{\begin{array}{ll}\frac{P(Z_i=0,X_i=0)}{P(X_i=0)}=\frac{h(0|\theta)(1-\rho)}{\rho+(1-\rho)h(0|\theta)},&,z=0\\
+\frac{P(Z_i=1,X_i=0)}{P(X_i=0)}=\frac{\rho}{\rho+(1-\rho)h(0|\theta)},&z=1\end{array}\right.,\]
+logo
+\[\pi(z_i|\theta,\rho,\boldsymbol{x},\boldsymbol{z}_{(-i)})=\left\{\begin{array}{ll}\hbox{Bernoulli}\left( \frac{\rho}{\rho+(1-\rho)h(0|\theta)}\right),&\hbox{ se }x_i=0\\
+I(z_i=0),&\hbox{ se } x_i>0\\ \end{array}\right.\]
+
+Portanto, um amostrador de Gibbs para um modelo inflacionado de zeros é
+
+Amostrador de Gibbs para o modelo inflado de zeros
+
+Faça \(j=0\) e dê os valores iniciais \(\theta^{(0)}\) e \(\rho^{(0)}\).
+
+No \(j\)-ésimo passo:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Para \(i\in\{1,\ldots,n\}\), se \(x_i>0\) faça \(z_i=0\). Senão,
+  simule
+  \[z_i^{(j)}\sim \hbox{Bernoulli}\left(\frac{\rho^{(j-1)}}{\rho^{(j-1)}+(1-\rho^{(j-1)})h(x_i|\theta^{(j-1)})}\right)\]
+\item
+  Simule
+  \(\rho^{(j)}\sim\hbox{Beta}(a+\sum_{i=1}^n z_i^{(j)}I(x_i=0),b+n-\sum_{i=1}^n z_i^{(j)})\)
+\item
+  Simule \(\theta^{(j)}\) de
+  \[\pi(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})\propto \prod_{i=1}^n h(x_i|\theta^{(j)})^{1-z_i^{(j)}}\pi(\theta^{(j)}).\]
+\end{enumerate}
+
+Exemplo - A Poisson inflada de zeros
+
+Neste exemplo, vamos considerar que a distribuição da contagem é
+Poisson(\(\theta\)) e que \(\theta\sim\hbox{Gama}(r,s)\). Então,
+
+\[\begin{align}
+\pi(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})&\propto \prod_{i=1}^{n} h(x_{i} | \theta )^{ 1-z_{i}^{(j)} }\pi(\theta)= 
+ \prod_{i=1}^{n} \left[\frac{ e^{-\theta}\theta^{x_i} }{x_i!}\right]^{1-z_{i}^{(j)}}\frac{s^r}{\Gamma(r)}\theta^{r-1} e^{-s\theta}\\&\propto \theta^{\sum_{i=1}^n x_i(1-z_i^{(j)})+r-1}e^{-(n-\sum_{i=1}^n z_i^{(j)}+s)\theta}
+ \end{align},\]
+
+ou seja,
+\(\theta^{(j)}|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i(1-z_i^{(j)})+r,n-\sum_{i=1}^n z_i^{(j)}+s)\)
+
+Os dados abaixo representam o número anual de furacões atlânticos
+grandes (categoria 4 ou 5) entre 1987 e 2012, nos Estados Unidos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fur }\OtherTok{\textless{}{-}}  \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{ ,}\DecValTok{1}\NormalTok{,}
+\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{,}
+\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{,}
+\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+A frequência relativa de zeros é 0,58. Considerando o modelo
+Poisson\((\theta)\) com \(\pi(\theta)\propto \theta^{-1}\), temos que
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r1 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(fur)}
+\NormalTok{s1 }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(fur)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{table}\NormalTok{(fur)}\SpecialCharTok{/}\NormalTok{s1, }\AttributeTok{type=} \StringTok{\textquotesingle{}p\textquotesingle{}}\NormalTok{, }\AttributeTok{xlab=}\StringTok{\textquotesingle{}No. anual de mortes pod fur\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab =} \StringTok{\textquotesingle{}Probabilidade\textquotesingle{}}\NormalTok{, }\AttributeTok{col =} \StringTok{\textquotesingle{}cyan3\textquotesingle{}}\NormalTok{, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{,}\FunctionTok{table}\NormalTok{(fur)}\SpecialCharTok{/}\NormalTok{s1, }\AttributeTok{col =} \StringTok{\textquotesingle{}cyan3\textquotesingle{}}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\FunctionTok{dnbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\AttributeTok{size =}\NormalTok{ r1, }\AttributeTok{prob =}\NormalTok{ s1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{s1)), }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{col =} \StringTok{\textquotesingle{}brown\textquotesingle{}}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\FunctionTok{dnbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\AttributeTok{size =}\NormalTok{ r1, }\AttributeTok{prob =}\NormalTok{ s1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{s1)), }\AttributeTok{col =} \StringTok{\textquotesingle{}brown\textquotesingle{}}\NormalTok{)}
+
+\FunctionTok{legend}\NormalTok{(}\StringTok{\textquotesingle{}bottomleft\textquotesingle{}}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Freq. relativa\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Pred. post. Poisson\textquotesingle{}}\NormalTok{), }\AttributeTok{fill=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}cyan3\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}brown\textquotesingle{}}\NormalTok{), }\AttributeTok{bty=}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{misturas_files/figure-pdf/unnamed-chunk-2-1.pdf}
+
+}
+
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# hiperparâmetros para rho}
+\NormalTok{a }\OtherTok{=}\NormalTok{ b }\OtherTok{=} \DecValTok{1}
+
+\CommentTok{\# hiperparâmetros para theta}
+\NormalTok{r}\OtherTok{=}\NormalTok{.}\DecValTok{1}
+\NormalTok{s}\OtherTok{=}\NormalTok{.}\DecValTok{1}
+
+\CommentTok{\# tamanho da amostra}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(fur) }
+
+\CommentTok{\# valores iniciais da cadeia}
+\NormalTok{theta }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(fur)}
+\NormalTok{rho }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(fur }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)}
+
+\CommentTok{\# amostrador de Gibbs}
+\NormalTok{B }\OtherTok{\textless{}{-}} \DecValTok{50000}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{B)\{}
+  \CommentTok{\# simulando z}
+\NormalTok{  z }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{  prob }\OtherTok{\textless{}{-}}\NormalTok{ rho[i]}\SpecialCharTok{/}\NormalTok{ ( (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{rho[i])}\SpecialCharTok{*}\FunctionTok{dpois}\NormalTok{(}\DecValTok{0}\NormalTok{,theta[i]) }\SpecialCharTok{+}\NormalTok{ rho[i])}
+  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n)\{}
+    \ControlFlowTok{if}\NormalTok{(fur[j] }\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{)\{ z[j] }\OtherTok{\textless{}{-}} \DecValTok{0}\NormalTok{\} }\ControlFlowTok{else}\NormalTok{\{}
+\NormalTok{      z[j] }\OtherTok{\textless{}{-}} \FunctionTok{rbinom}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,prob)}
+\NormalTok{    \}}
+\NormalTok{  \}}
+
+  \CommentTok{\# simulando rho}
+\NormalTok{  rho[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{rbeta}\NormalTok{( }\DecValTok{1}\NormalTok{, a }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{( z }\SpecialCharTok{*}\NormalTok{ (fur }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)) , n}\SpecialCharTok{{-}} \FunctionTok{sum}\NormalTok{(z)}\SpecialCharTok{+}\NormalTok{ b )}
+  
+  \CommentTok{\# simulando theta}
+\NormalTok{  theta[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{rgamma}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{sum}\NormalTok{( fur}\SpecialCharTok{*}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z) ) }\SpecialCharTok{+}\NormalTok{ r,  n }\SpecialCharTok{{-}} \FunctionTok{sum}\NormalTok{(z) }\SpecialCharTok{+}\NormalTok{ s)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Vamos descartar a metade das simulações e usar um \textbf{thinning}
+igual a 15:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{theta\_sim }\OtherTok{\textless{}{-}}\NormalTok{ theta[}\FunctionTok{seq}\NormalTok{(B}\SpecialCharTok{/}\DecValTok{2}\NormalTok{,B,}\DecValTok{15}\NormalTok{)]}
+\NormalTok{rho\_sim }\OtherTok{\textless{}{-}}\NormalTok{ rho[}\FunctionTok{seq}\NormalTok{(B}\SpecialCharTok{/}\DecValTok{2}\NormalTok{,B,}\DecValTok{15}\NormalTok{)]}
+
+\NormalTok{oo }\OtherTok{\textless{}{-}} \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\FunctionTok{ts.plot}\NormalTok{(theta\_sim, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{ts.plot}\NormalTok{(rho\_sim, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{acf}\NormalTok{(theta\_sim)}
+\FunctionTok{acf}\NormalTok{(rho\_sim)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{misturas_files/figure-pdf/unnamed-chunk-4-1.pdf}
+
+}
+
+\end{figure}
+
+Vamos estimar as probabilidade de ocorrerem \(k\) mortes via preditiva
+posteriori:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# tamanho do vetor simulado}
+\NormalTok{Bs }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(theta\_sim)}
+
+\NormalTok{x\_til }\OtherTok{\textless{}{-}} \FunctionTok{array}\NormalTok{( }\ConstantTok{NA\_real\_}\NormalTok{, }\FunctionTok{c}\NormalTok{(Bs,n))}
+\ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{Bs)\{}
+\NormalTok{  z }\OtherTok{\textless{}{-}} \FunctionTok{rbinom}\NormalTok{( n, }\DecValTok{1}\NormalTok{, rho\_sim[j])}
+\NormalTok{  x\_til[j,] }\OtherTok{\textless{}{-}}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z)}\SpecialCharTok{*}\FunctionTok{rpois}\NormalTok{(n, theta\_sim[j])}
+\NormalTok{\}}
+
+\CommentTok{\# probabilidades estimadas via ZIP}
+\NormalTok{p\_zip }\OtherTok{\textless{}{-}} \FunctionTok{prop.table}\NormalTok{(}\FunctionTok{table}\NormalTok{(x\_til))}
+
+\NormalTok{p\_zip}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+x_til
+           0            1            2            3            4            5 
+6.112085e-01 1.979373e-01 1.149232e-01 5.050528e-02 1.771953e-02 5.583499e-03 
+           6            7            8            9 
+1.707351e-03 3.460846e-04 2.307231e-05 4.614462e-05 
+\end{verbatim}
+
+Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo
+Poisson a e frequência relativa.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r1 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(fur)}
+\NormalTok{s1 }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(fur)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{table}\NormalTok{(fur)}\SpecialCharTok{/}\NormalTok{s1, }\AttributeTok{type=} \StringTok{\textquotesingle{}p\textquotesingle{}}\NormalTok{, }\AttributeTok{xlab=}\StringTok{\textquotesingle{}No. anual de mortes pod fur\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab =} \StringTok{\textquotesingle{}Probabilidade\textquotesingle{}}\NormalTok{, }\AttributeTok{col =} \StringTok{\textquotesingle{}cyan3\textquotesingle{}}\NormalTok{, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{,}\FunctionTok{table}\NormalTok{(fur)}\SpecialCharTok{/}\NormalTok{s1, }\AttributeTok{col =} \StringTok{\textquotesingle{}cyan3\textquotesingle{}}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\FunctionTok{dnbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\AttributeTok{size =}\NormalTok{ r1, }\AttributeTok{prob =}\NormalTok{ s1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{s1)), }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{col =} \StringTok{\textquotesingle{}brown\textquotesingle{}}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\FunctionTok{dnbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\AttributeTok{size =}\NormalTok{ r1, }\AttributeTok{prob =}\NormalTok{ s1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{s1)), }\AttributeTok{col =} \StringTok{\textquotesingle{}brown\textquotesingle{}}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(}\FunctionTok{names}\NormalTok{(p\_zip),p\_zip, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{,}\AttributeTok{col =} \StringTok{\textquotesingle{}magenta\textquotesingle{}}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\FunctionTok{names}\NormalTok{(p\_zip),p\_zip,}\AttributeTok{col =} \StringTok{\textquotesingle{}magenta\textquotesingle{}}\NormalTok{)}
+
+\FunctionTok{legend}\NormalTok{(}\StringTok{\textquotesingle{}bottomleft\textquotesingle{}}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Freq. relativa\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Pred. post. Poisson\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Pred. post. ZIP\textquotesingle{}}\NormalTok{), }\AttributeTok{fill=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}cyan3\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}brown\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}magenta\textquotesingle{}}\NormalTok{), }\AttributeTok{bty=}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{misturas_files/figure-pdf/unnamed-chunk-6-1.pdf}
+
+}
+
+\end{figure}
+
+\hypertarget{exercuxedcio}{%
+\section{Exercício}\label{exercuxedcio}}
+
+Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana,
+entre 1950 e 2012.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tor }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{,}
+\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{,}
+\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{,}
+\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{,}
+\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{0}\NormalTok{,}
+\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\item
+  Ajuste o modelo Poisson.
+\item
+  Ajuste o modelo Poisson inflado de zeros.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
 \hypertarget{o-modelo-poisson-revisitado}{%
 \chapter{O modelo Poisson
 revisitado}\label{o-modelo-poisson-revisitado}}
@@ -1877,19 +2200,19 @@ Warning in par(oo): parâmetro gráfico "page" não pode ser especificado
 
 \begin{verbatim}
     municipios      p
-1      Amatura 0.3180
-2    Atl.Norte 0.0700
-3         Barr 0.0272
-4           BC 0.0252
-5     BV Ramos 0.1304
+1      Amatura 0.3308
+2    Atl.Norte 0.0836
+3         Barr 0.0368
+4           BC 0.0192
+5     BV Ramos 0.1292
 6      Fonte B 0.0000
-7        Jutai 0.0388
-8        Maues 0.5076
-9     Nhamunda 0.0164
-10   Parintins 0.6264
-11      StoIca 0.3324
-12 SP Olivenca 0.4284
-13         Tbt 0.4348
+7        Jutai 0.0476
+8        Maues 0.4980
+9     Nhamunda 0.0196
+10   Parintins 0.6472
+11      StoIca 0.3600
+12 SP Olivenca 0.4388
+13         Tbt 0.4156
 14   Tonantins 0.0524
 \end{verbatim}
 

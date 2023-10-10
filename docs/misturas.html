@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introdução à Inferência Bayesiana - 8&nbsp; Misturas de distribuições</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./poisson.html" rel="next">
+<link href="./aproximacaoNormal.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./misturas.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introdução à Inferência Bayesiana</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">summary.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Aula 1 - Introdução</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conjugada.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./estimacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./misturas.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poisson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link active" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">8.1</span> Modelos com inflação de zeros</a></li>
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">8.2</span> Exercício</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Dizemos que <span class="math inline">\(X\sim f(.)\)</span> é uma mistura se existe uma variável <span class="math inline">\(Z\)</span> tal que</p>
+<p><span class="math display">\[f(x)=\int f(x|z)f(z)dz.\]</span></p>
+<p>A variável <span class="math inline">\(Z\)</span> é denominada latente e a função <span class="math inline">\(f(x,z)\)</span> é denominada modelo aumentado.</p>
+<p>Seja <span class="math inline">\((X_1,Z_1),\ldots,(X_n,Y_n)\)</span> uma amostra aleatória do modelo aumentado <span class="math inline">\(f(x,z|\theta)\)</span> e seja <span class="math inline">\(\pi(\theta)\)</span> a priori para <span class="math inline">\(\theta\)</span>. Existem situações nas quais é mais fácil simular do modelo <span class="math display">\[\pi(\theta,\boldsymbol{z}|\boldsymbol{x})\varpropto f(\boldsymbol{x},\boldsymbol{z}|\theta)\pi(\theta).\]</span></p>
+<p>A distribuição de <span class="math inline">\(\theta\)</span> (ou <span class="math inline">\(\boldsymbol{Z}\)</span>) dado as demais variáveis do modelo é denominada condicional completa, que neste problema são:</p>
+<p><span class="math display">\[f(\boldsymbol{z}|\boldsymbol{x},\theta)\]</span> e <span class="math display">\[\pi(\theta|\boldsymbol{z},\boldsymbol{x},\theta)\]</span></p>
+<p>Em particular, se é fácil simular das condicionais completas, podemos utilizar o Amostrador de Gibbs, que consiste no seguinte algoritmo:</p>
+<div class="alert alert-success">
+<p><strong>Amostrador de Gibbs</strong></p>
+<p>Inicie a cadeia com fazendo <span class="math inline">\(j=0\)</span> e escolhendo <span class="math inline">\(\theta^{(0)}\)</span></p>
+<p>No <span class="math inline">\(j\)</span>-ésimo passo:</p>
+<ol type="1">
+<li><p>Simule <span class="math inline">\(\boldsymbol{z^{(j)}}\sim f(\boldsymbol{z}|\boldsymbol{x},\theta^{(j-1)})\)</span></p></li>
+<li><p>Simule <span class="math inline">\(\theta^{(j)}\sim \pi(\theta|\boldsymbol{z},\boldsymbol{x})\)</span></p></li>
+</ol>
+</div>
+<p>O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição estacionária é <span class="math inline">\(\pi(\theta,\boldsymbol{z}|\boldsymbol{x})\)</span></p>
+<section id="modelos-com-inflação-de-zeros" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">8.1</span> Modelos com inflação de zeros</h2>
+<p>Quando são observados mais zeros do que o esperado pelo modelo de contagem assumido para a verossimilhança, é usual considerar um modelo com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma variável <span class="math inline">\(Z|p\sim\hbox{Bernoulli}(\rho)\)</span> tal que:</p>
+<p><span class="math display">\[X=\left\{\begin{array}{ll}0, &amp; \hbox{se }Z=1\ \\ Y,&amp;\hbox{se }Z=0\end{array}\right.\]</span> onde <span class="math inline">\(Y\sim h(.|\theta)\)</span> é o modelo de contagem. Apenas <span class="math inline">\(X\)</span> é observado e, como</p>
+<p><span class="math display">\[\begin{align}P(X=0|\theta,p)&amp;=P(X=0|Z=0,\theta)P(Z=0|\rho)+P(X=0|Z=1,\theta)P(Z=1|\rho)\\&amp;=(1-\rho)h(0|\theta)+\rho\end{align}\]</span> a probabilidade de observar um zero está entre <span class="math inline">\(h(0|\theta)\)</span> e 1, o que caracteriza a inflação.</p>
+<p>Agora, considere um modelo inflacionado de zeros aumentado:</p>
+<p><span class="math display">\[f(x,z|\theta,\rho)=f(x|z,\theta)f(z|\rho)=f(x|z,\theta)\rho^z(1-\rho)^{1-z}.\]</span> Note que</p>
+<p><span class="math display">\[f(x|z,\theta)=\left\{
+\begin{array}{ll}
+h(x|\theta),&amp;\hbox{ se }z=0,\\
+I(x=0),&amp;\hbox{ se }z=1\\
+\end{array}\right.\]</span> logo, a distribuição conjunta <span class="math inline">\(f(x,z|\theta,\rho)\)</span> é dada por</p>
+<p><span class="math display">\[\begin{array}{c|cc}\hline &amp; x=0 &amp; \hbox{qualquer }x&gt; 0 \\ \hline
+z=0 &amp; h(0|\theta)(1-\rho) &amp; h(x|\theta)(1-\rho) \\
+z=1 &amp; \rho &amp; 0 \\ \hline
+\end{array}
+\]</span> Então,</p>
+<p><span class="math display">\[\begin{align}
+\prod_{i=1}^n f(x_i,z_i|\theta,\rho)&amp;=\prod_{i=1}^n [h(0|\theta)(1-\rho)]^{I(x_i=0,z_i=0)}[h(x_i|\theta)(1-\rho)]^{I(x_i&gt;0,z_i=0)}\rho^{I(x_i=0,z_i=1)}\\
+&amp;=\prod_{i=1}^n [h(x_i|\theta)(1-\rho)]^{I(z_i=0)}\rho^{I(x_i=0,z_i=1)}\\
+&amp;=\prod_{i=1}^n(1-\rho)^{I(z_i=0)}\rho^{I(x_i=0,z_i=1)}\prod_{i=1}^n [h(x_i|\theta)]^{I(z_i=0)}\end{align}\]</span> e, notando que <span class="math inline">\(I(z_i=0)=1-z_i,\)</span></p>
+<p><span class="math display">\[\begin{align}
+\prod_{i=1}^n f(x_i,z_i|\theta,\rho)&amp;=
+(1-\rho)^{n-\sum_{i=1}^n z_i}\rho^{\sum_{i=1}^n z_iI(x_i=0)}\prod_{i=1}^n [h(x_i|\theta)]^{1-z_i}\end{align}\]</span></p>
+<p>Considere, a priori, que <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\rho\)</span> são independentes. Seja <span class="math inline">\(\pi(\theta)\)</span> a priori para <span class="math inline">\(\theta\)</span> e considere que <span class="math inline">\(\rho\sim\hbox{Beta}(a,b)\)</span>. Então, as condicionais completas para <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\rho\)</span> são</p>
+<p><span class="math display">\[\begin{align}
+\pi(\theta|\rho,\boldsymbol{z},\boldsymbol{x})&amp;\propto \prod_{i=1}^n h(x_i|\theta)^{1-z_i}\pi(\theta),\\
+\pi(\rho|\theta,\boldsymbol{z},\boldsymbol{x})&amp;\propto \rho^{\sum_{i=1}^n z_iI(x_i=0)+a-1}(1-\rho)^{n-\sum_{i=1}^n z_i+b-1},\\
+\end{align}\]</span></p>
+<p>Para a condicional completa de <span class="math inline">\(z_i\)</span>, notemos que <span class="math display">\[P(Z_i=1|x_i&gt;0)=\frac{P(Z_i=1,X_i&gt;0)}{P(X_i&gt;0)}=0,\]</span> e que</p>
+<p><span class="math display">\[P(Z_i=z|x_i=0)= \left\{\begin{array}{ll}\frac{P(Z_i=0,X_i=0)}{P(X_i=0)}=\frac{h(0|\theta)(1-\rho)}{\rho+(1-\rho)h(0|\theta)},&amp;,z=0\\
+\frac{P(Z_i=1,X_i=0)}{P(X_i=0)}=\frac{\rho}{\rho+(1-\rho)h(0|\theta)},&amp;z=1\end{array}\right.,\]</span> logo <span class="math display">\[\pi(z_i|\theta,\rho,\boldsymbol{x},\boldsymbol{z}_{(-i)})=\left\{\begin{array}{ll}\hbox{Bernoulli}\left( \frac{\rho}{\rho+(1-\rho)h(0|\theta)}\right),&amp;\hbox{ se }x_i=0\\
+I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
+<p>Portanto, um amostrador de Gibbs para um modelo inflacionado de zeros é</p>
+<div class="alert alert-success">
+<p><strong>Amostrador de Gibbs para o modelo inflado de zeros</strong></p>
+<p>Faça <span class="math inline">\(j=0\)</span> e dê os valores iniciais <span class="math inline">\(\theta^{(0)}\)</span> e <span class="math inline">\(\rho^{(0)}\)</span>.</p>
+<p>No <span class="math inline">\(j\)</span>-ésimo passo:</p>
+<ol type="1">
+<li><p>Para <span class="math inline">\(i\in\{1,\ldots,n\}\)</span>, se <span class="math inline">\(x_i&gt;0\)</span> faça <span class="math inline">\(z_i=0\)</span>. Senão, simule <span class="math display">\[z_i^{(j)}\sim \hbox{Bernoulli}\left(\frac{\rho^{(j-1)}}{\rho^{(j-1)}+(1-\rho^{(j-1)})h(x_i|\theta^{(j-1)})}\right)\]</span></p></li>
+<li><p>Simule <span class="math inline">\(\rho^{(j)}\sim\hbox{Beta}(a+\sum_{i=1}^n z_i^{(j)}I(x_i=0),b+n-\sum_{i=1}^n z_i^{(j)})\)</span></p></li>
+<li><p>Simule <span class="math inline">\(\theta^{(j)}\)</span> de <span class="math display">\[\pi(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})\propto \prod_{i=1}^n h(x_i|\theta^{(j)})^{1-z_i^{(j)}}\pi(\theta^{(j)}).\]</span></p></li>
+</ol>
+</div>
+<div class="alert alert-info">
+<p><strong>Exemplo - A Poisson inflada de zeros </strong></p>
+<p>Neste exemplo, vamos considerar que a distribuição da contagem é Poisson(<span class="math inline">\(\theta\)</span>) e que <span class="math inline">\(\theta\sim\hbox{Gama}(r,s)\)</span>. Então,</p>
+<p><span class="math display">\[\begin{align}
+\pi(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})&amp;\propto \prod_{i=1}^{n} h(x_{i} | \theta )^{ 1-z_{i}^{(j)} }\pi(\theta)=
+\prod_{i=1}^{n} \left[\frac{ e^{-\theta}\theta^{x_i} }{x_i!}\right]^{1-z_{i}^{(j)}}\frac{s^r}{\Gamma(r)}\theta^{r-1} e^{-s\theta}\\&amp;\propto \theta^{\sum_{i=1}^n x_i(1-z_i^{(j)})+r-1}e^{-(n-\sum_{i=1}^n z_i^{(j)}+s)\theta}
+\end{align},\]</span></p>
+<p>ou seja, <span class="math inline">\(\theta^{(j)}|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i(1-z_i^{(j)})+r,n-\sum_{i=1}^n z_i^{(j)}+s)\)</span></p>
+</div>
+<div class="alert alert-info">
+<p>Os dados abaixo representam o número anual de furacões atlânticos grandes (categoria 4 ou 5) entre 1987 e 2012, nos Estados Unidos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fur <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span> ,<span class="dv">1</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">2</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A frequência relativa de zeros é 0,58. Considerando o modelo Poisson<span class="math inline">\((\theta)\)</span> com <span class="math inline">\(\pi(\theta)\propto \theta^{-1}\)</span>, temos que</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(fur)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">length</span>(fur)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(fur)<span class="sc">/</span>s1, <span class="at">type=</span> <span class="st">'p'</span>, <span class="at">xlab=</span><span class="st">'No. anual de mortes pod fur'</span>, <span class="at">ylab =</span> <span class="st">'Probabilidade'</span>, <span class="at">col =</span> <span class="st">'cyan3'</span>, <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>,<span class="fu">table</span>(fur)<span class="sc">/</span>s1, <span class="at">col =</span> <span class="st">'cyan3'</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">size =</span> r1, <span class="at">prob =</span> s1<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>s1)), <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col =</span> <span class="st">'brown'</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">size =</span> r1, <span class="at">prob =</span> s1<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>s1)), <span class="at">col =</span> <span class="st">'brown'</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'bottomleft'</span>,<span class="fu">c</span>(<span class="st">'Freq. relativa'</span>,<span class="st">'Pred. post. Poisson'</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">'cyan3'</span>,<span class="st">'brown'</span>), <span class="at">bty=</span><span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="misturas_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hiperparâmetros para rho</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> b <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># hiperparâmetros para theta</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>r<span class="ot">=</span>.<span class="dv">1</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>s<span class="ot">=</span>.<span class="dv">1</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># tamanho da amostra</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(fur) </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># valores iniciais da cadeia</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">mean</span>(fur)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="fu">mean</span>(fur <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># amostrador de Gibbs</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B){</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulando z</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  prob <span class="ot">&lt;-</span> rho[i]<span class="sc">/</span> ( (<span class="dv">1</span><span class="sc">-</span>rho[i])<span class="sc">*</span><span class="fu">dpois</span>(<span class="dv">0</span>,theta[i]) <span class="sc">+</span> rho[i])</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(fur[j] <span class="sc">&gt;</span><span class="dv">0</span>){ z[j] <span class="ot">&lt;-</span> <span class="dv">0</span>} <span class="cf">else</span>{</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>      z[j] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,prob)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulando rho</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  rho[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rbeta</span>( <span class="dv">1</span>, a <span class="sc">+</span> <span class="fu">sum</span>( z <span class="sc">*</span> (fur <span class="sc">==</span> <span class="dv">0</span>)) , n<span class="sc">-</span> <span class="fu">sum</span>(z)<span class="sc">+</span> b )</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulando theta</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  theta[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="fu">sum</span>( fur<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>z) ) <span class="sc">+</span> r,  n <span class="sc">-</span> <span class="fu">sum</span>(z) <span class="sc">+</span> s)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Vamos descartar a metade das simulações e usar um <strong>thinning</strong> igual a 15:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> theta[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">15</span>)]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rho_sim <span class="ot">&lt;-</span> rho[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">15</span>)]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(theta_sim, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(rho_sim, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(theta_sim)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(rho_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="misturas_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Vamos estimar as probabilidade de ocorrerem <span class="math inline">\(k\)</span> mortes via preditiva posteriori:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tamanho do vetor simulado</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Bs <span class="ot">&lt;-</span> <span class="fu">length</span>(theta_sim)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>x_til <span class="ot">&lt;-</span> <span class="fu">array</span>( <span class="cn">NA_real_</span>, <span class="fu">c</span>(Bs,n))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>Bs){</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>( n, <span class="dv">1</span>, rho_sim[j])</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  x_til[j,] <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span><span class="fu">rpois</span>(n, theta_sim[j])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidades estimadas via ZIP</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>p_zip <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(x_til))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>p_zip</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x_til
+           0            1            2            3            4            5 
+6.110239e-01 1.997600e-01 1.149001e-01 4.870564e-02 1.735038e-02 5.745005e-03 
+           6            7            8            9 
+1.776568e-03 5.768077e-04 1.153615e-04 4.614462e-05 </code></pre>
+</div>
+</div>
+<p>Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo Poisson a e frequência relativa.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(fur)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">length</span>(fur)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(fur)<span class="sc">/</span>s1, <span class="at">type=</span> <span class="st">'p'</span>, <span class="at">xlab=</span><span class="st">'No. anual de mortes pod fur'</span>, <span class="at">ylab =</span> <span class="st">'Probabilidade'</span>, <span class="at">col =</span> <span class="st">'cyan3'</span>, <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>,<span class="fu">table</span>(fur)<span class="sc">/</span>s1, <span class="at">col =</span> <span class="st">'cyan3'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">size =</span> r1, <span class="at">prob =</span> s1<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>s1)), <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col =</span> <span class="st">'brown'</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="fu">dnbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">size =</span> r1, <span class="at">prob =</span> s1<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>s1)), <span class="at">col =</span> <span class="st">'brown'</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">names</span>(p_zip),p_zip, <span class="at">pch=</span><span class="dv">16</span>,<span class="at">col =</span> <span class="st">'magenta'</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">names</span>(p_zip),p_zip,<span class="at">col =</span> <span class="st">'magenta'</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'bottomleft'</span>,<span class="fu">c</span>(<span class="st">'Freq. relativa'</span>,<span class="st">'Pred. post. Poisson'</span>, <span class="st">'Pred. post. ZIP'</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">'cyan3'</span>,<span class="st">'brown'</span>, <span class="st">'magenta'</span>), <span class="at">bty=</span><span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="misturas_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercício" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="exercício"><span class="header-section-number">8.2</span> Exercício</h2>
+<div class="alert alert-warning">
+<p>Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana, entre 1950 e 2012.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tor <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">0</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Ajuste o modelo Poisson.</p></li>
+<li><p>Ajuste o modelo Poisson inflado de zeros.</p></li>
+</ul>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./aproximacaoNormal.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./poisson.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
