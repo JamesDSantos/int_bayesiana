@@ -211,8 +211,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link active" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">8.1</span> Modelos com inflação de zeros</a></li>
-  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">8.2</span> Exercício</a></li>
+  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link active" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">8.1</span> Modelos com inflação de zeros</a>
+  <ul class="collapse">
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">8.1.1</span> Exercício</a></li>
+  </ul></li>
+  <li><a href="#mistura-escalonada-de-normais" id="toc-mistura-escalonada-de-normais" class="nav-link" data-scroll-target="#mistura-escalonada-de-normais"><span class="header-section-number">8.2</span> Mistura escalonada de normais</a></li>
+  <li><a href="#misturas-finitas-com-número" id="toc-misturas-finitas-com-número" class="nav-link" data-scroll-target="#misturas-finitas-com-número"><span class="header-section-number">8.3</span> Misturas finitas com número</a>
+  <ul class="collapse">
+  <li><a href="#o-velho-fiel" id="toc-o-velho-fiel" class="nav-link" data-scroll-target="#o-velho-fiel"><span class="header-section-number">8.3.1</span> O velho fiel</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -394,9 +401,9 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 <div class="cell-output cell-output-stdout">
 <pre><code>x_til
            0            1            2            3            4            5 
-6.110239e-01 1.997600e-01 1.149001e-01 4.870564e-02 1.735038e-02 5.745005e-03 
-           6            7            8            9 
-1.776568e-03 5.768077e-04 1.153615e-04 4.614462e-05 </code></pre>
+0.6152231092 0.1960223340 0.1147616631 0.0487979327 0.0174888099 0.0056527156 
+           6            7            8 
+0.0015227724 0.0004153016 0.0001153615 </code></pre>
 </div>
 </div>
 <p>Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo Poisson a e frequência relativa.</p>
@@ -416,9 +423,8 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </div>
 </div>
 </div>
-</section>
-<section id="exercício" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="exercício"><span class="header-section-number">8.2</span> Exercício</h2>
+<section id="exercício" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="exercício"><span class="header-section-number">8.1.1</span> Exercício</h3>
 <div class="alert alert-warning">
 <p>Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana, entre 1950 e 2012.</p>
 <div class="cell">
@@ -435,8 +441,140 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 <li><p>Ajuste o modelo Poisson inflado de zeros.</p></li>
 </ul>
 </div>
+</section>
+</section>
+<section id="mistura-escalonada-de-normais" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">8.2</span> Mistura escalonada de normais</h2>
+</section>
+<section id="misturas-finitas-com-número" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">8.3</span> Misturas finitas com número</h2>
+<p>Dizemos que <span class="math inline">\(X|\boldsymbol{\theta},\boldsymbol{p},\kappa\)</span> é um modelo de mistura finito se sua função de densidade/probabilidade é dada por</p>
+<p><span class="math display">\[f(x| \boldsymbol{\theta},\boldsymbol{p} ,\kappa )=\sum_{k=1}^\kappa p_k f_k(x|\boldsymbol{\theta}_k).\]</span></p>
+<p>Cada função <span class="math inline">\(f(.|\boldsymbol{\theta}_k)\)</span> é denominada componente da mistura e o número de componentes pode ser desconhecido.</p>
+<p>Assim como o modelo com zeros inflacionados, podemos utilizar uma variável latente <span class="math inline">\(\textbf{z}_i|\kappa=(z_{i,1},\ldots,z_{i,\kappa})\sim\hbox{Multinomial}(p_1\ldots,p_\kappa|\sum_{k=1}^\kappa z_{ik}=1)\)</span>, obtendo o seguinte modelo aumentado</p>
+<p><span class="math display">\[f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}\]</span></p>
+<p>A função de verossimilhança aumentada para este modelo é</p>
+<p><span class="math display">\[\prod_{i=1}^n f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{i=1}^n\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}.\]</span></p>
+<p>Considere as prioris <span class="math inline">\(\pi(\boldsymbol{\theta}|\kappa)=\prod_{k=1}^\kappa \pi(\boldsymbol{\theta}_k)\)</span> e <span class="math inline">\(\textbf{p}|\kappa\sim\hbox{Dirichlet}(a_1,\ldots,a_\kappa)\)</span>, onde <span class="math display">\[f(\textbf{p}|\kappa)\propto \prod_{k=1}^\kappa p_k^{a_k-1}\]</span> com <span class="math inline">\(\sum_{k=1}^\kappa p_k=1\)</span>. As condicionais completas para este problema são</p>
+<ul>
+<li><p><span class="math inline">\(\begin{align}f(\boldsymbol{\theta}_k|resto)\propto \prod_{i:z_{i,k}=1}f(x_i|\boldsymbol{\theta}_k)\pi(\boldsymbol{\theta}_k)\end{align}\)</span></p></li>
+<li><p><span class="math inline">\(\begin{align}f(\textbf{z}_i|resto)\propto \prod_{k=1}^\kappa \left[p_kf(x_i|\boldsymbol{\theta}_k)\right]^{z_{i,k}}\end{align}\)</span> ou seja, <span class="math inline">\(\textbf{z}_i|rest\sim\hbox{Multinomial}(\tilde{p}_1,\ldots,\tilde{p}_\kappa)\)</span>, onde</p></li>
+</ul>
+<p><span class="math display">\[\tilde{p}_k=\frac{p_kf(x_i|\boldsymbol{\theta}_k)}{\sum_{k=1}^\kappa p_kf(x_i|\boldsymbol{\theta}_k)}\]</span> * <span class="math inline">\(f(\textbf{p}|resto)\propto \prod_{k=1}^\kappa p_k^{\sum_{i=1}^n z_{i,k}+a_k-1}\)</span>, ou seja <span class="math inline">\(\textbf{p}|resto\sim\hbox{Dirichlet}(a_1+\sum_{i=1}^n z_{i,1},\ldots,a_\kappa+\sum_{i=1}^n z_{i,\kappa})\)</span></p>
+<p>Se necessário, podemos atrbuir a priori <span class="math display">\[\pi(\kappa)=\frac{1}{M},\kappa=1,2,\ldots,M\]</span> para obter a condicional completa <span class="math display">\[\pi(\kappa|resto)=\frac{\prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)}{\sum_{\kappa=1}^M \prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)},\kappa=1,\ldots,M.\]</span></p>
+<section id="o-velho-fiel" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="o-velho-fiel"><span class="header-section-number">8.3.1</span> O velho fiel</h3>
+<p>O banco de dados <code>faithful</code> mostra a duração e o tempo até a próxima erupção do geiser Velho Fiel, no parque Yellowstone. Abaixo mostramos o diagrama do tempo de espera entre erupções</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(faithful<span class="sc">$</span>waiting)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="misturas_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>É possível notar classes, uma com tempo e entre erupções menor que 70 com tempo maior. Temos as seguintes estimativas iniciais:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## elementos na classe 1</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> faithful<span class="sc">$</span>waiting</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> x <span class="sc">&lt;</span> <span class="dv">70</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># proporção na classe 1</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3786765</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># média e desvio padrão na classe 1</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>( x[z])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 55.15534</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>( x[z])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.266558</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## elementos na classe 2</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># proporção na classe 2</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(z<span class="sc">==</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6213235</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># média e desvio padrão na classe 2</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>( x[z<span class="sc">==</span>F])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 80.49112</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>( x[z<span class="sc">==</span>F])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.456667</code></pre>
+</div>
+</div>
+<p>Vamos considerar que as duas componentes possuem distribuição normal. Para cada componente, teremos as seguintes prioris:</p>
+<p><span class="math display">\[\pi(\mu_i,\phi_i)=\frac{\phi^{1/2}_i}{\sqrt{2\pi C}}e^{-\frac{\phi_i}{2C}(\mu_i-m_i)^2}\frac{b^a}{\Gamma(a)}\phi_i^{a-1}e^{b\phi_i},\]</span></p>
+<p><span class="math display">\[p\sim\hbox{Beta}(r,s)\]</span></p>
+<p><span class="math display">\[z_i\sim\hbox{Bernoulli}(p)\]</span></p>
+<p>O modelo aumentado é <span class="math display">\[f(x_i|\mu,\phi,z_{i})=\left[\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)}\right]^{z_i}\left[\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)}\right]^{1-z_i}\]</span> As condicionais completas são:</p>
+<p><span class="math display">\[\begin{align}f(\mu_1|resto) &amp;\propto \exp\left\{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2\right\}\exp\left\{-\frac{\phi_1}{2C} z_i(\mu_1-m_1)^2\right\}\\&amp;\propto \exp\left\{-\frac{\phi_1}{2}\left(\sum_{i=1}^n z_i+C^{-1}\right) \left(\mu_1-\frac{\sum_{i=1}^{n}x_iz_i+m_1C^{-1}}{\sum_{i=1}^n z_i+C^{-1}}\right)^2\right\}\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}f(\mu_2|resto) &amp;\propto \exp\left\{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2\right\}\exp\left\{-\frac{\phi_2}{2C} (1-z_i)(\mu_2-m_2)^2\right\}\\&amp;\propto \exp\left\{-\frac{\phi_2}{2}\left(\sum_{i=1}^n (1-z_i)+C^{-1}\right) \left(\mu_2-\frac{\sum_{i=1}^{n}x_i(1-z_i)+m_1C^{-1}}{\sum_{i=1}^n (1-z_i)+C^{-1}}\right)^2\right\}\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}f(\phi_2|resto)&amp;\propto \phi_2^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2}\phi^{-1/2}_2e^{-\frac{\phi_2}{2}(\mu_2-m_2)^2}\phi_2^{a/2-1}e^{-\phi_2 b/2}\\ &amp;\propto \phi_2^{\frac{1}{2}(1+a+\sum_{i=1}^{n}(1-z_i)-1}e^{-\frac{\phi_2}{2}[\sum_{i=1}^n(1-z_i)(x_i-\mu_2)^2 +(\mu_2-m_2)^2 + b]}\end{align}\]</span> <span class="math display">\[\begin{align}f(\phi_1|resto)&amp;\propto \phi^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2}\phi^{-1/2}e^{-\frac{\phi_1}{2}(\mu_1-m_1)^2}\phi_1^{a/2-1}e^{-\phi_1 b/2}\\ &amp;\propto \phi_1^{\frac{1}{2}(1+a+\sum_{i=1}^{n}z_i)-1}e^{-\frac{\phi_1}{2}[\sum_{i=1}^nz_i(x_i-\mu_1)^2 +(\mu_1-m_1)^2 + b]}\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}f(p|resto)\propto \prod_{i=1}^n p^{z_i}(1-p)^{1-z_i}p^{r-1}(1-p)^{s-1}\propto p^{r+\sum_{i=1}^n z_i-1}(1-p)^{s+\sum_{i=1}^n (1-z_i)-1}\end{align}\]</span></p>
+<p><span class="math display">\[f(z_i|resto)\propto\left[ p\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)^2}\right]^{z_i}\left[ (1-p)\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)^2}\right]^{1-z_i}\]</span></p>
+<p>Abaixo implementamos o amostrador de Gibbs</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># hiperparmametros</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="dv">65</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="dv">80</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>r<span class="ot">=</span> <span class="dv">4</span>; s <span class="ot">=</span> <span class="dv">6</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="dv">1</span>; b <span class="ot">=</span> .<span class="dv">1</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># valores iniciais</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> x <span class="sc">&lt;</span> <span class="dv">70</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>phi1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">36</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>phi2 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">25</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>mu1 <span class="ot">=</span> mu2 <span class="ot">=</span>  p <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B){</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># mu dado o resto</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  m1_post <span class="ot">&lt;-</span> ( <span class="fu">sum</span>(x<span class="sc">*</span>z) <span class="sc">+</span> m1<span class="sc">/</span>C) <span class="sc">/</span> ( <span class="fu">sum</span>(z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  m2_post <span class="ot">&lt;-</span> ( <span class="fu">sum</span>(x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>z)) <span class="sc">+</span> m1<span class="sc">/</span>C) <span class="sc">/</span> ( <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  s1_post <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ( ( <span class="fu">sum</span>(z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )<span class="sc">*</span>phi1[i] )</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  s2_post <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ( ( <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )<span class="sc">*</span>phi2[i] )</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  mu1[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, m1_post, <span class="fu">sqrt</span>( s1_post) )</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  mu2[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, m2_post, <span class="fu">sqrt</span>( s2_post) )</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># phi dado resto</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>  phi1[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="dv">1</span> <span class="sc">+</span> a <span class="sc">+</span> <span class="fu">sum</span>(z), <span class="fu">sum</span>( z<span class="sc">*</span>(x <span class="sc">-</span> mu1[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> (mu1[i<span class="sc">+</span><span class="dv">1</span>]<span class="sc">-</span>m1)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> b)</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  phi2[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="dv">1</span> <span class="sc">+</span> a <span class="sc">+</span> <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z), <span class="fu">sum</span>( (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span>(x <span class="sc">-</span> mu2[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> (mu2[i<span class="sc">+</span><span class="dv">1</span>]<span class="sc">-</span>m2)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> b)</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># p dado resto</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>  p[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, r <span class="sc">+</span> <span class="fu">sum</span>(z), s <span class="sc">+</span> <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z) )</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># z dado resto</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>  aux1 <span class="ot">&lt;-</span> p[i<span class="sc">+</span><span class="dv">1</span>]<span class="sc">*</span><span class="fu">dnorm</span>(x,mu1[i<span class="sc">+</span><span class="dv">1</span>], <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(phi1[i<span class="sc">+</span><span class="dv">1</span>]))</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>  aux2 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>p[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">*</span><span class="fu">dnorm</span>(x,mu2[i<span class="sc">+</span><span class="dv">1</span>], <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(phi2[i<span class="sc">+</span><span class="dv">1</span>]))</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">length</span>(x), <span class="dv">1</span>, aux1<span class="sc">/</span>( aux1 <span class="sc">+</span> aux2))</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mu1[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">30</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="misturas_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mu2[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">30</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="misturas_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

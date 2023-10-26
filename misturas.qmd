@@ -233,7 +233,7 @@ legend('bottomleft',c('Freq. relativa','Pred. post. Poisson', 'Pred. post. ZIP')
 
 </div>
 
-## Exercício
+### Exercício
 
 <div class='alert alert-warning'>
 
@@ -254,3 +254,153 @@ tor <- c(0, 0,0, 1, 0, 0, 0, 1, 0, 0,
 
 * Ajuste o modelo Poisson inflado de zeros.
 </div>
+
+## Mistura escalonada de normais
+
+
+
+## Misturas finitas com número
+
+
+Dizemos que $X|\boldsymbol{\theta},\boldsymbol{p},\kappa$ é um modelo de mistura finito se sua função de densidade/probabilidade é dada por
+
+$$f(x| \boldsymbol{\theta},\boldsymbol{p} ,\kappa )=\sum_{k=1}^\kappa p_k f_k(x|\boldsymbol{\theta}_k).$$
+
+Cada função $f(.|\boldsymbol{\theta}_k)$ é denominada componente da mistura e o número de componentes pode ser desconhecido.
+
+Assim como o modelo com zeros inflacionados, podemos utilizar uma variável latente $\textbf{z}_i|\kappa=(z_{i,1},\ldots,z_{i,\kappa})\sim\hbox{Multinomial}(p_1\ldots,p_\kappa|\sum_{k=1}^\kappa z_{ik}=1)$, obtendo o seguinte modelo aumentado
+
+$$f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}$$
+
+A função de verossimilhança aumentada para este modelo é
+
+$$\prod_{i=1}^n f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{i=1}^n\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}.$$
+
+Considere as prioris $\pi(\boldsymbol{\theta}|\kappa)=\prod_{k=1}^\kappa \pi(\boldsymbol{\theta}_k)$ e $\textbf{p}|\kappa\sim\hbox{Dirichlet}(a_1,\ldots,a_\kappa)$, onde
+$$f(\textbf{p}|\kappa)\propto \prod_{k=1}^\kappa p_k^{a_k-1}$$
+com $\sum_{k=1}^\kappa p_k=1$. As condicionais completas para este problema são
+
+* $\begin{align}f(\boldsymbol{\theta}_k|resto)\propto \prod_{i:z_{i,k}=1}f(x_i|\boldsymbol{\theta}_k)\pi(\boldsymbol{\theta}_k)\end{align}$
+
+* $\begin{align}f(\textbf{z}_i|resto)\propto \prod_{k=1}^\kappa \left[p_kf(x_i|\boldsymbol{\theta}_k)\right]^{z_{i,k}}\end{align}$
+ou seja, $\textbf{z}_i|rest\sim\hbox{Multinomial}(\tilde{p}_1,\ldots,\tilde{p}_\kappa)$, onde
+
+$$\tilde{p}_k=\frac{p_kf(x_i|\boldsymbol{\theta}_k)}{\sum_{k=1}^\kappa p_kf(x_i|\boldsymbol{\theta}_k)}$$
+* $f(\textbf{p}|resto)\propto \prod_{k=1}^\kappa p_k^{\sum_{i=1}^n z_{i,k}+a_k-1}$, ou seja $\textbf{p}|resto\sim\hbox{Dirichlet}(a_1+\sum_{i=1}^n z_{i,1},\ldots,a_\kappa+\sum_{i=1}^n z_{i,\kappa})$
+
+Se necessário, podemos atrbuir a priori $$\pi(\kappa)=\frac{1}{M},\kappa=1,2,\ldots,M$$
+para obter a condicional completa
+$$\pi(\kappa|resto)=\frac{\prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)}{\sum_{\kappa=1}^M \prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)},\kappa=1,\ldots,M.$$
+
+### O velho fiel
+
+
+O banco de dados `faithful` mostra a duração e o tempo até a próxima erupção do geiser Velho Fiel, no parque Yellowstone. Abaixo mostramos o diagrama do tempo de espera entre erupções
+
+```{r}
+hist(faithful$waiting)
+```
+
+
+É possível notar classes, uma com tempo e entre erupções menor que 70 com tempo maior. Temos as seguintes estimativas iniciais:
+
+
+```{r}
+## elementos na classe 1
+x <- faithful$waiting
+z <- x < 70
+# proporção na classe 1
+mean(z)
+# média e desvio padrão na classe 1
+mean( x[z])
+sd( x[z])
+```
+
+
+```{r}
+## elementos na classe 2
+# proporção na classe 2
+mean(z==F)
+# média e desvio padrão na classe 2
+mean( x[z==F])
+sd( x[z==F])
+```
+
+Vamos considerar que as duas componentes possuem distribuição normal. Para cada componente, teremos as seguintes prioris:
+
+$$\pi(\mu_i,\phi_i)=\frac{\phi^{1/2}_i}{\sqrt{2\pi C}}e^{-\frac{\phi_i}{2C}(\mu_i-m_i)^2}\frac{b^a}{\Gamma(a)}\phi_i^{a-1}e^{b\phi_i},$$
+
+$$p\sim\hbox{Beta}(r,s)$$
+
+$$z_i\sim\hbox{Bernoulli}(p)$$
+
+O modelo aumentado é
+$$f(x_i|\mu,\phi,z_{i})=\left[\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)}\right]^{z_i}\left[\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)}\right]^{1-z_i}$$
+As condicionais completas são:
+
+
+
+$$\begin{align}f(\mu_1|resto) &\propto \exp\left\{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2\right\}\exp\left\{-\frac{\phi_1}{2C} z_i(\mu_1-m_1)^2\right\}\\&\propto \exp\left\{-\frac{\phi_1}{2}\left(\sum_{i=1}^n z_i+C^{-1}\right) \left(\mu_1-\frac{\sum_{i=1}^{n}x_iz_i+m_1C^{-1}}{\sum_{i=1}^n z_i+C^{-1}}\right)^2\right\}\end{align}$$
+
+$$\begin{align}f(\mu_2|resto) &\propto \exp\left\{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2\right\}\exp\left\{-\frac{\phi_2}{2C} (1-z_i)(\mu_2-m_2)^2\right\}\\&\propto \exp\left\{-\frac{\phi_2}{2}\left(\sum_{i=1}^n (1-z_i)+C^{-1}\right) \left(\mu_2-\frac{\sum_{i=1}^{n}x_i(1-z_i)+m_1C^{-1}}{\sum_{i=1}^n (1-z_i)+C^{-1}}\right)^2\right\}\end{align}$$
+
+
+$$\begin{align}f(\phi_2|resto)&\propto \phi_2^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2}\phi^{-1/2}_2e^{-\frac{\phi_2}{2}(\mu_2-m_2)^2}\phi_2^{a/2-1}e^{-\phi_2 b/2}\\ &\propto \phi_2^{\frac{1}{2}(1+a+\sum_{i=1}^{n}(1-z_i)-1}e^{-\frac{\phi_2}{2}[\sum_{i=1}^n(1-z_i)(x_i-\mu_2)^2 +(\mu_2-m_2)^2 + b]}\end{align}$$
+$$\begin{align}f(\phi_1|resto)&\propto \phi^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2}\phi^{-1/2}e^{-\frac{\phi_1}{2}(\mu_1-m_1)^2}\phi_1^{a/2-1}e^{-\phi_1 b/2}\\ &\propto \phi_1^{\frac{1}{2}(1+a+\sum_{i=1}^{n}z_i)-1}e^{-\frac{\phi_1}{2}[\sum_{i=1}^nz_i(x_i-\mu_1)^2 +(\mu_1-m_1)^2 + b]}\end{align}$$
+
+$$\begin{align}f(p|resto)\propto \prod_{i=1}^n p^{z_i}(1-p)^{1-z_i}p^{r-1}(1-p)^{s-1}\propto p^{r+\sum_{i=1}^n z_i-1}(1-p)^{s+\sum_{i=1}^n (1-z_i)-1}\end{align}$$
+
+$$f(z_i|resto)\propto\left[ p\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)^2}\right]^{z_i}\left[ (1-p)\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)^2}\right]^{1-z_i}$$
+
+
+Abaixo implementamos o amostrador de Gibbs
+```{r}
+B <- 50000
+
+# hiperparmametros
+m1 <- 65
+m2 <- 80
+C <- 1000
+r= 4; s = 6
+a = 1; b = .1
+
+# valores iniciais
+z <- x < 70
+phi1 <- 1/36
+phi2 <- 1/25
+mu1 = mu2 =  p = NULL
+
+for(i in 1:B){
+  # mu dado o resto
+  m1_post <- ( sum(x*z) + m1/C) / ( sum(z) + 1/C )
+  m2_post <- ( sum(x*(1-z)) + m1/C) / ( sum(1-z) + 1/C )
+  s1_post <- 1 / ( ( sum(z) + 1/C )*phi1[i] )
+  s2_post <- 1 / ( ( sum(1-z) + 1/C )*phi2[i] )
+  
+  mu1[i+1] <- rnorm(1, m1_post, sqrt( s1_post) )
+  mu2[i+1] <- rnorm(1, m2_post, sqrt( s2_post) )
+  
+  # phi dado resto
+  phi1[i+1] <- rgamma(1, 1 + a + sum(z), sum( z*(x - mu1[i+1])^2 ) + (mu1[i+1]-m1)^2 + b)
+  phi2[i+1] <- rgamma(1, 1 + a + sum(1-z), sum( (1-z)*(x - mu2[i+1])^2 ) + (mu2[i+1]-m2)^2 + b)
+  
+  # p dado resto
+  p[i+1] <- rbeta(1, r + sum(z), s + sum(1-z) )
+  
+  # z dado resto
+  aux1 <- p[i+1]*dnorm(x,mu1[i+1], 1/sqrt(phi1[i+1]))
+  aux2 <- (1-p[i+1])*dnorm(x,mu2[i+1], 1/sqrt(phi2[i+1]))
+  
+  z <- rbinom(length(x), 1, aux1/( aux1 + aux2))
+}
+# 
+```
+
+
+```{r}
+hist(mu1[seq(B/2,B,30)])
+hist(mu2[seq(B/2,B,30)])
+
+```
