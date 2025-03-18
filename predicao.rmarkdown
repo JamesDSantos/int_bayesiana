@@ -1,0 +1,293 @@
+# Predição
+
+## Classificação de imagens via RGB
+
+
+### O que é uma imagem?
+Uma imagem digital é formada por pequenos quadrados coloridos
+denominados pixels. A cor de cada pixel é uma combinação das cores básicas vermelho (Red), verde (Green) e azul (Blue), formando o que denominamos sistema de cores RGB. Cada cor tem 256 tonalidades sendo zero a mais clara (no R, esses valores variam de 0 a 1).
+
+Matematicamente, representamos a imagem por uma matriz cujos
+elementos são os pixels (a dimensão da matriz é denominada resolução da imagem). Ao pixel $(i, j)$ é associado o valor $p_{i,j} = (r, g, b)$, onde $r$, $g$ e $b$ são valores numéricos no sistema RGB.
+
+
+
+
+
+
+
+
+
+```{r, echo = T}
+library(jpeg)
+
+batman <- './Figuras/teste/batman2.jpg'
+fig_batman <- readJPEG(batman)
+  
+r <- as.vector(fig_batman[,,1])
+g <- as.vector(fig_batman[,,2])
+b <- as.vector(fig_batman[,,3])
+
+plot_jpeg = function(path, add=FALSE)
+{
+  require('jpeg')
+  jpg = readJPEG(path, native=T) # read the file
+  res = dim(jpg)[2:1] # get the resolution, [x, y]
+  if (!add) # initialize an empty plot area if add==FALSE
+    plot(1,1,xlim=c(1,res[1]),ylim=c(1,res[2]),asp=1,type='n',xaxs='i',yaxs='i',xaxt='n',yaxt='n',xlab='',ylab='',bty='n')
+  rasterImage(jpg,1,1,res[1],res[2])
+}
+
+oo <- par(mfrow = c(2,2))
+  plot_jpeg(batman)
+  hist(r,col = 'red')
+  hist(g,col = 'green')
+  hist(b,col = 'blue')
+par(oo)  
+```
+
+
+
+
+
+
+
+
+### Classes de treino e teste
+
+As seguintes imagens foram utilizadas como treino:
+
+
+
+
+
+
+
+
+```{r, echo = FALSE, results = 'hide'}
+
+fig_treino <- list.files('./Figuras/treino')
+
+oo <- par(mfrow = c(3,3), mar = c(0,0,0,0))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[1]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[2]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[3]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[4]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[5]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[6]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[7]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[8]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[9]))
+par(oo)
+oo <- par(mfrow = c(3,3), mar = c(0,0,0,0))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[10]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[11]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[12]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[13]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[14]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[15]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[16]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[17]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[18]))
+par(oo)
+oo <- par(mfrow = c(3,3), mar = c(0,0,0,0))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[19]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[20]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[21]))
+  plot_jpeg(paste0('./Figuras/treino/',fig_treino[22]))
+par(oo)
+
+
+```
+
+
+
+
+
+
+
+
+As seguintes imagens serão utilizadas no conjunto de teste
+
+
+
+
+
+
+
+
+```{r, echo = FALSE, results = 'hide'}
+
+fig_teste <- list.files('./Figuras/teste')
+
+oo <- par(mfrow = c(3,3), mar = c(0,0,0,0))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[1]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[2]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[3]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[4]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[5]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[6]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[7]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[8]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[9]))
+par(oo)
+oo <- par(mfrow = c(3,3), mar = c(0,0,0,0))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[10]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[11]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[12]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[13]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[14]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[15]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[16]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[17]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[18]))
+par(oo)
+oo <- par(mfrow = c(3,3), mar = c(0,0,0,0))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[19]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[20]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[21]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[22]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[23]))
+  plot_jpeg(paste0('./Figuras/teste/',fig_teste[24]))
+par(oo)
+
+```
+
+
+
+
+
+
+
+
+
+### Resultados do classificador
+
+A função abaixo calcula o valor de $P(M_j|x,x^*)$ para todas as classes no treino:
+
+
+
+
+
+
+
+
+```{r}
+Mfun <- function(x_star, n_star){
+  
+  files <- list.files('./Figuras/treino/')
+  
+  M <- heroi <- NULL
+  for(fi in files){
+    f <- readJPEG( paste0('./Figuras/treino/',fi) )
+    r <- as.vector(f[,,1])
+    g <- as.vector(f[,,2])
+    b <- as.vector(f[,,3])
+    int <- seq(0,1,.05)
+  
+    rx <- findInterval(r,int)
+    gx <- findInterval(g,int)
+    bx <- findInterval(b,int)
+    tb <- array( 0, c(21,21,21))
+    for(i in 1:21)for(j in 1:21)for(k in 1:21) tb[i,j,k] <- sum( rx == i & gx == j & bx == k) 
+    
+    x_treino <- as.vector(tb)
+    cat(length(x_treino),'\n')
+    n_treino <- sum(x_treino)
+    C = 21*21*21
+    M1 <- lgamma(n_star + .5*C) - lgamma( n_star + n_treino +  .5*C)
+    M2 <- sum( lgamma(  x_star + x_treino + .5) - lgamma(x_treino + .5))
+
+    M <- c(M,M1+M2)
+    heroi <- c(heroi, fi)
+  }
+  
+  df <- data.frame(heroi,M)
+  names(df) <- c('Herói','log P(M|x,x*)')
+  return(df)
+}
+```
+
+
+
+
+
+
+
+
+Por exemplo, vamos testar a figura de teste do Capitão América:
+
+
+
+
+
+
+
+
+```{r}
+f_star <- readJPEG(paste0('./Figuras/teste/america2.jpg'))
+  r <- as.vector(f_star[,,1])
+  g <- as.vector(f_star[,,2])
+  b <- as.vector(f_star[,,3])
+  
+  int <- seq(0,1,.05)
+  
+  rx <- findInterval(r,int)
+  gx <- findInterval(g,int)
+  bx <- findInterval(b,int)
+  tb <- array( 0, c(21,21,21))
+    for(i in 1:21)for(j in 1:21)for(k in 1:21) tb[i,j,k] <- sum( rx == i & gx == j & bx == k) 
+    
+  x_star <- as.vector(tb)
+  n_star <- sum(x_star)
+  
+  res <- Mfun(x_star, n_star)
+  res[ order( res[,2], decreasing = T), ]
+```
+
+
+
+
+
+
+
+
+
+A função abaixo computa o valor de $P(M_j|x,x^*)$ para diferentes figuras de teste.
+
+
+
+
+
+
+
+
+```{r}
+files <- list.files('./Figuras/teste/')
+heroi <- classe <- NULL
+for(fi in files){
+  f_star <- readJPEG(paste0('./Figuras/teste/',fi))
+  r <- as.vector(f_star[,,1])
+  g <- as.vector(f_star[,,2])
+  b <- as.vector(f_star[,,3])
+  
+  int <- seq(0,1,.05)
+  
+  rx <- findInterval(r,int)
+  gx <- findInterval(g,int)
+  bx <- findInterval(b,int)
+  tb <- table(rx,gx,bx)
+  
+  x_star <- as.vector(tb)
+  n_star <- sum(x_star)
+  
+  res <- Mfun(x_star, n_star)
+  res <- res[ order( res[,2], decreasing = T), ]
+  
+  heroi <- c(heroi, fi)
+  classe <- c(classe, res[,1])
+}
+
+data.frame(heroi, classe)
+```
+

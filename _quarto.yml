@@ -12,6 +12,7 @@ book:
     - intro.qmd
     - conjugada.qmd
     - estimacao.qmd
+    - teste.qmd
     - normal.qmd
     - negativeBinomial.qmd
     - aproximacaoNormal.qmd

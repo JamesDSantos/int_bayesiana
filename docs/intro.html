@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introdução à Inferência Bayesiana - 2&nbsp; Aula 1 - Introdução</title>
+<title>2&nbsp; Introdução – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,14 +96,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -107,13 +141,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Aula 1 - Introdução</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introdução</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -122,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introdução à Inferência Bayesiana</a> 
@@ -150,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Aula 1 - Introdução</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -167,32 +201,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./teste.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -204,23 +244,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#notação" id="toc-notação" class="nav-link active" data-scroll-target="#notação"><span class="header-section-number">2.1</span> Notação</a></li>
-  <li><a href="#fontes-de-informação" id="toc-fontes-de-informação" class="nav-link" data-scroll-target="#fontes-de-informação"><span class="header-section-number">2.2</span> Fontes de informação</a>
+  <li><a href="#dados-que-serão-utilizados-nesse-capítulo" id="toc-dados-que-serão-utilizados-nesse-capítulo" class="nav-link active" data-scroll-target="#dados-que-serão-utilizados-nesse-capítulo"><span class="header-section-number">2.1</span> Dados que serão utilizados nesse capítulo</a></li>
+  <li><a href="#notação" id="toc-notação" class="nav-link" data-scroll-target="#notação"><span class="header-section-number">2.2</span> Notação</a></li>
+  <li><a href="#fontes-de-informação" id="toc-fontes-de-informação" class="nav-link" data-scroll-target="#fontes-de-informação"><span class="header-section-number">2.3</span> Fontes de informação</a>
   <ul class="collapse">
-  <li><a href="#a-função-de-verossimilhança" id="toc-a-função-de-verossimilhança" class="nav-link" data-scroll-target="#a-função-de-verossimilhança"><span class="header-section-number">2.2.1</span> A função de verossimilhança</a></li>
-  <li><a href="#a-distribuição-a-priori" id="toc-a-distribuição-a-priori" class="nav-link" data-scroll-target="#a-distribuição-a-priori"><span class="header-section-number">2.2.2</span> A distribuição a priori</a></li>
-  <li><a href="#reunindo-as-fontes-de-informação---distribuição-a-posteriori" id="toc-reunindo-as-fontes-de-informação---distribuição-a-posteriori" class="nav-link" data-scroll-target="#reunindo-as-fontes-de-informação---distribuição-a-posteriori"><span class="header-section-number">2.2.3</span> Reunindo as fontes de informação - distribuição a posteriori</a></li>
+  <li><a href="#a-função-de-verossimilhança" id="toc-a-função-de-verossimilhança" class="nav-link" data-scroll-target="#a-função-de-verossimilhança"><span class="header-section-number">2.3.1</span> A função de verossimilhança</a></li>
+  <li><a href="#a-distribuição-a-priori" id="toc-a-distribuição-a-priori" class="nav-link" data-scroll-target="#a-distribuição-a-priori"><span class="header-section-number">2.3.2</span> A distribuição a priori</a></li>
+  <li><a href="#reunindo-as-fontes-de-informação---distribuição-a-posteriori" id="toc-reunindo-as-fontes-de-informação---distribuição-a-posteriori" class="nav-link" data-scroll-target="#reunindo-as-fontes-de-informação---distribuição-a-posteriori"><span class="header-section-number">2.3.3</span> Reunindo as fontes de informação - distribuição a posteriori</a></li>
   </ul></li>
-  <li><a href="#inferência-estatística" id="toc-inferência-estatística" class="nav-link" data-scroll-target="#inferência-estatística"><span class="header-section-number">2.3</span> Inferência estatística</a></li>
-  <li><a href="#elicitação-de-prioris" id="toc-elicitação-de-prioris" class="nav-link" data-scroll-target="#elicitação-de-prioris"><span class="header-section-number">2.4</span> Elicitação de <strong>prioris</strong></a></li>
-  <li><a href="#o-problema-da-exposição" id="toc-o-problema-da-exposição" class="nav-link" data-scroll-target="#o-problema-da-exposição"><span class="header-section-number">2.5</span> O problema da exposição</a></li>
+  <li><a href="#inferência-estatística" id="toc-inferência-estatística" class="nav-link" data-scroll-target="#inferência-estatística"><span class="header-section-number">2.4</span> Inferência estatística</a></li>
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">2.5</span> Exercício</a></li>
+  <li><a href="#resumo-da-aula-1" id="toc-resumo-da-aula-1" class="nav-link" data-scroll-target="#resumo-da-aula-1"><span class="header-section-number">2.6</span> Resumo da aula 1</a></li>
   </ul>
 </nav>
     </div>
@@ -229,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Aula 1 - Introdução</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introdução</span></h1>
 </div>
 
 
@@ -242,7 +283,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>Os objetivos desta aula são:</p>
 <ol type="1">
@@ -251,11 +294,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Apresentar as inferências básicas</li>
 <li>Discutir como se dá o processo de elicitação de prioris</li>
 </ol>
-<section id="notação" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="notação"><span class="header-section-number">2.1</span> Notação</h2>
-<p>Variáveis aleatórias cujo valor podem ser observados serão denotadas por letras maiúsculas. Exemplos:</p>
+<section id="dados-que-serão-utilizados-nesse-capítulo" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="dados-que-serão-utilizados-nesse-capítulo"><span class="header-section-number">2.1</span> Dados que serão utilizados nesse capítulo</h2>
+<p>A amostra abaixo se refere ao número mensal de suicídios registrados no Amazonas nos anos 2021, 2022 e 2023.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>no_suicidios <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">26</span>, <span class="dv">30</span>, <span class="dv">28</span>, <span class="dv">25</span>, <span class="dv">23</span>,<span class="dv">23</span>, <span class="dv">21</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">31</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">21</span>, <span class="dv">29</span>, <span class="dv">27</span>, <span class="dv">26</span>, <span class="dv">23</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>, <span class="dv">27</span>, <span class="dv">24</span>, <span class="dv">21</span>, <span class="dv">18</span>, <span class="dv">22</span>, <span class="dv">34</span>, <span class="dv">27</span>, <span class="dv">26</span>, <span class="dv">26</span>, <span class="dv">34</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">36</span>, <span class="dv">28</span>, <span class="dv">22</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Desta amostra, inferimos que a média mensal é de 25,9 registros e que a variância é 21,05.</p>
+</section>
+<section id="notação" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="notação"><span class="header-section-number">2.2</span> Notação</h2>
+<p>Variáveis aleatórias cujos valores podem ser observados serão denotadas por letras maiúsculas. Exemplos:</p>
 <ul>
-<li><p><span class="math inline">\(X\)</span> é número de acidentes diários na Avenida Torquato Tapajós</p></li>
+<li><p><span class="math inline">\(X\)</span> é o número de acidentes diários na Avenida Torquato Tapajós</p></li>
 <li><p><span class="math inline">\(Y\)</span> é o nível máximo diário do Rio Negro</p></li>
 </ul>
 <p>Valores observados de variáveis aleatórias serão denotados pela respectiva letra minúscula.</p>
@@ -267,90 +321,128 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><span class="math inline">\(\theta=\{\alpha,\beta\}\)</span> é um vetor de parâmetros.</p></li>
 </ul>
 <div id="def-Suporte" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1 </strong></span>O suporte de uma variável aleatória é o conjunto de todos os seus possíveis valores. Quando necessário, o suporte de variáveis aleatórias são representada pela versão caligráfica de sua letra correspondente.</p>
+<p><span class="theorem-title"><strong>Definition 2.1</strong></span> O suporte de uma variável aleatória é o conjunto de todos os seus possíveis valores. Quando necessário, o suporte de variáveis aleatórias é representado pela versão caligráfica de sua letra correspondente.</p>
 <p>Exemplos: o suporte de <span class="math inline">\(X\)</span> é <span class="math inline">\(\mathcal{X}\)</span> ; o suporte de Y é <span class="math inline">\(\mathcal{Y}\)</span> ; o suporte de <span class="math inline">\(Z\)</span> é <span class="math inline">\(\mathcal{Z}\)</span>.</p>
 </div>
 <div id="def-Espaco" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.2 </strong></span>O espaço paramétrico é o conjunto de todos os possíveis valores do parâmetro. Eles são representados pela versão maiúscula da letra grega utilizada para seu respectivo parâmetro.</p>
+<p><span class="theorem-title"><strong>Definition 2.2</strong></span> O espaço paramétrico é o conjunto de todos os possíveis valores do parâmetro. Ele é representado pela versão maiúscula da letra grega utilizada para seu respectivo parâmetro.</p>
 <p>Exemplo: o espaço paramétrico do parâmetro <span class="math inline">\(\theta\)</span> é representado por <span class="math inline">\(\Theta\)</span>.</p>
 </div>
 <p>Tanto a função de densidade quanto a de probabilidade serão denotadas por funções começando com letras minúsculas. Por exemplo,</p>
 <p><span class="math display">\[f(x|\lambda)=\lambda e^{-\lambda x}\]</span> onde <span class="math inline">\(x,\lambda&gt;0\)</span> é a densidade da distribuição exponencial, enquanto que</p>
-<p><span class="math display">\[p(x|\lambda)=\frac{e^{-\lambda}\lambda^x}{x!}\]</span> com <span class="math inline">\(x\in\mathbb{N}\)</span> e <span class="math inline">\(\lambda &gt;0\)</span> é a é a função de probabilidade da distribuição Poisson.</p>
+<p><span class="math display">\[p(x|\lambda)=\frac{e^{-\lambda}\lambda^x}{x!}\]</span> com <span class="math inline">\(x\in\mathbb{N}\)</span> e <span class="math inline">\(\lambda &gt;0\)</span> é a função de probabilidade da distribuição Poisson.</p>
 </section>
-<section id="fontes-de-informação" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="fontes-de-informação"><span class="header-section-number">2.2</span> Fontes de informação</h2>
-<section id="a-função-de-verossimilhança" class="level3" data-number="2.2.1">
-<h3 data-number="2.2.1" class="anchored" data-anchor-id="a-função-de-verossimilhança"><span class="header-section-number">2.2.1</span> A função de verossimilhança</h3>
+<section id="fontes-de-informação" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="fontes-de-informação"><span class="header-section-number">2.3</span> Fontes de informação</h2>
+<section id="a-função-de-verossimilhança" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="a-função-de-verossimilhança"><span class="header-section-number">2.3.1</span> A função de verossimilhança</h3>
 <p>Seja <span class="math inline">\(\mathbf{x} = \{x_1 , \ldots , x_n \}\)</span> uma amostra observada. Supomos que <span class="math inline">\(\mathbf{x}\)</span> é uma das possíveis amostras das variáveis aleatórias <span class="math inline">\(\mathbf{X} = \{X_1 , \ldots , X_n \}\)</span>. Supomos ainda que <span class="math inline">\(X\sim F (.|\theta)\)</span>. Assim, condicionada ao conhecimento de <span class="math inline">\(\theta\)</span>, a distribuição da amostra está completamente especificada.</p>
 <p>::: {#def-Funcao de verossimilhanca} Para <span class="math inline">\(\mathbf{x}\)</span> fixado, a função <span class="math display">\[L:\Theta\Rightarrow [0,\infty)\]</span> é denominada verossimilhança. :::</p>
 <p>Sua interpretação é a seguinte: para <span class="math inline">\(\theta_1,\theta_2\in\Theta\)</span>, se</p>
 <p><span class="math display">\[L(\theta_1)&gt;L(\theta_2),\]</span> dizemos que <span class="math inline">\(\theta_1\)</span> é mais verossímil que <span class="math inline">\(\theta_2\)</span>. Isto porque a probabilidade de observar uma amostra na vizinhança de <span class="math inline">\(\mathbf{x}\)</span> é maior se considerarmos que <span class="math inline">\(\theta_1\)</span> é o valor do parâmetro. A verossimilhança é uma das fontes de informação utilizada na inferência bayesiana (e a única fonte da inferência frequentista).</p>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1 </strong></span>Considere uma amostra de 30 variáveis aleatórias independentes com distribuição Poisson(<span class="math inline">\(\theta\)</span>). Neste caso, a função de verossimilhança será <span class="math display">\[L(\theta)=\frac{e^{-30\theta}\theta^{\sum_{i=1}^{30}x_i}}{\prod_{i=1}^{30}x_i!}.\]</span> Vamos simular uma amostra de tamanho 30 deste modelo (o valor de <span class="math inline">\(\theta\)</span> será omisso de propósito)</p>
+<p><span class="theorem-title"><strong>Example 2.1</strong></span> Seja <span class="math inline">\(X_i\)</span> o número de suicídios no <span class="math inline">\(i\)</span>-ésimo mês da amostra e suponha que <span class="math inline">\(X_1,\ldots,X_{36}\)</span> é uma amostra aleatória proveniente do modelo Poisson(<span class="math inline">\(\theta\)</span>). Como <span class="math inline">\(\sum_i x_i=933\)</span>, a função de verossimilhança será [L()=_{i=1}<sup>{36}e</sup>{-36}^{933}.]</p>
+<p>A próxima figura mostra os valores da função de verossimilhança para diversos valores de <span class="math inline">\(\theta\)</span> para a amostra observada.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">30</span>,theta)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] 2 4 2 5 6 0 3 5 3 3 6 3 4 3 1 5 2 0 2 6 5 4 3 8 4 4 3 3 2 1</code></pre>
-</div>
-</div>
-<p>A próxima figura mostra os valores da função de verossimilhança para vários valores de <span class="math inline">\(\theta\)</span> para a amostra observada.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># função de verossimilhança</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>vero <span class="ot">&lt;-</span> <span class="cf">function</span>(q){</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span> ( q, <span class="cf">function</span>(q) <span class="fu">prod</span>(<span class="fu">dpois</span>(x, q)) ) </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>} </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># gráfico da função de verossimilhança</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">&lt;-</span> <span class="fu">par</span>( <span class="at">cex =</span> <span class="fl">1.2</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>( <span class="fu">vero</span>(x),<span class="dv">2</span>,<span class="fl">4.5</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(theta), <span class="at">ylab =</span> <span class="fu">expression</span>( <span class="fu">L</span>(theta)) , <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># função de verossimilhança</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>vero <span class="ot">&lt;-</span> <span class="cf">function</span>(q){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span> ( q, <span class="cf">function</span>(q) <span class="fu">prod</span>(<span class="fu">dpois</span>(no_suicidios, q)) ) </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># gráfico da função de verossimilhança</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">&lt;-</span> <span class="fu">par</span>( <span class="at">cex =</span> <span class="fl">1.2</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>( <span class="fu">vero</span>(x),<span class="dv">22</span>,<span class="dv">30</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(theta), <span class="at">ylab =</span> <span class="fu">expression</span>( <span class="fu">L</span>(theta)) , <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="intro_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Podemos notar que o valores mais verossímeis para <span class="math inline">\(\theta\)</span> estão entre 2 e 4. Podemos ainda procurar o valor mais verossímil, denominado <strong>estimativa de máxima verossimilhança (emv).</strong> Pode-se mostrar, utilizando cálculo diferencial, que este valor é equivalente à média amostral. Contudo, com o objetivo de utilizar ao máximo o poder computacional que temos disponível, vamos encontrar esse valor utilizando a função <code>optimize</code>.</p>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podemos notar que o valores mais verossímeis para <span class="math inline">\(\theta\)</span> estão entre 24 e 28. Podemos ainda procurar o valor mais verossímil, denominado <strong>estimativa de máxima verossimilhança (emv).</strong> Pode-se mostrar, utilizando cálculo diferencial, que este valor é equivalente à média amostral. Contudo, com o objetivo de utilizar ao máximo o poder computacional que temos disponível, vamos encontrar esse valor utilizando a função <code>optimize</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># menos o logaritmo da função de verossimilhança</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lvero <span class="ot">&lt;-</span> <span class="cf">function</span>(q) <span class="sc">-</span><span class="fu">log</span>( <span class="fu">vero</span>(q))</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># encontrando a emv:</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">optimise</span>(lvero, <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># menos o logaritmo da função de verossimilhança</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>lvero <span class="ot">&lt;-</span> <span class="cf">function</span>(q) <span class="sc">-</span><span class="fu">log</span>( <span class="fu">vero</span>(q))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># encontrando a emv:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">optimise</span>(lvero, <span class="fu">c</span>(<span class="dv">24</span>,<span class="dv">28</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$minimum
-[1] 3.399981
+[1] 25.91666
 
 $objective
-[1] 60.35731</code></pre>
+[1] 105.4219</code></pre>
 </div>
 </div>
-<p>O valor 2,6 é a estimativa de verossimilhança (este é o valor exato da média amotral). Sob o ponto de vista frequentista, esta seria a nossa estiamtiva para o valor de <span class="math inline">\(\theta\)</span>.</p>
+<p>O valor 25,9 é a estimativa de verossimilhança. Sob o ponto de vista frequentista, esta seria a nossa estimativa para o valor de <span class="math inline">\(\theta\)</span>.</p>
 </div>
 </section>
-<section id="a-distribuição-a-priori" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="a-distribuição-a-priori"><span class="header-section-number">2.2.2</span> A distribuição a priori</h3>
+<section id="a-distribuição-a-priori" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="a-distribuição-a-priori"><span class="header-section-number">2.3.2</span> A distribuição a priori</h3>
 <p>Sob o ponto de vista bayesiano, a informação existente sobre <span class="math inline">\(\theta\)</span> antes da observação da amostra deve ser levada em consideração. Isto é feito traduzindo tal informação em termos de probabilidades.</p>
 <div id="def-" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.3 </strong></span>A distribuição de <span class="math inline">\(\theta\)</span> é denominada <strong>distribuição a priori</strong>.</p>
+<p><span class="theorem-title"><strong>Definition 2.3</strong></span> A distribuição de <span class="math inline">\(\theta\)</span> é denominada <strong>distribuição a priori</strong>.</p>
 </div>
 <div>
-<p>Os parâmetros da distribuição <strong>a priori</strong> são denominados hiper parâmetros.</p>
+<p>Os parâmetros da distribuição <strong>a priori</strong> são denominados hiperparâmetros.</p>
 </div>
-<p>As distribuições a priori : * agregam o conhecimento sobre parâmetro antes da observação da amostra (tal conhecimento pode ter sido gerado de uma amostra prévia). * podem ser muito ou pouco informativas, dependendo do grau de crença sobre os valores em particular do espaço paramétrico. Em geral isto é feito alterando a variância da distribuição:</p>
+<p>As distribuições a priori agregam o conhecimento sobre parâmetro antes da observação da amostra (tal conhecimento pode pode vir da expertize dos envolvidos ou ter sido gerado de uma amostra prévia).</p>
+<p>As prioris podem ser muito ou pouco informativas, dependendo do grau de crença sobre os valores particulares do espaço paramétrico. Em geral isto é feito alterando a variância da distribuição:</p>
 <p><span class="math display">\[\hbox{variância}=\frac{1}{\hbox{precisão}}\]</span></p>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.2</strong></span> Nosso objetivo é encontrar uma distribuição a priori para <span class="math inline">\(\theta\)</span>, que representa o número médio de suicídios mensais no Amazonas. Primeiro, vamos obter algumas informações:</p>
+<ul>
+<li><p>Em 2024 foi noticiado que, no Brasil, ocorrem em média 38 suicídios por dia, algo em torno de 1.140 suicídios em um mês.</p></li>
+<li><p>Para 2024, a população brasileira estava estimada em 212.600.000, enquanto que a população do Amazonas estava estimada em 4.281.209. Portanto, o Amazonas representa, aproximadamente 2% da população brasileira.</p></li>
+<li><p>Deste modo, pode-se inferir (a priori) que, em média, ocorrem 22,8 suicídios mensais no Amazonas.</p></li>
+</ul>
+<p>Podemos então procurar alguma distribuição a priori que reflita essa informação. Por mera conveniência, vamos escolher <span class="math inline">\(\theta\sim\hbox{Gama}(a,b)\)</span>, onde <span class="math inline">\(E(\theta)=\frac{a}{b}=22,8.\)</span></p>
+<p>Um especialista em saúde pública poderia argumentar melhor se há motivos para acreditar que essa média deveria ser maior ou não. Como não temos essa informação disponível, podemos refletir esse fato aumentando a variabilidade do modelo. O desvio padrão desta priori é</p>
+<p><span class="math display">\[\sqrt{Var(\theta)}=\frac{\sqrt{a}}{b}=\frac{E(\theta)}{\sqrt{a}}=\frac{22,8}{\sqrt{a}}.\]</span></p>
+<p>Vamos escolher esse desvio igual 5. Isto implica que <span class="math display">\[a=\left(\frac{22,8}{5}\right)^2=20,8\]</span> e <span class="math display">\[b=\frac{22,8}{20,8}=1,1.\]</span> Então, nossa informação a priori está traduzida no modelo Gama(20.8,1.1). Abaixo, apresentamos a função densidade desse modelo. Observe que esse modelo traz informações vagas sobre <span class="math inline">\(\theta\)</span>, permitindo que ele assuma valores entre 10 e 30</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x,<span class="fl">20.8</span>, <span class="fl">1.1</span>), <span class="dv">10</span>,<span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="reunindo-as-fontes-de-informação---distribuição-a-posteriori" class="level3" data-number="2.2.3">
-<h3 data-number="2.2.3" class="anchored" data-anchor-id="reunindo-as-fontes-de-informação---distribuição-a-posteriori"><span class="header-section-number">2.2.3</span> Reunindo as fontes de informação - distribuição a posteriori</h3>
+<section id="reunindo-as-fontes-de-informação---distribuição-a-posteriori" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="reunindo-as-fontes-de-informação---distribuição-a-posteriori"><span class="header-section-number">2.3.3</span> Reunindo as fontes de informação - distribuição a posteriori</h3>
 <p>Sejam <span class="math inline">\(f(\boldsymbol{\theta})\)</span> a densidade/função para <span class="math inline">\(\boldsymbol{\theta}\)</span> e <span class="math inline">\(L(\boldsymbol{\theta})\)</span> a função de verossimilhança.</p>
 <p>Como <span class="math inline">\(\boldsymbol{\theta}\)</span> é considerado aleatório, podemos analisar sua distribuição <strong>após</strong> observar a amostra <span class="math inline">\(\boldsymbol{x}\)</span>, ou seja <span class="math display">\[\boldsymbol{\theta}|\boldsymbol{x}.\]</span></p>
 <p>Esta distribuição é denominada </p>
 <p>::: {#thm-Teorema de Bayes}</p>
 <p>Seja <span class="math inline">\(\boldsymbol{x}\)</span> uma amostra observada. Considere a priori <span class="math inline">\(\theta\sim f(\theta)\)</span> e a verossimilhança <span class="math inline">\(L(\theta)\)</span>. Então a função de densidade (ou probabilidade) de <span class="math inline">\(\theta|\boldsymbol{x}\)</span> é dada por <span class="math display">\[f(\theta|\boldsymbol{x})=\frac{L(\theta)f(\theta)}{f(\boldsymbol{x})}.\]</span> O denominador é denominado distribuição preditiva, sendo igual a <span class="math display">\[f(\boldsymbol{x})=\sum_{\theta\in \Theta}L(\theta)f(\theta),\]</span> se <span class="math inline">\(\theta\)</span> é v.a. discreta ou <span class="math display">\[f(\boldsymbol{x})=\int_{\Theta}L(\theta)f(\theta)d\theta\]</span> se <span class="math inline">\(\theta\)</span> é v.a. contínua. :::</p>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.3</strong></span> Considerando os dados de suicídios do começo desse capítulo, temos as seguintes fontes de informação:</p>
+<ul>
+<li><p>Verossimilhança: <span class="math display">\[L(\theta)\propto e^{-36\theta}\theta^{933}\]</span></p></li>
+<li><p>Priori <span class="math display">\[f(\theta)\propto \theta^{19,8}e^{-1,1\theta}\]</span></p></li>
+</ul>
+<p>A distribuição a posteriori será</p>
+<p><span class="math display">\[f(\theta|x_1,\ldots,x_{36})\propto \theta^{933+19,8}e^{-(36+1,1)\theta}=\theta^{952,8}e^{-37,1\theta}.\]</span> Assim, verificamos que <span class="math inline">\(\theta|x_1,\ldots,x_{36}\sim\hbox{Gama}(953.8,37.1)\)</span>. Na figura abaixo, apresentamos no mesmo gráfico, a função de verossimilhança, priori e posteriori (fazendo as mudanças de escala necessárias). Observe que a priori é mais dispersa que a verossimilhança. Essa, por sua vez, restringe os valores de <span class="math inline">\(\theta\)</span> que eram prováveis a priori. O resutaldo é uma distribuição a posteriori próxima da função de verossimilhança.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
 </section>
-<section id="inferência-estatística" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="inferência-estatística"><span class="header-section-number">2.3</span> Inferência estatística</h2>
+<section id="inferência-estatística" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="inferência-estatística"><span class="header-section-number">2.4</span> Inferência estatística</h2>
 <p>Denominamos por estatística qualquer função da amostra. Utilizamos estatísticas para fazer as seguintes inferências:</p>
 <ul>
 <li><p><em>Estimação pontual</em>: trata-se de uma estatística com o objetivo de inferir o valor de <span class="math inline">\(\theta\)</span>. Tal estatística é denominada <strong>estimador</strong>.</p></li>
@@ -363,156 +455,49 @@ $objective
 <li><p><em>Estimação por regiões</em>: em geral procuramos por uma região <span class="math inline">\(T\)</span> da posteriori que satisfaça <span class="math inline">\(P(\theta\in T(\boldsymbol{x})|\boldsymbol{x})=\gamma\)</span>, onde <span class="math inline">\(\gamma\)</span> é denominado nível de credibilidade (não confundir com nível de confiança)</p></li>
 <li><p><em>Testes de hipóteses</em>: em geral, aceitamos <span class="math inline">\(H:\theta\in\Theta_0\)</span> se <span class="math inline">\(P(H|\boldsymbol{x})\)</span> é elevada.</p></li>
 </ul>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.4</strong></span> Para o nosso exemplo, obtivemos <span class="math inline">\(\theta|\boldsymbol{x}\sim\hbox{Gama}(953.8,37.1)\)</span>. Então, uma estimativa pontual para <span class="math inline">\(\theta\)</span> é</p>
+<p><span class="math display">\[E(\theta|\boldsymbol{x})=\frac{953,8}{37,1}=25,7\]</span> registros de suicídios mensais.</p>
+<p>Podemos obter os quantis de 2,5% e 97,5% para construir um intervalo com 95% de credibilidade:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>( <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>), <span class="fl">953.8</span>, <span class="fl">37.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 24.10301 27.36583</code></pre>
+</div>
+</div>
+<p>logo, inferimos que <span class="math inline">\(\theta\in(24.1,27.36)\)</span> com probabilidade 0,95.</p>
+<p>Por último, recorde-se que discutimos, utilizando apenas os dados nacionais, que <span class="math inline">\(\theta\)</span> deveria está próximo de 22,8. Após observa a amostra, existem evidências de que <span class="math inline">\(H:\theta&gt;22,8\)</span>? Para responder a esse questionamento, podemos calcular</p>
+<p><span class="math display">\[P(H|\boldsymbol{x})=P(\theta&gt;22.8|\boldsymbol{x})\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pgamma</span>(<span class="fl">22.8</span>, <span class="fl">953.8</span>, <span class="fl">37.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9998554</code></pre>
+</div>
+</div>
+<p>logo, com uma probabilidade maior que 99,9%, existem fortes evidências de que o número médio mensal de suicídios no Amazonas é maior do que 22,8 registros por mês.</p>
+</div>
 </section>
-<section id="elicitação-de-prioris" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="elicitação-de-prioris"><span class="header-section-number">2.4</span> Elicitação de <strong>prioris</strong></h2>
-<p>Note que o Teorema de Bayes deve unir as duas fontes de informação em uma nova fonte, sumarizada pela <strong>posteriori</strong>.</p>
-<p>Não é incomum escolhermos certas prioris que trazem pouca informação, de modo que a moda <strong>a posteriori</strong> estará concentrada ao redor do estimador de máxima verossimilhança. Contudo, se há informações disponíveis, é recomendável gastar um tempo imaginando como traduzir estas informações em probabilidades. Nestes casos, diremos que a <strong>priori</strong> será elicitada.</p>
-<p>O modo mais usual para a elicitação é encontrar os hiperparâmetros através de estatísticas da informação prévia.</p>
-<div>
-<p>Considere o problema de estimar o número médio de pessoas infectadas pelo vírus da AIDS em 2020 (os dados atuais são de 2018).</p>
-<p>O nosso parâmetro de interesse é a média <span class="math inline">\(\theta&gt;0\)</span>.</p>
-<p>Abaixo, temos a informação do número de casos registrados nos últimos 10 anos:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Ano <span class="ot">&lt;-</span> <span class="dv">2009</span><span class="sc">:</span><span class="dv">2018</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Total <span class="ot">&lt;-</span>    <span class="fu">c</span>(<span class="dv">40818</span>,<span class="dv">40409</span>, <span class="dv">42355</span>,<span class="dv">42086</span> ,<span class="dv">42934</span>,<span class="dv">41746</span>,<span class="dv">40506</span>,<span class="dv">38924</span>,<span class="dv">37999</span>,<span class="dv">37161</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">data.frame</span>(Ano,Total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: right;">Ano</th>
-<th style="text-align: right;">Total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">40818</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">40409</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">42355</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">42086</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">42934</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">41746</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">40506</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">38924</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">37999</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">37161</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Podemos considerar a informação anterior para construir nossa <strong>priori</strong>. A média deve oscilar em torno do total de cada ano. Uma técnica simples e bastante útil é elicitar uma <strong>priori</strong> que tenha a mesma média e desvio padrão da informação disponível. Temos que</p>
+<section id="exercício" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="exercício"><span class="header-section-number">2.5</span> Exercício</h2>
+<div class="alert alert-warning">
+<p>É fato que a taxa de suicídio é maior entre os homens, embora a tentativa seja maior entre as mulheres. Uma das explicações está no fato de que os homens tendem a utilizar métodos mais letais para o suicídio, como armas de fogo, enquanto as mulheres são mais propensas a utilizar métodos menos letais, como overdose de medicamentos.</p>
+<p>Dados históricos, entre 1996 e 2017, sugerem que 79% dos suicídios são cometidos por homens.</p>
+<p>Seja <span class="math inline">\(\rho\)</span> a probabilidade de que um suicídio seja cometido por alguém do sexo masculino no Estado do Amazonas. Considere a priori <span class="math inline">\(\rho\sim\hbox{Beta}(a,b)\)</span>, onde sabemos que</p>
+<p><span class="math display">\[f(\rho)\propto \rho^{a-1}(1-\rho)^{b-1},\]</span> <span class="math display">\[E(\rho)=\frac{a}{a+b},\]</span> e <span class="math display">\[Var(\rho)=\frac{E(\rho)(1-E(\rho))}{a+b+1}.\]</span></p>
 <ul>
-<li>Médias dos anos anteriores: 40.493,09</li>
-<li>Desvio padrão dos anos anteriores: 1.927,29</li>
+<li><p>Encontre valores de <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span> que reflitam a média de 0,75 mas que não restrinjam demais os valores possíveis para <span class="math inline">\(\rho\)</span></p></li>
+<li><p>No Amazonas, entre os anos 2021 e 2023, dos 933 registros de suicídios, 726 foram cometidos por homens. Considere então o modelo <span class="math inline">\(X|\rho\sim\hbox{Binomial}(933,\rho)\)</span>. Mostre que <span class="math display">\[f(\theta|x)\propto \rho^{726+a-1}(1-\rho)^{207+b-1}\]</span> e conclua que <span class="math inline">\(\rho|x\sim\hbox{Beta}(a+933,b+207)\)</span>.</p></li>
+<li><p>Estime <span class="math inline">\(\theta\)</span> e construa um intervalo de 95% de credibilidade</p></li>
+<li><p>Teste a hipótese de que, para o Amazonas, a probabilidade de um indivíduo do sexo masculino cometer suicídio é maior do que 79%.</p></li>
+<li><p>Para problemas envolvendo proporções, é comum o uso a priori <span class="math inline">\(\rho\sim\hbox{Uniforme}(0,1)\)</span>, que é equivalente à <span class="math inline">\(\rho\sim\hbox{Beta}(1,1)\)</span>. Refaça este exercício com essa priori e discuta sobre as diferenças encontradas tanto nas estimações quanto no teste de hipóteses.</p></li>
 </ul>
-<p>Como <span class="math inline">\(\theta&gt;0\)</span>, podemos pensar em utilizar <span class="math inline">\(\theta\sim\hbox{Gama}(a,b)\)</span>, onde <span class="math display">\[E(\theta)=\frac{a}{b}=40.493,09\]</span> e <span class="math display">\[\sqrt{Var(\theta)}=\sqrt{\frac{a}{b^2}}=1.927,29.\]</span></p>
-<p>Um pouco de álgebra revela que <span class="math display">\[a=441\;,\;b=0,011\]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.window</span>( <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">00025</span>), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">30000</span>,<span class="dv">50000</span>) )</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x, <span class="dv">441</span>, .<span class="dv">011</span>), <span class="at">lwd =</span> <span class="dv">2</span> , <span class="at">add =</span> T)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>( <span class="at">xlab =</span> <span class="fu">expression</span>(theta))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="fig-gammaElicitada" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="intro_files/figure-html/fig-gammaElicitada-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;2.1: Densidade a priori elicitada a partir da média e do desvio padrão de informações passadas</figcaption>
-</figure>
 </div>
-</div>
-</div>
-</div>
-<p>É importante notar que a priori depende de um fator subjetivo. No exemplo anterior, você poderia ter utilizado a moda e o desvio padrão para fazer a sua elicitação, ou mesmo alguns quartis. Ou ainda, utilizado uma Weibull ou outra distribuição contínua. Isto teria resultado em prioris diferentes.</p>
-<p>Naturalmente, isto nos conduziria a <strong>posterioris</strong> diferentes. Esta é a principal crítica ao método bayesiano: duas pesquisas com a mesma amostra podem ter resultados distintos, dependendo da priori.</p>
-<p>Para evitar resultados discrepantes, temos que garantir que não haja conflitos entre as fontes de informação. Em geral, vamos querer que a <strong>posteriori</strong> esteja mas próxima da verossimilhança que da <strong>priori</strong>.</p>
 </section>
-<section id="o-problema-da-exposição" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="o-problema-da-exposição"><span class="header-section-number">2.5</span> O problema da exposição</h2>
-<p>Uma exposição gratuita recebeu vários visitantes em um dia. Nesta exposição existe um livro de visitas, que o visitante pode optar por não assinar. Os organizadores da exposição dizem que</p>
-<ul>
-<li>Entre 60% e 80% dos visitantes assinam o livro.</li>
-<li>Em média, 100 pessoas visitam a exposição por dia.</li>
-</ul>
-<p>Em um dia foram registrados 96 visitantes no livro. O que podemos dizer sobre o número total de visitantes?</p>
-<p>*Tente fazer um palpite sobre este total.**</p>
-<p>Você provavelmente chegou em uma solução razoável, utilizando seus conhecimentos matemáticos sobre grandezas proporcionais. Entretanto, para fazer isto, você se utilizou de duas informações que não vieram da amostra! A única informação proveniente da amostra é: 96 visitantes assinaram o livro. Para dificultar um pouco mais, a amostra é de tamanho 1. Este é um exemplo típico no qual a a informação da <strong>priori</strong> é relevante para fazer inferências.</p>
-<div class="solution proof">
-<p><span class="proof-title"><em>Solution</em>. </span>Seja <span class="math inline">\(X\)</span> o número de pessoas que assinaram o livro por dia. Seja <span class="math inline">\(\tau\)</span> o número de pessoas que visitam a exposição. Seja <span class="math inline">\(\theta\)</span> a probabilidade de um visitante qualquer assinar o livro. Neste primeiro momento, assuma que <span class="math inline">\(\theta\)</span> é uma constante igual a <span class="math inline">\(0,7\)</span> (em outra aula vamos trabalhar com <span class="math inline">\(\theta\)</span> desconhecido)</p>
-<p>O espaço paramétrico de <span class="math inline">\(\tau\)</span> é <span class="math inline">\(T=\{0,1,2,\ldots\}\)</span> * O facilitador deve procurar uma distribuição que seja adequada para o espaço <span class="math inline">\(T\)</span>. * Neste exemplo, escolheu-se trabalhar com <span class="math inline">\(\tau\sim\hbox{Poisson}(a)\)</span> * Lembrando que, em média (a priori) 100 pessoas visitam a exposição por dia, temos <span class="math display">\[E[\tau]=a=100.\]</span></p>
-<p>É natural supor que <span class="math display">\[f(x|\tau)={\tau \choose x}\left(\frac{7}{10}\right)^x \left(\frac{3}{10}\right)^{\tau-x},\;\; x=0,\ldots,\tau.\]</span> Como observamos <span class="math inline">\(x=96\)</span>, a verossimilhança será</p>
-<p><span class="math display">\[\begin{align}
-     L(\tau)=\left\{ \begin{array}{ll}{\tau \choose 96}\left(\frac{7}{10}\right)^{96}\left(\frac{3}{10}\right)^{\tau-96},&amp; \;\; \tau\geq 96\\0,&amp; cc \end{array}\right.
-   \end{align}\]</span></p>
-<p>Pelo Teorema de Bayes,</p>
-<p><span class="math display">\[\begin{align}
-   f(\tau|x)&amp;=\frac{L(\tau)f(\tau)}{\sum_{t=0}^{\infty}L(t)f(t)}\\
-   &amp;=\frac{ {\tau \choose 96}\left(\frac{7}{10}\right)^{96} \left(\frac{3}{10}\right)^{\tau-96}\frac{e^{-100}{100}^\tau }{\tau!}}{\sum_{t=96}^{\infty}{t \choose 96}\left(\frac{7}{10}\right)^{96} \left(\frac{3}{10}\right)^{t-96}\frac{e^{-100} {100}^t }{t!}}\\
-   &amp;=\frac{{\tau \choose 96}\frac{30^\tau}{\tau!}}{\sum_{t=96}^{\infty}{t \choose 96}\frac{30^t}{t!}}=\frac{\frac{30^\tau}{(\tau-96)!}}{\sum_{t=96}^{\infty}\frac{30^t}{(t-96)!}}=\frac{e^{-30}30^{\tau-96}}{(\tau-96)!},
-   \end{align}\]</span></p>
-<p>para <span class="math inline">\(\tau=96,97,\ldots\)</span>. Mas, fazendo <span class="math inline">\(u=t-96\)</span>,</p>
-<p><span class="math display">\[\begin{align}
-\sum_{t=96}^{\infty}\frac{30^t}{(t-96)!}&amp;=\sum_{u=0}^\infty \frac{30^{u+96}}{u!}=30^{96}\sum_{u=0}^\infty \frac{30^{u}}{u!}\\
-&amp;=30^{96}e^{30}\sum_{u=0}^\infty \frac{e^{-30}30^{u}}{u!}=30^{96}e^{30}
-\end{align}\]</span></p>
-<p>teremos, <span class="math display">\[\begin{align}
-f(\tau|x)&amp;=\frac{e^{-30}30^{\tau-96}}{(\tau-96)!},
-\end{align}\]</span> para <span class="math inline">\(\tau=96,97,\ldots\)</span>.</p>
-<p>Portanto, <span class="math inline">\(\tau|x\)</span> tem distribuição <span class="math display">\[f(\tau|x)=\frac{e^{-30}30^{\tau-96}}{(\tau-96)!}.\]</span> e <span class="math display">\[\begin{align}
-  E(\tau|x)&amp;=\sum_{\tau=96}^{\infty}\tau\frac{e^{-30}30^{\tau-96}}{(\tau-96)!}=\sum_{u=0}^{\infty}(u+96)\frac{e^{-30}30^{u}}{u!}\\
-&amp;=\sum_{u=0}^{\infty}u\frac{e^{-30}30^{u}}{u!}+96\sum_{u=0}^{\infty}\frac{e^{-30}30^{u}}{u!}\\
-&amp;=30+96=126
-  \end{align}\]</span></p>
-<p>Uma estimativa para o número médio de pessoas que visitaram a exposição naquele dia é <span class="math display">\[E[\tau|x]=126.\]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">96</span><span class="sc">:</span><span class="dv">160</span>,<span class="fu">dpois</span>(<span class="dv">96</span><span class="sc">:</span><span class="dv">160</span> <span class="sc">-</span> <span class="dv">96</span>, <span class="dv">30</span>), <span class="at">type=</span> <span class="st">'h'</span>,<span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab=</span><span class="st">''</span>,<span class="at">ylab=</span><span class="st">''</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>( <span class="at">xlab =</span> <span class="fu">expression</span>(tau), <span class="at">ylab =</span> <span class="st">'Posteriori para tau'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="fig-poissonExposicao1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="intro_files/figure-html/fig-poissonExposicao1-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;2.2: Distribuição a posteriori para o número de pessoas participaram da exposição.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p><em>Resumo da aula 1</em></p>
+<section id="resumo-da-aula-1" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="resumo-da-aula-1"><span class="header-section-number">2.6</span> Resumo da aula 1</h2>
 <ul>
 <li><p>Existem duas fontes de informação na inferência bayesiana: os dados (verossimilhança) e a informação anterior (priori)</p></li>
-<li><p>A informação <strong>a priori</strong> é subjetiva: pessoas diferentes tem prioris diferentes</p></li>
+<li><p>A informação <strong>a priori</strong> é subjetiva: pessoas diferentes têm prioris diferentes</p></li>
 <li><p>O Teorema de Bayes combina as duas fontes em uma nova informação, dada pela distribuição </p></li>
 <li><p>Os objetivos da inferência (estimação e testes) são feitos a partir da distribuição <strong>a posteriori</strong></p></li>
 </ul>
@@ -556,18 +541,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -599,11 +573,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -613,8 +626,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -626,7 +648,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -670,6 +815,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -695,6 +841,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -756,17 +928,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./summary.html" class="pagination-link">
+      <a href="./summary.html" class="pagination-link" aria-label="summary.html">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">summary.html</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./conjugada.html" class="pagination-link">
+      <a href="./conjugada.html" class="pagination-link" aria-label="Famílias conjugadas">
         <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

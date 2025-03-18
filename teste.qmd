@@ -1,0 +1,116 @@
+# Testes de hipóteses
+
+## Testes baseados na teoria da decisão
+
+Considere que $X_1,\ldots,X_n$ é uma amostra do modelo $F(.|\theta)$. Seja $H_0:\theta\in\Theta_0$ a hipótese nula. Um teste de hipóteses é uma regra $\varphi(x)$ que recebe o valor 1 se a hipótese $H_0$ é aceita e 0 em caso contrário.
+
+Considere a função de perda 0-1:
+
+$$ \mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\;\;\hbox{se }\varphi(x)=I(\theta\in\Theta_0)\\1,\hbox{  se }\varphi(x)\neq I(\theta\in\Theta_0)\end{array}\right.$$
+
+A média a posteriori da função de perda é
+
+$$E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\int_{\Theta_0}I(\varphi(x)\neq 1)\pi(\theta|x)d\theta$$
+
+e o estimador de Bayes é o valor de $varphi$ que minimiza a esperança acima. Como $\varphi$ é uma indicadora, teremos que 
+
+
+$$E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\left\{\begin{array}{l}P(\theta\in\Theta_0|x),\hbox{ se }\varphi\neq 1\\
+P(\theta\in\Theta_0^c|x),\hbox{ se }\varphi= 1
+\end{array}\right.$$
+
+Deste modo, aceitamos $H_0$ se $P(\theta\in\Theta_0|x)>P(\theta\in\Theta_0^c|x)$ e rejeitamos em caso contrário.
+
+<div class='alert alert-info'>
+<strong>Exemplo</strong> Uma cadeia de *fast food* deseja saber se vale a pena trocar seus freezers tradicionais, que mantém a carne entre -$17^o$C e $-9^oC$ por um com uma nova tecnologia (e mais cara!) que mantém a temperatura consistentemente em $-17^oC$. Para tomar essa decisão, 32 bifes foram armazenados por 8 meses, sendo 16 bifes colocados no freezer tradicional e 16 no novo. Em seguida, um chefe preparou os 32 bifes de maneira idêntica  e 16 clientes foram escolhidos ao acaso para avaliar o sabor dos bifes. Cada cliente recebeu um bife de cada freezer, mas a prova foi realizada às cegas. 
+
+Podemos considerar a variável $Y_i=1$ se o $i$-ésimo cliente preferiu o bife armazenado no freezer mais caro e $Y_i=0$ em caso contrário. Deste modo, $Y_1,\ldots,Y_{16}|\theta\sim\hbox{Bernoulli}(\theta)$. Claramente, estamos interessados em testar $H_0:\theta>1/2$.
+
+Considere as seguintes prioris:
+
+```{r echo = FALSE}
+curve(dbeta(x,.5,.5),lwd = 2, xlab = expression(theta), ylab = expression(pi(theta)), ylim=c(0,3))
+curve(dbeta(x,1,1),lwd = 2, col ='tomato', add = T)
+curve(dbeta(x,2,2),lwd = 2, col ='lightblue3', add = T)
+legend('top',c('Jeffreys','Uniforme(0,1)','Beta(2,2)'), fill=c('black','tomato','lightblue3'), bty = 'n')
+```
+
+A priori de Jeffreys dá mais massa para valores extremos, o que poderia favorecer a hipótese $H_0$. A priori Uniforme(0,1) é aquela que parece não dar qualquer preferência. Por último, a priori Beta(2,2) pode ser vista como uma resitência à rejeitar que os dois armazenamentos são iguais.
+
+Dos 16 clientes, 13 preferiram os bifes que foram amarzenados com a tecnologia mais cara. Como as três prioris acima são casos particulares da distribuição Beta$(a,b)$, decidiremos sobre $H_0$ calculando
+
+$$P(\theta>1/2|\textbf{y})=\int_0^{1/2}\frac{\theta^{13+a-1}(1-\theta)^{3+b-1}}{B(13+a,3+b)}$$
+
+que pode ser falciemente obtida com o comando `pbeta(.5,13+a,3+b, lower.tail =F)`
+Temos os seguintes resultados:
+
+
+| Priori    | $P(H_0|\textbf{y})$ |
+|-----------|------------|
+| Jeffreys  | 0,995 |
+| Uniforme  | 0,993 |
+| Beta(2,2) | 0,990 |
+
+
+Considerando as prioris acima, a probabilidade a posteriori da hipótese nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da carne é melhor preservado no freezer com alta tecnologia
+</div>
+
+Até o momento, assumimos que a perda associada ao erro no teste de hipóteses é igual para qualquer decisão. Considere então a função de perda $a-b$, dada por
+
+$$\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
+a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.$$
+
+Utilizando a função de perda acima, temos que cada tipo de erro possui um valor de perda diferente. A média a posteriori dessa função de perda é
+
+$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta$$
+
+Se $\varphi(x)=1$, teremos
+$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta=bP(\theta\in\Theta_0^c|x)$$
+e se $varphi(x)=0$ teremos
+$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta=aP(\theta\in\Theta_0|x)$$
+logo, o estimador de Bayes para a perda $a-b$ é
+$$\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }bP(\theta\in\Theta_0^c|x)<aP(\theta\in\Theta_0|x)\\
+0,\hbox{ se }bP(\theta\in\Theta_0^c|x)\geq aP(\theta\in\Theta_0|x)\end{array}\right.$$
+ou, equivalentemente,
+$$\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }P(\theta\in\Theta_0|x)>\frac{b}{a+b}\\
+0,\hbox{ caso contrário}\end{array}\right.$$
+
+Utilizando a função de perda $a-b$, $H_0$ é rejeitada sempre que a probabilidade a posteriori é menor que $b/(a+b)$.
+
+# O Fator de Bayes
+
+Considere novamente o problema dos freezers, da seção anterior. Note que a teoria desenvolvida acima não consegue testar $H_0:\theta=1/2$, uma vez que este evento possui probabilidade nula a priori. Para contornar este problema, suponha que existem dois modelos competidores:
+
+* $M_0: y_i\sim\hbox{Bernoulli}(1/2)$
+
+* $M_1: y_i|\theta\hbox{Bernoulli}(\theta), \theta\sim\hbox{Uniforme}(0,1)$
+
+Então,
+$$f(y_1,\ldots,y_{16}|M_0)=\left(\frac{1}{2}\right)^{16}$$
+
+e
+$$f(y_1,\ldots,y_{^16}|M_1)=\int_0^1\theta^{\sum_{i=1}^{16}y_i}(1-\theta)^{16-\sum_{i=1}^{16}y_i}d\theta=B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)$$
+Colocando uma probabilidade a priori para cada modelo, teremos
+
+$$P(M_0|y_1,\ldots,y_{16})=\frac{\left(\frac{1}{2}\right)^{16}P(M_0)}{\left(\frac{1}{2}\right)^{16}P(M_0)+B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)P(M_1)}$$
+Ainda considerando o exemplo anterior, assumindo $P(M_0)=P(M_1)$ e lembrando que $\sum_i y_i=13$, tem-se $P(M_0|y_1,\ldots,y_{16})=0,12$, o que nos leva a rejeitar $H_0$.
+
+Note que esta nova abordagem leva a uma mudança na priori, uma vez que
+
+$$\pi(\theta)=P(M_0)\pi(\theta|M_0)+P(M_1)\pi(\theta|M_1)=P(M_0)I(\theta=\theta_0)+I(\theta\in (0,1))P(M_1)$$
+
+Para o caso geral, considere os modelos competidores $M_0$ e $M_1$. Sejam ainda $\pi_0(.)$ e $\pi_1(.)$ as prioris sob $H_0$ e $H_1$, repectivamente. O Fator de Bayes é definido por
+
+$$B_{01}(x)=\left.\frac{P(M_0|x)}{P(M_0)}\right/ \frac{P(M_1|x)}{P(M_1)}$$
+onde
+$$P(M_i|x)=\int f(x|\theta)\pi_i(\theta)d\theta.$$
+
+Se $B_{01}(x)=1$, então não há diferença entre os modelos. Alternativamente, quanto maior for o valor do fator de Bayes, maior é a evidência a favor de $H_0$. A escala de Jeffreys pode ser útil para tomada de decisão:
+
+
+
+Note que, se $\pi_0(\theta)=I(\theta=\theta_0)$, $\pi_1(\theta)=I(\theta=\theta_1)$ e $P(M_0)=P(M_1)$, o fator de Bayes se torna a estatística do teste de Neyman-Pearson
+
+$$B_{01}(x)=\frac{f(x|\theta_0)}{f(x|\theta_1)}$$
+
+
