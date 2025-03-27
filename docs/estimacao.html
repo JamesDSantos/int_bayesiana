@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./teste.html" rel="next">
+<link href="./bernoulli.html" rel="next">
 <link href="./conjugada.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -201,14 +201,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./teste.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+  <a href="./bernoulli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./predicao.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Predição</span></span></a>
+  <a href="./teste.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -300,10 +300,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Para uma decisão <span class="math inline">\(T\)</span> podemos calcular a perda média <span class="math display">\[R_T(\theta)=E(L(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}\]</span> A função acima é conhecida como risco da decisão <span class="math inline">\(T\)</span> e é variável em <span class="math inline">\(\theta\)</span>. Seu uso é simples: se <span class="math inline">\(R_T(\theta)&lt;R_U(\theta)\)</span>, então em média a decisão <span class="math inline">\(T\)</span> tem menor perda que <span class="math inline">\(U\)</span>. Assim, a melhor escolha entre as duas decisão é <span class="math inline">\(U\)</span>.</p>
+<p>Para uma decisão <span class="math inline">\(T\)</span> podemos calcular a perda média <span class="math display">\[R_T(\theta)=E(\mathcal{L}(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}\]</span> A função acima é conhecida como risco da decisão <span class="math inline">\(T\)</span> e é variável em <span class="math inline">\(\theta\)</span>. Seu uso é simples: se <span class="math inline">\(R_T(\theta)&lt;R_U(\theta)\)</span>, então em média a decisão <span class="math inline">\(T\)</span> tem menor perda que <span class="math inline">\(U\)</span>. Assim, a melhor escolha entre as duas decisão é <span class="math inline">\(U\)</span>.</p>
 <p>O risco associado à perda quadrática é denominado erro quadrático médio:</p>
 <p><span class="math display">\[R_T(\theta)=E(T-\theta)^2= Var(T)+(E(T|\theta)-\theta)^2\]</span> Ele possui papel importante na inferência pontual frequentista, como por exemplo, para definir o melhor estimador não viciado de variância uniformemente mínima.</p>
-<p>O risco de Bayes da decisão <span class="math inline">\(T\)</span> é o valor esperado do seu respectivo risco , <span class="math display">\[r_T=\int R(\theta)f(\theta)d\theta,\]</span> sendo portanto uma constante. Qualquer decisão com o menor risco para todo <span class="math inline">\(\theta\)</span> também tem o menor risco de Bayes. Dizemos que <span class="math inline">\(T\)</span> é o estimador de Bayes se <span class="math inline">\(r_T&lt;r_U\)</span> para qualquer decisão <span class="math inline">\(U\)</span>.</p>
+<p>O risco de Bayes da decisão <span class="math inline">\(T\)</span> é o valor esperado do seu respectivo risco , <span class="math display">\[r_T=\int R_T(\theta)f(\theta)d\theta,\]</span> sendo portanto uma constante. Qualquer decisão com o menor risco para todo <span class="math inline">\(\theta\)</span> também tem o menor risco de Bayes. Dizemos que <span class="math inline">\(T\)</span> é o estimador de Bayes se <span class="math inline">\(r_T&lt;r_U\)</span> para qualquer decisão <span class="math inline">\(U\)</span>.</p>
 <div class="alert alert-success">
 <p><strong>Teorema</strong></p>
 <p>O estimador <span class="math inline">\(T\)</span> que minimiza <span class="math display">\[\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\theta\]</span> é o estimador de Bayes.</p>
@@ -317,7 +317,11 @@ window.Quarto = {
     &amp;= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x}) \pm E(\theta|\mathbf{x})^2\\
     &amp;=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +E(\theta^2|\mathbf{x})-E(\theta|\mathbf{x})^2\\
     &amp;=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +Var(\theta|\mathbf{x})
-\end{align*}\]</span> A função acima é minimizada em <span class="math inline">\(T(\mathbf{x})=E(\theta|\mathbf{x})\)</span>. Disto, mostra-se que <span class="math display">\[r_T\geq Var(\theta|\mathbf{x})\]</span> e a variância da posteriori pode ser utilizada como medida de erro. Como a unidade deste erro está ap quadrado, é usual utilizarmos o desvio padrão da posteriori como medida de erro.</p>
+\end{align*}\]</span> A função acima é minimizada em <span class="math inline">\(T(\mathbf{x})=E(\theta|\mathbf{x})\)</span>. Disto, mostra-se que <span class="math display">\[r_T\geq Var(\theta|\mathbf{x})\]</span> e a variância da posteriori pode ser utilizada como medida de erro. Como a unidade deste erro está ao quadrado, é usual utilizarmos o desvio padrão da posteriori como medida de erro.</p>
+</div>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.1</strong></span> Seja <span class="math inline">\(X_1,\ldots,X_n\)</span> uma amostra aleatória do modelo Exponencial(<span class="math inline">\(\theta\)</span>) e considere a priori <span class="math inline">\(\theta\sim\hbox{Gama}(a,b)\)</span>. Sabemos que <span class="math inline">\(\theta|\boldsymbol{x}\sim\hbox{Gama}(s+n,r+\sum_{i=1}^n x_i)\)</span>. Então, o estimador de Bayes segundo a perda quadrática é <span class="math display">\[T(\boldsymbol{x})=E(\theta|\boldsymbol{x})=\frac{s+n}{r+\sum_{i=1}^n x_i},\]</span> e o erro associado é <span class="math display">\[\sqrt{Var(\theta|\boldsymbol{x})}=\sqrt{\frac{s+n}{(r+\sum_{i=1}^n x_i)^2}}=\sqrt{\frac{E(\theta|\boldsymbol{x})^2}{s+n}}=\frac{E(\theta|\boldsymbol{x})}{\sqrt{n+s}}.\]</span></p>
+<p>Note que, como esperado, o erro decresce na medida que <span class="math inline">\(n\)</span> cresce.</p>
 </div>
 
 
@@ -750,8 +754,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./teste.html" class="pagination-link" aria-label="Testes de hipóteses">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./bernoulli.html" class="pagination-link" aria-label="O modelo Bernoulli">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,34 +1,45 @@
 # Famílias conjugadas
 
+
+
+## Dados que serão utilizados neste capítulo
+
+
+```{r}
+require(gsheet)
+url <- 'https://docs.google.com/spreadsheets/d/1dLDCjA9a8UgXA9sJ1TNCVvRCDFITalewGkHlc__Eg20/edit?usp=sharing' 
+dt <- gsheet2tbl(url)
+head(dt)
+```
+
+
+
 ## Família de distribuições conjugadas
 
 
-<div class='alert alert-success'>
-<strong>Definição</strong>  Dizemos que a priori $f(\boldsymbol{\theta})$ é conjugada para a verossimilhança $L(\boldsymbol{\theta})$ se *priori* e *posteriori* pertencem à mesma família de distribuições.
-</div>
+::: {#def-Priori conjugada}
+Dizemos que a priori $f(\boldsymbol{\theta})$ é conjugada para a verossimilhança $L(\boldsymbol{\theta})$ se *priori* e *posteriori* pertencem à mesma família de distribuições.
+:::
 
-<div class='alert alert-info'>
-    Sejam $X_1,\ldots,X_n$ variáveis aleatórias independentes com $X|\theta\sim \hbox{Bernoulli}(\theta)$ e $\theta\sim\hbox{Beta}(a,b)$. Então
-    
+::: {#exm-}
+Sejam $X_1,\ldots,X_n$ variáveis aleatórias independentes com $X|\theta\sim \hbox{Bernoulli}(\theta)$ e $\theta\sim\hbox{Beta}(a,b)$. Então
+
 $$\begin{align}
     f(\theta|\boldsymbol{x})&\varpropto L(\theta)f(\theta) = \underbrace{\theta^{\sum_{i=1}^{n}x_i} (1-\theta)^{n-\sum_{i=1}^{n}x_i}}_{L(\theta)}\underbrace{\theta^{a-1}(1-\theta)^{b-1}}_{f(\theta)}\\
     &=\theta^{a+\sum_{i=1}^n x_i-1}(1-\theta)^{b+n-\sum_{i=1}^{n}x_i-1},
     \end{align}$$
-    
 logo $\theta|\boldsymbol{x}\sim\hbox{Beta}(a+\sum_{i=1}^{n}x_i,b+n-\sum_{i=1}^{n}x_i)$ e a *priori* beta é conjugada para a verossimilhança Bernoulli.
-</div>
+:::
 
-## Conjugada para a família exponencial
+Famílias conjugadas são extremamente úteis tanto sob o ponto de vista algébrico quanto computacional. Entretanto, note que a definição de família conjugada é ampla. Por exemplo, *priori* e *posteriori* sempre pertencem à grande família de todas as distribuições de probabilidade, sendo esta a família conjugada trivial.
 
-Famílias conjugadas são extremamente úteis tanto sob o ponto de vista algébrico quando computacional. Entretanto, note que a definição de família conjugada é ampla. Por exemplo, *priori* e *posteriori* sempre pertence à grande família de todas as distribuições de probabilidade, sendo esta a família conjugada trivial.
+Famílias conjugadas não triviais são raras, existindo principalmente quando a distribuição condicional dos dados pertence à família exponencial.
 
-Famílias conjugadas não triviais são raras, existindo principalmente quando a distribuição condicional dos dados pertence á família exponencial.
-
-::: {.alert .alert-success}
+::: {#def-Família exponencial}
 <strong>Definição</strong> Considere que $\Theta$ tem dimensão $k$. Dizemos que $X|\boldsymbol{\theta}$ pertence à família exponencial (natural) se $$f(x|\boldsymbol{\theta})=h(x)a(\boldsymbol{\theta})\exp\left\{\sum_{j=1}^k t_j(x)\theta_j\right\},$$ onde $\mathcal{X}$ não depende de $\boldsymbol{\theta}$. Além disso, para a amostra (iid )$X_1,\ldots,X_n|\boldsymbol{\theta}$, $$f(\boldsymbol{x}|\boldsymbol{\theta})=h(\boldsymbol{x})a(\boldsymbol{\theta})^n\exp\left\{\sum_{j=1}^k T_j\theta_j\right\},$$ onde $T_j=\sum_{i=1}^{n}t_j(x_i)$
 :::
 
-::: {.alert .alert-success}
+::: {#thm-}
 Se $X|\boldsymbol{\theta}$ pertence à família exponencial, então $$f(\boldsymbol{\theta})=c(\boldsymbol{r},s)a(\boldsymbol{\theta})^s\exp\left\{\sum_{j=1}^k r_j\theta_j\right\}$$ é uma *priori* conjugada (ver O'Hagan (2005) para a existência dessa distribuição). A *posteriori* será dada por $$f(\boldsymbol{\theta}|\boldsymbol{x})=c\left(\sum_{j=1}^k r_j+T_j,s+n\right)a(\boldsymbol{\theta})^{s+n}\exp\left\{\sum_{j=1}^k(r_j+T_j)\theta_j\right\}$$
 :::
 
@@ -43,55 +54,22 @@ f(\boldsymbol{\theta}|\boldsymbol{x})&\varpropto \underbrace{a(\boldsymbol{\thet
 
 Considere que $\boldsymbol{\theta}\sim C(\boldsymbol{r},s)$ é a distribuição conjugada da verossimilhança. Isto implica em $\boldsymbol{\theta}|\boldsymbol{x}\sim\hbox{C}(\boldsymbol{T}+\boldsymbol{r},s+n)$. Note que a *posteriori* atualiza a informação de $s$ para $s+n$ e de $r_j$ para $T_j+r_j$. Logo, se imaginarmos que a priori é um experimento hipotético, $s$ seria o tamanho da amostra e $\boldsymbol{r}$ seriam as estatísticas suficientes deste modelo.
 
-## Conflito entre fontes de informação
 
-Considere que uma fábrica produz lotes de certos componentes eletrônicos. O setor de qualidade faz inspeções periódicas através de amostragem de 100 peças dentro de um lote. Todas as peças são testadas e o número de falhas registrado. As últimas inspeções mostram que em torno de 3% das peças são defeituosas.
+Abaixo, segue uma lista de algumas prioris conjugadas para modelos na família exponencial.
 
-Uma nova amostra será selecionada. Sendo $X$ o número de peças defeituosas, uma verossimilhança adequada seria $$\theta^x(1-\theta)^{100-x}$$
+$$\begin{array}{c|c|c}\hline
+\text{Modelo} & \text{Priori} & \text{Posteriori} \\ \hline
+\text{Bernoulli}(\theta) & \text{Beta}(a,b) & \text{Beta}(a+\sum_i x_i, b+n-\sum_i x_i) \\ \hline
+\text{Poisson}(\lambda) & \text{Gama}(a,b) & \text{Gama}(a+\sum_i x_i, b+n) \\ \hline
+\text{Multinomial}(p_1,\ldots,p_k) & \text{Dirichlet}(a_1,\ldots,a_k) & \text{Dirichlet}(a_1+x_1,\ldots,a_k+x_k) \\
+\text{Exponencial}(\lambda) & \text{Gama}(a,b) & \text{Gama}(a+n, b+x_i) \\
+\text{Normal}(\mu,\phi^{-1})&\text{Normal-Gama}(m_0,n_0,v_0,s_0^2)&
+\text{Normal-Gama}(m_1,n_0+n,v_0+n,s_1^2)\\
+& & m_1= \frac{n}{n_1}\bar{x}+\frac{n_0}{n_1}m_0\\
+& & s_1^2=\frac{n_0n}{n_1^2}(\bar{x}-m_0)^2 + \frac{(n-1)s^2+n_0 s_0^2}{n_1} \\ \hline
+\end{array}
+$$
 
-Sabemos que o modelo Beta$(r,s)$ é conjugado para esta verossimilhança. Comparando a *priori* $$f(\theta)\varpropto \theta^{r-1}(1-\theta)^{s-1},$$ com a verossimilhança, podemos interpretar $r$ como o número de componentes defeituosos e $s$
-
-Como temos as informações de vários lotes, podemos imaginar que um lote hipotético de tamanho $s=100$ foi selecionado e $r=3$ peças defeituosas foram encontradas.
-
-Note que, com estes valores, a *priori* exclui muitos valores do espaço paramétrico, uma vez que $$\sqrt{Var(\theta)}=0,0167$$ Se a proporção amostral se manteve dentro dos 3% não há problemas com isso. Mas se ela aumentou (por causa de uma falha não detectada no processo), como essa escolha vai influenciar nossa análise?
-
-Para entender os efeitos da *priori* sobre a *posteriori*, vamos analisar dois cenários.
-
--   Cenário 1: Foram encontradas 4 componentes defeituosos
--   Cenário 2: Foram encontrados 11 componentes defeituosos
-
-```{r conflito1-plot, dev = 'png', echo = F, fig.show='hide'}
-plot.new()
-plot.window(xlim=c(0,.15), ylim = c(0,40))
-# gráfico da função de verossimilhança
-curve(dbeta(x,11,96), add =T)
-curve(dbeta(x,3,97),add = T)
-curve(dbeta(x,7,193),add = T)
-
-axis(1)
-```
-
-```{r conflito2-plot, dev = 'png', echo = F, fig.show='hide'}
-plot.new()
-plot.window(xlim=c(0,.15), ylim = c(0,40))
-# gráfico da função de verossimilhança
-curve(dbeta(x,4,96), add =T)
-curve(dbeta(x,3,97),add = T)
-curve(dbeta(x,7,193),add = T)
-
-axis(1)
-```
-
-![Figura 1. Cenário 1. Gráficos da verossimilhança, priori e posteriori. $E(\theta)$, $\hat{\theta}$ e $\tilde{\theta}$ são média da priori, EMV e a média da posteriori..](`r knitr::fig_chunk('conflito1-plot','png')`)
-
-![Figura 2. Cenário 2. Gráficos da verossimilhança, priori e posteriori. $E(\theta)$, $\hat{\theta}$ e $\tilde{\theta}$ são média da priori, EMV e a média da posteriori..](`r knitr::fig_chunk('conflito2-plot','png')`)
-
-Dizemos que há conflitos entre as fontes de informação quando a região de maior densidade da *posteriori* é pouco provável *a priori* e tem baixa verossimilhança. Isso aconteceu com o cenário 2. O motivo para isso é que os dados geraram um valor atípico e a era muito informativa (baixo desvio padrão), não tendo massa longe do suficiente de $E(\theta)$. Consideremos então a priori Beta(.3,9.7).
-
-$$\begin{align}f(\mu,\phi|\boldsymbol{x})\propto f(x|\mu,\phi)f(\mu,\phi)\\
-&\propto \phi^{\frac{n}{2}}e^{-\frac{\phi}{2}[ns^2 + n(\bar{x}-\mu)^2]}\times \phi^{\frac{1}{2}}e^{-\frac{\phi}{2C_0}(\mu-m_0)^2}\phi^{\frac{n_0}{2}-1}e^{-\frac{d_0}{2}\phi}\\
-&= \phi^{\frac{1}{2}}e^{-\frac{\phi n}{2}(\bar{x}-\mu)^2 -\frac{\phi}{2C_0}(\mu-m_0)^2}\times \phi^{\frac{n+n_0}{2}-1}e^{-\frac{\phi}{2}\left(ns^2+d_0\right)}
-\end{align}$$
 
 ## Prioris conjugadas fora da família exponencial
 
@@ -109,3 +87,4 @@ f(\phi|\psi)&=c(r,s)a(\phi)^s e^{rw(\phi)}\\
 $$f(\phi|\boldsymbol{x},\psi)\varpropto \phi^{\psi(s+n)}(1-\phi)^{r+\sum_{i=1}^{n}x_i},$$
 onde ainda $\phi|\psi,\boldsymbol{x}\sim\hbox{Beta}(\psi(s+n)+1,r+\sum_{i=1}^{n}x_i+1)$ Note que para fazer a inferência completa, ainda necessitamos de $\psi|\boldsymbol{x}$, uma vez que $$f(\phi,\psi|\boldsymbol{x})=f(\phi|\psi,\boldsymbol{x})f(\psi|\boldsymbol{x}).$$
 Outro método de obter a conjunta $(\phi,\psi|\boldsymbol{x})$, sem a necessidade de calcular $\psi|\boldsymbol{x}$ será discutido na próxima aula.
+

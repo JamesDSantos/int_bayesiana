@@ -43,14 +43,28 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -70,7 +84,7 @@
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
 \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
 \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
@@ -80,7 +94,7 @@
 \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
 \newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
 \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
 \newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
 \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
@@ -117,33 +131,41 @@
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
   % turn on hanging indent if param 1 is 1
   \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
   \fi
   % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
 \usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \KOMAoption{captions}{tableheading}
-\makeatletter
-\makeatother
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
 \makeatother
@@ -182,6 +204,8 @@
 \floatname{codelisting}{Listing}
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
 \theoremstyle{definition}
@@ -190,25 +214,21 @@
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
 \newtheorem*{solution}{Solution}
+\newtheorem{refremark}{Remark}[chapter]
+\newtheorem{refsolution}{Solution}[chapter]
+\makeatother
+\makeatletter
 \makeatother
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-\makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
-\makeatother
-\makeatletter
-\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
-\makeatother
+
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
@@ -221,13 +241,13 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
+
 \title{Introdução à Inferência Bayesiana}
 \author{James D Santos}
 \date{2023-10-03}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, breakable, interior hidden]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -235,10 +255,10 @@
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
+
 \bookmarksetup{startatroot}
 
-\hypertarget{preface}{%
-\chapter*{Preface}\label{preface}}
+\chapter*{Preface}\label{preface}
 \addcontentsline{toc}{chapter}{Preface}
 
 \markboth{Preface}{Preface}
@@ -249,13 +269,11 @@ Federal do Amazonas.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{section}{%
-\chapter{}\label{section}}
+\chapter{}\label{section}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{aula-1---introduuxe7uxe3o}{%
-\chapter{Aula 1 - Introdução}\label{aula-1---introduuxe7uxe3o}}
+\chapter{Introdução}\label{introduuxe7uxe3o}
 
 Os objetivos desta aula são:
 
@@ -272,15 +290,32 @@ Os objetivos desta aula são:
   Discutir como se dá o processo de elicitação de prioris
 \end{enumerate}
 
-\hypertarget{notauxe7uxe3o}{%
-\section{Notação}\label{notauxe7uxe3o}}
+\section{Dados que serão utilizados nesse
+capítulo}\label{dados-que-seruxe3o-utilizados-nesse-capuxedtulo}
 
-Variáveis aleatórias cujo valor podem ser observados serão denotadas por
-letras maiúsculas. Exemplos:
+A amostra abaixo se refere ao número mensal de suicídios registrados no
+Amazonas nos anos 2021, 2022 e 2023.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{no\_suicidios }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{19}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{28}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{23}\NormalTok{,}\DecValTok{23}\NormalTok{, }\DecValTok{21}\NormalTok{,}
+\DecValTok{22}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{31}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{23}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{29}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{23}\NormalTok{,}
+\DecValTok{36}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{18}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{34}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{34}\NormalTok{,}
+\DecValTok{22}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{32}\NormalTok{, }\DecValTok{36}\NormalTok{, }\DecValTok{28}\NormalTok{, }\DecValTok{22}\NormalTok{ )}
+\end{Highlighting}
+\end{Shaded}
+
+Desta amostra, inferimos que a média mensal é de 25,9 registros e que a
+variância é 21,05.
+
+\section{Notação}\label{notauxe7uxe3o}
+
+Variáveis aleatórias cujos valores podem ser observados serão denotadas
+por letras maiúsculas. Exemplos:
 
 \begin{itemize}
 \item
-  \(X\) é número de acidentes diários na Avenida Torquato Tapajós
+  \(X\) é o número de acidentes diários na Avenida Torquato Tapajós
 \item
   \(Y\) é o nível máximo diário do Rio Negro
 \end{itemize}
@@ -308,7 +343,7 @@ Vetores aleatórios serão representados por letras em negrito. Exemplos:
 
 O suporte de uma variável aleatória é o conjunto de todos os seus
 possíveis valores. Quando necessário, o suporte de variáveis aleatórias
-são representada pela versão caligráfica de sua letra correspondente.
+é representado pela versão caligráfica de sua letra correspondente.
 
 Exemplos: o suporte de \(X\) é \(\mathcal{X}\) ; o suporte de Y é
 \(\mathcal{Y}\) ; o suporte de \(Z\) é \(\mathcal{Z}\).
@@ -318,7 +353,7 @@ Exemplos: o suporte de \(X\) é \(\mathcal{X}\) ; o suporte de Y é
 \begin{definition}[]\protect\hypertarget{def-Espaco}{}\label{def-Espaco}
 
 O espaço paramétrico é o conjunto de todos os possíveis valores do
-parâmetro. Eles são representados pela versão maiúscula da letra grega
+parâmetro. Ele é representado pela versão maiúscula da letra grega
 utilizada para seu respectivo parâmetro.
 
 Exemplo: o espaço paramétrico do parâmetro \(\theta\) é representado por
@@ -333,15 +368,12 @@ por funções começando com letras minúsculas. Por exemplo,
 densidade da distribuição exponencial, enquanto que
 
 \[p(x|\lambda)=\frac{e^{-\lambda}\lambda^x}{x!}\] com \(x\in\mathbb{N}\)
-e \(\lambda >0\) é a é a função de probabilidade da distribuição
-Poisson.
+e \(\lambda >0\) é a função de probabilidade da distribuição Poisson.
 
-\hypertarget{fontes-de-informauxe7uxe3o}{%
-\section{Fontes de informação}\label{fontes-de-informauxe7uxe3o}}
+\section{Fontes de informação}\label{fontes-de-informauxe7uxe3o}
 
-\hypertarget{a-funuxe7uxe3o-de-verossimilhanuxe7a}{%
 \subsection{A função de
-verossimilhança}\label{a-funuxe7uxe3o-de-verossimilhanuxe7a}}
+verossimilhança}\label{a-funuxe7uxe3o-de-verossimilhanuxe7a}
 
 Seja \(\mathbf{x} = \{x_1 , \ldots , x_n \}\) uma amostra observada.
 Supomos que \(\mathbf{x}\) é uma das possíveis amostras das variáveis
@@ -364,47 +396,29 @@ frequentista).
 
 \begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
 
-Considere uma amostra de 30 variáveis aleatórias independentes com
-distribuição Poisson(\(\theta\)). Neste caso, a função de
+Seja \(X_i\) o número de suicídios no \(i\)-ésimo mês da amostra e
+suponha que \(X_1,\ldots,X_{36}\) é uma amostra aleatória proveniente do
+modelo Poisson(\(\theta\)). Como \(\sum_i x_i=933\), a função de
 verossimilhança será
-\[L(\theta)=\frac{e^{-30\theta}\theta^{\sum_{i=1}^{30}x_i}}{\prod_{i=1}^{30}x_i!}.\]
-Vamos simular uma amostra de tamanho 30 deste modelo (o valor de
-\(\theta\) será omisso de propósito)
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rpois}\NormalTok{(}\DecValTok{30}\NormalTok{,theta)}
-\NormalTok{x}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
- [1] 2 4 2 5 6 0 3 5 3 3 6 3 4 3 1 5 2 0 2 6 5 4 3 8 4 4 3 3 2 1
-\end{verbatim}
+\[L(\theta)=\prod_{i=1}^{36}\frac{e^{-\theta}\theta^{x_i}}{x_i!}\propto e^{-36\theta}\theta^{933}.\]
 
 A próxima figura mostra os valores da função de verossimilhança para
-vários valores de \(\theta\) para a amostra observada.
+diversos valores de \(\theta\) para a amostra observada.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# função de verossimilhança}
 \NormalTok{vero }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(q)\{}
-  \FunctionTok{sapply}\NormalTok{ ( q, }\ControlFlowTok{function}\NormalTok{(q) }\FunctionTok{prod}\NormalTok{(}\FunctionTok{dpois}\NormalTok{(x, q)) ) }
+  \FunctionTok{sapply}\NormalTok{ ( q, }\ControlFlowTok{function}\NormalTok{(q) }\FunctionTok{prod}\NormalTok{(}\FunctionTok{dpois}\NormalTok{(no\_suicidios, q)) ) }
 \NormalTok{\} }
 
 \CommentTok{\# gráfico da função de verossimilhança}
 \NormalTok{oo }\OtherTok{\textless{}{-}} \FunctionTok{par}\NormalTok{( }\AttributeTok{cex =} \FloatTok{1.2}\NormalTok{)}
-\FunctionTok{curve}\NormalTok{( }\FunctionTok{vero}\NormalTok{(x),}\DecValTok{2}\NormalTok{,}\FloatTok{4.5}\NormalTok{, }\AttributeTok{xlab =} \FunctionTok{expression}\NormalTok{(theta), }\AttributeTok{ylab =} \FunctionTok{expression}\NormalTok{( }\FunctionTok{L}\NormalTok{(theta)) , }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{curve}\NormalTok{( }\FunctionTok{vero}\NormalTok{(x),}\DecValTok{22}\NormalTok{,}\DecValTok{30}\NormalTok{, }\AttributeTok{xlab =} \FunctionTok{expression}\NormalTok{(theta), }\AttributeTok{ylab =} \FunctionTok{expression}\NormalTok{( }\FunctionTok{L}\NormalTok{(theta)) , }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{intro_files/figure-pdf/unnamed-chunk-3-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{intro_files/figure-pdf/unnamed-chunk-2-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -413,7 +427,7 @@ vários valores de \(\theta\) para a amostra observada.
 \end{Shaded}
 
 Podemos notar que o valores mais verossímeis para \(\theta\) estão entre
-2 e 4. Podemos ainda procurar o valor mais verossímil, denominado
+24 e 28. Podemos ainda procurar o valor mais verossímil, denominado
 \textbf{estimativa de máxima verossimilhança (emv).} Pode-se mostrar,
 utilizando cálculo diferencial, que este valor é equivalente à média
 amostral. Contudo, com o objetivo de utilizar ao máximo o poder
@@ -426,27 +440,25 @@ utilizando a função \texttt{optimize}.
 \NormalTok{lvero }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(q) }\SpecialCharTok{{-}}\FunctionTok{log}\NormalTok{( }\FunctionTok{vero}\NormalTok{(q))}
 
 \CommentTok{\# encontrando a emv:}
-\FunctionTok{optimise}\NormalTok{(lvero, }\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{))}
+\FunctionTok{optimise}\NormalTok{(lvero, }\FunctionTok{c}\NormalTok{(}\DecValTok{24}\NormalTok{,}\DecValTok{28}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 $minimum
-[1] 3.399981
+[1] 25.91666
 
 $objective
-[1] 60.35731
+[1] 105.4219
 \end{verbatim}
 
-O valor 2,6 é a estimativa de verossimilhança (este é o valor exato da
-média amotral). Sob o ponto de vista frequentista, esta seria a nossa
-estiamtiva para o valor de \(\theta\).
+O valor 25,9 é a estimativa de verossimilhança. Sob o ponto de vista
+frequentista, esta seria a nossa estimativa para o valor de \(\theta\).
 
 \end{example}
 
-\hypertarget{a-distribuiuxe7uxe3o-a-priori}{%
 \subsection{A distribuição a
-priori}\label{a-distribuiuxe7uxe3o-a-priori}}
+priori}\label{a-distribuiuxe7uxe3o-a-priori}
 
 Sob o ponto de vista bayesiano, a informação existente sobre \(\theta\)
 antes da observação da amostra deve ser levada em consideração. Isto é
@@ -459,20 +471,69 @@ priori}.
 
 \end{definition}
 
-Os parâmetros da distribuição \textbf{a priori} são denominados hiper
-parâmetros.
+Os parâmetros da distribuição \textbf{a priori} são denominados
+hiperparâmetros.
 
-As distribuições a priori : * agregam o conhecimento sobre parâmetro
-antes da observação da amostra (tal conhecimento pode ter sido gerado de
-uma amostra prévia). * podem ser muito ou pouco informativas, dependendo
-do grau de crença sobre os valores em particular do espaço paramétrico.
-Em geral isto é feito alterando a variância da distribuição:
+As distribuições a priori agregam o conhecimento sobre parâmetro antes
+da observação da amostra (tal conhecimento pode pode vir da expertize
+dos envolvidos ou ter sido gerado de uma amostra prévia).
+
+As prioris podem ser muito ou pouco informativas, dependendo do grau de
+crença sobre os valores particulares do espaço paramétrico. Em geral
+isto é feito alterando a variância da distribuição:
 
 \[\hbox{variância}=\frac{1}{\hbox{precisão}}\]
 
-\hypertarget{reunindo-as-fontes-de-informauxe7uxe3o---distribuiuxe7uxe3o-a-posteriori}{%
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+Nosso objetivo é encontrar uma distribuição a priori para \(\theta\),
+que representa o número médio de suicídios mensais no Amazonas.
+Primeiro, vamos obter algumas informações:
+
+\begin{itemize}
+\item
+  Em 2024 foi noticiado que, no Brasil, ocorrem em média 38 suicídios
+  por dia, algo em torno de 1.140 suicídios em um mês.
+\item
+  Para 2024, a população brasileira estava estimada em 212.600.000,
+  enquanto que a população do Amazonas estava estimada em 4.281.209.
+  Portanto, o Amazonas representa, aproximadamente 2\% da população
+  brasileira.
+\item
+  Deste modo, pode-se inferir (a priori) que, em média, ocorrem 22,8
+  suicídios mensais no Amazonas.
+\end{itemize}
+
+Podemos então procurar alguma distribuição a priori que reflita essa
+informação. Por mera conveniência, vamos escolher
+\(\theta\sim\hbox{Gama}(a,b)\), onde \(E(\theta)=\frac{a}{b}=22,8.\)
+
+Um especialista em saúde pública poderia argumentar melhor se há motivos
+para acreditar que essa média deveria ser maior ou não. Como não temos
+essa informação disponível, podemos refletir esse fato aumentando a
+variabilidade do modelo. O desvio padrão desta priori é
+
+\[\sqrt{Var(\theta)}=\frac{\sqrt{a}}{b}=\frac{E(\theta)}{\sqrt{a}}=\frac{22,8}{\sqrt{a}}.\]
+
+Vamos escolher esse desvio igual 5. Isto implica que
+\[a=\left(\frac{22,8}{5}\right)^2=20,8\] e \[b=\frac{22,8}{20,8}=1,1.\]
+Então, nossa informação a priori está traduzida no modelo
+Gama(20.8,1.1). Abaixo, apresentamos a função densidade desse modelo.
+Observe que esse modelo traz informações vagas sobre \(\theta\),
+permitindo que ele assuma valores entre 10 e 30
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dgamma}\NormalTok{(x,}\FloatTok{20.8}\NormalTok{, }\FloatTok{1.1}\NormalTok{), }\DecValTok{10}\NormalTok{,}\DecValTok{35}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{intro_files/figure-pdf/unnamed-chunk-4-1.pdf}
+
+\end{example}
+
 \subsection{Reunindo as fontes de informação - distribuição a
-posteriori}\label{reunindo-as-fontes-de-informauxe7uxe3o---distribuiuxe7uxe3o-a-posteriori}}
+posteriori}\label{reunindo-as-fontes-de-informauxe7uxe3o---distribuiuxe7uxe3o-a-posteriori}
 
 Sejam \(f(\boldsymbol{\theta})\) a densidade/função \textit{a priori}
 para \(\boldsymbol{\theta}\) e \(L(\boldsymbol{\theta})\) a função de
@@ -497,8 +558,35 @@ O denominador é denominado distribuição preditiva, sendo igual a
 \[f(\boldsymbol{x})=\int_{\Theta}L(\theta)f(\theta)d\theta\] se
 \(\theta\) é v.a. contínua. :::
 
-\hypertarget{inferuxeancia-estatuxedstica}{%
-\section{Inferência estatística}\label{inferuxeancia-estatuxedstica}}
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+Considerando os dados de suicídios do começo desse capítulo, temos as
+seguintes fontes de informação:
+
+\begin{itemize}
+\item
+  Verossimilhança: \[L(\theta)\propto e^{-36\theta}\theta^{933}\]
+\item
+  Priori \[f(\theta)\propto \theta^{19,8}e^{-1,1\theta}\]
+\end{itemize}
+
+A distribuição a posteriori será
+
+\[f(\theta|x_1,\ldots,x_{36})\propto \theta^{933+19,8}e^{-(36+1,1)\theta}=\theta^{952,8}e^{-37,1\theta}.\]
+Assim, verificamos que
+\(\theta|x_1,\ldots,x_{36}\sim\hbox{Gama}(953.8,37.1)\). Na figura
+abaixo, apresentamos no mesmo gráfico, a função de verossimilhança,
+priori e posteriori (fazendo as mudanças de escala necessárias). Observe
+que a priori é mais dispersa que a verossimilhança. Essa, por sua vez,
+restringe os valores de \(\theta\) que eram prováveis a priori. O
+resutaldo é uma distribuição a posteriori próxima da função de
+verossimilhança.
+
+\includegraphics{intro_files/figure-pdf/unnamed-chunk-5-1.pdf}
+
+\end{example}
+
+\section{Inferência estatística}\label{inferuxeancia-estatuxedstica}
 
 Denominamos por estatística qualquer função da amostra. Utilizamos
 estatísticas para fazer as seguintes inferências:
@@ -540,222 +628,102 @@ Assim, toda função desta distribuição é uma estatística. Assim:
   \(H:\theta\in\Theta_0\) se \(P(H|\boldsymbol{x})\) é elevada.
 \end{itemize}
 
-\hypertarget{elicitauxe7uxe3o-de-prioris}{%
-\section{\texorpdfstring{Elicitação de
-\textbf{prioris}}{Elicitação de prioris}}\label{elicitauxe7uxe3o-de-prioris}}
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
 
-Note que o Teorema de Bayes deve unir as duas fontes de informação em
-uma nova fonte, sumarizada pela \textbf{posteriori}.
+Para o nosso exemplo, obtivemos
+\(\theta|\boldsymbol{x}\sim\hbox{Gama}(953.8,37.1)\). Então, uma
+estimativa pontual para \(\theta\) é
 
-Não é incomum escolhermos certas prioris que trazem pouca informação, de
-modo que a moda \textbf{a posteriori} estará concentrada ao redor do
-estimador de máxima verossimilhança. Contudo, se há informações
-disponíveis, é recomendável gastar um tempo imaginando como traduzir
-estas informações em probabilidades. Nestes casos, diremos que a
-\textbf{priori} será elicitada.
+\[E(\theta|\boldsymbol{x})=\frac{953,8}{37,1}=25,7\] registros de
+suicídios mensais.
 
-O modo mais usual para a elicitação é encontrar os hiperparâmetros
-através de estatísticas da informação prévia.
-
-Considere o problema de estimar o número médio de pessoas infectadas
-pelo vírus da AIDS em 2020 (os dados atuais são de 2018).
-
-O nosso parâmetro de interesse é a média \(\theta>0\).
-
-Abaixo, temos a informação do número de casos registrados nos últimos 10
-anos:
+Podemos obter os quantis de 2,5\% e 97,5\% para construir um intervalo
+com 95\% de credibilidade:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(knitr)}
-\NormalTok{Ano }\OtherTok{\textless{}{-}} \DecValTok{2009}\SpecialCharTok{:}\DecValTok{2018}
-\NormalTok{Total }\OtherTok{\textless{}{-}}    \FunctionTok{c}\NormalTok{(}\DecValTok{40818}\NormalTok{,}\DecValTok{40409}\NormalTok{, }\DecValTok{42355}\NormalTok{,}\DecValTok{42086}\NormalTok{ ,}\DecValTok{42934}\NormalTok{,}\DecValTok{41746}\NormalTok{,}\DecValTok{40506}\NormalTok{,}\DecValTok{38924}\NormalTok{,}\DecValTok{37999}\NormalTok{,}\DecValTok{37161}\NormalTok{)}
-\FunctionTok{kable}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(Ano,Total))}
+\FunctionTok{qgamma}\NormalTok{( }\FunctionTok{c}\NormalTok{(.}\DecValTok{025}\NormalTok{,.}\DecValTok{975}\NormalTok{), }\FloatTok{953.8}\NormalTok{, }\FloatTok{37.1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}rr@{}}
-\toprule\noalign{}
-Ano & Total \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-2009 & 40818 \\
-2010 & 40409 \\
-2011 & 42355 \\
-2012 & 42086 \\
-2013 & 42934 \\
-2014 & 41746 \\
-2015 & 40506 \\
-2016 & 38924 \\
-2017 & 37999 \\
-2018 & 37161 \\
-\end{longtable}
+\begin{verbatim}
+[1] 24.10301 27.36583
+\end{verbatim}
 
-Podemos considerar a informação anterior para construir nossa
-\textbf{priori}. A média deve oscilar em torno do total de cada ano. Uma
-técnica simples e bastante útil é elicitar uma \textbf{priori} que tenha
-a mesma média e desvio padrão da informação disponível. Temos que
+logo, inferimos que \(\theta\in(24.1,27.36)\) com probabilidade 0,95.
+
+Por último, recorde-se que discutimos, utilizando apenas os dados
+nacionais, que \(\theta\) deveria está próximo de 22,8. Após observa a
+amostra, existem evidências de que \(H:\theta>22,8\)? Para responder a
+esse questionamento, podemos calcular
+
+\[P(H|\boldsymbol{x})=P(\theta>22.8|\boldsymbol{x})\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{pgamma}\NormalTok{(}\FloatTok{22.8}\NormalTok{, }\FloatTok{953.8}\NormalTok{, }\FloatTok{37.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.9998554
+\end{verbatim}
+
+logo, com uma probabilidade maior que 99,9\%, existem fortes evidências
+de que o número médio mensal de suicídios no Amazonas é maior do que
+22,8 registros por mês.
+
+\end{example}
+
+\section{Exercício}\label{exercuxedcio}
+
+É fato que a taxa de suicídio é maior entre os homens, embora a
+tentativa seja maior entre as mulheres. Uma das explicações está no fato
+de que os homens tendem a utilizar métodos mais letais para o suicídio,
+como armas de fogo, enquanto as mulheres são mais propensas a utilizar
+métodos menos letais, como overdose de medicamentos.
+
+Dados históricos, entre 1996 e 2017, sugerem que 79\% dos suicídios são
+cometidos por homens.
+
+Seja \(\rho\) a probabilidade de que um suicídio seja cometido por
+alguém do sexo masculino no Estado do Amazonas. Considere a priori
+\(\rho\sim\hbox{Beta}(a,b)\), onde sabemos que
+
+\[f(\rho)\propto \rho^{a-1}(1-\rho)^{b-1},\] \[E(\rho)=\frac{a}{a+b},\]
+e \[Var(\rho)=\frac{E(\rho)(1-E(\rho))}{a+b+1}.\]
 
 \begin{itemize}
-\tightlist
 \item
-  Médias dos anos anteriores: 40.493,09
+  Encontre valores de \(a\) e \(b\) que reflitam a média de 0,79 mas que
+  não restrinjam demais os valores possíveis para \(\rho\)
 \item
-  Desvio padrão dos anos anteriores: 1.927,29
+  No Amazonas, entre os anos 2021 e 2023, dos 933 registros de
+  suicídios, 726 foram cometidos por homens. Considere então o modelo
+  \(X|\rho\sim\hbox{Binomial}(933,\rho)\). Mostre que
+  \[f(\theta|x)\propto \rho^{726+a-1}(1-\rho)^{207+b-1}\] e conclua que
+  \(\rho|x\sim\hbox{Beta}(a+933,b+207)\).
+\item
+  Estime \(\theta\) e construa um intervalo de 95\% de credibilidade
+\item
+  Teste a hipótese de que, para o Amazonas, a probabilidade de um
+  indivíduo do sexo masculino cometer suicídio é maior do que 79\%.
+\item
+  Para problemas envolvendo proporções, é comum o uso a priori
+  \(\rho\sim\hbox{Uniforme}(0,1)\), que é equivalente à
+  \(\rho\sim\hbox{Beta}(1,1)\). Refaça este exercício com essa priori e
+  discuta sobre as diferenças encontradas tanto nas estimações quanto no
+  teste de hipóteses.
 \end{itemize}
 
-Como \(\theta>0\), podemos pensar em utilizar
-\(\theta\sim\hbox{Gama}(a,b)\), onde \[E(\theta)=\frac{a}{b}=40.493,09\]
-e \[\sqrt{Var(\theta)}=\sqrt{\frac{a}{b^2}}=1.927,29.\]
-
-Um pouco de álgebra revela que \[a=441\;,\;b=0,011\]
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{plot.new}\NormalTok{()}
-\FunctionTok{plot.window}\NormalTok{( }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{00025}\NormalTok{), }\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{30000}\NormalTok{,}\DecValTok{50000}\NormalTok{) )}
-\FunctionTok{curve}\NormalTok{(}\FunctionTok{dgamma}\NormalTok{(x, }\DecValTok{441}\NormalTok{, .}\DecValTok{011}\NormalTok{), }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{ , }\AttributeTok{add =}\NormalTok{ T)}
-\FunctionTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{)}
-\FunctionTok{title}\NormalTok{( }\AttributeTok{xlab =} \FunctionTok{expression}\NormalTok{(theta))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}[H]
-
-{\centering \includegraphics{intro_files/figure-pdf/fig-gammaElicitada-1.pdf}
-
-}
-
-\caption{\label{fig-gammaElicitada}Densidade a priori elicitada a partir
-da média e do desvio padrão de informações passadas}
-
-\end{figure}
-
-É importante notar que a priori depende de um fator subjetivo. No
-exemplo anterior, você poderia ter utilizado a moda e o desvio padrão
-para fazer a sua elicitação, ou mesmo alguns quartis. Ou ainda,
-utilizado uma Weibull ou outra distribuição contínua. Isto teria
-resultado em prioris diferentes.
-
-Naturalmente, isto nos conduziria a \textbf{posterioris} diferentes.
-Esta é a principal crítica ao método bayesiano: duas pesquisas com a
-mesma amostra podem ter resultados distintos, dependendo da priori.
-
-Para evitar resultados discrepantes, temos que garantir que não haja
-conflitos entre as fontes de informação. Em geral, vamos querer que a
-\textbf{posteriori} esteja mas próxima da verossimilhança que da
-\textbf{priori}.
-
-\hypertarget{o-problema-da-exposiuxe7uxe3o}{%
-\section{O problema da exposição}\label{o-problema-da-exposiuxe7uxe3o}}
-
-Uma exposição gratuita recebeu vários visitantes em um dia. Nesta
-exposição existe um livro de visitas, que o visitante pode optar por não
-assinar. Os organizadores da exposição dizem que
-
-\begin{itemize}
-\tightlist
-\item
-  Entre 60\% e 80\% dos visitantes assinam o livro.
-\item
-  Em média, 100 pessoas visitam a exposição por dia.
-\end{itemize}
-
-Em um dia foram registrados 96 visitantes no livro. O que podemos dizer
-sobre o número total de visitantes?
-
-*Tente fazer um palpite sobre este total.**
-
-Você provavelmente chegou em uma solução razoável, utilizando seus
-conhecimentos matemáticos sobre grandezas proporcionais. Entretanto,
-para fazer isto, você se utilizou de duas informações que não vieram da
-amostra! A única informação proveniente da amostra é: 96 visitantes
-assinaram o livro. Para dificultar um pouco mais, a amostra é de tamanho
-1. Este é um exemplo típico no qual a a informação da \textbf{priori} é
-relevante para fazer inferências.
-
-\begin{solution}
-
-Seja \(X\) o número de pessoas que assinaram o livro por dia. Seja
-\(\tau\) o número de pessoas que visitam a exposição. Seja \(\theta\) a
-probabilidade de um visitante qualquer assinar o livro. Neste primeiro
-momento, assuma que \(\theta\) é uma constante igual a \(0,7\) (em outra
-aula vamos trabalhar com \(\theta\) desconhecido)
-
-O espaço paramétrico de \(\tau\) é \(T=\{0,1,2,\ldots\}\) * O
-facilitador deve procurar uma distribuição que seja adequada para o
-espaço \(T\). * Neste exemplo, escolheu-se trabalhar com
-\(\tau\sim\hbox{Poisson}(a)\) * Lembrando que, em média (a priori) 100
-pessoas visitam a exposição por dia, temos \[E[\tau]=a=100.\]
-
-É natural supor que
-\[f(x|\tau)={\tau \choose x}\left(\frac{7}{10}\right)^x \left(\frac{3}{10}\right)^{\tau-x},\;\; x=0,\ldots,\tau.\]
-Como observamos \(x=96\), a verossimilhança será
-
-\[\begin{align}
-     L(\tau)=\left\{ \begin{array}{ll}{\tau \choose 96}\left(\frac{7}{10}\right)^{96}\left(\frac{3}{10}\right)^{\tau-96},& \;\; \tau\geq 96\\0,& cc \end{array}\right.
-   \end{align}\]
-
-Pelo Teorema de Bayes,
-
-\[\begin{align}
-   f(\tau|x)&=\frac{L(\tau)f(\tau)}{\sum_{t=0}^{\infty}L(t)f(t)}\\
-   &=\frac{ {\tau \choose 96}\left(\frac{7}{10}\right)^{96} \left(\frac{3}{10}\right)^{\tau-96}\frac{e^{-100}{100}^\tau }{\tau!}}{\sum_{t=96}^{\infty}{t \choose 96}\left(\frac{7}{10}\right)^{96} \left(\frac{3}{10}\right)^{t-96}\frac{e^{-100} {100}^t }{t!}}\\
-   &=\frac{{\tau \choose 96}\frac{30^\tau}{\tau!}}{\sum_{t=96}^{\infty}{t \choose 96}\frac{30^t}{t!}}=\frac{\frac{30^\tau}{(\tau-96)!}}{\sum_{t=96}^{\infty}\frac{30^t}{(t-96)!}}=\frac{e^{-30}30^{\tau-96}}{(\tau-96)!},
-   \end{align}\]
-
-para \(\tau=96,97,\ldots\). Mas, fazendo \(u=t-96\),
-
-\[\begin{align}
-\sum_{t=96}^{\infty}\frac{30^t}{(t-96)!}&=\sum_{u=0}^\infty \frac{30^{u+96}}{u!}=30^{96}\sum_{u=0}^\infty \frac{30^{u}}{u!}\\
-&=30^{96}e^{30}\sum_{u=0}^\infty \frac{e^{-30}30^{u}}{u!}=30^{96}e^{30}
-\end{align}\]
-
-teremos, \[\begin{align}
-f(\tau|x)&=\frac{e^{-30}30^{\tau-96}}{(\tau-96)!},
-\end{align}\] para \(\tau=96,97,\ldots\).
-
-Portanto, \(\tau|x\) tem distribuição
-\[f(\tau|x)=\frac{e^{-30}30^{\tau-96}}{(\tau-96)!}.\] e \[\begin{align}
-  E(\tau|x)&=\sum_{\tau=96}^{\infty}\tau\frac{e^{-30}30^{\tau-96}}{(\tau-96)!}=\sum_{u=0}^{\infty}(u+96)\frac{e^{-30}30^{u}}{u!}\\
-&=\sum_{u=0}^{\infty}u\frac{e^{-30}30^{u}}{u!}+96\sum_{u=0}^{\infty}\frac{e^{-30}30^{u}}{u!}\\
-&=30+96=126
-  \end{align}\]
-
-Uma estimativa para o número médio de pessoas que visitaram a exposição
-naquele dia é \[E[\tau|x]=126.\]
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{plot}\NormalTok{(}\DecValTok{96}\SpecialCharTok{:}\DecValTok{160}\NormalTok{,}\FunctionTok{dpois}\NormalTok{(}\DecValTok{96}\SpecialCharTok{:}\DecValTok{160} \SpecialCharTok{{-}} \DecValTok{96}\NormalTok{, }\DecValTok{30}\NormalTok{), }\AttributeTok{type=} \StringTok{\textquotesingle{}h\textquotesingle{}}\NormalTok{,}\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{xlab=}\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{,}\AttributeTok{ylab=}\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{)}
-
-\FunctionTok{title}\NormalTok{( }\AttributeTok{xlab =} \FunctionTok{expression}\NormalTok{(tau), }\AttributeTok{ylab =} \StringTok{\textquotesingle{}Posteriori para tau\textquotesingle{}}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}[H]
-
-{\centering \includegraphics{intro_files/figure-pdf/fig-poissonExposicao1-1.pdf}
-
-}
-
-\caption{\label{fig-poissonExposicao1}Distribuição a posteriori para o
-número de pessoas participaram da exposição.}
-
-\end{figure}
-
-\end{solution}
-
-\emph{Resumo da aula 1}
+\section{Resumo da aula 1}\label{resumo-da-aula-1}
 
 \begin{itemize}
 \item
   Existem duas fontes de informação na inferência bayesiana: os dados
   (verossimilhança) e a informação anterior (priori)
 \item
-  A informação \textbf{a priori} é subjetiva: pessoas diferentes tem
+  A informação \textbf{a priori} é subjetiva: pessoas diferentes têm
   prioris diferentes
 \item
   O Teorema de Bayes combina as duas fontes em uma nova informação, dada
@@ -767,57 +735,96 @@ número de pessoas participaram da exposição.}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{famuxedlias-conjugadas}{%
-\chapter{Famílias conjugadas}\label{famuxedlias-conjugadas}}
+\chapter{Famílias conjugadas}\label{famuxedlias-conjugadas}
 
-\hypertarget{famuxedlia-de-distribuiuxe7uxf5es-conjugadas}{%
-\section{Família de distribuições
-conjugadas}\label{famuxedlia-de-distribuiuxe7uxf5es-conjugadas}}
+\section{Dados que serão utilizados neste
+capítulo}\label{dados-que-seruxe3o-utilizados-neste-capuxedtulo}
 
-Definição Dizemos que a priori \(f(\boldsymbol{\theta})\) é conjugada
-para a verossimilhança \(L(\boldsymbol{\theta})\) se \emph{priori} e
-\emph{posteriori} pertencem à mesma família de distribuições.
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(gsheet)}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{verbatim}
-Sejam $X_1,\ldots,X_n$ variáveis aleatórias independentes com $X|\theta\sim \hbox{Bernoulli}(\theta)$ e $\theta\sim\hbox{Beta}(a,b)$. Então
+Carregando pacotes exigidos: gsheet
 \end{verbatim}
+
+\begin{verbatim}
+Warning: pacote 'gsheet' foi compilado no R versão 4.4.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{url }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}https://docs.google.com/spreadsheets/d/1dLDCjA9a8UgXA9sJ1TNCVvRCDFITalewGkHlc\_\_Eg20/edit?usp=sharing\textquotesingle{}} 
+\NormalTok{dt }\OtherTok{\textless{}{-}} \FunctionTok{gsheet2tbl}\NormalTok{(url)}
+\FunctionTok{head}\NormalTok{(dt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 5
+  REGIAO              TIPO     SEXO  PERIODO   TOTAL
+  <chr>               <chr>    <chr> <chr>     <dbl>
+1 Região Norte        AGRESSAO Masc  2001-2003  7628
+2 Região Nordeste     AGRESSAO Masc  2001-2003 29652
+3 Região Sudeste      AGRESSAO Masc  2001-2003 63411
+4 Região Sul          AGRESSAO Masc  2001-2003 12428
+5 Região Centro-Oeste AGRESSAO Masc  2001-2003  9319
+6 Região Norte        AGRESSAO Fem   2001-2003   677
+\end{verbatim}
+
+\section{Família de distribuições
+conjugadas}\label{famuxedlia-de-distribuiuxe7uxf5es-conjugadas}
+
+::: \{\#def-Priori conjugada\} Dizemos que a priori
+\(f(\boldsymbol{\theta})\) é conjugada para a verossimilhança
+\(L(\boldsymbol{\theta})\) se \emph{priori} e \emph{posteriori}
+pertencem à mesma família de distribuições. :::
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+Sejam \(X_1,\ldots,X_n\) variáveis aleatórias independentes com
+\(X|\theta\sim \hbox{Bernoulli}(\theta)\) e
+\(\theta\sim\hbox{Beta}(a,b)\). Então
 
 \[\begin{align}
     f(\theta|\boldsymbol{x})&\varpropto L(\theta)f(\theta) = \underbrace{\theta^{\sum_{i=1}^{n}x_i} (1-\theta)^{n-\sum_{i=1}^{n}x_i}}_{L(\theta)}\underbrace{\theta^{a-1}(1-\theta)^{b-1}}_{f(\theta)}\\
     &=\theta^{a+\sum_{i=1}^n x_i-1}(1-\theta)^{b+n-\sum_{i=1}^{n}x_i-1},
-    \end{align}\]
-
-logo
+    \end{align}\] logo
 \(\theta|\boldsymbol{x}\sim\hbox{Beta}(a+\sum_{i=1}^{n}x_i,b+n-\sum_{i=1}^{n}x_i)\)
 e a \emph{priori} beta é conjugada para a verossimilhança Bernoulli.
 
-\hypertarget{conjugada-para-a-famuxedlia-exponencial}{%
-\section{Conjugada para a família
-exponencial}\label{conjugada-para-a-famuxedlia-exponencial}}
+\end{example}
 
 Famílias conjugadas são extremamente úteis tanto sob o ponto de vista
-algébrico quando computacional. Entretanto, note que a definição de
+algébrico quanto computacional. Entretanto, note que a definição de
 família conjugada é ampla. Por exemplo, \emph{priori} e
-\emph{posteriori} sempre pertence à grande família de todas as
+\emph{posteriori} sempre pertencem à grande família de todas as
 distribuições de probabilidade, sendo esta a família conjugada trivial.
 
 Famílias conjugadas não triviais são raras, existindo principalmente
-quando a distribuição condicional dos dados pertence á família
+quando a distribuição condicional dos dados pertence à família
 exponencial.
 
-Definição Considere que \(\Theta\) tem dimensão \(k\). Dizemos que
-\(X|\boldsymbol{\theta}\) pertence à família exponencial (natural) se
+::: \{\#def-Família exponencial\} Definição Considere que \(\Theta\) tem
+dimensão \(k\). Dizemos que \(X|\boldsymbol{\theta}\) pertence à família
+exponencial (natural) se
 \[f(x|\boldsymbol{\theta})=h(x)a(\boldsymbol{\theta})\exp\left\{\sum_{j=1}^k t_j(x)\theta_j\right\},\]
 onde \(\mathcal{X}\) não depende de \(\boldsymbol{\theta}\). Além disso,
 para a amostra (iid )\(X_1,\ldots,X_n|\boldsymbol{\theta}\),
 \[f(\boldsymbol{x}|\boldsymbol{\theta})=h(\boldsymbol{x})a(\boldsymbol{\theta})^n\exp\left\{\sum_{j=1}^k T_j\theta_j\right\},\]
-onde \(T_j=\sum_{i=1}^{n}t_j(x_i)\)
+onde \(T_j=\sum_{i=1}^{n}t_j(x_i)\) :::
+
+\begin{theorem}[]\protect\hypertarget{thm-}{}\label{thm-}
 
 Se \(X|\boldsymbol{\theta}\) pertence à família exponencial, então
 \[f(\boldsymbol{\theta})=c(\boldsymbol{r},s)a(\boldsymbol{\theta})^s\exp\left\{\sum_{j=1}^k r_j\theta_j\right\}\]
 é uma \emph{priori} conjugada (ver O'Hagan (2005) para a existência
 dessa distribuição). A \emph{posteriori} será dada por
 \[f(\boldsymbol{\theta}|\boldsymbol{x})=c\left(\sum_{j=1}^k r_j+T_j,s+n\right)a(\boldsymbol{\theta})^{s+n}\exp\left\{\sum_{j=1}^k(r_j+T_j)\theta_j\right\}\]
+
+\end{theorem}
 
 Prova
 
@@ -834,86 +841,24 @@ e de \(r_j\) para \(T_j+r_j\). Logo, se imaginarmos que a priori é um
 experimento hipotético, \(s\) seria o tamanho da amostra e
 \(\boldsymbol{r}\) seriam as estatísticas suficientes deste modelo.
 
-\hypertarget{conflito-entre-fontes-de-informauxe7uxe3o}{%
-\section{Conflito entre fontes de
-informação}\label{conflito-entre-fontes-de-informauxe7uxe3o}}
+Abaixo, segue uma lista de algumas prioris conjugadas para modelos na
+família exponencial.
 
-Considere que uma fábrica produz lotes de certos componentes
-eletrônicos. O setor de qualidade faz inspeções periódicas através de
-amostragem de 100 peças dentro de um lote. Todas as peças são testadas e
-o número de falhas registrado. As últimas inspeções mostram que em torno
-de 3\% das peças são defeituosas.
+\[\begin{array}{c|c|c}\hline
+\text{Modelo} & \text{Priori} & \text{Posteriori} \\ \hline
+\text{Bernoulli}(\theta) & \text{Beta}(a,b) & \text{Beta}(a+\sum_i x_i, b+n-\sum_i x_i) \\ \hline
+\text{Poisson}(\lambda) & \text{Gama}(a,b) & \text{Gama}(a+\sum_i x_i, b+n) \\ \hline
+\text{Multinomial}(p_1,\ldots,p_k) & \text{Dirichlet}(a_1,\ldots,a_k) & \text{Dirichlet}(a_1+x_1,\ldots,a_k+x_k) \\
+\text{Exponencial}(\lambda) & \text{Gama}(a,b) & \text{Gama}(a+n, b+x_i) \\
+\text{Normal}(\mu,\phi^{-1})&\text{Normal-Gama}(m_0,n_0,v_0,s_0^2)&
+\text{Normal-Gama}(m_1,n_0+n,v_0+n,s_1^2)\\
+& & m_1= \frac{n}{n_1}\bar{x}+\frac{n_0}{n_1}m_0\\
+& & s_1^2=\frac{n_0n}{n_1^2}(\bar{x}-m_0)^2 + \frac{(n-1)s^2+n_0 s_0^2}{n_1} \\ \hline
+\end{array}
+\]
 
-Uma nova amostra será selecionada. Sendo \(X\) o número de peças
-defeituosas, uma verossimilhança adequada seria
-\[\theta^x(1-\theta)^{100-x}\]
-
-Sabemos que o modelo Beta\((r,s)\) é conjugado para esta
-verossimilhança. Comparando a \emph{priori}
-\[f(\theta)\varpropto \theta^{r-1}(1-\theta)^{s-1},\] com a
-verossimilhança, podemos interpretar \(r\) como o número de componentes
-defeituosos e \(s\)
-
-Como temos as informações de vários lotes, podemos imaginar que um lote
-hipotético de tamanho \(s=100\) foi selecionado e \(r=3\) peças
-defeituosas foram encontradas.
-
-Note que, com estes valores, a \emph{priori} exclui muitos valores do
-espaço paramétrico, uma vez que \[\sqrt{Var(\theta)}=0,0167\] Se a
-proporção amostral se manteve dentro dos 3\% não há problemas com isso.
-Mas se ela aumentou (por causa de uma falha não detectada no processo),
-como essa escolha vai influenciar nossa análise?
-
-Para entender os efeitos da \emph{priori} sobre a \emph{posteriori},
-vamos analisar dois cenários.
-
-\begin{itemize}
-\tightlist
-\item
-  Cenário 1: Foram encontradas 4 componentes defeituosos
-\item
-  Cenário 2: Foram encontrados 11 componentes defeituosos
-\end{itemize}
-
-\begin{figure}
-
-{\centering \includegraphics{conjugada_files/figure-pdf/conflito1-plot-1.png}
-
-}
-
-\caption{Figura 1. Cenário 1. Gráficos da verossimilhança, priori e
-posteriori. \(E(\theta)\), \(\hat{\theta}\) e \(\tilde{\theta}\) são
-média da priori, EMV e a média da posteriori..}
-
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{conjugada_files/figure-pdf/conflito2-plot-1.png}
-
-}
-
-\caption{Figura 2. Cenário 2. Gráficos da verossimilhança, priori e
-posteriori. \(E(\theta)\), \(\hat{\theta}\) e \(\tilde{\theta}\) são
-média da priori, EMV e a média da posteriori..}
-
-\end{figure}
-
-Dizemos que há conflitos entre as fontes de informação quando a região
-de maior densidade da \emph{posteriori} é pouco provável \emph{a priori}
-e tem baixa verossimilhança. Isso aconteceu com o cenário 2. O motivo
-para isso é que os dados geraram um valor atípico e a era muito
-informativa (baixo desvio padrão), não tendo massa longe do suficiente
-de \(E(\theta)\). Consideremos então a priori Beta(.3,9.7).
-
-\[\begin{align}f(\mu,\phi|\boldsymbol{x})\propto f(x|\mu,\phi)f(\mu,\phi)\\
-&\propto \phi^{\frac{n}{2}}e^{-\frac{\phi}{2}[ns^2 + n(\bar{x}-\mu)^2]}\times \phi^{\frac{1}{2}}e^{-\frac{\phi}{2C_0}(\mu-m_0)^2}\phi^{\frac{n_0}{2}-1}e^{-\frac{d_0}{2}\phi}\\
-&= \phi^{\frac{1}{2}}e^{-\frac{\phi n}{2}(\bar{x}-\mu)^2 -\frac{\phi}{2C_0}(\mu-m_0)^2}\times \phi^{\frac{n+n_0}{2}-1}e^{-\frac{\phi}{2}\left(ns^2+d_0\right)}
-\end{align}\]
-
-\hypertarget{prioris-conjugadas-fora-da-famuxedlia-exponencial}{%
 \section{Prioris conjugadas fora da família
-exponencial}\label{prioris-conjugadas-fora-da-famuxedlia-exponencial}}
+exponencial}\label{prioris-conjugadas-fora-da-famuxedlia-exponencial}
 
 Famílias conjugadas fora da família exponencial são raras. Seja
 \(X_1,\ldots,X_n\) variáveis aleatória independentes com
@@ -942,8 +887,7 @@ próxima aula.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{o-estimador-de-bayes}{%
-\chapter{O estimador de bayes}\label{o-estimador-de-bayes}}
+\chapter{O estimador de bayes}\label{o-estimador-de-bayes}
 
 Considere o problema de tomar alguma decisão sobre \(\theta\) utilizando
 uma estatística \(T(\mathbf{x})\).
@@ -978,16 +922,10 @@ abaixo:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{estimacao_files/figure-pdf/unnamed-chunk-1-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{estimacao_files/figure-pdf/unnamed-chunk-1-1.pdf}
 
 Para uma decisão \(T\) podemos calcular a perda média
-\[R_T(\theta)=E(L(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}\]
+\[R_T(\theta)=E(\mathcal{L}(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}\]
 A função acima é conhecida como risco da decisão \(T\) e é variável em
 \(\theta\). Seu uso é simples: se \(R_T(\theta)<R_U(\theta)\), então em
 média a decisão \(T\) tem menor perda que \(U\). Assim, a melhor escolha
@@ -1001,7 +939,7 @@ para definir o melhor estimador não viciado de variância uniformemente
 mínima.
 
 O risco de Bayes da decisão \(T\) é o valor esperado do seu respectivo
-risco \textit{a priori}, \[r_T=\int R(\theta)f(\theta)d\theta,\] sendo
+risco \textit{a priori}, \[r_T=\int R_T(\theta)f(\theta)d\theta,\] sendo
 portanto uma constante. Qualquer decisão com o menor risco para todo
 \(\theta\) também tem o menor risco de Bayes. Dizemos que \(T\) é o
 estimador de Bayes se \(r_T<r_U\) para qualquer decisão \(U\).
@@ -1025,18 +963,483 @@ Vamos encontrar o estimador de Bayes para a perda quadrática. Temos que
 \end{align*}\] A função acima é minimizada em
 \(T(\mathbf{x})=E(\theta|\mathbf{x})\). Disto, mostra-se que
 \[r_T\geq Var(\theta|\mathbf{x})\] e a variância da posteriori pode ser
-utilizada como medida de erro. Como a unidade deste erro está ap
+utilizada como medida de erro. Como a unidade deste erro está ao
 quadrado, é usual utilizarmos o desvio padrão da posteriori como medida
 de erro.
 
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+Seja \(X_1,\ldots,X_n\) uma amostra aleatória do modelo
+Exponencial(\(\theta\)) e considere a priori
+\(\theta\sim\hbox{Gama}(a,b)\). Sabemos que
+\(\theta|\boldsymbol{x}\sim\hbox{Gama}(s+n,r+\sum_{i=1}^n x_i)\). Então,
+o estimador de Bayes segundo a perda quadrática é
+\[T(\boldsymbol{x})=E(\theta|\boldsymbol{x})=\frac{s+n}{r+\sum_{i=1}^n x_i},\]
+e o erro associado é
+\[\sqrt{Var(\theta|\boldsymbol{x})}=\sqrt{\frac{s+n}{(r+\sum_{i=1}^n x_i)^2}}=\sqrt{\frac{E(\theta|\boldsymbol{x})^2}{s+n}}=\frac{E(\theta|\boldsymbol{x})}{\sqrt{n+s}}.\]
+
+Note que, como esperado, o erro decresce na medida que \(n\) cresce.
+
+\end{example}
+
 \bookmarksetup{startatroot}
 
-\hypertarget{o-modelo-normal}{%
-\chapter{O modelo normal}\label{o-modelo-normal}}
+\chapter{O modelo Bernoulli}\label{o-modelo-bernoulli}
 
-\hypertarget{a-distribuiuxe7uxe3o-normal-gama}{%
+\section{O modelo univariado}\label{o-modelo-univariado}
+
+A distribuição \(F\) é dita pertencer à família Bernoulli, com parâmetro
+\(\theta\in(0,1)\) se sua função de probabilidade é dada por
+\[f(x|\theta)=\theta^x(1-\theta)^{1-x},\] com \(x\in\{0,1\}\). É
+imediato que \(\theta\) representa a probabilidade de \(\{X=1\}\), sendo
+este evento conhecido como `sucesso' em alguns textos (em contrapartida,
+\(\{X=0\}\) é conhecido como `fracasso').
+
+Esta distribuição faz a importante conexão entre variáveis categóricas e
+aleatórias, tendo papel fundamental na inferência não paramétrica. Por
+exemplo, seja \(S\) o sexo de um indivíduo selecionado ao acaso. Tal
+variável é categórica, podendo assumir os resultados \(A=\)\{feminino\}
+ou \(A^c\). Contudo, pode-se definir a variável \(X=I(A)\), onde
+\(I(.)\) é a função indicadora, definida por
+\[I(A)=\left\{\begin{array}{ll} 1,&\hbox{ se $A$ ocorre,} \\ 0,&\hbox{ se $A^c$ ocorre.}\end{array}\right.
+\] Deste modo \(X\sim\hbox{Bernoulli}(\theta)\).
+
+Como discutido anteriormente, o modelo Bernoulli(\(\theta\)) pertence à
+família exponencial e sua distribuição conjugada é a Beta\((a,b)\). A
+distribuição a posteriori é dada por
+
+\[f(\theta|\boldsymbol{x})\propto \theta^{a+\sum_{i=1}^n x_i-1}(1-\theta)^{n-\sum_{i=1}^n x_i+b-1},\]
+ou seja,
+\(\theta|\boldsymbol{x}\sim\hbox{Beta}(a+\sum_{i=1}^n x_i,n-\sum_{i=1}^n x_i + b).\)
+Observe que \(a\) pode ser interpretado como o número de sucessos a
+priori e \(b\) o número de fracassos. É comum utilizarmos a priori
+Beta\((1,1)\), que é equivalente à Uniforme(0,1), como priori pouco
+informativa.
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{As duas clínicas}
+
+Em 1846, Ignaz Philipp Semmelweis se tornou assistente na Primeira
+Clínica de Obstetrícia do Hospital Geral de Viena, Áustria (algo como o
+residente chefe). Nestas clínicas, o infanticídio era oferecido de
+graça. Em troca, o parto serveria de treinamento para os médicos e
+parteiras.
+
+Naquela época, a febre puerperal era comum e muitas vezes fatal, sendo
+que a mortalidade variava entre 10\% a 35\%.
+
+Haviam duas maternidades no Hospital Geral de Viena, conhecidas como a
+Primeira e a Segunda. A Primeira era considerada um local de morte e era
+evitada quando possível. Abaixo temos os dados registrados pelo
+Dr.~Semmelweis
+
+\[\begin{array}{c|cc|cc}\hline \hbox{} & \hbox{Primeira} & \hbox{Clínica} & \hbox{Segunda} & \hbox{Clínica}\\ \hline
+\hbox{Ano} & \hbox{Partos} & \hbox{Mortes} &\hbox{Partos} & \hbox{Mortes} \\ \hline 
+1841 & 3036 & 237 & 2442 & 86 \\
+1842 & 3287 & 518 & 2659 & 202 \\
+1843 & 3060 & 274 & 2739 & 164 \\
+1844 & 3157 & 260 & 2956 & 68 \\
+1845 & 3492 & 241 & 3241 & 66 \\
+1846 & 4010 & 459 & 3754 & 105 \\ \hline
+\hbox{Total} & 20.042 & 1.989 & 17.791 & 691 \\ \hline
+\end{array}\]
+
+Pode-se considerar que cada parto gera duas possibilidades de eventos: a
+sobrivência ou a morte da mãe. Considere que, dentro da mesma clínica,
+esses eventos para cada mãe são indepentes e possuem a mesma
+probabilidade. Seja \(\alpha\) a probabilidade de morte na Primeira
+Clínica e \(\beta\) a mesma probabilidade para a Segunda Clínica. Então,
+as funções de verossimilhança para cada probabilidade são
+
+\[\begin{align}L(\alpha)&\propto \alpha^{1989} (1-\alpha)^{18053}\\L(\beta)&\propto \beta^{691} (1-\beta)^{17100}\end{align}\]
+Utilizando distribuição Uniforme(0,1) como priori para \(\alpha\) e
+\(\beta\), teremos que
+
+\[\begin{align}\alpha|\boldsymbol{x}&\sim \hbox{Beta}(1990,18054) \\\beta|\boldsymbol{x}&\sim \hbox{Beta}(692,17101)\end{align}\]
+
+Abaixo, mostramos as duas posterioris, de onde podemos concluir que a
+probabilidade de morte na Primeira Clínica é certamente maior que na
+Segunda.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{1990}\NormalTok{,}\DecValTok{18054}\NormalTok{),}\FloatTok{0.03}\NormalTok{,.}\DecValTok{11}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{,}\AttributeTok{ylab=}\StringTok{\textquotesingle{}Densidades a posteriori\textquotesingle{}}\NormalTok{,}\AttributeTok{xlab=}\StringTok{\textquotesingle{}Probabilidade de morte\textquotesingle{}}\NormalTok{,}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{300}\NormalTok{))}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{692}\NormalTok{,}\DecValTok{17101}\NormalTok{), }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{add =}\NormalTok{ T)}
+\FunctionTok{text}\NormalTok{(}\FunctionTok{c}\NormalTok{(.}\DecValTok{04}\NormalTok{,.}\DecValTok{1}\NormalTok{),}\FunctionTok{c}\NormalTok{(}\DecValTok{290}\NormalTok{,}\DecValTok{210}\NormalTok{),}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Segunda Clínica\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Primeira Clínica\textquotesingle{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-1-1.pdf}
+
+O Dr.~Semmelweis ainda não tinha descoberto o motivo dessas mortes até a
+morte de seu amigo Jakob Kolletschka, que se cortou acidentalmente com
+um bisturi durante uma autópsia. Durante a autópsia de Jakob, o
+Dr.~Semmelweis viu semelhanças com as autópsias as mulheres que haviam
+morrido por febre puerperal.
+
+Na Primeira Clínica estudavam os alunos de medicina, que realizavam
+autópsias. Na Segunda Clínia estudavam as parteiras, que não realizam
+autópsias. A sua hipótese foi: estudantes de medicina carregavam
+partículas cadavéricas que causavam a febre puerperal. Com essa
+hipótese, ele instituiu que todos os médicos deveriam lavar as mãos
+antes dos partos em maio de 1847. Abaixo, seguem os dados de Junho de
+1848 até Março 1849, apenas para a Primeira Clínica
+
+\[\begin{array}{c|cc} \hline \hbox{Período} & \hbox{Partos} & \hbox{Mortes}\\ \hline
+\hbox{Jun/1847-Dez/1847} & 1841 & 56 \\ 
+\hbox{Jan/1848-Dez/1848} & 3556 & 45 \\ 
+\hbox{Jan/1849-Mar/1849} & 1198 & 41 \\ \hline
+\hbox{Total} & 6.595 & 142 \\ \hline
+\end{array}\]
+
+Seja \(\gamma\) a probabilidade de morte por febre puerperal na Primeira
+Clínica após a instrução de lavagem das mãos. Sua função de
+verossimilhança é
+
+\[L(\gamma)\propto \gamma^{142}(1-\gamma)^{6453}.\] Assumindo a priori
+Uniforme(0,1) para \(\gamma,\) teremos que
+\(\gamma|\boldsymbol{x}\sim\hbox{Beta}(143,6454)\). Abaixo, apresentamos
+o gráfico das três densidades a posteriori obtidas, mostrando que
+\(\gamma\) é certamente menor que as outras probabilidades.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{1990}\NormalTok{,}\DecValTok{18054}\NormalTok{),}\DecValTok{0}\NormalTok{,.}\DecValTok{11}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{,}\AttributeTok{ylab=}\StringTok{\textquotesingle{}Densidades a posteriori\textquotesingle{}}\NormalTok{,}\AttributeTok{xlab=}\StringTok{\textquotesingle{}Probabilidade de morte\textquotesingle{}}\NormalTok{,}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{300}\NormalTok{))}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{692}\NormalTok{,}\DecValTok{17101}\NormalTok{), }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{add =}\NormalTok{ T)}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{143}\NormalTok{,}\DecValTok{6454}\NormalTok{), }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{add =}\NormalTok{ T)}
+
+\FunctionTok{text}\NormalTok{(}\FunctionTok{c}\NormalTok{(.}\DecValTok{01}\NormalTok{,.}\DecValTok{04}\NormalTok{,.}\DecValTok{1}\NormalTok{),}\FunctionTok{c}\NormalTok{(}\DecValTok{250}\NormalTok{,}\DecValTok{290}\NormalTok{,}\DecValTok{212}\NormalTok{),}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Primeira Clínica }\SpecialCharTok{\textbackslash{}n}\StringTok{(1847{-}1849)\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Segunda Clínica\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Primeira Clínica}\SpecialCharTok{\textbackslash{}n}\StringTok{(1841{-}1846)\textquotesingle{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-2-1.pdf}
+
+Após a publicação de seus achados, as ideia do Dr.~Semmelweis ideias
+foram amplamente rejeitadas por seus colegas médicos, que se sentiram
+ofendidos com a sugestão de que poderiam estar causando a morte de seus
+pacientes. A rejeição e o ridículo que Semmelweis enfrentou levaram a um
+declínio em sua saúde mental. Ele foi internado no hospício em 1865,
+onde morreu pouco tempo depois. Morreu em 13 de agosto de 1865, em um
+hospício em Viena, aos 47 anos. A causa exata de sua morte ainda é
+debatida, mas a teoria mais aceita é que ele morreu de septicemia, uma
+infecção sanguínea, após ser espancado pelos guardas do hospício.
+
+\end{example}
+
+\section{O modelo multivariado}\label{o-modelo-multivariado}
+
+A distribuição Bernoulli pode ser generalizada para o caso multivariado:
+considere um evento aleatório com possibilidades \(A_1,\ldots,A_k\).
+Seja \(X_j=I(A_j)\) e seja \(\theta_j\) a probabilidade do evento
+resultar em \(A_j\). Então, o vetor \(\boldsymbol{X}=(X_1,\ldots,X_k)\)
+tem distribuição Bernoulli multivariada, cuja função de probabilidade é
+dada por
+\[f(\boldsymbol{x}|\boldsymbol{\theta})=\prod_{j=1}^k\theta_j^{x_{j}},\]
+onde \(x_j\in\{0,1\}\), \(\sum_{j=1}^kx_j=1\), \(\theta_j\in(0,1)\) e
+\(\sum_{j=1}^k\theta_j=1\). É importante notar que vetor
+\(\boldsymbol{\theta}\) tem apenas \(k-1\) parâmetros de fato, uma vez
+que \(\theta_k=1-\sum_{j=1}^{k-1}\theta_j\). Conjuntos do tipo
+\[\mathcal{S}^k=\left\{(\theta_1,\ldots,\theta_{k-1}):0<\theta_j<1,0<\sum_{j=1}^{k-1}\theta_j<1\right\}\]
+são denominados simplex.
+
+Seja \(\boldsymbol{x}_1,\ldots,\boldsymbol{x}_n\) uma amostra de vetores
+Bernoulli Multivariada(\(\theta_1,\ldots,\theta_k\)), onde
+\(\boldsymbol{x}_i=\{x_{i,1},\ldots,x_{i,k}\}\). Então,
+
+\[\begin{align}L(\boldsymbol{\theta})&=\prod_{i=1}^nf(\boldsymbol{x}_i|\boldsymbol{\theta})=\prod_{i=1}^n\left(\prod_{j=1}^k \theta_j^{x_{i,j}}\right)=\prod_{j=1}^k \prod_{i=1}^n\theta_j^{x_{i,j}}\\&=\prod_{j=1}^k \theta_j^{\sum_{i=1}^nx_{i,j}}=\prod_{j=1}^n\theta_j^{n_j}\end{align}\]
+onde \(n_j\) é o número de vezes que ocorreu a categoria \(A_j\). É
+imediado que
+
+\[L(\boldsymbol{\theta})=\exp\left\{\sum_{j=1}^k n_j\log(\theta_j)\right\},\]
+o que implica que este modelo pertence à família exponencial. Seu modelo
+conjugado é a Dirichlet(\(a_1,\ldots,a_k\)), cuja função densidade é
+\[f(\theta_1,\ldots,\theta_k)=\frac{\Gamma\left(\sum_{j=1}^k a_j\right)}{\prod_{j=1}^k \Gamma(a_j)}\prod_{j=1}^k \theta^{a_j-1},\]
+onde \((\theta_1,\ldots,\theta_{k-1})\) pertence ao simplex
+\(\mathcal{S}^k\).
+
+A Dirichlet\((a_1,\ldots,a_k)\) possui as seguintes propriedades:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\theta_j\sim\hbox{Beta}(a_j,\sum_{i\neq j}a_i)\)
+\item
+  \((\theta_1,\ldots,\theta_i+\theta_j,\ldots,\theta_k)\sim\hbox{Diriculet}(a_1,\ldots,a_i+a_j,\ldots,a_k)\)
+\end{itemize}
+
+Da primeira propriedade, concluímos que
+\[E(\theta_j)=\frac{a_j}{\sum_{i=1}^k a_i},\;\;Var(\theta_j)=\frac{E(\theta_j)(1-E(\theta_j))}{\sum_{i=1}^k a_i+1}.\]
+
+Utilizando o modelo conjugado, a distribuição a posteriori de
+\(\theta_1,\ldots,\theta_k\) é
+
+\[f(\boldsymbol{\theta}|\boldsymbol{x})\propto \prod_{i=j}^k \theta_j^{n_j+a_j-1}\]
+ou seja,
+\(\boldsymbol{\theta}|\boldsymbol{x}\sim\hbox{Dirichlet}(n_1+a_1,\ldots,n_k+a_k)\).
+Novamente, pode-se utilizar \(a_1=\cdots=a_k=1\) para obter uma priori
+pouco informativa.
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{Imagem corporal}
+
+O projeto Estado nutricional e sua relação com a imagem corporal em
+escolares do município de Manaus foi submetido ao LabEst em 2013. Nele,
+estudantes identificavam como gostaria que fosse o seu corpo segundo a
+Escala de Stunkard, apresentada na imagem abaixo. Em seguida, uma série
+de medidas foram realizadas para determinar a real classificação do
+estudante. Com base nessas informações, cada estudante foi classificado
+segundo sua satisfação com o próprio corpo do seguinte modo:
+
+\begin{itemize}
+\item
+  Satisfeito: seu desejo é equivalente ao seu estado atual.
+\item
+  Insatisfeito por excesso: o estudante gostaria ter medidas menores.
+\item
+  Insatisfeito por magreza: o estudante gostaria ter medidas maiores.
+\end{itemize}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{percepcao-da-imagem-corporal-do-estudante-01.jpg}
+
+}
+
+\caption{Escala de Stunkard}
+
+\end{figure}%
+
+Neste exemplo, vamos analisar o recorte dos resultados para alunos entre
+16 e 17 anos, diferenciando entre os sexos. As frequências estão
+sumarizadas na tabela abaixo.
+
+\[\begin{array}{c|ccc|c}\hline
+&\hbox{Satisfeito} & \hbox{Insatifeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
+\hbox{Masculino} & 24 & 10 & 24 & 58 \\
+\hbox{Feminino} & 14 & 22 & 24 & 60 \\ \hline
+\end{array}
+\] Cada estudante pode assumir uma das três classificações. Sejam
+\(\alpha_S,\alpha_E,\alpha_M\) as probabilidades de alguém do sexo
+masculino estar classificado como Satisfeito, Insatisfeito por Excesso
+ou Insatisfeito por magreza, respectivamente. Então a função de
+verossimilhança para \(\boldsymbol{\alpha}\) é
+
+\[L(\boldsymbol{\alpha})=\alpha_S^{24}\alpha_E^{10}\alpha_M^{24}.\]
+Analogamente, fazendo \(\boldsymbol{\beta}=(\beta_S,\beta_E,\beta_M)\),
+as mesmas probabilidades para o sexo feminino, teremos que
+
+\[L(\boldsymbol{\alpha})=\beta_S^{14}\beta_E^{22}\\beta_M^{24}.\]
+
+Utilizando a priori Dirichelt(1,1,1) tanto para \(\boldsymbol{\alpha}\)
+quanto para \(\boldsymbol{\beta}\), teremos que as respectivas
+posterioris para \(\boldsymbol{\alpha}\) e \(\boldsymbol{\beta}\) são
+Dirichelt(25,11,25) e Dirichlet(15,23,25).
+
+As posterioris para \(\alpha_M\) e \(\beta_M\) são Beta(25,36)e
+Beta(25,38). As estimativas pontuais são 0,40 e 0,39, respectivamente. A
+imagem abaixo mostra a insatisfação por magreza entre os sexos deve ser
+a mesma.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{25}\NormalTok{,}\DecValTok{36}\NormalTok{), }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{xlab =} \StringTok{\textquotesingle{}Probabilidade de insatisfação por magreza\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab=} \StringTok{\textquotesingle{}Densidades marginais a posteriori\textquotesingle{}}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{8}\NormalTok{),}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(.}\DecValTok{1}\NormalTok{,.}\DecValTok{8}\NormalTok{),}\AttributeTok{col=}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{)}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{25}\NormalTok{,}\DecValTok{38}\NormalTok{),}\AttributeTok{add =}\NormalTok{ T, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{col=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(}\FunctionTok{c}\NormalTok{(.}\DecValTok{6}\NormalTok{,.}\DecValTok{2}\NormalTok{),}\FunctionTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{6}\NormalTok{), }\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Masculino\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Feminino\textquotesingle{}}\NormalTok{),}\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-3-1.pdf}
+
+As posterioris para \(\alpha_E\) e \(\beta_E\) são Beta(11,50)e
+Beta(23,40). As estimativas pontuais são 0,21 e 0,36, respectivamente. A
+imagem abaixo mostra que as mulheres em geral parecem possuir maior
+probabilidade de insatisfação por excesso.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{11}\NormalTok{,}\DecValTok{50}\NormalTok{), }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{xlab =} \StringTok{\textquotesingle{}Probabilidade de insatisfação por excesso\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab=} \StringTok{\textquotesingle{}Densidades marginais a posteriori\textquotesingle{}}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{10}\NormalTok{),}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{6}\NormalTok{))}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{23}\NormalTok{,}\DecValTok{40}\NormalTok{),}\AttributeTok{add =}\NormalTok{ T, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(}\FunctionTok{c}\NormalTok{(.}\DecValTok{2}\NormalTok{,.}\DecValTok{4}\NormalTok{),}\FunctionTok{c}\NormalTok{(}\DecValTok{9}\NormalTok{,}\DecValTok{7}\NormalTok{), }\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Masculino\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Feminino\textquotesingle{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-4-1.pdf}
+
+Podemos então construir a hipótese \(H:\alpha_E<\beta_E\) e, para
+testá-la, devemos ser capazes de calcular
+
+\[P(\alpha_E<\beta_E|\hbox{dados})\] Vamos discutir como realizar testes
+de hipóteses na próxima aula.
+
+\end{example}
+
+\bookmarksetup{startatroot}
+
+\chapter{Testes de hipóteses}\label{testes-de-hipuxf3teses}
+
+\section{Testes baseados na teoria da
+decisão}\label{testes-baseados-na-teoria-da-decisuxe3o}
+
+Considere que \(X_1,\ldots,X_n\) é uma amostra do modelo
+\(F(.|\theta)\). Seja \(H_0:\theta\in\Theta_0\) a hipótese nula. Um
+teste de hipóteses é uma regra \(\varphi(x)\) que recebe o valor 1 se a
+hipótese \(H_0\) é aceita e 0 em caso contrário.
+
+Considere a função de perda 0-1:
+
+\[ \mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\;\;\hbox{se }\varphi(x)=I(\theta\in\Theta_0)\\1,\hbox{  se }\varphi(x)\neq I(\theta\in\Theta_0)\end{array}\right.\]
+
+A média a posteriori da função de perda é
+
+\[E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\int_{\Theta_0}I(\varphi(x)\neq 1)\pi(\theta|x)d\theta\]
+
+e o estimador de Bayes é o valor de \(varphi\) que minimiza a esperança
+acima. Como \(\varphi\) é uma indicadora, teremos que
+
+\[E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\left\{\begin{array}{l}P(\theta\in\Theta_0|x),\hbox{ se }\varphi\neq 1\\
+P(\theta\in\Theta_0^c|x),\hbox{ se }\varphi= 1
+\end{array}\right.\]
+
+Deste modo, aceitamos \(H_0\) se
+\(P(\theta\in\Theta_0|x)>P(\theta\in\Theta_0^c|x)\) e rejeitamos em caso
+contrário.
+
+Exemplo Uma cadeia de \emph{fast food} deseja saber se vale a pena
+trocar seus freezers tradicionais, que mantém a carne entre -\(17^o\)C e
+\(-9^oC\) por um com uma nova tecnologia (e mais cara!) que mantém a
+temperatura consistentemente em \(-17^oC\). Para tomar essa decisão, 32
+bifes foram armazenados por 8 meses, sendo 16 bifes colocados no freezer
+tradicional e 16 no novo. Em seguida, um chefe preparou os 32 bifes de
+maneira idêntica e 16 clientes foram escolhidos ao acaso para avaliar o
+sabor dos bifes. Cada cliente recebeu um bife de cada freezer, mas a
+prova foi realizada às cegas.
+
+Podemos considerar a variável \(Y_i=1\) se o \(i\)-ésimo cliente
+preferiu o bife armazenado no freezer mais caro e \(Y_i=0\) em caso
+contrário. Deste modo,
+\(Y_1,\ldots,Y_{16}|\theta\sim\hbox{Bernoulli}(\theta)\). Claramente,
+estamos interessados em testar \(H_0:\theta>1/2\).
+
+Considere as seguintes prioris:
+
+\includegraphics{teste_files/figure-pdf/unnamed-chunk-1-1.pdf}
+
+A priori de Jeffreys dá mais massa para valores extremos, o que poderia
+favorecer a hipótese \(H_0\). A priori Uniforme(0,1) é aquela que parece
+não dar qualquer preferência. Por último, a priori Beta(2,2) pode ser
+vista como uma resitência à rejeitar que os dois armazenamentos são
+iguais.
+
+Dos 16 clientes, 13 preferiram os bifes que foram amarzenados com a
+tecnologia mais cara. Como as três prioris acima são casos particulares
+da distribuição Beta\((a,b)\), decidiremos sobre \(H_0\) calculando
+
+\[P(\theta>1/2|\textbf{y})=\int_0^{1/2}\frac{\theta^{13+a-1}(1-\theta)^{3+b-1}}{B(13+a,3+b)}\]
+
+que pode ser falciemente obtida com o comando
+\texttt{pbeta(.5,13+a,3+b,\ lower.tail\ =F)} Temos os seguintes
+resultados:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Priori & \(P(H_0|\textbf{y})\) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Jeffreys & 0,995 \\
+Uniforme & 0,993 \\
+Beta(2,2) & 0,990 \\
+\end{longtable}
+
+Considerando as prioris acima, a probabilidade a posteriori da hipótese
+nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da
+carne é melhor preservado no freezer com alta tecnologia
+
+Até o momento, assumimos que a perda associada ao erro no teste de
+hipóteses é igual para qualquer decisão. Considere então a função de
+perda \(a-b\), dada por
+
+\[\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
+a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.\]
+
+Utilizando a função de perda acima, temos que cada tipo de erro possui
+um valor de perda diferente. A média a posteriori dessa função de perda
+é
+
+\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta\]
+
+Se \(\varphi(x)=1\), teremos
+\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta=bP(\theta\in\Theta_0^c|x)\]
+e se \(varphi(x)=0\) teremos
+\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta=aP(\theta\in\Theta_0|x)\]
+logo, o estimador de Bayes para a perda \(a-b\) é
+\[\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }bP(\theta\in\Theta_0^c|x)<aP(\theta\in\Theta_0|x)\\
+0,\hbox{ se }bP(\theta\in\Theta_0^c|x)\geq aP(\theta\in\Theta_0|x)\end{array}\right.\]
+ou, equivalentemente,
+\[\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }P(\theta\in\Theta_0|x)>\frac{b}{a+b}\\
+0,\hbox{ caso contrário}\end{array}\right.\]
+
+Utilizando a função de perda \(a-b\), \(H_0\) é rejeitada sempre que a
+probabilidade a posteriori é menor que \(b/(a+b)\).
+
+\bookmarksetup{startatroot}
+
+\chapter{O Fator de Bayes}\label{o-fator-de-bayes}
+
+Considere novamente o problema dos freezers, da seção anterior. Note que
+a teoria desenvolvida acima não consegue testar \(H_0:\theta=1/2\), uma
+vez que este evento possui probabilidade nula a priori. Para contornar
+este problema, suponha que existem dois modelos competidores:
+
+\begin{itemize}
+\item
+  \(M_0: y_i\sim\hbox{Bernoulli}(1/2)\)
+\item
+  \(M_1: y_i|\theta\hbox{Bernoulli}(\theta), \theta\sim\hbox{Uniforme}(0,1)\)
+\end{itemize}
+
+Então, \[f(y_1,\ldots,y_{16}|M_0)=\left(\frac{1}{2}\right)^{16}\]
+
+e
+\[f(y_1,\ldots,y_{^16}|M_1)=\int_0^1\theta^{\sum_{i=1}^{16}y_i}(1-\theta)^{16-\sum_{i=1}^{16}y_i}d\theta=B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)\]
+Colocando uma probabilidade a priori para cada modelo, teremos
+
+\[P(M_0|y_1,\ldots,y_{16})=\frac{\left(\frac{1}{2}\right)^{16}P(M_0)}{\left(\frac{1}{2}\right)^{16}P(M_0)+B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)P(M_1)}\]
+Ainda considerando o exemplo anterior, assumindo \(P(M_0)=P(M_1)\) e
+lembrando que \(\sum_i y_i=13\), tem-se
+\(P(M_0|y_1,\ldots,y_{16})=0,12\), o que nos leva a rejeitar \(H_0\).
+
+Note que esta nova abordagem leva a uma mudança na priori, uma vez que
+
+\[\pi(\theta)=P(M_0)\pi(\theta|M_0)+P(M_1)\pi(\theta|M_1)=P(M_0)I(\theta=\theta_0)+I(\theta\in (0,1))P(M_1)\]
+
+Para o caso geral, considere os modelos competidores \(M_0\) e \(M_1\).
+Sejam ainda \(\pi_0(.)\) e \(\pi_1(.)\) as prioris sob \(H_0\) e
+\(H_1\), repectivamente. O Fator de Bayes é definido por
+
+\[B_{01}(x)=\left.\frac{P(M_0|x)}{P(M_0)}\right/ \frac{P(M_1|x)}{P(M_1)}\]
+onde \[P(M_i|x)=\int f(x|\theta)\pi_i(\theta)d\theta.\]
+
+Se \(B_{01}(x)=1\), então não há diferença entre os modelos.
+Alternativamente, quanto maior for o valor do fator de Bayes, maior é a
+evidência a favor de \(H_0\). A escala de Jeffreys pode ser útil para
+tomada de decisão:
+
+Note que, se \(\pi_0(\theta)=I(\theta=\theta_0)\),
+\(\pi_1(\theta)=I(\theta=\theta_1)\) e \(P(M_0)=P(M_1)\), o fator de
+Bayes se torna a estatística do teste de Neyman-Pearson
+
+\[B_{01}(x)=\frac{f(x|\theta_0)}{f(x|\theta_1)}\]
+
+\bookmarksetup{startatroot}
+
+\chapter{O modelo normal}\label{o-modelo-normal}
+
 \section{A distribuição
-normal-gama}\label{a-distribuiuxe7uxe3o-normal-gama}}
+normal-gama}\label{a-distribuiuxe7uxe3o-normal-gama}
 
 Dizemos que \((X,Y)\sim NG(\mu,n_0,\nu,d^2)\) (lê-se normal-gama) se sua
 função densidade conjunta é dada por
@@ -1060,9 +1463,8 @@ ou seja, \(X\sim t_{\nu}(\mu, d^2/\nu)\). Em especial, se \(\nu>1\)
 então \(E(X)=\mu\) e, se \(\nu>2\) teremos que
 \[Var(X)=\frac{d^2}{\nu-2}\]
 
-\hypertarget{a-funuxe7uxe3o-de-verossimilhanuxe7a-1}{%
 \section{A função de
-verossimilhança}\label{a-funuxe7uxe3o-de-verossimilhanuxe7a-1}}
+verossimilhança}\label{a-funuxe7uxe3o-de-verossimilhanuxe7a-1}
 
 Seja \(X_1,\ldots,X_n\) uma amostra aleatória do modelo
 \(X|\mu,\phi\sim\hbox{Normal}(\mu,\phi^{-1})\), onde \(\phi\),
@@ -1073,9 +1475,8 @@ verossimilhança deste modelo pode ser escrita como
 onde \[s^2=\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})^2\] é a estimativa de
 máxima verossimilhança para \(\phi^{-1}\).
 
-\hypertarget{posteriori-com-prioris-impruxf3prias}{%
 \section{Posteriori com prioris
-impróprias}\label{posteriori-com-prioris-impruxf3prias}}
+impróprias}\label{posteriori-com-prioris-impruxf3prias}
 
 Considerando as prioris impróprias \(\pi(\phi)\propto \phi^{-1}\),
 \(\pi(\mu)\propto 1\) e que \(\pi(\mu,\phi)=\pi(\mu)\pi(\phi)\), teremos
@@ -1104,9 +1505,8 @@ Parâmetro & Estimativa & Erro \\
 \(\phi\) & \(\frac{n-1}{ns^2}\) & \(\frac{\sqrt{2(n-1)}}{s^2n}\) \\
 \end{longtable}
 
-\hypertarget{posteriori-com-a-priori-de-jeffreys}{%
 \section{Posteriori com a priori de
-Jeffreys}\label{posteriori-com-a-priori-de-jeffreys}}
+Jeffreys}\label{posteriori-com-a-priori-de-jeffreys}
 
 O logaritmo da função de verossimilhança é
 
@@ -1151,9 +1551,8 @@ Parâmetro & Estimativa & Erro \\
 \(\phi\) & \(\frac{1}{s^{2}}\) & \(\frac{\sqrt{2}}{s^2\sqrt{n}}\) \\
 \end{longtable}
 
-\hypertarget{posteriori-para-a-priori-conjugada}{%
 \section{Posteriori para a priori
-conjugada}\label{posteriori-para-a-priori-conjugada}}
+conjugada}\label{posteriori-para-a-priori-conjugada}
 
 Considere que \((\mu,\phi)\sim \hbox{NG}(m_0,n_0,\nu_0,s^2_0)\). Esta
 priori é conjugada para o modelo normal, uma vez que
@@ -1206,16 +1605,13 @@ Erro
 \(\frac{\sqrt{2(n+\nu_0)}}{d_1^2(n+n_0)}\) \\
 \end{longtable}
 
-\hypertarget{detecuxe7uxe3o-de-outliers}{%
-\section{Detecção de outliers}\label{detecuxe7uxe3o-de-outliers}}
+\section{Detecção de outliers}\label{detecuxe7uxe3o-de-outliers}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{binomial-negativa}{%
-\chapter{Binomial negativa}\label{binomial-negativa}}
+\chapter{Binomial negativa}\label{binomial-negativa}
 
-\hypertarget{o-modelo-binomial-negativo}{%
-\section{O modelo binomial negativo}\label{o-modelo-binomial-negativo}}
+\section{O modelo binomial negativo}\label{o-modelo-binomial-negativo}
 
 A distribuição Poisson é muito comum em problemas de contagem. Como sua
 esperança e variância são iguais, o termo sobredispersão foi cunhado na
@@ -1243,9 +1639,8 @@ pode-de mostrar que
 seja, o modelo Poisson também pode ser vist como um caso limite do
 binomial negativo.
 
-\hypertarget{priori-para-phi-condicionado}{%
 \section{\texorpdfstring{Priori para \(\phi\)
-condicionado}{Priori para \textbackslash phi condicionado}}\label{priori-para-phi-condicionado}}
+condicionado}{Priori para \textbackslash phi condicionado}}\label{priori-para-phi-condicionado}
 
 Quando \(\phi\) é conhecido, a verossimilhança do modelo se torna
 
@@ -1259,9 +1654,8 @@ A priori de Jeffreys é dada por
 posteriori
 \[\rho|\boldsymbol{x},\phi\sim\hbox{Beta}\left(n\phi,\sum_{i=1}^n x_i+\frac{1}{2}\right).\]
 
-\hypertarget{priori-para-phi}{%
 \section{\texorpdfstring{Priori para
-\(\phi\)}{Priori para \textbackslash phi}}\label{priori-para-phi}}
+\(\phi\)}{Priori para \textbackslash phi}}\label{priori-para-phi}
 
 Seja \(\pi(\phi)\pi(\rho)\) a priori para \((\phi,\rho)\). Então,
 teremos que
@@ -1323,13 +1717,11 @@ e \(k=k+1\) (houve um aceite). Senão, faça \(\phi^{(j)}=\phi^{(j-1)}\).
 
 \bookmarksetup{startatroot}
 
-\hypertarget{aproximauxe7uxe3o-normal-e-seu-uso-com-o-metropolis-hastings}{%
 \chapter{Aproximação normal e seu uso com o
-Metropolis-Hastings}\label{aproximauxe7uxe3o-normal-e-seu-uso-com-o-metropolis-hastings}}
+Metropolis-Hastings}\label{aproximauxe7uxe3o-normal-e-seu-uso-com-o-metropolis-hastings}
 
-\hypertarget{aproximauxe7uxe3o-da-posteriori-pela-distribuiuxe7uxe3o-normal}{%
 \section{Aproximação da posteriori pela distribuição
-normal}\label{aproximauxe7uxe3o-da-posteriori-pela-distribuiuxe7uxe3o-normal}}
+normal}\label{aproximauxe7uxe3o-da-posteriori-pela-distribuiuxe7uxe3o-normal}
 
 Assuma que \(\boldsymbol{\theta}\in\mathbb{R}^q\). Seja
 \(\ell(\boldsymbol{\theta})=\log L(\boldsymbol{\theta})\) a função
@@ -1443,6 +1835,10 @@ Agora, podemos simular \(\theta_1\) e \(\theta_2\) a posteriori:
 Carregando pacotes exigidos: mvtnorm
 \end{verbatim}
 
+\begin{verbatim}
+Warning: pacote 'mvtnorm' foi compilado no R versão 4.4.3
+\end{verbatim}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{theta\_sim }\OtherTok{\textless{}{-}} \FunctionTok{rmvnorm}\NormalTok{(}\DecValTok{500}\NormalTok{, opt}\SpecialCharTok{$}\NormalTok{par, Sigma)}
@@ -1476,8 +1872,7 @@ e \(\beta=\exp\{\theta_2\}\):
 2.582863 8.865732 
 \end{verbatim}
 
-\hypertarget{metropolis-revisitado}{%
-\section{Metropolis revisitado}\label{metropolis-revisitado}}
+\section{Metropolis revisitado}\label{metropolis-revisitado}
 
 A diferença entre o algoritmo Metropolis e o Metropolis-Hastings está na
 escolha da distribuição proposta. No primeiro, a proposta é simétrica,
@@ -1557,13 +1952,7 @@ onde \(\boldsymbol{\theta}^*\) é o candidato gerado e
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{aproximacaoNormal_files/figure-pdf/unnamed-chunk-8-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{aproximacaoNormal_files/figure-pdf/unnamed-chunk-8-1.pdf}
 
 Por fim, as estimativas intervalares para \((\alpha,\beta)\) são
 
@@ -1592,9 +1981,8 @@ Por fim, as estimativas intervalares para \((\alpha,\beta)\) são
 
 \bookmarksetup{startatroot}
 
-\hypertarget{misturas-de-distribuiuxe7uxf5es}{%
 \chapter{Misturas de
-distribuições}\label{misturas-de-distribuiuxe7uxf5es}}
+distribuições}\label{misturas-de-distribuiuxe7uxf5es}
 
 Dizemos que \(X\sim f(.)\) é uma mistura se existe uma variável \(Z\)
 tal que
@@ -1637,9 +2025,8 @@ No \(j\)-ésimo passo:
 O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição
 estacionária é \(\pi(\theta,\boldsymbol{z}|\boldsymbol{x})\)
 
-\hypertarget{modelos-com-inflauxe7uxe3o-de-zeros}{%
 \section{Modelos com inflação de
-zeros}\label{modelos-com-inflauxe7uxe3o-de-zeros}}
+zeros}\label{modelos-com-inflauxe7uxe3o-de-zeros}
 
 Quando são observados mais zeros do que o esperado pelo modelo de
 contagem assumido para a verossimilhança, é usual considerar um modelo
@@ -1764,13 +2151,7 @@ Poisson\((\theta)\) com \(\pi(\theta)\propto \theta^{-1}\), temos que
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{misturas_files/figure-pdf/unnamed-chunk-2-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{misturas_files/figure-pdf/unnamed-chunk-2-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1825,13 +2206,7 @@ igual a 15:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{misturas_files/figure-pdf/unnamed-chunk-4-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{misturas_files/figure-pdf/unnamed-chunk-4-1.pdf}
 
 Vamos estimar as probabilidade de ocorrerem \(k\) mortes via preditiva
 posteriori:
@@ -1857,9 +2232,9 @@ posteriori:
 \begin{verbatim}
 x_til
            0            1            2            3            4            5 
-6.112085e-01 1.979373e-01 1.149232e-01 5.050528e-02 1.771953e-02 5.583499e-03 
+6.154077e-01 1.972682e-01 1.162152e-01 4.766739e-02 1.693507e-02 4.476028e-03 
            6            7            8            9 
-1.707351e-03 3.460846e-04 2.307231e-05 4.614462e-05 
+1.545845e-03 4.383739e-04 2.307231e-05 2.307231e-05 
 \end{verbatim}
 
 Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo
@@ -1880,16 +2255,9 @@ Poisson a e frequência relativa.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
+\includegraphics{misturas_files/figure-pdf/unnamed-chunk-6-1.pdf}
 
-{\centering \includegraphics{misturas_files/figure-pdf/unnamed-chunk-6-1.pdf}
-
-}
-
-\end{figure}
-
-\hypertarget{exercuxedcio}{%
-\section{Exercício}\label{exercuxedcio}}
+\subsection{Exercício}\label{exercuxedcio-1}
 
 Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana,
 entre 1950 e 2012.
@@ -1913,15 +2281,238 @@ entre 1950 e 2012.
   Ajuste o modelo Poisson inflado de zeros.
 \end{itemize}
 
+\section{Mistura escalonada de
+normais}\label{mistura-escalonada-de-normais}
+
+\section{Misturas finitas com
+número}\label{misturas-finitas-com-nuxfamero}
+
+Dizemos que \(X|\boldsymbol{\theta},\boldsymbol{p},\kappa\) é um modelo
+de mistura finito se sua função de densidade/probabilidade é dada por
+
+\[f(x| \boldsymbol{\theta},\boldsymbol{p} ,\kappa )=\sum_{k=1}^\kappa p_k f_k(x|\boldsymbol{\theta}_k).\]
+
+Cada função \(f(.|\boldsymbol{\theta}_k)\) é denominada componente da
+mistura e o número de componentes pode ser desconhecido.
+
+Assim como o modelo com zeros inflacionados, podemos utilizar uma
+variável latente
+\(\textbf{z}_i|\kappa=(z_{i,1},\ldots,z_{i,\kappa})\sim\hbox{Multinomial}(p_1\ldots,p_\kappa|\sum_{k=1}^\kappa z_{ik}=1)\),
+obtendo o seguinte modelo aumentado
+
+\[f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}\]
+
+A função de verossimilhança aumentada para este modelo é
+
+\[\prod_{i=1}^n f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{i=1}^n\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}.\]
+
+Considere as prioris
+\(\pi(\boldsymbol{\theta}|\kappa)=\prod_{k=1}^\kappa \pi(\boldsymbol{\theta}_k)\)
+e \(\textbf{p}|\kappa\sim\hbox{Dirichlet}(a_1,\ldots,a_\kappa)\), onde
+\[f(\textbf{p}|\kappa)\propto \prod_{k=1}^\kappa p_k^{a_k-1}\] com
+\(\sum_{k=1}^\kappa p_k=1\). As condicionais completas para este
+problema são
+
+\begin{itemize}
+\item
+  \(\begin{align}f(\boldsymbol{\theta}_k|resto)\propto \prod_{i:z_{i,k}=1}f(x_i|\boldsymbol{\theta}_k)\pi(\boldsymbol{\theta}_k)\end{align}\)
+\item
+  \(\begin{align}f(\textbf{z}_i|resto)\propto \prod_{k=1}^\kappa \left[p_kf(x_i|\boldsymbol{\theta}_k)\right]^{z_{i,k}}\end{align}\)
+  ou seja,
+  \(\textbf{z}_i|rest\sim\hbox{Multinomial}(\tilde{p}_1,\ldots,\tilde{p}_\kappa)\),
+  onde
+\end{itemize}
+
+\[\tilde{p}_k=\frac{p_kf(x_i|\boldsymbol{\theta}_k)}{\sum_{k=1}^\kappa p_kf(x_i|\boldsymbol{\theta}_k)}\]
+*
+\(f(\textbf{p}|resto)\propto \prod_{k=1}^\kappa p_k^{\sum_{i=1}^n z_{i,k}+a_k-1}\),
+ou seja
+\(\textbf{p}|resto\sim\hbox{Dirichlet}(a_1+\sum_{i=1}^n z_{i,1},\ldots,a_\kappa+\sum_{i=1}^n z_{i,\kappa})\)
+
+Se necessário, podemos atrbuir a priori
+\[\pi(\kappa)=\frac{1}{M},\kappa=1,2,\ldots,M\] para obter a condicional
+completa
+\[\pi(\kappa|resto)=\frac{\prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)}{\sum_{\kappa=1}^M \prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)},\kappa=1,\ldots,M.\]
+
+\subsection{O velho fiel}\label{o-velho-fiel}
+
+O banco de dados \texttt{faithful} mostra a duração e o tempo até a
+próxima erupção do geiser Velho Fiel, no parque Yellowstone. Abaixo
+mostramos o diagrama do tempo de espera entre erupções
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(faithful}\SpecialCharTok{$}\NormalTok{waiting)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{misturas_files/figure-pdf/unnamed-chunk-8-1.pdf}
+
+É possível notar classes, uma com tempo e entre erupções menor que 70
+com tempo maior. Temos as seguintes estimativas iniciais:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# elementos na classe 1}
+\NormalTok{x }\OtherTok{\textless{}{-}}\NormalTok{ faithful}\SpecialCharTok{$}\NormalTok{waiting}
+\NormalTok{z }\OtherTok{\textless{}{-}}\NormalTok{ x }\SpecialCharTok{\textless{}} \DecValTok{70}
+\CommentTok{\# proporção na classe 1}
+\FunctionTok{mean}\NormalTok{(z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.3786765
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# média e desvio padrão na classe 1}
+\FunctionTok{mean}\NormalTok{( x[z])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 55.15534
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sd}\NormalTok{( x[z])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 6.266558
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# elementos na classe 2}
+\CommentTok{\# proporção na classe 2}
+\FunctionTok{mean}\NormalTok{(z}\SpecialCharTok{==}\NormalTok{F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.6213235
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# média e desvio padrão na classe 2}
+\FunctionTok{mean}\NormalTok{( x[z}\SpecialCharTok{==}\NormalTok{F])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 80.49112
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sd}\NormalTok{( x[z}\SpecialCharTok{==}\NormalTok{F])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 5.456667
+\end{verbatim}
+
+Vamos considerar que as duas componentes possuem distribuição normal.
+Para cada componente, teremos as seguintes prioris:
+
+\[\pi(\mu_i,\phi_i)=\frac{\phi^{1/2}_i}{\sqrt{2\pi C}}e^{-\frac{\phi_i}{2C}(\mu_i-m_i)^2}\frac{b^a}{\Gamma(a)}\phi_i^{a-1}e^{b\phi_i},\]
+
+\[p\sim\hbox{Beta}(r,s)\]
+
+\[z_i\sim\hbox{Bernoulli}(p)\]
+
+O modelo aumentado é
+\[f(x_i|\mu,\phi,z_{i})=\left[\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)}\right]^{z_i}\left[\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)}\right]^{1-z_i}\]
+As condicionais completas são:
+
+\[\begin{align}f(\mu_1|resto) &\propto \exp\left\{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2\right\}\exp\left\{-\frac{\phi_1}{2C} z_i(\mu_1-m_1)^2\right\}\\&\propto \exp\left\{-\frac{\phi_1}{2}\left(\sum_{i=1}^n z_i+C^{-1}\right) \left(\mu_1-\frac{\sum_{i=1}^{n}x_iz_i+m_1C^{-1}}{\sum_{i=1}^n z_i+C^{-1}}\right)^2\right\}\end{align}\]
+
+\[\begin{align}f(\mu_2|resto) &\propto \exp\left\{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2\right\}\exp\left\{-\frac{\phi_2}{2C} (1-z_i)(\mu_2-m_2)^2\right\}\\&\propto \exp\left\{-\frac{\phi_2}{2}\left(\sum_{i=1}^n (1-z_i)+C^{-1}\right) \left(\mu_2-\frac{\sum_{i=1}^{n}x_i(1-z_i)+m_1C^{-1}}{\sum_{i=1}^n (1-z_i)+C^{-1}}\right)^2\right\}\end{align}\]
+
+\[\begin{align}f(\phi_2|resto)&\propto \phi_2^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2}\phi^{-1/2}_2e^{-\frac{\phi_2}{2}(\mu_2-m_2)^2}\phi_2^{a/2-1}e^{-\phi_2 b/2}\\ &\propto \phi_2^{\frac{1}{2}(1+a+\sum_{i=1}^{n}(1-z_i)-1}e^{-\frac{\phi_2}{2}[\sum_{i=1}^n(1-z_i)(x_i-\mu_2)^2 +(\mu_2-m_2)^2 + b]}\end{align}\]
+\[\begin{align}f(\phi_1|resto)&\propto \phi^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2}\phi^{-1/2}e^{-\frac{\phi_1}{2}(\mu_1-m_1)^2}\phi_1^{a/2-1}e^{-\phi_1 b/2}\\ &\propto \phi_1^{\frac{1}{2}(1+a+\sum_{i=1}^{n}z_i)-1}e^{-\frac{\phi_1}{2}[\sum_{i=1}^nz_i(x_i-\mu_1)^2 +(\mu_1-m_1)^2 + b]}\end{align}\]
+
+\[\begin{align}f(p|resto)\propto \prod_{i=1}^n p^{z_i}(1-p)^{1-z_i}p^{r-1}(1-p)^{s-1}\propto p^{r+\sum_{i=1}^n z_i-1}(1-p)^{s+\sum_{i=1}^n (1-z_i)-1}\end{align}\]
+
+\[f(z_i|resto)\propto\left[ p\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)^2}\right]^{z_i}\left[ (1-p)\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)^2}\right]^{1-z_i}\]
+
+Abaixo implementamos o amostrador de Gibbs
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{B }\OtherTok{\textless{}{-}} \DecValTok{50000}
+
+\CommentTok{\# hiperparmametros}
+\NormalTok{m1 }\OtherTok{\textless{}{-}} \DecValTok{65}
+\NormalTok{m2 }\OtherTok{\textless{}{-}} \DecValTok{80}
+\NormalTok{C }\OtherTok{\textless{}{-}} \DecValTok{1000}
+\NormalTok{r}\OtherTok{=} \DecValTok{4}\NormalTok{; s }\OtherTok{=} \DecValTok{6}
+\NormalTok{a }\OtherTok{=} \DecValTok{1}\NormalTok{; b }\OtherTok{=}\NormalTok{ .}\DecValTok{1}
+
+\CommentTok{\# valores iniciais}
+\NormalTok{z }\OtherTok{\textless{}{-}}\NormalTok{ x }\SpecialCharTok{\textless{}} \DecValTok{70}
+\NormalTok{phi1 }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\DecValTok{36}
+\NormalTok{phi2 }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\DecValTok{25}
+\NormalTok{mu1 }\OtherTok{=}\NormalTok{ mu2 }\OtherTok{=}\NormalTok{  p }\OtherTok{=} \ConstantTok{NULL}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{B)\{}
+  \CommentTok{\# mu dado o resto}
+\NormalTok{  m1\_post }\OtherTok{\textless{}{-}}\NormalTok{ ( }\FunctionTok{sum}\NormalTok{(x}\SpecialCharTok{*}\NormalTok{z) }\SpecialCharTok{+}\NormalTok{ m1}\SpecialCharTok{/}\NormalTok{C) }\SpecialCharTok{/}\NormalTok{ ( }\FunctionTok{sum}\NormalTok{(z) }\SpecialCharTok{+} \DecValTok{1}\SpecialCharTok{/}\NormalTok{C )}
+\NormalTok{  m2\_post }\OtherTok{\textless{}{-}}\NormalTok{ ( }\FunctionTok{sum}\NormalTok{(x}\SpecialCharTok{*}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z)) }\SpecialCharTok{+}\NormalTok{ m1}\SpecialCharTok{/}\NormalTok{C) }\SpecialCharTok{/}\NormalTok{ ( }\FunctionTok{sum}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z) }\SpecialCharTok{+} \DecValTok{1}\SpecialCharTok{/}\NormalTok{C )}
+\NormalTok{  s1\_post }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{/}\NormalTok{ ( ( }\FunctionTok{sum}\NormalTok{(z) }\SpecialCharTok{+} \DecValTok{1}\SpecialCharTok{/}\NormalTok{C )}\SpecialCharTok{*}\NormalTok{phi1[i] )}
+\NormalTok{  s2\_post }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{/}\NormalTok{ ( ( }\FunctionTok{sum}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z) }\SpecialCharTok{+} \DecValTok{1}\SpecialCharTok{/}\NormalTok{C )}\SpecialCharTok{*}\NormalTok{phi2[i] )}
+  
+\NormalTok{  mu1[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{1}\NormalTok{, m1\_post, }\FunctionTok{sqrt}\NormalTok{( s1\_post) )}
+\NormalTok{  mu2[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{1}\NormalTok{, m2\_post, }\FunctionTok{sqrt}\NormalTok{( s2\_post) )}
+  
+  \CommentTok{\# phi dado resto}
+\NormalTok{  phi1[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{rgamma}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1} \SpecialCharTok{+}\NormalTok{ a }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(z), }\FunctionTok{sum}\NormalTok{( z}\SpecialCharTok{*}\NormalTok{(x }\SpecialCharTok{{-}}\NormalTok{ mu1[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{])}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{ ) }\SpecialCharTok{+}\NormalTok{ (mu1[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\NormalTok{m1)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+}\NormalTok{ b)}
+\NormalTok{  phi2[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{rgamma}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1} \SpecialCharTok{+}\NormalTok{ a }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z), }\FunctionTok{sum}\NormalTok{( (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z)}\SpecialCharTok{*}\NormalTok{(x }\SpecialCharTok{{-}}\NormalTok{ mu2[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{])}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{ ) }\SpecialCharTok{+}\NormalTok{ (mu2[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\NormalTok{m2)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+}\NormalTok{ b)}
+  
+  \CommentTok{\# p dado resto}
+\NormalTok{  p[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{rbeta}\NormalTok{(}\DecValTok{1}\NormalTok{, r }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(z), s }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{z) )}
+  
+  \CommentTok{\# z dado resto}
+\NormalTok{  aux1 }\OtherTok{\textless{}{-}}\NormalTok{ p[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{]}\SpecialCharTok{*}\FunctionTok{dnorm}\NormalTok{(x,mu1[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{], }\DecValTok{1}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(phi1[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{]))}
+\NormalTok{  aux2 }\OtherTok{\textless{}{-}}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{])}\SpecialCharTok{*}\FunctionTok{dnorm}\NormalTok{(x,mu2[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{], }\DecValTok{1}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(phi2[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{]))}
+  
+\NormalTok{  z }\OtherTok{\textless{}{-}} \FunctionTok{rbinom}\NormalTok{(}\FunctionTok{length}\NormalTok{(x), }\DecValTok{1}\NormalTok{, aux1}\SpecialCharTok{/}\NormalTok{( aux1 }\SpecialCharTok{+}\NormalTok{ aux2))}
+\NormalTok{\}}
+\CommentTok{\# }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(mu1[}\FunctionTok{seq}\NormalTok{(B}\SpecialCharTok{/}\DecValTok{2}\NormalTok{,B,}\DecValTok{30}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{misturas_files/figure-pdf/unnamed-chunk-12-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(mu2[}\FunctionTok{seq}\NormalTok{(B}\SpecialCharTok{/}\DecValTok{2}\NormalTok{,B,}\DecValTok{30}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{misturas_files/figure-pdf/unnamed-chunk-12-2.pdf}
+
 \bookmarksetup{startatroot}
 
-\hypertarget{o-modelo-poisson-revisitado}{%
-\chapter{O modelo Poisson
-revisitado}\label{o-modelo-poisson-revisitado}}
+\chapter{O modelo Poisson revisitado}\label{o-modelo-poisson-revisitado}
 
-\hypertarget{verossimilhanuxe7a-prioris-e-posterioris}{%
 \section{Verossimilhança, prioris e
-posterioris}\label{verossimilhanuxe7a-prioris-e-posterioris}}
+posterioris}\label{verossimilhanuxe7a-prioris-e-posterioris}
 
 Dizemos que \(X|\theta\) tem distribuição Poisson se sua função de
 probabilidade é dada por \[f(x|\theta)=\frac{e^{-\theta}\theta^x}{x!},\]
@@ -1971,9 +2562,7 @@ seguinte modo:
 
 2.Gere \(\tilde{\mathbf{x}}\sim\hbox{Poisson}(\theta_j)\).
 
-\hypertarget{o-modelo-poisson-para-taxas}{%
-\section{O modelo Poisson para
-taxas}\label{o-modelo-poisson-para-taxas}}
+\section{O modelo Poisson para taxas}\label{o-modelo-poisson-para-taxas}
 
 A taxa é o cociente entre o número de casos de um evento em determinado
 intervalo de tempo e a população em risco, definida em um espaço e no
@@ -2022,9 +2611,8 @@ A prioris impróprias \(\pi(\theta)\varpropto \theta^{-1}\) e
 posterioris \(\hbox{Gama}(\sum_{i=1}^m y_i,N)\) e
 \(\hbox{Gama}(\sum_{i=1}^m y_i+1/2,N)\).
 
-\hypertarget{exemplo-1-crime-de-estupro-de-vulneruxe1vel-no-interior-do-amazonas}{%
 \section{Exemplo 1: crime de estupro de vulnerável no interior do
-Amazonas}\label{exemplo-1-crime-de-estupro-de-vulneruxe1vel-no-interior-do-amazonas}}
+Amazonas}\label{exemplo-1-crime-de-estupro-de-vulneruxe1vel-no-interior-do-amazonas}
 
 Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero
 no Amazonas e compreendem os anos entre 2010 e 2012.
@@ -2076,13 +2664,7 @@ Considerando a priori \(\pi(\theta)\varpropto \theta^{-1/2}\) teremos:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{poisson_files/figure-pdf/unnamed-chunk-2-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-2-1.pdf}
 
 Abaixo, simulamos 50.000 amostras da preditiva a posteriori
 
@@ -2104,13 +2686,7 @@ Abaixo, simulamos 50.000 amostras da preditiva a posteriori
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{poisson_files/figure-pdf/unnamed-chunk-3-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-3-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2148,13 +2724,7 @@ Abaixo, simulamos 50.000 amostras da preditiva a posteriori
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[H]
-
-{\centering \includegraphics{poisson_files/figure-pdf/unnamed-chunk-4-1.pdf}
-
-}
-
-\end{figure}
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-4-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2200,33 +2770,33 @@ Warning in par(oo): parâmetro gráfico "page" não pode ser especificado
 
 \begin{verbatim}
     municipios      p
-1      Amatura 0.3308
-2    Atl.Norte 0.0836
-3         Barr 0.0368
-4           BC 0.0192
-5     BV Ramos 0.1292
+1      Amatura 0.3372
+2    Atl.Norte 0.0676
+3         Barr 0.0300
+4           BC 0.0248
+5     BV Ramos 0.1340
 6      Fonte B 0.0000
-7        Jutai 0.0476
-8        Maues 0.4980
-9     Nhamunda 0.0196
-10   Parintins 0.6472
-11      StoIca 0.3600
-12 SP Olivenca 0.4388
-13         Tbt 0.4156
-14   Tonantins 0.0524
+7        Jutai 0.0508
+8        Maues 0.5224
+9     Nhamunda 0.0144
+10   Parintins 0.6220
+11      StoIca 0.3524
+12 SP Olivenca 0.3896
+13         Tbt 0.4316
+14   Tonantins 0.0396
 \end{verbatim}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{references}{%
-\chapter*{References}\label{references}}
+\chapter*{References}\label{references}
 \addcontentsline{toc}{chapter}{References}
 
 \markboth{References}{References}
 
-\hypertarget{refs}{}
-\begin{CSLReferences}{0}{0}
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{1}
 \end{CSLReferences}
+
 
 
 

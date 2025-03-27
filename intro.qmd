@@ -75,7 +75,8 @@ $$L(\theta_1)>L(\theta_2),$$ dizemos que $\theta_1$ é mais verossímil que $\th
 
 ::: {#exm-}
 
-Seja $X_i$ o número de suicídios no $i$-ésimo mês da amostra e suponha que $X_1,\ldots,X_{36}$ é uma amostra aleatória  proveniente do modelo Poisson($\theta$). Como $\sum_i x_i=933$, a função de verossimilhança será \[L(\theta)=\prod_{i=1}^{36}\frac{e^{-\theta}\theta^{x_i}}{x_i!}\propto e^{-36\theta}\theta^{933}.\] 
+Seja $X_i$ o número de suicídios no $i$-ésimo mês da amostra e suponha que $X_1,\ldots,X_{36}$ é uma amostra aleatória  proveniente do modelo Poisson($\theta$). Como $\sum_i x_i=933$, a função de verossimilhança será 
+$$L(\theta)=\prod_{i=1}^{36}\frac{e^{-\theta}\theta^{x_i}}{x_i!}\propto e^{-36\theta}\theta^{933}.$$ 
 
 
 A próxima figura mostra os valores da função de verossimilhança para diversos valores de $\theta$ para a amostra observada.
@@ -249,7 +250,7 @@ $$E(\rho)=\frac{a}{a+b},$$
 e
 $$Var(\rho)=\frac{E(\rho)(1-E(\rho))}{a+b+1}.$$
 
-* Encontre valores de $a$ e $b$ que reflitam a média de 0,75 mas que não restrinjam demais os valores possíveis para $\rho$
+* Encontre valores de $a$ e $b$ que reflitam a média de 0,79 mas que não restrinjam demais os valores possíveis para $\rho$
 
 * No Amazonas, entre os anos 2021 e 2023, dos 933 registros de suicídios, 726 foram cometidos por homens. Considere então o modelo $X|\rho\sim\hbox{Binomial}(933,\rho)$. Mostre que
 $$f(\theta|x)\propto \rho^{726+a-1}(1-\rho)^{207+b-1}$$

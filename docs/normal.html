@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; O modelo normal – Introdução à Inferência Bayesiana</title>
+<title>7&nbsp; O modelo normal – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -110,7 +110,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./normal.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">O modelo normal</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./normal.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -167,38 +167,44 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./bernoulli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./teste.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./normal.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -217,12 +223,12 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-distribuição-normal-gama" id="toc-a-distribuição-normal-gama" class="nav-link active" data-scroll-target="#a-distribuição-normal-gama"><span class="header-section-number">6.1</span> A distribuição normal-gama</a></li>
-  <li><a href="#a-função-de-verossimilhança" id="toc-a-função-de-verossimilhança" class="nav-link" data-scroll-target="#a-função-de-verossimilhança"><span class="header-section-number">6.2</span> A função de verossimilhança</a></li>
-  <li><a href="#posteriori-com-prioris-impróprias" id="toc-posteriori-com-prioris-impróprias" class="nav-link" data-scroll-target="#posteriori-com-prioris-impróprias"><span class="header-section-number">6.3</span> Posteriori com prioris impróprias</a></li>
-  <li><a href="#posteriori-com-a-priori-de-jeffreys" id="toc-posteriori-com-a-priori-de-jeffreys" class="nav-link" data-scroll-target="#posteriori-com-a-priori-de-jeffreys"><span class="header-section-number">6.4</span> Posteriori com a priori de Jeffreys</a></li>
-  <li><a href="#posteriori-para-a-priori-conjugada" id="toc-posteriori-para-a-priori-conjugada" class="nav-link" data-scroll-target="#posteriori-para-a-priori-conjugada"><span class="header-section-number">6.5</span> Posteriori para a priori conjugada</a></li>
-  <li><a href="#detecção-de-outliers" id="toc-detecção-de-outliers" class="nav-link" data-scroll-target="#detecção-de-outliers"><span class="header-section-number">6.6</span> Detecção de outliers</a></li>
+  <li><a href="#a-distribuição-normal-gama" id="toc-a-distribuição-normal-gama" class="nav-link active" data-scroll-target="#a-distribuição-normal-gama"><span class="header-section-number">7.1</span> A distribuição normal-gama</a></li>
+  <li><a href="#a-função-de-verossimilhança" id="toc-a-função-de-verossimilhança" class="nav-link" data-scroll-target="#a-função-de-verossimilhança"><span class="header-section-number">7.2</span> A função de verossimilhança</a></li>
+  <li><a href="#posteriori-com-prioris-impróprias" id="toc-posteriori-com-prioris-impróprias" class="nav-link" data-scroll-target="#posteriori-com-prioris-impróprias"><span class="header-section-number">7.3</span> Posteriori com prioris impróprias</a></li>
+  <li><a href="#posteriori-com-a-priori-de-jeffreys" id="toc-posteriori-com-a-priori-de-jeffreys" class="nav-link" data-scroll-target="#posteriori-com-a-priori-de-jeffreys"><span class="header-section-number">7.4</span> Posteriori com a priori de Jeffreys</a></li>
+  <li><a href="#posteriori-para-a-priori-conjugada" id="toc-posteriori-para-a-priori-conjugada" class="nav-link" data-scroll-target="#posteriori-para-a-priori-conjugada"><span class="header-section-number">7.5</span> Posteriori para a priori conjugada</a></li>
+  <li><a href="#detecção-de-outliers" id="toc-detecção-de-outliers" class="nav-link" data-scroll-target="#detecção-de-outliers"><span class="header-section-number">7.6</span> Detecção de outliers</a></li>
   </ul>
 </nav>
     </div>
@@ -231,7 +237,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">O modelo normal</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></h1>
 </div>
 
 
@@ -248,8 +254,8 @@ window.Quarto = {
 </header>
 
 
-<section id="a-distribuição-normal-gama" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="a-distribuição-normal-gama"><span class="header-section-number">6.1</span> A distribuição normal-gama</h2>
+<section id="a-distribuição-normal-gama" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="a-distribuição-normal-gama"><span class="header-section-number">7.1</span> A distribuição normal-gama</h2>
 <p>Dizemos que <span class="math inline">\((X,Y)\sim NG(\mu,n_0,\nu,d^2)\)</span> (lê-se normal-gama) se sua função densidade conjunta é dada por</p>
 <p><span class="math display">\[f(x,y)\propto y^{\frac{\nu+1}{2}-1}\exp\left\{-\frac{y}{2}n_0\left[(x-\mu)^2 + d^2\right]\right\}\]</span></p>
 <p>onde <span class="math inline">\(\mu,x\in\mathbb{R}\)</span> e <span class="math inline">\(d,y,c\in\mathbb{R}_+\)</span>. Colocando os termos que não dependem de <span class="math inline">\(x\)</span> junto com a constante de proporcionalidade, podemos mostrar que</p>
@@ -257,13 +263,13 @@ window.Quarto = {
 <p><span class="math display">\[f(y)\propto y^{\frac{\nu+1}{2}-1}e^{-\frac{yn_0d^2}{2}}\int_{\mathbb{R}}\exp\left\{-\frac{y}{2}\left[n_0(x-\mu)^2\right]\right\}d\mu\propto y^{\frac{\nu}{2}-1}e^{-\frac{n_0d^2}{2}y}\]</span> ou seja, <span class="math inline">\(Y\sim\hbox{Gama}(\nu/2, n_0d^2/2)\)</span>. Por último, integrando <span class="math inline">\(f(x,y)\)</span> em <span class="math inline">\(y\)</span> teremos</p>
 <p><span class="math display">\[\begin{align}f(x)&amp;\propto \int_0^\infty y^{\frac{\nu+1}{2}-1}\exp\left\{-\frac{y}{2}n_0\left[(x-\mu)^2 + d^2\right]\right\}dy \\&amp;\propto \Gamma\left(\frac{\nu+1}{2}\right)\left\{1+\frac{\nu}{d^2}\frac{(x-\mu)^2}{\nu}\right\}^{-\frac{\nu+1}{2}}\end{align}\]</span> ou seja, <span class="math inline">\(X\sim t_{\nu}(\mu, d^2/\nu)\)</span>. Em especial, se <span class="math inline">\(\nu&gt;1\)</span> então <span class="math inline">\(E(X)=\mu\)</span> e, se <span class="math inline">\(\nu&gt;2\)</span> teremos que <span class="math display">\[Var(X)=\frac{d^2}{\nu-2}\]</span></p>
 </section>
-<section id="a-função-de-verossimilhança" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="a-função-de-verossimilhança"><span class="header-section-number">6.2</span> A função de verossimilhança</h2>
+<section id="a-função-de-verossimilhança" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="a-função-de-verossimilhança"><span class="header-section-number">7.2</span> A função de verossimilhança</h2>
 <p>Seja <span class="math inline">\(X_1,\ldots,X_n\)</span> uma amostra aleatória do modelo <span class="math inline">\(X|\mu,\phi\sim\hbox{Normal}(\mu,\phi^{-1})\)</span>, onde <span class="math inline">\(\phi\)</span>, denominado precisão, é o inverso da variância. A função de verossimilhança deste modelo pode ser escrita como</p>
 <p><span class="math display">\[L(\mu,\phi)\propto \phi^{\frac{n}{2}}\exp\left\{-\frac{n\phi}{2}(\bar{x}-\mu)^2 -\frac{ns^2\phi}{2}\right\}\]</span> onde <span class="math display">\[s^2=\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})^2\]</span> é a estimativa de máxima verossimilhança para <span class="math inline">\(\phi^{-1}\)</span>.</p>
 </section>
-<section id="posteriori-com-prioris-impróprias" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="posteriori-com-prioris-impróprias"><span class="header-section-number">6.3</span> Posteriori com prioris impróprias</h2>
+<section id="posteriori-com-prioris-impróprias" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="posteriori-com-prioris-impróprias"><span class="header-section-number">7.3</span> Posteriori com prioris impróprias</h2>
 <p>Considerando as prioris impróprias <span class="math inline">\(\pi(\phi)\propto \phi^{-1}\)</span>, <span class="math inline">\(\pi(\mu)\propto 1\)</span> e que <span class="math inline">\(\pi(\mu,\phi)=\pi(\mu)\pi(\phi)\)</span>, teremos que</p>
 <p><span class="math display">\[\pi(\mu,\phi|\boldsymbol{x})\propto \phi^{\frac{n}{2}-1}\left\{-\frac{\phi}{2}n\left[ (\bar{x}-\mu)^2 +s^2\right]\right\}\]</span> ou seja, <span class="math inline">\(\mu,\phi|\boldsymbol{x}\sim\hbox{NG}(\bar{x},n,n-1,s^2)\)</span>, o que implica em:</p>
 <p><span class="math display">\[\begin{align}
@@ -294,8 +300,8 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
-<section id="posteriori-com-a-priori-de-jeffreys" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="posteriori-com-a-priori-de-jeffreys"><span class="header-section-number">6.4</span> Posteriori com a priori de Jeffreys</h2>
+<section id="posteriori-com-a-priori-de-jeffreys" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="posteriori-com-a-priori-de-jeffreys"><span class="header-section-number">7.4</span> Posteriori com a priori de Jeffreys</h2>
 <p>O logaritmo da função de verossimilhança é</p>
 <p><span class="math display">\[l(\mu,\phi)=\frac{n}{2}\log\phi -\frac{n}{2}\phi\left[(\bar{x}-\mu)^2 + s^2\right]\]</span></p>
 <p>As derivadas de primeira ordem em <span class="math inline">\(\mu\)</span> e <span class="math inline">\(\phi\)</span> são <span class="math display">\[\begin{align}
@@ -337,8 +343,8 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
-<section id="posteriori-para-a-priori-conjugada" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="posteriori-para-a-priori-conjugada"><span class="header-section-number">6.5</span> Posteriori para a priori conjugada</h2>
+<section id="posteriori-para-a-priori-conjugada" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="posteriori-para-a-priori-conjugada"><span class="header-section-number">7.5</span> Posteriori para a priori conjugada</h2>
 <p>Considere que <span class="math inline">\((\mu,\phi)\sim \hbox{NG}(m_0,n_0,\nu_0,s^2_0)\)</span>. Esta priori é conjugada para o modelo normal, uma vez que</p>
 <p><span class="math display">\[\begin{align}
 \pi(\mu,\phi|\boldsymbol{x})&amp;\propto \phi^{\frac{n}{2}}\exp\left\{-\frac{\phi}{2}n\left[(\bar{x}-\mu)^2+ s^2\right]\right\}\phi^{\frac{\nu_0+1}{2}-1}\exp\left\{-\frac{\phi}{2}n_0\left[(\mu-m_0)^2 + s_0^2\right]\right\}\\
@@ -384,8 +390,8 @@ d_1^2&amp; = \frac{n_0n}{n_1^2}(\bar{x}-m_0)^2+\frac{n}{n_1}s^2 + \frac{n_0}{n_1
 </tbody>
 </table>
 </section>
-<section id="detecção-de-outliers" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="detecção-de-outliers"><span class="header-section-number">6.6</span> Detecção de outliers</h2>
+<section id="detecção-de-outliers" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="detecção-de-outliers"><span class="header-section-number">7.6</span> Detecção de outliers</h2>
 
 
 </section>
@@ -814,12 +820,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./teste.html" class="pagination-link" aria-label="Testes de hipóteses">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

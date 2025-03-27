@@ -21,13 +21,13 @@ axis(2)
 title( ylab = 'Perda quadrática',xlab = 'T')
 ```
 
-Para uma decisão $T$ podemos calcular a perda média $$R_T(\theta)=E(L(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}$$ A função acima é conhecida como risco da decisão $T$ e é variável em $\theta$. Seu uso é simples: se $R_T(\theta)<R_U(\theta)$, então em média a decisão $T$ tem menor perda que $U$. Assim, a melhor escolha entre as duas decisão é $U$.
+Para uma decisão $T$ podemos calcular a perda média $$R_T(\theta)=E(\mathcal{L}(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}$$ A função acima é conhecida como risco da decisão $T$ e é variável em $\theta$. Seu uso é simples: se $R_T(\theta)<R_U(\theta)$, então em média a decisão $T$ tem menor perda que $U$. Assim, a melhor escolha entre as duas decisão é $U$.
 
 O risco associado à perda quadrática é denominado erro quadrático médio:
 
 $$R_T(\theta)=E(T-\theta)^2= Var(T)+(E(T|\theta)-\theta)^2$$ Ele possui papel importante na inferência pontual frequentista, como por exemplo, para definir o melhor estimador não viciado de variância uniformemente mínima.
 
-O risco de Bayes da decisão $T$ é o valor esperado do seu respectivo risco \textit{a priori}, $$r_T=\int R(\theta)f(\theta)d\theta,$$ sendo portanto uma constante. Qualquer decisão com o menor risco para todo $\theta$ também tem o menor risco de Bayes. Dizemos que $T$ é o estimador de Bayes se $r_T<r_U$ para qualquer decisão $U$.
+O risco de Bayes da decisão $T$ é o valor esperado do seu respectivo risco \textit{a priori}, $$r_T=\int R_T(\theta)f(\theta)d\theta,$$ sendo portanto uma constante. Qualquer decisão com o menor risco para todo $\theta$ também tem o menor risco de Bayes. Dizemos que $T$ é o estimador de Bayes se $r_T<r_U$ para qualquer decisão $U$.
 
 ::: {.alert .alert-success}
 <strong>Teorema</strong>
@@ -46,5 +46,15 @@ $$\begin{align*}\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\thet
     &= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x}) \pm E(\theta|\mathbf{x})^2\\
     &=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +E(\theta^2|\mathbf{x})-E(\theta|\mathbf{x})^2\\
     &=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +Var(\theta|\mathbf{x})
-\end{align*}$$ A função acima é minimizada em $T(\mathbf{x})=E(\theta|\mathbf{x})$. Disto, mostra-se que $$r_T\geq Var(\theta|\mathbf{x})$$ e a variância da posteriori pode ser utilizada como medida de erro. Como a unidade deste erro está ap quadrado, é usual utilizarmos o desvio padrão da posteriori como medida de erro.
+\end{align*}$$ A função acima é minimizada em $T(\mathbf{x})=E(\theta|\mathbf{x})$. Disto, mostra-se que $$r_T\geq Var(\theta|\mathbf{x})$$ e a variância da posteriori pode ser utilizada como medida de erro. Como a unidade deste erro está ao quadrado, é usual utilizarmos o desvio padrão da posteriori como medida de erro.
+:::
+
+
+::: {#exm-}
+Seja $X_1,\ldots,X_n$ uma amostra aleatória do modelo Exponencial($\theta$) e considere a priori $\theta\sim\hbox{Gama}(a,b)$. Sabemos que $\theta|\boldsymbol{x}\sim\hbox{Gama}(s+n,r+\sum_{i=1}^n x_i)$. Então, o estimador de Bayes segundo a perda quadrática é
+$$T(\boldsymbol{x})=E(\theta|\boldsymbol{x})=\frac{s+n}{r+\sum_{i=1}^n x_i},$$
+e o erro associado é 
+$$\sqrt{Var(\theta|\boldsymbol{x})}=\sqrt{\frac{s+n}{(r+\sum_{i=1}^n x_i)^2}}=\sqrt{\frac{E(\theta|\boldsymbol{x})^2}{s+n}}=\frac{E(\theta|\boldsymbol{x})}{\sqrt{n+s}}.$$
+
+Note que, como esperado, o erro decresce na medida que $n$ cresce.
 :::

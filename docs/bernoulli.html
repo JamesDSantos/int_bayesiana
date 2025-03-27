@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Famílias conjugadas – Introdução à Inferência Bayesiana</title>
+<title>5&nbsp; O modelo Bernoulli – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./estimacao.html" rel="next">
-<link href="./intro.html" rel="prev">
+<link href="./teste.html" rel="next">
+<link href="./estimacao.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./conjugada.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bernoulli.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -189,7 +189,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./conjugada.html" class="sidebar-item-text sidebar-link active">
+  <a href="./conjugada.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></span></a>
   </div>
 </li>
@@ -201,7 +201,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./bernoulli.html" class="sidebar-item-text sidebar-link">
+  <a href="./bernoulli.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span></a>
   </div>
 </li>
@@ -257,9 +257,8 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#dados-que-serão-utilizados-neste-capítulo" id="toc-dados-que-serão-utilizados-neste-capítulo" class="nav-link active" data-scroll-target="#dados-que-serão-utilizados-neste-capítulo"><span class="header-section-number">3.1</span> Dados que serão utilizados neste capítulo</a></li>
-  <li><a href="#família-de-distribuições-conjugadas" id="toc-família-de-distribuições-conjugadas" class="nav-link" data-scroll-target="#família-de-distribuições-conjugadas"><span class="header-section-number">3.2</span> Família de distribuições conjugadas</a></li>
-  <li><a href="#prioris-conjugadas-fora-da-família-exponencial" id="toc-prioris-conjugadas-fora-da-família-exponencial" class="nav-link" data-scroll-target="#prioris-conjugadas-fora-da-família-exponencial"><span class="header-section-number">3.3</span> Prioris conjugadas fora da família exponencial</a></li>
+  <li><a href="#o-modelo-univariado" id="toc-o-modelo-univariado" class="nav-link active" data-scroll-target="#o-modelo-univariado"><span class="header-section-number">5.1</span> O modelo univariado</a></li>
+  <li><a href="#o-modelo-multivariado" id="toc-o-modelo-multivariado" class="nav-link" data-scroll-target="#o-modelo-multivariado"><span class="header-section-number">5.2</span> O modelo multivariado</a></li>
   </ul>
 </nav>
     </div>
@@ -268,7 +267,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></h1>
 </div>
 
 
@@ -285,78 +284,138 @@ window.Quarto = {
 </header>
 
 
-<section id="dados-que-serão-utilizados-neste-capítulo" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="dados-que-serão-utilizados-neste-capítulo"><span class="header-section-number">3.1</span> Dados que serão utilizados neste capítulo</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(gsheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Carregando pacotes exigidos: gsheet</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pacote 'gsheet' foi compilado no R versão 4.4.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">'https://docs.google.com/spreadsheets/d/1dLDCjA9a8UgXA9sJ1TNCVvRCDFITalewGkHlc__Eg20/edit?usp=sharing'</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(url)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 5
-  REGIAO              TIPO     SEXO  PERIODO   TOTAL
-  &lt;chr&gt;               &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;
-1 Região Norte        AGRESSAO Masc  2001-2003  7628
-2 Região Nordeste     AGRESSAO Masc  2001-2003 29652
-3 Região Sudeste      AGRESSAO Masc  2001-2003 63411
-4 Região Sul          AGRESSAO Masc  2001-2003 12428
-5 Região Centro-Oeste AGRESSAO Masc  2001-2003  9319
-6 Região Norte        AGRESSAO Fem   2001-2003   677</code></pre>
-</div>
-</div>
-</section>
-<section id="família-de-distribuições-conjugadas" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="família-de-distribuições-conjugadas"><span class="header-section-number">3.2</span> Família de distribuições conjugadas</h2>
-<p>::: {#def-Priori conjugada} Dizemos que a priori <span class="math inline">\(f(\boldsymbol{\theta})\)</span> é conjugada para a verossimilhança <span class="math inline">\(L(\boldsymbol{\theta})\)</span> se <em>priori</em> e <em>posteriori</em> pertencem à mesma família de distribuições. :::</p>
+<section id="o-modelo-univariado" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="o-modelo-univariado"><span class="header-section-number">5.1</span> O modelo univariado</h2>
+<p>A distribuição <span class="math inline">\(F\)</span> é dita pertencer à família Bernoulli, com parâmetro <span class="math inline">\(\theta\in(0,1)\)</span> se sua função de probabilidade é dada por <span class="math display">\[f(x|\theta)=\theta^x(1-\theta)^{1-x},\]</span> com <span class="math inline">\(x\in\{0,1\}\)</span>. É imediato que <span class="math inline">\(\theta\)</span> representa a probabilidade de <span class="math inline">\(\{X=1\}\)</span>, sendo este evento conhecido como ‘sucesso’ em alguns textos (em contrapartida, <span class="math inline">\(\{X=0\}\)</span> é conhecido como `fracasso’).</p>
+<p>Esta distribuição faz a importante conexão entre variáveis categóricas e aleatórias, tendo papel fundamental na inferência não paramétrica. Por exemplo, seja <span class="math inline">\(S\)</span> o sexo de um indivíduo selecionado ao acaso. Tal variável é categórica, podendo assumir os resultados <span class="math inline">\(A=\)</span>{feminino} ou <span class="math inline">\(A^c\)</span>. Contudo, pode-se definir a variável <span class="math inline">\(X=I(A)\)</span>, onde <span class="math inline">\(I(.)\)</span> é a função indicadora, definida por <span class="math display">\[I(A)=\left\{\begin{array}{ll} 1,&amp;\hbox{ se $A$ ocorre,} \\ 0,&amp;\hbox{ se $A^c$ ocorre.}\end{array}\right.
+\]</span> Deste modo <span class="math inline">\(X\sim\hbox{Bernoulli}(\theta)\)</span>.</p>
+<p>Como discutido anteriormente, o modelo Bernoulli(<span class="math inline">\(\theta\)</span>) pertence à família exponencial e sua distribuição conjugada é a Beta<span class="math inline">\((a,b)\)</span>. A distribuição a posteriori é dada por</p>
+<p><span class="math display">\[f(\theta|\boldsymbol{x})\propto \theta^{a+\sum_{i=1}^n x_i-1}(1-\theta)^{n-\sum_{i=1}^n x_i+b-1},\]</span> ou seja, <span class="math inline">\(\theta|\boldsymbol{x}\sim\hbox{Beta}(a+\sum_{i=1}^n x_i,n-\sum_{i=1}^n x_i + b).\)</span> Observe que <span class="math inline">\(a\)</span> pode ser interpretado como o número de sucessos a priori e <span class="math inline">\(b\)</span> o número de fracassos. É comum utilizarmos a priori Beta<span class="math inline">\((1,1)\)</span>, que é equivalente à Uniforme(0,1), como priori pouco informativa.</p>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 3.1</strong></span> Sejam <span class="math inline">\(X_1,\ldots,X_n\)</span> variáveis aleatórias independentes com <span class="math inline">\(X|\theta\sim \hbox{Bernoulli}(\theta)\)</span> e <span class="math inline">\(\theta\sim\hbox{Beta}(a,b)\)</span>. Então</p>
-<p><span class="math display">\[\begin{align}
-    f(\theta|\boldsymbol{x})&amp;\varpropto L(\theta)f(\theta) = \underbrace{\theta^{\sum_{i=1}^{n}x_i} (1-\theta)^{n-\sum_{i=1}^{n}x_i}}_{L(\theta)}\underbrace{\theta^{a-1}(1-\theta)^{b-1}}_{f(\theta)}\\
-    &amp;=\theta^{a+\sum_{i=1}^n x_i-1}(1-\theta)^{b+n-\sum_{i=1}^{n}x_i-1},
-    \end{align}\]</span> logo <span class="math inline">\(\theta|\boldsymbol{x}\sim\hbox{Beta}(a+\sum_{i=1}^{n}x_i,b+n-\sum_{i=1}^{n}x_i)\)</span> e a <em>priori</em> beta é conjugada para a verossimilhança Bernoulli.</p>
+<p><span class="theorem-title"><strong>Example 5.1</strong></span> <strong>As duas clínicas</strong></p>
+<p>Em 1846, Ignaz Philipp Semmelweis se tornou assistente na Primeira Clínica de Obstetrícia do Hospital Geral de Viena, Áustria (algo como o residente chefe). Nestas clínicas, o infanticídio era oferecido de graça. Em troca, o parto serveria de treinamento para os médicos e parteiras.</p>
+<p>Naquela época, a febre puerperal era comum e muitas vezes fatal, sendo que a mortalidade variava entre 10% a 35%.</p>
+<p>Haviam duas maternidades no Hospital Geral de Viena, conhecidas como a Primeira e a Segunda. A Primeira era considerada um local de morte e era evitada quando possível. Abaixo temos os dados registrados pelo Dr.&nbsp;Semmelweis</p>
+<p><span class="math display">\[\begin{array}{c|cc|cc}\hline \hbox{} &amp; \hbox{Primeira} &amp; \hbox{Clínica} &amp; \hbox{Segunda} &amp; \hbox{Clínica}\\ \hline
+\hbox{Ano} &amp; \hbox{Partos} &amp; \hbox{Mortes} &amp;\hbox{Partos} &amp; \hbox{Mortes} \\ \hline
+1841 &amp; 3036 &amp; 237 &amp; 2442 &amp; 86 \\
+1842 &amp; 3287 &amp; 518 &amp; 2659 &amp; 202 \\
+1843 &amp; 3060 &amp; 274 &amp; 2739 &amp; 164 \\
+1844 &amp; 3157 &amp; 260 &amp; 2956 &amp; 68 \\
+1845 &amp; 3492 &amp; 241 &amp; 3241 &amp; 66 \\
+1846 &amp; 4010 &amp; 459 &amp; 3754 &amp; 105 \\ \hline
+\hbox{Total} &amp; 20.042 &amp; 1.989 &amp; 17.791 &amp; 691 \\ \hline
+\end{array}\]</span></p>
+<p>Pode-se considerar que cada parto gera duas possibilidades de eventos: a sobrivência ou a morte da mãe. Considere que, dentro da mesma clínica, esses eventos para cada mãe são indepentes e possuem a mesma probabilidade. Seja <span class="math inline">\(\alpha\)</span> a probabilidade de morte na Primeira Clínica e <span class="math inline">\(\beta\)</span> a mesma probabilidade para a Segunda Clínica. Então, as funções de verossimilhança para cada probabilidade são</p>
+<p><span class="math display">\[\begin{align}L(\alpha)&amp;\propto \alpha^{1989} (1-\alpha)^{18053}\\L(\beta)&amp;\propto \beta^{691} (1-\beta)^{17100}\end{align}\]</span> Utilizando distribuição Uniforme(0,1) como priori para <span class="math inline">\(\alpha\)</span> e <span class="math inline">\(\beta\)</span>, teremos que</p>
+<p><span class="math display">\[\begin{align}\alpha|\boldsymbol{x}&amp;\sim \hbox{Beta}(1990,18054) \\\beta|\boldsymbol{x}&amp;\sim \hbox{Beta}(692,17101)\end{align}\]</span></p>
+<p>Abaixo, mostramos as duas posterioris, de onde podemos concluir que a probabilidade de morte na Primeira Clínica é certamente maior que na Segunda.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">1990</span>,<span class="dv">18054</span>),<span class="fl">0.03</span>,.<span class="dv">11</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">ylab=</span><span class="st">'Densidades a posteriori'</span>,<span class="at">xlab=</span><span class="st">'Probabilidade de morte'</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">300</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">692</span>,<span class="dv">17101</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">04</span>,.<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">290</span>,<span class="dv">210</span>),<span class="fu">c</span>(<span class="st">'Segunda Clínica'</span>,<span class="st">'Primeira Clínica'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<p>Famílias conjugadas são extremamente úteis tanto sob o ponto de vista algébrico quanto computacional. Entretanto, note que a definição de família conjugada é ampla. Por exemplo, <em>priori</em> e <em>posteriori</em> sempre pertencem à grande família de todas as distribuições de probabilidade, sendo esta a família conjugada trivial.</p>
-<p>Famílias conjugadas não triviais são raras, existindo principalmente quando a distribuição condicional dos dados pertence à família exponencial.</p>
-<p>::: {#def-Família exponencial} <strong>Definição</strong> Considere que <span class="math inline">\(\Theta\)</span> tem dimensão <span class="math inline">\(k\)</span>. Dizemos que <span class="math inline">\(X|\boldsymbol{\theta}\)</span> pertence à família exponencial (natural) se <span class="math display">\[f(x|\boldsymbol{\theta})=h(x)a(\boldsymbol{\theta})\exp\left\{\sum_{j=1}^k t_j(x)\theta_j\right\},\]</span> onde <span class="math inline">\(\mathcal{X}\)</span> não depende de <span class="math inline">\(\boldsymbol{\theta}\)</span>. Além disso, para a amostra (iid )<span class="math inline">\(X_1,\ldots,X_n|\boldsymbol{\theta}\)</span>, <span class="math display">\[f(\boldsymbol{x}|\boldsymbol{\theta})=h(\boldsymbol{x})a(\boldsymbol{\theta})^n\exp\left\{\sum_{j=1}^k T_j\theta_j\right\},\]</span> onde <span class="math inline">\(T_j=\sum_{i=1}^{n}t_j(x_i)\)</span> :::</p>
-<div id="thm-" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 3.1</strong></span> Se <span class="math inline">\(X|\boldsymbol{\theta}\)</span> pertence à família exponencial, então <span class="math display">\[f(\boldsymbol{\theta})=c(\boldsymbol{r},s)a(\boldsymbol{\theta})^s\exp\left\{\sum_{j=1}^k r_j\theta_j\right\}\]</span> é uma <em>priori</em> conjugada (ver O’Hagan (2005) para a existência dessa distribuição). A <em>posteriori</em> será dada por <span class="math display">\[f(\boldsymbol{\theta}|\boldsymbol{x})=c\left(\sum_{j=1}^k r_j+T_j,s+n\right)a(\boldsymbol{\theta})^{s+n}\exp\left\{\sum_{j=1}^k(r_j+T_j)\theta_j\right\}\]</span></p>
 </div>
-<div class="alert alert-success">
-<p><strong>Prova</strong></p>
-<p><span class="math display">\[\begin{align}
-f(\boldsymbol{\theta}|\boldsymbol{x})&amp;\varpropto \underbrace{a(\boldsymbol{\theta})^ne^{\sum_{j=1}^kT_j\theta_k}}_{L(\boldsymbol{\theta})}\underbrace{a(\boldsymbol{\theta})^s e^{\sum_{j=1}^k r_j\theta_k}}_{f(\boldsymbol{\theta})}\\
-&amp;a(\boldsymbol{\theta})^{n+s}e^{(\sum_{j=1}^{k}T_j+r_j)\theta_j}
-\end{align}\]</span></p>
 </div>
-<p>Considere que <span class="math inline">\(\boldsymbol{\theta}\sim C(\boldsymbol{r},s)\)</span> é a distribuição conjugada da verossimilhança. Isto implica em <span class="math inline">\(\boldsymbol{\theta}|\boldsymbol{x}\sim\hbox{C}(\boldsymbol{T}+\boldsymbol{r},s+n)\)</span>. Note que a <em>posteriori</em> atualiza a informação de <span class="math inline">\(s\)</span> para <span class="math inline">\(s+n\)</span> e de <span class="math inline">\(r_j\)</span> para <span class="math inline">\(T_j+r_j\)</span>. Logo, se imaginarmos que a priori é um experimento hipotético, <span class="math inline">\(s\)</span> seria o tamanho da amostra e <span class="math inline">\(\boldsymbol{r}\)</span> seriam as estatísticas suficientes deste modelo.</p>
-<p>Abaixo, segue uma lista de algumas prioris conjugadas para modelos na família exponencial.</p>
-<p><span class="math display">\[\begin{array}{c|c|c}\hline
-\text{Modelo} &amp; \text{Priori} &amp; \text{Posteriori} \\ \hline
-\text{Bernoulli}(\theta) &amp; \text{Beta}(a,b) &amp; \text{Beta}(a+\sum_i x_i, b+n-\sum_i x_i) \\ \hline
-\text{Poisson}(\lambda) &amp; \text{Gama}(a,b) &amp; \text{Gama}(a+\sum_i x_i, b+n) \\ \hline
-\text{Multinomial}(p_1,\ldots,p_k) &amp; \text{Dirichlet}(a_1,\ldots,a_k) &amp; \text{Dirichlet}(a_1+x_1,\ldots,a_k+x_k) \\
-\text{Exponencial}(\lambda) &amp; \text{Gama}(a,b) &amp; \text{Gama}(a+n, b+x_i) \\
-\text{Normal}(\mu,\phi^{-1})&amp;\text{Normal-Gama}(m_0,n_0,v_0,s_0^2)&amp;
-\text{Normal-Gama}(m_1,n_0+n,v_0+n,s_1^2)\\
-&amp; &amp; m_1= \frac{n}{n_1}\bar{x}+\frac{n_0}{n_1}m_0\\
-&amp; &amp; s_1^2=\frac{n_0n}{n_1^2}(\bar{x}-m_0)^2 + \frac{(n-1)s^2+n_0 s_0^2}{n_1} \\ \hline
-\end{array}
-\]</span></p>
+<p>O Dr.&nbsp;Semmelweis ainda não tinha descoberto o motivo dessas mortes até a morte de seu amigo Jakob Kolletschka, que se cortou acidentalmente com um bisturi durante uma autópsia. Durante a autópsia de Jakob, o Dr.&nbsp;Semmelweis viu semelhanças com as autópsias as mulheres que haviam morrido por febre puerperal.</p>
+<p>Na Primeira Clínica estudavam os alunos de medicina, que realizavam autópsias. Na Segunda Clínia estudavam as parteiras, que não realizam autópsias. A sua hipótese foi: estudantes de medicina carregavam partículas cadavéricas que causavam a febre puerperal. Com essa hipótese, ele instituiu que todos os médicos deveriam lavar as mãos antes dos partos em maio de 1847. Abaixo, seguem os dados de Junho de 1848 até Março 1849, apenas para a Primeira Clínica</p>
+<p><span class="math display">\[\begin{array}{c|cc} \hline \hbox{Período} &amp; \hbox{Partos} &amp; \hbox{Mortes}\\ \hline
+\hbox{Jun/1847-Dez/1847} &amp; 1841 &amp; 56 \\
+\hbox{Jan/1848-Dez/1848} &amp; 3556 &amp; 45 \\
+\hbox{Jan/1849-Mar/1849} &amp; 1198 &amp; 41 \\ \hline
+\hbox{Total} &amp; 6.595 &amp; 142 \\ \hline
+\end{array}\]</span></p>
+<p>Seja <span class="math inline">\(\gamma\)</span> a probabilidade de morte por febre puerperal na Primeira Clínica após a instrução de lavagem das mãos. Sua função de verossimilhança é</p>
+<p><span class="math display">\[L(\gamma)\propto \gamma^{142}(1-\gamma)^{6453}.\]</span> Assumindo a priori Uniforme(0,1) para <span class="math inline">\(\gamma,\)</span> teremos que <span class="math inline">\(\gamma|\boldsymbol{x}\sim\hbox{Beta}(143,6454)\)</span>. Abaixo, apresentamos o gráfico das três densidades a posteriori obtidas, mostrando que <span class="math inline">\(\gamma\)</span> é certamente menor que as outras probabilidades.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">1990</span>,<span class="dv">18054</span>),<span class="dv">0</span>,.<span class="dv">11</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">ylab=</span><span class="st">'Densidades a posteriori'</span>,<span class="at">xlab=</span><span class="st">'Probabilidade de morte'</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">300</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">692</span>,<span class="dv">17101</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">143</span>,<span class="dv">6454</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">01</span>,.<span class="dv">04</span>,.<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">250</span>,<span class="dv">290</span>,<span class="dv">212</span>),<span class="fu">c</span>(<span class="st">'Primeira Clínica </span><span class="sc">\n</span><span class="st">(1847-1849)'</span>,<span class="st">'Segunda Clínica'</span>,<span class="st">'Primeira Clínica</span><span class="sc">\n</span><span class="st">(1841-1846)'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Após a publicação de seus achados, as ideia do Dr.&nbsp;Semmelweis ideias foram amplamente rejeitadas por seus colegas médicos, que se sentiram ofendidos com a sugestão de que poderiam estar causando a morte de seus pacientes. A rejeição e o ridículo que Semmelweis enfrentou levaram a um declínio em sua saúde mental. Ele foi internado no hospício em 1865, onde morreu pouco tempo depois. Morreu em 13 de agosto de 1865, em um hospício em Viena, aos 47 anos. A causa exata de sua morte ainda é debatida, mas a teoria mais aceita é que ele morreu de septicemia, uma infecção sanguínea, após ser espancado pelos guardas do hospício.</p>
+</div>
 </section>
-<section id="prioris-conjugadas-fora-da-família-exponencial" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="prioris-conjugadas-fora-da-família-exponencial"><span class="header-section-number">3.3</span> Prioris conjugadas fora da família exponencial</h2>
-<p>Famílias conjugadas fora da família exponencial são raras. Seja <span class="math inline">\(X_1,\ldots,X_n\)</span> variáveis aleatória independentes com <span class="math inline">\(X_1|\phi,\psi\sim\hbox{Binomial Negativa}(\psi,\phi)\)</span>, onde</p>
-<p><span class="math display">\[f(x|\phi,\psi)=\frac{\Gamma(x+\psi)}{\Gamma(\psi)x!}\phi^\psi (1-\phi)^x,\]</span> com <span class="math inline">\(\psi&gt;0\)</span>, <span class="math inline">\(\phi\in(0,1)\)</span> e <span class="math inline">\(x\in\mathbb{N}\)</span>. Se <span class="math inline">\(\psi\)</span> é conhecido, então <span class="math display">\[L(\boldsymbol{\theta})=\underbrace{\left[\frac{\prod_{i=1}^n\Gamma(x_i+\psi)}{\Gamma(\psi)^n\prod_{i=1}^n x_i!}\right]}_{h(\boldsymbol{x})}\underbrace{\phi^{n\psi}}_{a(\phi)}\exp\left\{ \underbrace{\sum_{i=1}^n x_i}_{t(\boldsymbol{x})} \underbrace{\log(1-\phi)}_{w(\phi)}\right\} \]</span></p>
-<p>Então, <span class="math display">\[\begin{align}
-f(\phi|\psi)&amp;=c(r,s)a(\phi)^s e^{rw(\phi)}\\
-&amp;=c(r,s)\phi^{s\psi}(1-\phi)^{r}
-\end{align}\]</span> é uma <span class="math inline">\(*priori*\)</span> conjugada. Da expressão acima segue que <span class="math inline">\(\phi|\psi \sim \hbox{Beta}(s\psi+1,r+1)\)</span>. A <span class="math inline">\(*posteriori*\)</span> (condicional) por sua vez é dada por <span class="math display">\[f(\phi|\boldsymbol{x},\psi)\varpropto \phi^{\psi(s+n)}(1-\phi)^{r+\sum_{i=1}^{n}x_i},\]</span> onde ainda <span class="math inline">\(\phi|\psi,\boldsymbol{x}\sim\hbox{Beta}(\psi(s+n)+1,r+\sum_{i=1}^{n}x_i+1)\)</span> Note que para fazer a inferência completa, ainda necessitamos de <span class="math inline">\(\psi|\boldsymbol{x}\)</span>, uma vez que <span class="math display">\[f(\phi,\psi|\boldsymbol{x})=f(\phi|\psi,\boldsymbol{x})f(\psi|\boldsymbol{x}).\]</span> Outro método de obter a conjunta <span class="math inline">\((\phi,\psi|\boldsymbol{x})\)</span>, sem a necessidade de calcular <span class="math inline">\(\psi|\boldsymbol{x}\)</span> será discutido na próxima aula.</p>
+<section id="o-modelo-multivariado" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="o-modelo-multivariado"><span class="header-section-number">5.2</span> O modelo multivariado</h2>
+<p>A distribuição Bernoulli pode ser generalizada para o caso multivariado: considere um evento aleatório com possibilidades <span class="math inline">\(A_1,\ldots,A_k\)</span>. Seja <span class="math inline">\(X_j=I(A_j)\)</span> e seja <span class="math inline">\(\theta_j\)</span> a probabilidade do evento resultar em <span class="math inline">\(A_j\)</span>. Então, o vetor <span class="math inline">\(\boldsymbol{X}=(X_1,\ldots,X_k)\)</span> tem distribuição Bernoulli multivariada, cuja função de probabilidade é dada por <span class="math display">\[f(\boldsymbol{x}|\boldsymbol{\theta})=\prod_{j=1}^k\theta_j^{x_{j}},\]</span> onde <span class="math inline">\(x_j\in\{0,1\}\)</span>, <span class="math inline">\(\sum_{j=1}^kx_j=1\)</span>, <span class="math inline">\(\theta_j\in(0,1)\)</span> e <span class="math inline">\(\sum_{j=1}^k\theta_j=1\)</span>. É importante notar que vetor <span class="math inline">\(\boldsymbol{\theta}\)</span> tem apenas <span class="math inline">\(k-1\)</span> parâmetros de fato, uma vez que <span class="math inline">\(\theta_k=1-\sum_{j=1}^{k-1}\theta_j\)</span>. Conjuntos do tipo <span class="math display">\[\mathcal{S}^k=\left\{(\theta_1,\ldots,\theta_{k-1}):0&lt;\theta_j&lt;1,0&lt;\sum_{j=1}^{k-1}\theta_j&lt;1\right\}\]</span> são denominados simplex.</p>
+<p>Seja <span class="math inline">\(\boldsymbol{x}_1,\ldots,\boldsymbol{x}_n\)</span> uma amostra de vetores Bernoulli Multivariada(<span class="math inline">\(\theta_1,\ldots,\theta_k\)</span>), onde <span class="math inline">\(\boldsymbol{x}_i=\{x_{i,1},\ldots,x_{i,k}\}\)</span>. Então,</p>
+<p><span class="math display">\[\begin{align}L(\boldsymbol{\theta})&amp;=\prod_{i=1}^nf(\boldsymbol{x}_i|\boldsymbol{\theta})=\prod_{i=1}^n\left(\prod_{j=1}^k \theta_j^{x_{i,j}}\right)=\prod_{j=1}^k \prod_{i=1}^n\theta_j^{x_{i,j}}\\&amp;=\prod_{j=1}^k \theta_j^{\sum_{i=1}^nx_{i,j}}=\prod_{j=1}^n\theta_j^{n_j}\end{align}\]</span> onde <span class="math inline">\(n_j\)</span> é o número de vezes que ocorreu a categoria <span class="math inline">\(A_j\)</span>. É imediado que</p>
+<p><span class="math display">\[L(\boldsymbol{\theta})=\exp\left\{\sum_{j=1}^k n_j\log(\theta_j)\right\},\]</span> o que implica que este modelo pertence à família exponencial. Seu modelo conjugado é a Dirichlet(<span class="math inline">\(a_1,\ldots,a_k\)</span>), cuja função densidade é <span class="math display">\[f(\theta_1,\ldots,\theta_k)=\frac{\Gamma\left(\sum_{j=1}^k a_j\right)}{\prod_{j=1}^k \Gamma(a_j)}\prod_{j=1}^k \theta^{a_j-1},\]</span> onde <span class="math inline">\((\theta_1,\ldots,\theta_{k-1})\)</span> pertence ao simplex <span class="math inline">\(\mathcal{S}^k\)</span>.</p>
+<p>A Dirichlet<span class="math inline">\((a_1,\ldots,a_k)\)</span> possui as seguintes propriedades:</p>
+<ul>
+<li><span class="math inline">\(\theta_j\sim\hbox{Beta}(a_j,\sum_{i\neq j}a_i)\)</span></li>
+<li><span class="math inline">\((\theta_1,\ldots,\theta_i+\theta_j,\ldots,\theta_k)\sim\hbox{Diriculet}(a_1,\ldots,a_i+a_j,\ldots,a_k)\)</span></li>
+</ul>
+<p>Da primeira propriedade, concluímos que <span class="math display">\[E(\theta_j)=\frac{a_j}{\sum_{i=1}^k a_i},\;\;Var(\theta_j)=\frac{E(\theta_j)(1-E(\theta_j))}{\sum_{i=1}^k a_i+1}.\]</span></p>
+<p>Utilizando o modelo conjugado, a distribuição a posteriori de <span class="math inline">\(\theta_1,\ldots,\theta_k\)</span> é</p>
+<p><span class="math display">\[f(\boldsymbol{\theta}|\boldsymbol{x})\propto \prod_{i=j}^k \theta_j^{n_j+a_j-1}\]</span> ou seja, <span class="math inline">\(\boldsymbol{\theta}|\boldsymbol{x}\sim\hbox{Dirichlet}(n_1+a_1,\ldots,n_k+a_k)\)</span>. Novamente, pode-se utilizar <span class="math inline">\(a_1=\cdots=a_k=1\)</span> para obter uma priori pouco informativa.</p>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 5.2</strong></span> <strong>Imagem corporal</strong></p>
+<p>O projeto Estado nutricional e sua relação com a imagem corporal em escolares do município de Manaus foi submetido ao LabEst em 2013. Nele, estudantes identificavam como gostaria que fosse o seu corpo segundo a Escala de Stunkard, apresentada na imagem abaixo. Em seguida, uma série de medidas foram realizadas para determinar a real classificação do estudante. Com base nessas informações, cada estudante foi classificado segundo sua satisfação com o próprio corpo do seguinte modo:</p>
+<ul>
+<li><p>Satisfeito: seu desejo é equivalente ao seu estado atual.</p></li>
+<li><p>Insatisfeito por excesso: o estudante gostaria ter medidas menores.</p></li>
+<li><p>Insatisfeito por magreza: o estudante gostaria ter medidas maiores.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="percepcao-da-imagem-corporal-do-estudante-01.jpg" class="img-fluid figure-img"></p>
+<figcaption>Escala de Stunkard</figcaption>
+</figure>
+</div>
+<p>Neste exemplo, vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumarizadas na tabela abaixo.</p>
+<p><span class="math display">\[\begin{array}{c|ccc|c}\hline
+&amp;\hbox{Satisfeito} &amp; \hbox{Insatifeito por excesso} &amp; \hbox{Insatisfeito por magreza} &amp;\hbox{Total}\\ \hline
+\hbox{Masculino} &amp; 24 &amp; 10 &amp; 24 &amp; 58 \\
+\hbox{Feminino} &amp; 14 &amp; 22 &amp; 24 &amp; 60 \\ \hline
+\end{array}
+\]</span> Cada estudante pode assumir uma das três classificações. Sejam <span class="math inline">\(\alpha_S,\alpha_E,\alpha_M\)</span> as probabilidades de alguém do sexo masculino estar classificado como Satisfeito, Insatisfeito por Excesso ou Insatisfeito por magreza, respectivamente. Então a função de verossimilhança para <span class="math inline">\(\boldsymbol{\alpha}\)</span> é</p>
+<p><span class="math display">\[L(\boldsymbol{\alpha})=\alpha_S^{24}\alpha_E^{10}\alpha_M^{24}.\]</span> Analogamente, fazendo <span class="math inline">\(\boldsymbol{\beta}=(\beta_S,\beta_E,\beta_M)\)</span>, as mesmas probabilidades para o sexo feminino, teremos que</p>
+<p><span class="math display">\[L(\boldsymbol{\alpha})=\beta_S^{14}\beta_E^{22}\\beta_M^{24}.\]</span></p>
+<p>Utilizando a priori Dirichelt(1,1,1) tanto para <span class="math inline">\(\boldsymbol{\alpha}\)</span> quanto para <span class="math inline">\(\boldsymbol{\beta}\)</span>, teremos que as respectivas posterioris para <span class="math inline">\(\boldsymbol{\alpha}\)</span> e <span class="math inline">\(\boldsymbol{\beta}\)</span> são Dirichelt(25,11,25) e Dirichlet(15,23,25).</p>
+<p>As posterioris para <span class="math inline">\(\alpha_M\)</span> e <span class="math inline">\(\beta_M\)</span> são Beta(25,36)e Beta(25,38). As estimativas pontuais são 0,40 e 0,39, respectivamente. A imagem abaixo mostra a insatisfação por magreza entre os sexos deve ser a mesma.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">25</span>,<span class="dv">36</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">'Probabilidade de insatisfação por magreza'</span>, <span class="at">ylab=</span> <span class="st">'Densidades marginais a posteriori'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>),<span class="at">xlim=</span><span class="fu">c</span>(.<span class="dv">1</span>,.<span class="dv">8</span>),<span class="at">col=</span><span class="st">'blue'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">25</span>,<span class="dv">38</span>),<span class="at">add =</span> T, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">'red'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">6</span>,.<span class="dv">2</span>),<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">6</span>), <span class="fu">c</span>(<span class="st">'Masculino'</span>,<span class="st">'Feminino'</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">'blue'</span>,<span class="st">'red'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As posterioris para <span class="math inline">\(\alpha_E\)</span> e <span class="math inline">\(\beta_E\)</span> são Beta(11,50)e Beta(23,40). As estimativas pontuais são 0,21 e 0,36, respectivamente. A imagem abaixo mostra que as mulheres em geral parecem possuir maior probabilidade de insatisfação por excesso.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">11</span>,<span class="dv">50</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">'Probabilidade de insatisfação por excesso'</span>, <span class="at">ylab=</span> <span class="st">'Densidades marginais a posteriori'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">6</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">23</span>,<span class="dv">40</span>),<span class="at">add =</span> T, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">2</span>,.<span class="dv">4</span>),<span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">7</span>), <span class="fu">c</span>(<span class="st">'Masculino'</span>,<span class="st">'Feminino'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Podemos então construir a hipótese <span class="math inline">\(H:\alpha_E&lt;\beta_E\)</span> e, para testá-la, devemos ser capazes de calcular</p>
+<p><span class="math display">\[P(\alpha_E&lt;\beta_E|\hbox{dados})\]</span> Vamos discutir como realizar testes de hipóteses na próxima aula.</p>
+</div>
 
 
 </section>
@@ -784,13 +843,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./intro.html" class="pagination-link" aria-label="Introdução">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introdução</span></span>
+      <a href="./estimacao.html" class="pagination-link" aria-label="O estimador de bayes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./estimacao.html" class="pagination-link" aria-label="O estimador de bayes">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./teste.html" class="pagination-link" aria-label="Testes de hipóteses">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

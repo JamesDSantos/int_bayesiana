@@ -1,0 +1,172 @@
+# O modelo Bernoulli
+
+## O modelo univariado
+
+A distribuição $F$ é dita pertencer à família Bernoulli, com parâmetro $\theta\in(0,1)$ se sua função de probabilidade é dada por
+$$f(x|\theta)=\theta^x(1-\theta)^{1-x},$$
+com $x\in\{0,1\}$. É imediato que $\theta$ representa a probabilidade de $\{X=1\}$, sendo este evento conhecido como 'sucesso' em alguns textos (em contrapartida, $\{X=0\}$ é conhecido como `fracasso').
+
+Esta distribuição faz a importante conexão entre variáveis categóricas e aleatórias, tendo papel fundamental na inferência não paramétrica. Por exemplo, seja $S$ o sexo de um indivíduo selecionado ao acaso. Tal variável é categórica, podendo assumir os resultados $A=$\{feminino\} ou $A^c$. Contudo, pode-se definir a variável $X=I(A)$, onde $I(.)$ é a função indicadora, definida por
+$$I(A)=\left\{\begin{array}{ll} 1,&\hbox{ se $A$ ocorre,} \\ 0,&\hbox{ se $A^c$ ocorre.}\end{array}\right.
+$$
+Deste modo $X\sim\hbox{Bernoulli}(\theta)$.
+
+Como discutido anteriormente, o modelo Bernoulli($\theta$) pertence à família exponencial e sua distribuição conjugada é a Beta$(a,b)$. A distribuição a posteriori é dada por
+
+$$f(\theta|\boldsymbol{x})\propto \theta^{a+\sum_{i=1}^n x_i-1}(1-\theta)^{n-\sum_{i=1}^n x_i+b-1},$$
+ou seja, $\theta|\boldsymbol{x}\sim\hbox{Beta}(a+\sum_{i=1}^n x_i,n-\sum_{i=1}^n x_i + b).$ Observe que $a$ pode ser interpretado como o número de sucessos a priori e $b$ o número de fracassos. É comum utilizarmos a priori Beta$(1,1)$, que é equivalente à Uniforme(0,1), como priori pouco informativa.
+
+:::{#exm-}
+**As duas clínicas**
+
+Em 1846, Ignaz Philipp Semmelweis se tornou assistente na Primeira Clínica de Obstetrícia do Hospital Geral de Viena, Áustria (algo como o
+residente chefe). Nestas clínicas, o infanticídio era oferecido de graça. Em troca, o parto serveria de treinamento para os médicos e parteiras.
+
+Naquela época, a febre puerperal era comum e muitas vezes fatal, sendo que a mortalidade variava entre 10% a 35%.
+
+Haviam duas maternidades no Hospital Geral de Viena, conhecidas como a Primeira e a Segunda. A Primeira era considerada um local de morte e era evitada quando possível. Abaixo temos os dados registrados pelo Dr. Semmelweis
+
+$$\begin{array}{c|cc|cc}\hline \hbox{} & \hbox{Primeira} & \hbox{Clínica} & \hbox{Segunda} & \hbox{Clínica}\\ \hline
+\hbox{Ano} & \hbox{Partos} & \hbox{Mortes} &\hbox{Partos} & \hbox{Mortes} \\ \hline 
+1841 & 3036 & 237 & 2442 & 86 \\
+1842 & 3287 & 518 & 2659 & 202 \\
+1843 & 3060 & 274 & 2739 & 164 \\
+1844 & 3157 & 260 & 2956 & 68 \\
+1845 & 3492 & 241 & 3241 & 66 \\
+1846 & 4010 & 459 & 3754 & 105 \\ \hline
+\hbox{Total} & 20.042 & 1.989 & 17.791 & 691 \\ \hline
+\end{array}$$
+
+Pode-se considerar que cada parto gera duas possibilidades de eventos: a sobrivência ou a morte da mãe. Considere que, dentro da mesma clínica, esses eventos para cada mãe são indepentes e possuem a mesma probabilidade. Seja $\alpha$ a probabilidade de morte na Primeira Clínica e $\beta$ a mesma probabilidade para a Segunda Clínica. Então, as funções de verossimilhança para cada probabilidade são
+
+$$\begin{align}L(\alpha)&\propto \alpha^{1989} (1-\alpha)^{18053}\\L(\beta)&\propto \beta^{691} (1-\beta)^{17100}\end{align}$$
+Utilizando distribuição Uniforme(0,1) como priori para $\alpha$ e $\beta$, teremos que
+
+$$\begin{align}\alpha|\boldsymbol{x}&\sim \hbox{Beta}(1990,18054) \\\beta|\boldsymbol{x}&\sim \hbox{Beta}(692,17101)\end{align}$$
+
+Abaixo, mostramos as duas posterioris, de onde podemos concluir que a probabilidade de morte na Primeira Clínica é certamente maior que na Segunda.
+
+```{r}
+curve(dbeta(x,1990,18054),0.03,.11, lwd = 2,ylab='Densidades a posteriori',xlab='Probabilidade de morte',ylim=c(0,300))
+curve(dbeta(x,692,17101), lwd = 2, add = T)
+text(c(.04,.1),c(290,210),c('Segunda Clínica','Primeira Clínica'))
+```
+O Dr. Semmelweis ainda não tinha descoberto o motivo dessas mortes até a morte de seu amigo Jakob Kolletschka, que se cortou acidentalmente com
+um bisturi durante uma autópsia. Durante a autópsia de Jakob, o Dr. Semmelweis viu semelhanças com as autópsias as mulheres que haviam morrido por febre puerperal.
+
+Na Primeira Clínica estudavam os alunos de medicina, que realizavam autópsias. Na Segunda Clínia estudavam as parteiras, que não realizam
+autópsias. A sua hipótese foi: estudantes de medicina carregavam partículas cadavéricas que causavam a febre puerperal. Com essa hipótese, ele instituiu que todos os médicos deveriam lavar as
+mãos antes dos partos em maio de 1847. Abaixo, seguem os dados de Junho de 1848 até Março 1849, apenas para a Primeira Clínica
+
+$$\begin{array}{c|cc} \hline \hbox{Período} & \hbox{Partos} & \hbox{Mortes}\\ \hline
+\hbox{Jun/1847-Dez/1847} & 1841 & 56 \\ 
+\hbox{Jan/1848-Dez/1848} & 3556 & 45 \\ 
+\hbox{Jan/1849-Mar/1849} & 1198 & 41 \\ \hline
+\hbox{Total} & 6.595 & 142 \\ \hline
+\end{array}$$
+
+
+Seja $\gamma$ a probabilidade de morte por febre puerperal na Primeira Clínica após a instrução de lavagem das mãos. Sua função de verossimilhança é
+
+$$L(\gamma)\propto \gamma^{142}(1-\gamma)^{6453}.$$
+Assumindo a priori Uniforme(0,1) para $\gamma,$ teremos que $\gamma|\boldsymbol{x}\sim\hbox{Beta}(143,6454)$. Abaixo, apresentamos o gráfico das três densidades a posteriori obtidas, mostrando que $\gamma$ é certamente menor que as outras probabilidades.
+
+```{r}
+curve(dbeta(x,1990,18054),0,.11, lwd = 2,ylab='Densidades a posteriori',xlab='Probabilidade de morte',ylim=c(0,300))
+curve(dbeta(x,692,17101), lwd = 2, add = T)
+curve(dbeta(x,143,6454), lwd = 2, add = T)
+
+text(c(.01,.04,.1),c(250,290,212),c('Primeira Clínica \n(1847-1849)','Segunda Clínica','Primeira Clínica\n(1841-1846)'))
+
+```
+
+Após a publicação de seus achados, as ideia do Dr. Semmelweis ideias foram amplamente rejeitadas por seus colegas médicos, que se sentiram ofendidos com a sugestão de que poderiam estar causando a morte de seus pacientes. A rejeição e o ridículo que Semmelweis enfrentou levaram a um declínio em sua saúde mental. Ele foi internado no hospício em 1865, onde morreu pouco tempo depois. Morreu em 13 de agosto de 1865, em um hospício em Viena, aos 47 anos. A causa exata de sua morte ainda é debatida, mas a teoria mais aceita é que ele morreu de septicemia, uma infecção sanguínea, após ser espancado pelos guardas do hospício.
+
+:::
+
+
+## O modelo multivariado
+
+A distribuição Bernoulli pode ser generalizada para o caso multivariado: considere um evento aleatório com possibilidades $A_1,\ldots,A_k$. Seja $X_j=I(A_j)$ e seja $\theta_j$ a probabilidade do evento resultar em $A_j$. Então, o vetor $\boldsymbol{X}=(X_1,\ldots,X_k)$ tem distribuição Bernoulli multivariada, cuja função de probabilidade é dada por
+$$f(\boldsymbol{x}|\boldsymbol{\theta})=\prod_{j=1}^k\theta_j^{x_{j}},$$ 
+onde $x_j\in\{0,1\}$, $\sum_{j=1}^kx_j=1$, $\theta_j\in(0,1)$ e $\sum_{j=1}^k\theta_j=1$. É importante notar que vetor $\boldsymbol{\theta}$ tem apenas $k-1$ parâmetros de fato, uma vez que $\theta_k=1-\sum_{j=1}^{k-1}\theta_j$. Conjuntos do tipo
+$$\mathcal{S}^k=\left\{(\theta_1,\ldots,\theta_{k-1}):0<\theta_j<1,0<\sum_{j=1}^{k-1}\theta_j<1\right\}$$
+são denominados simplex. 
+
+Seja $\boldsymbol{x}_1,\ldots,\boldsymbol{x}_n$ uma amostra de vetores Bernoulli Multivariada($\theta_1,\ldots,\theta_k$), onde $\boldsymbol{x}_i=\{x_{i,1},\ldots,x_{i,k}\}$. Então,
+
+$$\begin{align}L(\boldsymbol{\theta})&=\prod_{i=1}^nf(\boldsymbol{x}_i|\boldsymbol{\theta})=\prod_{i=1}^n\left(\prod_{j=1}^k \theta_j^{x_{i,j}}\right)=\prod_{j=1}^k \prod_{i=1}^n\theta_j^{x_{i,j}}\\&=\prod_{j=1}^k \theta_j^{\sum_{i=1}^nx_{i,j}}=\prod_{j=1}^n\theta_j^{n_j}\end{align}$$
+onde $n_j$ é o número de vezes que ocorreu a categoria $A_j$. É imediado que
+
+$$L(\boldsymbol{\theta})=\exp\left\{\sum_{j=1}^k n_j\log(\theta_j)\right\},$$ 
+o que implica que este modelo pertence à família exponencial. Seu modelo conjugado é a Dirichlet($a_1,\ldots,a_k$), cuja função densidade é
+$$f(\theta_1,\ldots,\theta_k)=\frac{\Gamma\left(\sum_{j=1}^k a_j\right)}{\prod_{j=1}^k \Gamma(a_j)}\prod_{j=1}^k \theta^{a_j-1},$$
+onde $(\theta_1,\ldots,\theta_{k-1})$ pertence ao simplex $\mathcal{S}^k$. 
+
+A Dirichlet$(a_1,\ldots,a_k)$ possui as seguintes propriedades:
+
+* $\theta_j\sim\hbox{Beta}(a_j,\sum_{i\neq j}a_i)$
+* $(\theta_1,\ldots,\theta_i+\theta_j,\ldots,\theta_k)\sim\hbox{Diriculet}(a_1,\ldots,a_i+a_j,\ldots,a_k)$
+
+Da primeira propriedade, concluímos que 
+$$E(\theta_j)=\frac{a_j}{\sum_{i=1}^k a_i},\;\;Var(\theta_j)=\frac{E(\theta_j)(1-E(\theta_j))}{\sum_{i=1}^k a_i+1}.$$
+
+Utilizando o modelo conjugado, a distribuição a posteriori de $\theta_1,\ldots,\theta_k$ é
+
+$$f(\boldsymbol{\theta}|\boldsymbol{x})\propto \prod_{i=j}^k \theta_j^{n_j+a_j-1}$$
+ou seja, $\boldsymbol{\theta}|\boldsymbol{x}\sim\hbox{Dirichlet}(n_1+a_1,\ldots,n_k+a_k)$. Novamente, pode-se utilizar $a_1=\cdots=a_k=1$ para obter uma priori pouco informativa.
+
+::: {#exm-}
+**Imagem corporal**
+
+O projeto Estado nutricional e sua relação com a imagem corporal em escolares do município de Manaus foi submetido ao LabEst em 2013. Nele, estudantes identificavam como gostaria que fosse o seu corpo segundo a Escala de Stunkard, apresentada na imagem abaixo. Em seguida, uma série de medidas foram realizadas para determinar a real classificação do estudante. Com base nessas informações, cada estudante foi classificado segundo sua satisfação com o próprio corpo do seguinte modo:
+
+* Satisfeito: seu desejo é equivalente ao seu estado atual.
+
+* Insatisfeito por excesso: o estudante gostaria ter medidas menores.
+
+* Insatisfeito por magreza: o estudante gostaria ter medidas maiores.
+
+
+![Escala de Stunkard](percepcao-da-imagem-corporal-do-estudante-01.jpg)
+
+Neste exemplo, vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumarizadas na tabela abaixo.
+
+$$\begin{array}{c|ccc|c}\hline
+&\hbox{Satisfeito} & \hbox{Insatifeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
+\hbox{Masculino} & 24 & 10 & 24 & 58 \\
+\hbox{Feminino} & 14 & 22 & 24 & 60 \\ \hline
+\end{array}
+$$
+Cada estudante pode assumir uma das três classificações. Sejam $\alpha_S,\alpha_E,\alpha_M$ as probabilidades de alguém do sexo masculino estar classificado como Satisfeito, Insatisfeito por Excesso ou Insatisfeito por magreza, respectivamente. Então a função de verossimilhança para $\boldsymbol{\alpha}$ é
+
+$$L(\boldsymbol{\alpha})=\alpha_S^{24}\alpha_E^{10}\alpha_M^{24}.$$
+Analogamente, fazendo $\boldsymbol{\beta}=(\beta_S,\beta_E,\beta_M)$, as mesmas probabilidades para o sexo feminino, teremos que
+
+$$L(\boldsymbol{\alpha})=\beta_S^{14}\beta_E^{22}\\beta_M^{24}.$$
+
+Utilizando a priori Dirichelt(1,1,1) tanto para $\boldsymbol{\alpha}$ quanto para $\boldsymbol{\beta}$, teremos que as respectivas posterioris para $\boldsymbol{\alpha}$  e $\boldsymbol{\beta}$ são Dirichelt(25,11,25) e Dirichlet(15,23,25).
+
+
+As posterioris para $\alpha_M$ e $\beta_M$ são Beta(25,36)e Beta(25,38). As estimativas pontuais são 0,40 e 0,39, respectivamente. A imagem abaixo mostra a insatisfação por magreza entre os sexos deve ser a mesma.
+
+```{r}
+curve(dbeta(x,25,36), lwd=2, xlab = 'Probabilidade de insatisfação por magreza', ylab= 'Densidades marginais a posteriori', ylim=c(0,8),xlim=c(.1,.8),col='blue')
+curve(dbeta(x,25,38),add = T, lwd=2, col='red')
+text(c(.6,.2),c(6,6), c('Masculino','Feminino'),col=c('blue','red'))
+```
+
+As posterioris para $\alpha_E$ e $\beta_E$ são Beta(11,50)e Beta(23,40). As estimativas pontuais são 0,21 e 0,36, respectivamente. A imagem abaixo mostra que as mulheres em geral parecem possuir maior probabilidade de insatisfação por excesso.
+
+
+```{r}
+curve(dbeta(x,11,50), lwd=2, xlab = 'Probabilidade de insatisfação por excesso', ylab= 'Densidades marginais a posteriori', ylim=c(0,10),xlim=c(0,.6))
+curve(dbeta(x,23,40),add = T, lwd=2)
+text(c(.2,.4),c(9,7), c('Masculino','Feminino'))
+
+```
+Podemos então construir a hipótese $H:\alpha_E<\beta_E$ e, para testá-la, devemos ser capazes de calcular
+
+$$P(\alpha_E<\beta_E|\hbox{dados})$$
+Vamos discutir como realizar testes de hipóteses na próxima aula.
+:::

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>8&nbsp; Aproximação normal e seu uso com o Metropolis-Hastings – Introdução à Inferência Bayesiana</title>
+<title>9&nbsp; Aproximação normal e seu uso com o Metropolis-Hastings – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aproximacaoNormal.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aproximacaoNormal.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -201,38 +201,44 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./bernoulli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./teste.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -251,8 +257,8 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#aproximação-da-posteriori-pela-distribuição-normal" id="toc-aproximação-da-posteriori-pela-distribuição-normal" class="nav-link active" data-scroll-target="#aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">8.1</span> Aproximação da posteriori pela distribuição normal</a></li>
-  <li><a href="#metropolis-revisitado" id="toc-metropolis-revisitado" class="nav-link" data-scroll-target="#metropolis-revisitado"><span class="header-section-number">8.2</span> Metropolis revisitado</a></li>
+  <li><a href="#aproximação-da-posteriori-pela-distribuição-normal" id="toc-aproximação-da-posteriori-pela-distribuição-normal" class="nav-link active" data-scroll-target="#aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">9.1</span> Aproximação da posteriori pela distribuição normal</a></li>
+  <li><a href="#metropolis-revisitado" id="toc-metropolis-revisitado" class="nav-link" data-scroll-target="#metropolis-revisitado"><span class="header-section-number">9.2</span> Metropolis revisitado</a></li>
   </ul>
 </nav>
     </div>
@@ -261,7 +267,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></h1>
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></h1>
 </div>
 
 
@@ -278,8 +284,8 @@ window.Quarto = {
 </header>
 
 
-<section id="aproximação-da-posteriori-pela-distribuição-normal" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">8.1</span> Aproximação da posteriori pela distribuição normal</h2>
+<section id="aproximação-da-posteriori-pela-distribuição-normal" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">9.1</span> Aproximação da posteriori pela distribuição normal</h2>
 <p>Assuma que <span class="math inline">\(\boldsymbol{\theta}\in\mathbb{R}^q\)</span>. Seja <span class="math inline">\(\ell(\boldsymbol{\theta})=\log L(\boldsymbol{\theta})\)</span> a função log-verossimilhança e <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> a estimativa de máxima verossimilhaça para <span class="math inline">\(\boldsymbol{\theta}\)</span>. Considere a seguinte aproximação de <span class="math inline">\(\ell(\boldsymbol{\theta})\)</span> em séries de Taylor</p>
 <p><span class="math display">\[\ell(\boldsymbol{\theta})\approx  \ell(\hat{\boldsymbol{\theta}})+\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\mathcal{H}(\hat{\boldsymbol{\theta}})(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\]</span> onde <span class="math inline">\(\boldsymbol{\theta}\)</span> é a matriz hessiana (de derivadas segunda) aplicada em <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>. Deste modo, teremos que <span class="math display">\[\pi(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}\pi(\boldsymbol{\theta})\]</span></p>
 <p>Utilizando a priori imprópria <span class="math inline">\(\pi(\boldsymbol{\theta})\)</span>, temos que <span class="math inline">\(\boldsymbol{\theta}|\boldsymbol{x}\approx \hbox{Normal}(\hat{\boldsymbol{\theta}},-\mathcal{H}(\hat{\boldsymbol{\theta}})^{-1})\)</span>.</p>
@@ -366,8 +372,8 @@ $hessian
 </div>
 </div>
 </section>
-<section id="metropolis-revisitado" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="metropolis-revisitado"><span class="header-section-number">8.2</span> Metropolis revisitado</h2>
+<section id="metropolis-revisitado" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="metropolis-revisitado"><span class="header-section-number">9.2</span> Metropolis revisitado</h2>
 <p>A diferença entre o algoritmo Metropolis e o Metropolis-Hastings está na escolha da distribuição proposta. No primeiro, a proposta é simétrica, <span class="math display">\[g(x|y)=g(y|x).\]</span> Com isso, teremos que <span class="math display">\[\frac{f(x)}{f(y)}\frac{g(y|x)}{g(x|y)}=\frac{f(x)}{f(y)}\]</span> e a probabilidade de aceitação da cadeia é baseada somente na distribuição alvo <span class="math inline">\(f\)</span>.</p>
 <p>No algoritmo Metropolis, é comum escolher a distribuição proposta como sendo uma normal. Uma escolha razoável é utilizar como proposta aproximação normal vista na seção anterior.</p>
 <div class="alert alert-info">
@@ -864,12 +870,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./misturas.html" class="pagination-link" aria-label="Misturas de distribuições">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

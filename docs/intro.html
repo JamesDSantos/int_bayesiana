@@ -201,38 +201,44 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./bernoulli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./teste.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -341,7 +347,7 @@ window.Quarto = {
 <p>Sua interpretação é a seguinte: para <span class="math inline">\(\theta_1,\theta_2\in\Theta\)</span>, se</p>
 <p><span class="math display">\[L(\theta_1)&gt;L(\theta_2),\]</span> dizemos que <span class="math inline">\(\theta_1\)</span> é mais verossímil que <span class="math inline">\(\theta_2\)</span>. Isto porque a probabilidade de observar uma amostra na vizinhança de <span class="math inline">\(\mathbf{x}\)</span> é maior se considerarmos que <span class="math inline">\(\theta_1\)</span> é o valor do parâmetro. A verossimilhança é uma das fontes de informação utilizada na inferência bayesiana (e a única fonte da inferência frequentista).</p>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 2.1</strong></span> Seja <span class="math inline">\(X_i\)</span> o número de suicídios no <span class="math inline">\(i\)</span>-ésimo mês da amostra e suponha que <span class="math inline">\(X_1,\ldots,X_{36}\)</span> é uma amostra aleatória proveniente do modelo Poisson(<span class="math inline">\(\theta\)</span>). Como <span class="math inline">\(\sum_i x_i=933\)</span>, a função de verossimilhança será [L()=_{i=1}<sup>{36}e</sup>{-36}^{933}.]</p>
+<p><span class="theorem-title"><strong>Example 2.1</strong></span> Seja <span class="math inline">\(X_i\)</span> o número de suicídios no <span class="math inline">\(i\)</span>-ésimo mês da amostra e suponha que <span class="math inline">\(X_1,\ldots,X_{36}\)</span> é uma amostra aleatória proveniente do modelo Poisson(<span class="math inline">\(\theta\)</span>). Como <span class="math inline">\(\sum_i x_i=933\)</span>, a função de verossimilhança será <span class="math display">\[L(\theta)=\prod_{i=1}^{36}\frac{e^{-\theta}\theta^{x_i}}{x_i!}\propto e^{-36\theta}\theta^{933}.\]</span></p>
 <p>A próxima figura mostra os valores da função de verossimilhança para diversos valores de <span class="math inline">\(\theta\)</span> para a amostra observada.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># função de verossimilhança</span></span>
@@ -485,7 +491,7 @@ $objective
 <p>Seja <span class="math inline">\(\rho\)</span> a probabilidade de que um suicídio seja cometido por alguém do sexo masculino no Estado do Amazonas. Considere a priori <span class="math inline">\(\rho\sim\hbox{Beta}(a,b)\)</span>, onde sabemos que</p>
 <p><span class="math display">\[f(\rho)\propto \rho^{a-1}(1-\rho)^{b-1},\]</span> <span class="math display">\[E(\rho)=\frac{a}{a+b},\]</span> e <span class="math display">\[Var(\rho)=\frac{E(\rho)(1-E(\rho))}{a+b+1}.\]</span></p>
 <ul>
-<li><p>Encontre valores de <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span> que reflitam a média de 0,75 mas que não restrinjam demais os valores possíveis para <span class="math inline">\(\rho\)</span></p></li>
+<li><p>Encontre valores de <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span> que reflitam a média de 0,79 mas que não restrinjam demais os valores possíveis para <span class="math inline">\(\rho\)</span></p></li>
 <li><p>No Amazonas, entre os anos 2021 e 2023, dos 933 registros de suicídios, 726 foram cometidos por homens. Considere então o modelo <span class="math inline">\(X|\rho\sim\hbox{Binomial}(933,\rho)\)</span>. Mostre que <span class="math display">\[f(\theta|x)\propto \rho^{726+a-1}(1-\rho)^{207+b-1}\]</span> e conclua que <span class="math inline">\(\rho|x\sim\hbox{Beta}(a+933,b+207)\)</span>.</p></li>
 <li><p>Estime <span class="math inline">\(\theta\)</span> e construa um intervalo de 95% de credibilidade</p></li>
 <li><p>Teste a hipótese de que, para o Amazonas, a probabilidade de um indivíduo do sexo masculino cometer suicídio é maior do que 79%.</p></li>
