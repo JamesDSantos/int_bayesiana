@@ -204,12 +204,12 @@
 \floatname{codelisting}{Listing}
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \usepackage{amsthm}
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
@@ -1018,13 +1018,47 @@ informativa.
 
 \begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
 
+Um estudo investiga a eficácia de uma nova campanha de vacinação contra
+a gripe em uma grande cidade. Antes da campanha, a taxa de vacinação na
+população adulta era de 40\%. Após a campanha, uma amostra aleatória de
+500 adultos revelou que 250 deles foram vacinados. Os pesquisadores
+querem determinar se a campanha aumentou significativamente a taxa de
+vacinação.
+
+Seja \(\theta\) a nova taxa de vacinação. Estamos interessados em testar
+a hipótese de que \(\theta>0,4\). Considerando que o evento de interesse
+é um adulto vacinado, teremos que \(x_i=1\) se o \(i\)-ésimo adulto da
+amostra foi vacinado e \(x_i=0\) em caso contrário. Utilizando a priori
+Beta(1,1), teremos
+\(\theta|x_1,\ldots,x_{500}\sim\hbox{Beta}(251,251)\). Deste modo a
+probabilidade a posteriori da hipótese é
+
+\[P(\theta>0,4|\boldsymbol{x})=\int_{0,4}^1 f(\theta|\boldsymbol{x})d\theta.\]
+Utilizando o \texttt{R}, obtemos
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{pbeta}\NormalTok{(.}\DecValTok{4}\NormalTok{,}\DecValTok{251}\NormalTok{,}\DecValTok{251}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.999997
+\end{verbatim}
+
+logo, a probabilidade de que a campanha aumentou a taxa de vacinação é
+maior que 99,999\%.
+
+\end{example}
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
 \textbf{As duas clínicas}
 
 Em 1846, Ignaz Philipp Semmelweis se tornou assistente na Primeira
 Clínica de Obstetrícia do Hospital Geral de Viena, Áustria (algo como o
-residente chefe). Nestas clínicas, o infanticídio era oferecido de
-graça. Em troca, o parto serveria de treinamento para os médicos e
-parteiras.
+residente chefe). Neste hospital o parto era oferecido de gratuitamente,
+pois o mesmo serveria de treinamento para os médicos e parteiras.
 
 Naquela época, a febre puerperal era comum e muitas vezes fatal, sendo
 que a mortalidade variava entre 10\% a 35\%.
@@ -1070,16 +1104,16 @@ Segunda.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-1-1.pdf}
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-2-1.pdf}
 
 O Dr.~Semmelweis ainda não tinha descoberto o motivo dessas mortes até a
 morte de seu amigo Jakob Kolletschka, que se cortou acidentalmente com
 um bisturi durante uma autópsia. Durante a autópsia de Jakob, o
-Dr.~Semmelweis viu semelhanças com as autópsias as mulheres que haviam
+Dr.~Semmelweis viu semelhanças com as autópsias as mulheres que havia
 morrido por febre puerperal.
 
 Na Primeira Clínica estudavam os alunos de medicina, que realizavam
-autópsias. Na Segunda Clínia estudavam as parteiras, que não realizam
+autópsias. Na Segunda Clínica estudavam as parteiras, que não realizam
 autópsias. A sua hipótese foi: estudantes de medicina carregavam
 partículas cadavéricas que causavam a febre puerperal. Com essa
 hipótese, ele instituiu que todos os médicos deveriam lavar as mãos
@@ -1113,10 +1147,10 @@ o gráfico das três densidades a posteriori obtidas, mostrando que
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-2-1.pdf}
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-3-1.pdf}
 
-Após a publicação de seus achados, as ideia do Dr.~Semmelweis ideias
-foram amplamente rejeitadas por seus colegas médicos, que se sentiram
+Após a publicação de seus achados, as ideia do Dr.~Semmelweis foram
+amplamente rejeitadas por seus colegas médicos, que se sentiram
 ofendidos com a sugestão de que poderiam estar causando a morte de seus
 pacientes. A rejeição e o ridículo que Semmelweis enfrentou levaram a um
 declínio em sua saúde mental. Ele foi internado no hospício em 1865,
@@ -1124,6 +1158,168 @@ onde morreu pouco tempo depois. Morreu em 13 de agosto de 1865, em um
 hospício em Viena, aos 47 anos. A causa exata de sua morte ainda é
 debatida, mas a teoria mais aceita é que ele morreu de septicemia, uma
 infecção sanguínea, após ser espancado pelos guardas do hospício.
+\[\blacksquare\]
+
+\end{example}
+
+No exemplo anterior foi possível verificar graficamente que as
+probabilidades de morte por febre puerperal em ambas as clínicas eram
+distintas. Recordando que as respectivas probabilidades foram
+identificadas por \(\alpha\) e \(\beta\), era evidente que
+\(P(\alpha>\beta|\hbox{dados})=1\).
+
+Quando a evidência gráfica não é clara, é necessário calcular tal
+probabilidade. Sejam \(X_1,\ldots,X_n\) e \(Y_1,\ldots,Y_m\) duas
+amostras aleatórias independentes com
+\(X_i|\alpha\sim\hbox{Bernoulli}(\alpha)\) e
+\(Y_i|\beta\sim\hbox{Bernoulli}(\beta)\). Considerando prioris
+conjugadas, teremos que \(\alpha|\boldsymbol{x}\) e
+\(\beta|\boldsymbol{y}\) possuem distribuição beta e são independentes.
+Para testar uma hipótese do tipo \(H: \alpha>\beta\) é necessário
+calcular
+
+\[p=P(\alpha>\beta|\boldsymbol{x},\boldsymbol{y}).\] Contudo, podemos
+definir a variável
+\(A=\left\{\begin{array}{ll}1,&\alpha>\beta\\ 0,&\alpha\leq \beta\end{array}\right.\)
+Deste modo, \(A\sim\hbox{Bernoulli}(p)\). Acontece que \(p=E(A)\) e,
+pela Lei Forte dos Grandes Números, para a sequência \(A_1,A_2,\ldots,\)
+teremos que
+\[\frac{1}{B}\sum_{j=1}^B A_j\rightarrow E(A)=p,\;\; B\rightarrow\infty\]
+Deste modo, se tivermos uma observação da amostra aleatória
+\(A_1,\ldots,A_B\) é possível calcular \(p\) com boa precisão para \(B\)
+suficientemente grande. Podemos obter essa amostra via simulação. Esse é
+o princípio do Método de Monte Carlo.
+
+\textbf{Método de Monte Carlo} Considere o problema de calcular
+\[p=E(X).\] * Passo 1. Simule \(x_1,\ldots,x_B\) com \(B\)
+suficientemente grande
+
+\begin{itemize}
+\tightlist
+\item
+  Passo 2. Estime \(p\) através de
+\end{itemize}
+
+\[\frac{1}{B}\sum_{j=1}^B x_j\]
+
+Para calcular \(p=P(\alpha>\beta|\hbox{dados})\) apresentado
+anteriormente, podemos realizar os seguintes passos:
+
+\begin{itemize}
+\item
+  Passo 1. Escolha \(B\) suficientemente grande
+\item
+  Passo 2. Simule \(\alpha_1,\ldots,\alpha_B\) a posteriori
+  \(\alpha|\hbox{x}\)
+\item
+  Passo 3. Simule \(\beta_1,\ldots,\beta_B\) a posteriori
+  \(\beta|\hbox{y}\)
+\item
+  Passo 4. Calcule
+\end{itemize}
+
+\[\frac{1}{B}\sum_{j=1}^B I(\alpha_j>\beta_j)\]
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{Naufrágio do Lusitania (1915)}
+
+Em 7 de maio de 1915, durante a Primeira Guerra Mundial, o RMS
+Lusitania, um luxuoso transatlântico britânico, navegava a cerca de 18
+km da costa sul da Irlanda. A bordo, passageiros de diversas
+nacionalidades, incluindo muitos americanos, desfrutavam de uma viagem
+que deveria levá-los de Nova York a Liverpool. No entanto, o que era
+para ser uma travessia rotineira transformou-se em tragédia quando o
+navio foi torpedeado pelo submarino alemão U-20.
+
+Atingido no lado estibordo, o Lusitania sofreu uma segunda explosão
+interna, cuja causa ainda é debatida, e afundou em apenas 18 minutos. A
+rapidez com que o navio submergiu, aliada à dificuldade de lançar os
+botes salva-vidas, resultou na morte de 1.198 pessoas, entre passageiros
+e tripulantes. O naufrágio do Lusitania gerou indignação internacional e
+intensificou a pressão para que os Estados Unidos entrassem na guerra, o
+que ocorreu dois anos depois.
+
+O número de passageiros que morreram e sobreviveram em cada classe é
+dado abaixo.
+
+\[\begin{array}{l|cc} \hline
+\hbox{Classe} & \hbox{Sobreviventes} & \hbox{Mortos} \\ \hline
+\hbox{Primeira} & 113 & 177 \\
+\hbox{Segunda} & 229 & 372 \\ 
+\hbox{Terceira}  & 134 & 239 \\ \hline
+\end{array}\]
+
+Neste exemplo, vamos testar a hipótese de que tripulantes da Classe 1
+tinham maior probabilidade de sobrevivência que os dados classes
+inferiores. Seja \(\alpha,\beta,\gamma\) as probabilidades de
+sobrevivência das classes 1, 2 e 3, respectivamente, Considerando uma
+priori Beta(1,1) para cada classe, teremos que a posteriori para a
+probabilidade de sobrevivência é dada por
+
+\begin{itemize}
+\tightlist
+\item
+  \(\alpha\sim\)Beta(114,178) para a classe 1
+\item
+  \(\beta\sim\)Beta(230,373) para a classe 2
+\item
+  \(\gamma\sim\)Beta(135,240) para a classe 3
+\end{itemize}
+
+O gráfico das posterioris é dado abaixo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x, }\DecValTok{114}\NormalTok{,}\DecValTok{178}\NormalTok{), }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{20}\NormalTok{), }\AttributeTok{ylab =} \StringTok{\textquotesingle{}Densidades das posterioris\textquotesingle{}}\NormalTok{, }\AttributeTok{xlab =} \StringTok{\textquotesingle{}Probabilidade de sobrevivência\textquotesingle{}}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(.}\DecValTok{2}\NormalTok{,.}\DecValTok{6}\NormalTok{))}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x, }\DecValTok{230}\NormalTok{,}\DecValTok{373}\NormalTok{), }\AttributeTok{add =}\NormalTok{ T, }\AttributeTok{col =}\DecValTok{2}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x, }\DecValTok{135}\NormalTok{,}\DecValTok{240}\NormalTok{), }\AttributeTok{add =}\NormalTok{ T ,}\AttributeTok{col =}\DecValTok{3}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{\textquotesingle{}topright\textquotesingle{}}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Classe 1\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Classe 2\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Classe 3\textquotesingle{}}\NormalTok{), }\AttributeTok{lwd =}\DecValTok{2}\NormalTok{, }\AttributeTok{col=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{bty=}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-4-1.pdf}
+
+Vamos simular uma amostra de tamanho \(B=1000000\) das posterioris de
+\(\alpha,\beta,\gamma\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{B }\OtherTok{\textless{}{-}} \DecValTok{1000000}
+\NormalTok{alfa }\OtherTok{\textless{}{-}} \FunctionTok{rbeta}\NormalTok{(B, }\DecValTok{114}\NormalTok{,}\DecValTok{178}\NormalTok{)}
+\NormalTok{beta  }\OtherTok{\textless{}{-}} \FunctionTok{rbeta}\NormalTok{(B, }\DecValTok{230}\NormalTok{,}\DecValTok{373}\NormalTok{)}
+\NormalTok{gama  }\OtherTok{\textless{}{-}} \FunctionTok{rbeta}\NormalTok{(B, }\DecValTok{135}\NormalTok{,}\DecValTok{240}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Vamos testar a hipótese de que a probabilidade de sobrevivência de um
+indivíduo da Classe 1 foi maior que a de um indivíduo da Classe 2 e 3.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\FunctionTok{mean}\NormalTok{(alfa}\SpecialCharTok{\textgreater{}}\NormalTok{beta)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.600372
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(alfa}\SpecialCharTok{\textgreater{}}\NormalTok{gama)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.789544
+\end{verbatim}
+
+Observe que \(P(\alpha>\gamma|\hbox{dados})\approx 0,78\), o que não dá
+suporte para afirmar que a probabilidade de sobrevivência dos
+tripulantes da primeira classe foi maior do que o da terceira.
+\[\blacksquare\]
 
 \end{example}
 
@@ -1165,7 +1361,7 @@ A Dirichlet\((a_1,\ldots,a_k)\) possui as seguintes propriedades:
 \item
   \(\theta_j\sim\hbox{Beta}(a_j,\sum_{i\neq j}a_i)\)
 \item
-  \((\theta_1,\ldots,\theta_i+\theta_j,\ldots,\theta_k)\sim\hbox{Diriculet}(a_1,\ldots,a_i+a_j,\ldots,a_k)\)
+  \((\theta_1,\ldots,\theta_i+\theta_j,\ldots,\theta_k)\sim\hbox{Dirichlet}(a_1,\ldots,a_i+a_j,\ldots,a_k)\)
 \end{itemize}
 
 Da primeira propriedade, concluímos que
@@ -1213,7 +1409,7 @@ segundo sua satisfação com o próprio corpo do seguinte modo:
 
 Neste exemplo, vamos analisar o recorte dos resultados para alunos entre
 16 e 17 anos, diferenciando entre os sexos. As frequências estão
-sumarizadas na tabela abaixo.
+sumariadas na tabela abaixo.
 
 \[\begin{array}{c|ccc|c}\hline
 &\hbox{Satisfeito} & \hbox{Insatifeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
@@ -1230,14 +1426,14 @@ verossimilhança para \(\boldsymbol{\alpha}\) é
 Analogamente, fazendo \(\boldsymbol{\beta}=(\beta_S,\beta_E,\beta_M)\),
 as mesmas probabilidades para o sexo feminino, teremos que
 
-\[L(\boldsymbol{\alpha})=\beta_S^{14}\beta_E^{22}\\beta_M^{24}.\]
+\[L(\boldsymbol{\alpha})=\beta_S^{14}\beta_E^{22}\beta_M^{24}.\]
 
-Utilizando a priori Dirichelt(1,1,1) tanto para \(\boldsymbol{\alpha}\)
+Utilizando a priori Dirichlet(1,1,1) tanto para \(\boldsymbol{\alpha}\)
 quanto para \(\boldsymbol{\beta}\), teremos que as respectivas
 posterioris para \(\boldsymbol{\alpha}\) e \(\boldsymbol{\beta}\) são
 Dirichelt(25,11,25) e Dirichlet(15,23,25).
 
-As posterioris para \(\alpha_M\) e \(\beta_M\) são Beta(25,36)e
+As posterioris para \(\alpha_M\) e \(\beta_M\) e são Beta(25,36)
 Beta(25,38). As estimativas pontuais são 0,40 e 0,39, respectivamente. A
 imagem abaixo mostra a insatisfação por magreza entre os sexos deve ser
 a mesma.
@@ -1250,7 +1446,7 @@ a mesma.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-3-1.pdf}
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-7-1.pdf}
 
 As posterioris para \(\alpha_E\) e \(\beta_E\) são Beta(11,50)e
 Beta(23,40). As estimativas pontuais são 0,21 e 0,36, respectivamente. A
@@ -1265,15 +1461,133 @@ probabilidade de insatisfação por excesso.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-4-1.pdf}
+\includegraphics{bernoulli_files/figure-pdf/unnamed-chunk-8-1.pdf}
 
-Podemos então construir a hipótese \(H:\alpha_E<\beta_E\) e, para
-testá-la, devemos ser capazes de calcular
+Podemos então construir a hipótese \(H:\alpha_E<\beta_E\). Abaixo,
+testamos essa hipótese:
 
-\[P(\alpha_E<\beta_E|\hbox{dados})\] Vamos discutir como realizar testes
-de hipóteses na próxima aula.
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{B }\OtherTok{\textless{}{-}} \DecValTok{1000000}
+\NormalTok{alfaE }\OtherTok{\textless{}{-}} \FunctionTok{rbeta}\NormalTok{(B, }\DecValTok{11}\NormalTok{,}\DecValTok{50}\NormalTok{)}
+\NormalTok{betaE }\OtherTok{\textless{}{-}} \FunctionTok{rbeta}\NormalTok{(B, }\DecValTok{23}\NormalTok{,}\DecValTok{40}\NormalTok{)}
+\FunctionTok{mean}\NormalTok{(alfaE}\SpecialCharTok{\textless{}}\NormalTok{betaE)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.990628
+\end{verbatim}
+
+Com uma probabilidade maior que 99\%, há fortes evidências de que
+mulheres entre 16 e 17 anos se sentem mais insatisfeitas por excesso do
+que os homens de mesma idade.
 
 \end{example}
+
+\section{Exercícios}\label{exercuxedcios}
+
+\subsection{Eficácia de um Novo
+Medicamento}\label{eficuxe1cia-de-um-novo-medicamento}
+
+Uma empresa farmacêutica desenvolveu um novo medicamento para tratar
+enxaquecas. Antes do lançamento, eles afirmam que o medicamento alivia a
+dor em pelo menos 80\% dos pacientes. Um estudo independente com 250
+pacientes revelou que 180 deles relataram alívio da dor. Os resultados
+do estudo fornecem evidências suficientes para rejeitar a alegação da
+empresa farmacêutica?
+
+\subsection{Preferência por uma Marca de
+Café}\label{preferuxeancia-por-uma-marca-de-cafuxe9}
+
+Uma pesquisa de mercado afirma que 55\% dos consumidores preferem a
+marca A de café à marca B. Uma amostra aleatória de 300 consumidores
+revelou que 180 deles preferem a marca A. Os resultados da amostra
+fornecem evidências suficientes para rejeitar a alegação da pesquisa de
+mercado?
+
+\subsection{Taxa de Aprovação em um
+Exame}\label{taxa-de-aprovauxe7uxe3o-em-um-exame}
+
+Uma escola afirma que a taxa de aprovação em um exame padronizado é de
+70\%. Uma amostra de 200 alunos revelou que 120 deles foram aprovados.
+Os resultados da amostra fornecem evidências suficientes para rejeitar a
+alegação da escola?
+
+\subsection{Eficácia de uma Campanha de
+Vacinação}\label{eficuxe1cia-de-uma-campanha-de-vacinauxe7uxe3o}
+
+Uma campanha de vacinação contra a gripe foi realizada em uma cidade.
+Antes da campanha, a taxa de vacinação era de 35\%. Após a campanha, uma
+amostra de 400 pessoas revelou que 180 delas foram vacinadas. Os
+resultados da amostra fornecem evidências suficientes para concluir que
+a campanha aumentou a taxa de vacinação?
+
+\subsection{A eficácia da Pfizer}\label{a-eficuxe1cia-da-pfizer}
+
+O artigo Polack et al. (2020) apresenta um estudo clínico de fase 3
+randomizado e controlado por placebo que avaliou a eficácia da vacina
+BNT162b2 (Pfizer-BioNTech COVID-19) em participantes com 16 anos ou mais
+sem evidências de infecção por SARS-CoV-2. A tabela abaixo apresenta o
+número de participantes por grupo e o número de casos de Covid-19.
+
+\[\begin{array}{l|cc}\hline
+\hbox{Grupo} & \hbox{Participantes} & \hbox{Casos de Covid-19}\\\hline
+\hbox{Vacina} & 18.198 & 8 \\
+\hbox{Placebo} & 18.325 & 162 \\ \hline
+\end{array}\]
+
+Considere que o evento de interesse é contrair Covid-19
+
+\begin{itemize}
+\item
+  Encontre a função de verossimilhança para cada grupo
+\item
+  Utilizando a priori Beta(1,1) para a probabilidade de contrair
+  Covid-19, encontre a distribuição a posteriori para cada grupo
+\item
+  Faça um gráfico das posterioris e verifique se há evidências de que a
+  vacinação é eficaz.
+\end{itemize}
+
+\subsection{O Naufrágio do Lusitania
+(1915)}\label{o-naufruxe1gio-do-lusitania-1915}
+
+Neste capítulo, abordamos a tragédia do Lusitania. A tabela abaixo
+acrescenta os dados sobre a tripulação.
+
+\[\begin{array}{l|cc} \hline
+\hbox{Categoria} & \hbox{Sobreviventes} & \hbox{Mortos} \\ \hline
+\hbox{Primeira classe} & 113 & 177 \\
+\hbox{Segunda classe} & 229 & 372 \\ 
+\hbox{Terceira classe}  & 134 & 239 \\ \hline
+\hbox{Tripulação - abastecimento} & 139 & 167 \\
+\hbox{Tripulação - engenharia} & 112 & 201 \\
+\hbox{Tripulação - deck} & 41 & 37 \\
+\hline
+\end{array}\]
+
+Compare a probabilidade de sobrevivência entre os indivíduos dos
+diferentes tipos de tripulação e classes de passageiros, testando as
+hipóteses necessárias.
+
+\subsection{Imagem corporal}\label{imagem-corporal}
+
+Neste capítulo, mostramos que homens e mulheres com idades entre 16 e 17
+anos possuem expectativas diferentes em relação ao seu próprio corpo.
+
+Neste exercício, você vai verificar como essas expectativas variam
+dentro do mesmo sexo. Especificamente:
+
+\begin{itemize}
+\item
+  Teste se há evidências de que os homens possuem probabilidade maior de
+  estarem insatisfeitos por magreza do que satisfeitos.
+\item
+  Teste se há evidências de que as mulheres possuem probabilidade maior
+  de estarem insatisfeitas por excesso do que satisfeitas.
+\end{itemize}
 
 \bookmarksetup{startatroot}
 
@@ -2232,9 +2546,9 @@ posteriori:
 \begin{verbatim}
 x_til
            0            1            2            3            4            5 
-6.154077e-01 1.972682e-01 1.162152e-01 4.766739e-02 1.693507e-02 4.476028e-03 
+6.127774e-01 1.982142e-01 1.139311e-01 5.034378e-02 1.721194e-02 5.583499e-03 
            6            7            8            9 
-1.545845e-03 4.383739e-04 2.307231e-05 2.307231e-05 
+1.338194e-03 5.075908e-04 6.921693e-05 2.307231e-05 
 \end{verbatim}
 
 Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo
@@ -2770,20 +3084,20 @@ Warning in par(oo): parâmetro gráfico "page" não pode ser especificado
 
 \begin{verbatim}
     municipios      p
-1      Amatura 0.3372
-2    Atl.Norte 0.0676
-3         Barr 0.0300
-4           BC 0.0248
-5     BV Ramos 0.1340
+1      Amatura 0.3320
+2    Atl.Norte 0.0656
+3         Barr 0.0284
+4           BC 0.0216
+5     BV Ramos 0.1372
 6      Fonte B 0.0000
-7        Jutai 0.0508
-8        Maues 0.5224
-9     Nhamunda 0.0144
-10   Parintins 0.6220
-11      StoIca 0.3524
-12 SP Olivenca 0.3896
-13         Tbt 0.4316
-14   Tonantins 0.0396
+7        Jutai 0.0488
+8        Maues 0.5152
+9     Nhamunda 0.0196
+10   Parintins 0.6588
+11      StoIca 0.3412
+12 SP Olivenca 0.4188
+13         Tbt 0.4464
+14   Tonantins 0.0472
 \end{verbatim}
 
 \bookmarksetup{startatroot}
@@ -2794,7 +3108,13 @@ Warning in par(oo): parâmetro gráfico "page" não pode ser especificado
 \markboth{References}{References}
 
 \phantomsection\label{refs}
-\begin{CSLReferences}{0}{1}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-polack2020safety}
+Polack, Fernando P, Stephen J Thomas, Nicholas Kitchin, Judith Absalon,
+Alejandra Gurtman, Stephen Lockhart, John L Perez, et al. 2020.
+{``Safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.''}
+\emph{New England Journal of Medicine} 383 (27): 2603--15.
+
 \end{CSLReferences}
 
 

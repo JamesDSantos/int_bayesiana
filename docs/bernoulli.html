@@ -54,7 +54,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -259,6 +279,16 @@ window.Quarto = {
   <ul>
   <li><a href="#o-modelo-univariado" id="toc-o-modelo-univariado" class="nav-link active" data-scroll-target="#o-modelo-univariado"><span class="header-section-number">5.1</span> O modelo univariado</a></li>
   <li><a href="#o-modelo-multivariado" id="toc-o-modelo-multivariado" class="nav-link" data-scroll-target="#o-modelo-multivariado"><span class="header-section-number">5.2</span> O modelo multivariado</a></li>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">5.3</span> Exercícios</a>
+  <ul class="collapse">
+  <li><a href="#eficácia-de-um-novo-medicamento" id="toc-eficácia-de-um-novo-medicamento" class="nav-link" data-scroll-target="#eficácia-de-um-novo-medicamento"><span class="header-section-number">5.3.1</span> Eficácia de um Novo Medicamento</a></li>
+  <li><a href="#preferência-por-uma-marca-de-café" id="toc-preferência-por-uma-marca-de-café" class="nav-link" data-scroll-target="#preferência-por-uma-marca-de-café"><span class="header-section-number">5.3.2</span> Preferência por uma Marca de Café</a></li>
+  <li><a href="#taxa-de-aprovação-em-um-exame" id="toc-taxa-de-aprovação-em-um-exame" class="nav-link" data-scroll-target="#taxa-de-aprovação-em-um-exame"><span class="header-section-number">5.3.3</span> Taxa de Aprovação em um Exame</a></li>
+  <li><a href="#eficácia-de-uma-campanha-de-vacinação" id="toc-eficácia-de-uma-campanha-de-vacinação" class="nav-link" data-scroll-target="#eficácia-de-uma-campanha-de-vacinação"><span class="header-section-number">5.3.4</span> Eficácia de uma Campanha de Vacinação</a></li>
+  <li><a href="#a-eficácia-da-pfizer" id="toc-a-eficácia-da-pfizer" class="nav-link" data-scroll-target="#a-eficácia-da-pfizer"><span class="header-section-number">5.3.5</span> A eficácia da Pfizer</a></li>
+  <li><a href="#o-naufrágio-do-lusitania-1915" id="toc-o-naufrágio-do-lusitania-1915" class="nav-link" data-scroll-target="#o-naufrágio-do-lusitania-1915"><span class="header-section-number">5.3.6</span> O Naufrágio do Lusitania (1915)</a></li>
+  <li><a href="#imagem-corporal" id="toc-imagem-corporal" class="nav-link" data-scroll-target="#imagem-corporal"><span class="header-section-number">5.3.7</span> Imagem corporal</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -292,8 +322,20 @@ window.Quarto = {
 <p>Como discutido anteriormente, o modelo Bernoulli(<span class="math inline">\(\theta\)</span>) pertence à família exponencial e sua distribuição conjugada é a Beta<span class="math inline">\((a,b)\)</span>. A distribuição a posteriori é dada por</p>
 <p><span class="math display">\[f(\theta|\boldsymbol{x})\propto \theta^{a+\sum_{i=1}^n x_i-1}(1-\theta)^{n-\sum_{i=1}^n x_i+b-1},\]</span> ou seja, <span class="math inline">\(\theta|\boldsymbol{x}\sim\hbox{Beta}(a+\sum_{i=1}^n x_i,n-\sum_{i=1}^n x_i + b).\)</span> Observe que <span class="math inline">\(a\)</span> pode ser interpretado como o número de sucessos a priori e <span class="math inline">\(b\)</span> o número de fracassos. É comum utilizarmos a priori Beta<span class="math inline">\((1,1)\)</span>, que é equivalente à Uniforme(0,1), como priori pouco informativa.</p>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.1</strong></span> <strong>As duas clínicas</strong></p>
-<p>Em 1846, Ignaz Philipp Semmelweis se tornou assistente na Primeira Clínica de Obstetrícia do Hospital Geral de Viena, Áustria (algo como o residente chefe). Nestas clínicas, o infanticídio era oferecido de graça. Em troca, o parto serveria de treinamento para os médicos e parteiras.</p>
+<p><span class="theorem-title"><strong>Example 5.1</strong></span> Um estudo investiga a eficácia de uma nova campanha de vacinação contra a gripe em uma grande cidade. Antes da campanha, a taxa de vacinação na população adulta era de 40%. Após a campanha, uma amostra aleatória de 500 adultos revelou que 250 deles foram vacinados. Os pesquisadores querem determinar se a campanha aumentou significativamente a taxa de vacinação.</p>
+<p>Seja <span class="math inline">\(\theta\)</span> a nova taxa de vacinação. Estamos interessados em testar a hipótese de que <span class="math inline">\(\theta&gt;0,4\)</span>. Considerando que o evento de interesse é um adulto vacinado, teremos que <span class="math inline">\(x_i=1\)</span> se o <span class="math inline">\(i\)</span>-ésimo adulto da amostra foi vacinado e <span class="math inline">\(x_i=0\)</span> em caso contrário. Utilizando a priori Beta(1,1), teremos <span class="math inline">\(\theta|x_1,\ldots,x_{500}\sim\hbox{Beta}(251,251)\)</span>. Deste modo a probabilidade a posteriori da hipótese é</p>
+<p><span class="math display">\[P(\theta&gt;0,4|\boldsymbol{x})=\int_{0,4}^1 f(\theta|\boldsymbol{x})d\theta.\]</span> Utilizando o <code>R</code>, obtemos</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pbeta</span>(.<span class="dv">4</span>,<span class="dv">251</span>,<span class="dv">251</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.999997</code></pre>
+</div>
+</div>
+<p>logo, a probabilidade de que a campanha aumentou a taxa de vacinação é maior que 99,999%.</p>
+</div>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 5.2</strong></span> <strong>As duas clínicas</strong></p>
+<p>Em 1846, Ignaz Philipp Semmelweis se tornou assistente na Primeira Clínica de Obstetrícia do Hospital Geral de Viena, Áustria (algo como o residente chefe). Neste hospital o parto era oferecido de gratuitamente, pois o mesmo serveria de treinamento para os médicos e parteiras.</p>
 <p>Naquela época, a febre puerperal era comum e muitas vezes fatal, sendo que a mortalidade variava entre 10% a 35%.</p>
 <p>Haviam duas maternidades no Hospital Geral de Viena, conhecidas como a Primeira e a Segunda. A Primeira era considerada um local de morte e era evitada quando possível. Abaixo temos os dados registrados pelo Dr.&nbsp;Semmelweis</p>
 <p><span class="math display">\[\begin{array}{c|cc|cc}\hline \hbox{} &amp; \hbox{Primeira} &amp; \hbox{Clínica} &amp; \hbox{Segunda} &amp; \hbox{Clínica}\\ \hline
@@ -311,19 +353,19 @@ window.Quarto = {
 <p><span class="math display">\[\begin{align}\alpha|\boldsymbol{x}&amp;\sim \hbox{Beta}(1990,18054) \\\beta|\boldsymbol{x}&amp;\sim \hbox{Beta}(692,17101)\end{align}\]</span></p>
 <p>Abaixo, mostramos as duas posterioris, de onde podemos concluir que a probabilidade de morte na Primeira Clínica é certamente maior que na Segunda.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">1990</span>,<span class="dv">18054</span>),<span class="fl">0.03</span>,.<span class="dv">11</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">ylab=</span><span class="st">'Densidades a posteriori'</span>,<span class="at">xlab=</span><span class="st">'Probabilidade de morte'</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">300</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">692</span>,<span class="dv">17101</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">04</span>,.<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">290</span>,<span class="dv">210</span>),<span class="fu">c</span>(<span class="st">'Segunda Clínica'</span>,<span class="st">'Primeira Clínica'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">1990</span>,<span class="dv">18054</span>),<span class="fl">0.03</span>,.<span class="dv">11</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">ylab=</span><span class="st">'Densidades a posteriori'</span>,<span class="at">xlab=</span><span class="st">'Probabilidade de morte'</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">300</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">692</span>,<span class="dv">17101</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">04</span>,.<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">290</span>,<span class="dv">210</span>),<span class="fu">c</span>(<span class="st">'Segunda Clínica'</span>,<span class="st">'Primeira Clínica'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bernoulli_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>O Dr.&nbsp;Semmelweis ainda não tinha descoberto o motivo dessas mortes até a morte de seu amigo Jakob Kolletschka, que se cortou acidentalmente com um bisturi durante uma autópsia. Durante a autópsia de Jakob, o Dr.&nbsp;Semmelweis viu semelhanças com as autópsias as mulheres que haviam morrido por febre puerperal.</p>
-<p>Na Primeira Clínica estudavam os alunos de medicina, que realizavam autópsias. Na Segunda Clínia estudavam as parteiras, que não realizam autópsias. A sua hipótese foi: estudantes de medicina carregavam partículas cadavéricas que causavam a febre puerperal. Com essa hipótese, ele instituiu que todos os médicos deveriam lavar as mãos antes dos partos em maio de 1847. Abaixo, seguem os dados de Junho de 1848 até Março 1849, apenas para a Primeira Clínica</p>
+<p>O Dr.&nbsp;Semmelweis ainda não tinha descoberto o motivo dessas mortes até a morte de seu amigo Jakob Kolletschka, que se cortou acidentalmente com um bisturi durante uma autópsia. Durante a autópsia de Jakob, o Dr.&nbsp;Semmelweis viu semelhanças com as autópsias as mulheres que havia morrido por febre puerperal.</p>
+<p>Na Primeira Clínica estudavam os alunos de medicina, que realizavam autópsias. Na Segunda Clínica estudavam as parteiras, que não realizam autópsias. A sua hipótese foi: estudantes de medicina carregavam partículas cadavéricas que causavam a febre puerperal. Com essa hipótese, ele instituiu que todos os médicos deveriam lavar as mãos antes dos partos em maio de 1847. Abaixo, seguem os dados de Junho de 1848 até Março 1849, apenas para a Primeira Clínica</p>
 <p><span class="math display">\[\begin{array}{c|cc} \hline \hbox{Período} &amp; \hbox{Partos} &amp; \hbox{Mortes}\\ \hline
 \hbox{Jun/1847-Dez/1847} &amp; 1841 &amp; 56 \\
 \hbox{Jan/1848-Dez/1848} &amp; 3556 &amp; 45 \\
@@ -333,20 +375,90 @@ window.Quarto = {
 <p>Seja <span class="math inline">\(\gamma\)</span> a probabilidade de morte por febre puerperal na Primeira Clínica após a instrução de lavagem das mãos. Sua função de verossimilhança é</p>
 <p><span class="math display">\[L(\gamma)\propto \gamma^{142}(1-\gamma)^{6453}.\]</span> Assumindo a priori Uniforme(0,1) para <span class="math inline">\(\gamma,\)</span> teremos que <span class="math inline">\(\gamma|\boldsymbol{x}\sim\hbox{Beta}(143,6454)\)</span>. Abaixo, apresentamos o gráfico das três densidades a posteriori obtidas, mostrando que <span class="math inline">\(\gamma\)</span> é certamente menor que as outras probabilidades.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">1990</span>,<span class="dv">18054</span>),<span class="dv">0</span>,.<span class="dv">11</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">ylab=</span><span class="st">'Densidades a posteriori'</span>,<span class="at">xlab=</span><span class="st">'Probabilidade de morte'</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">300</span>))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">692</span>,<span class="dv">17101</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">143</span>,<span class="dv">6454</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">01</span>,.<span class="dv">04</span>,.<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">250</span>,<span class="dv">290</span>,<span class="dv">212</span>),<span class="fu">c</span>(<span class="st">'Primeira Clínica </span><span class="sc">\n</span><span class="st">(1847-1849)'</span>,<span class="st">'Segunda Clínica'</span>,<span class="st">'Primeira Clínica</span><span class="sc">\n</span><span class="st">(1841-1846)'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">1990</span>,<span class="dv">18054</span>),<span class="dv">0</span>,.<span class="dv">11</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">ylab=</span><span class="st">'Densidades a posteriori'</span>,<span class="at">xlab=</span><span class="st">'Probabilidade de morte'</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">300</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">692</span>,<span class="dv">17101</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">143</span>,<span class="dv">6454</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">01</span>,.<span class="dv">04</span>,.<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">250</span>,<span class="dv">290</span>,<span class="dv">212</span>),<span class="fu">c</span>(<span class="st">'Primeira Clínica </span><span class="sc">\n</span><span class="st">(1847-1849)'</span>,<span class="st">'Segunda Clínica'</span>,<span class="st">'Primeira Clínica</span><span class="sc">\n</span><span class="st">(1841-1846)'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bernoulli_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Após a publicação de seus achados, as ideia do Dr.&nbsp;Semmelweis ideias foram amplamente rejeitadas por seus colegas médicos, que se sentiram ofendidos com a sugestão de que poderiam estar causando a morte de seus pacientes. A rejeição e o ridículo que Semmelweis enfrentou levaram a um declínio em sua saúde mental. Ele foi internado no hospício em 1865, onde morreu pouco tempo depois. Morreu em 13 de agosto de 1865, em um hospício em Viena, aos 47 anos. A causa exata de sua morte ainda é debatida, mas a teoria mais aceita é que ele morreu de septicemia, uma infecção sanguínea, após ser espancado pelos guardas do hospício.</p>
+<p>Após a publicação de seus achados, as ideia do Dr.&nbsp;Semmelweis foram amplamente rejeitadas por seus colegas médicos, que se sentiram ofendidos com a sugestão de que poderiam estar causando a morte de seus pacientes. A rejeição e o ridículo que Semmelweis enfrentou levaram a um declínio em sua saúde mental. Ele foi internado no hospício em 1865, onde morreu pouco tempo depois. Morreu em 13 de agosto de 1865, em um hospício em Viena, aos 47 anos. A causa exata de sua morte ainda é debatida, mas a teoria mais aceita é que ele morreu de septicemia, uma infecção sanguínea, após ser espancado pelos guardas do hospício. <span class="math display">\[\blacksquare\]</span></p>
+</div>
+<p>No exemplo anterior foi possível verificar graficamente que as probabilidades de morte por febre puerperal em ambas as clínicas eram distintas. Recordando que as respectivas probabilidades foram identificadas por <span class="math inline">\(\alpha\)</span> e <span class="math inline">\(\beta\)</span>, era evidente que <span class="math inline">\(P(\alpha&gt;\beta|\hbox{dados})=1\)</span>.</p>
+<p>Quando a evidência gráfica não é clara, é necessário calcular tal probabilidade. Sejam <span class="math inline">\(X_1,\ldots,X_n\)</span> e <span class="math inline">\(Y_1,\ldots,Y_m\)</span> duas amostras aleatórias independentes com <span class="math inline">\(X_i|\alpha\sim\hbox{Bernoulli}(\alpha)\)</span> e <span class="math inline">\(Y_i|\beta\sim\hbox{Bernoulli}(\beta)\)</span>. Considerando prioris conjugadas, teremos que <span class="math inline">\(\alpha|\boldsymbol{x}\)</span> e <span class="math inline">\(\beta|\boldsymbol{y}\)</span> possuem distribuição beta e são independentes. Para testar uma hipótese do tipo <span class="math inline">\(H: \alpha&gt;\beta\)</span> é necessário calcular</p>
+<p><span class="math display">\[p=P(\alpha&gt;\beta|\boldsymbol{x},\boldsymbol{y}).\]</span> Contudo, podemos definir a variável <span class="math inline">\(A=\left\{\begin{array}{ll}1,&amp;\alpha&gt;\beta\\ 0,&amp;\alpha\leq \beta\end{array}\right.\)</span> Deste modo, <span class="math inline">\(A\sim\hbox{Bernoulli}(p)\)</span>. Acontece que <span class="math inline">\(p=E(A)\)</span> e, pela Lei Forte dos Grandes Números, para a sequência <span class="math inline">\(A_1,A_2,\ldots,\)</span> teremos que <span class="math display">\[\frac{1}{B}\sum_{j=1}^B A_j\rightarrow E(A)=p,\;\; B\rightarrow\infty\]</span> Deste modo, se tivermos uma observação da amostra aleatória <span class="math inline">\(A_1,\ldots,A_B\)</span> é possível calcular <span class="math inline">\(p\)</span> com boa precisão para <span class="math inline">\(B\)</span> suficientemente grande. Podemos obter essa amostra via simulação. Esse é o princípio do Método de Monte Carlo.</p>
+<div class="alert alert-success">
+<p><strong>Método de Monte Carlo</strong> Considere o problema de calcular <span class="math display">\[p=E(X).\]</span> * Passo 1. Simule <span class="math inline">\(x_1,\ldots,x_B\)</span> com <span class="math inline">\(B\)</span> suficientemente grande</p>
+<ul>
+<li>Passo 2. Estime <span class="math inline">\(p\)</span> através de</li>
+</ul>
+<p><span class="math display">\[\frac{1}{B}\sum_{j=1}^B x_j\]</span></p>
+</div>
+<p>Para calcular <span class="math inline">\(p=P(\alpha&gt;\beta|\hbox{dados})\)</span> apresentado anteriormente, podemos realizar os seguintes passos:</p>
+<ul>
+<li><p>Passo 1. Escolha <span class="math inline">\(B\)</span> suficientemente grande</p></li>
+<li><p>Passo 2. Simule <span class="math inline">\(\alpha_1,\ldots,\alpha_B\)</span> a posteriori <span class="math inline">\(\alpha|\hbox{x}\)</span></p></li>
+<li><p>Passo 3. Simule <span class="math inline">\(\beta_1,\ldots,\beta_B\)</span> a posteriori <span class="math inline">\(\beta|\hbox{y}\)</span></p></li>
+<li><p>Passo 4. Calcule</p></li>
+</ul>
+<p><span class="math display">\[\frac{1}{B}\sum_{j=1}^B I(\alpha_j&gt;\beta_j)\]</span></p>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 5.3</strong></span> <strong>Naufrágio do Lusitania (1915)</strong></p>
+<p>Em 7 de maio de 1915, durante a Primeira Guerra Mundial, o RMS Lusitania, um luxuoso transatlântico britânico, navegava a cerca de 18 km da costa sul da Irlanda. A bordo, passageiros de diversas nacionalidades, incluindo muitos americanos, desfrutavam de uma viagem que deveria levá-los de Nova York a Liverpool. No entanto, o que era para ser uma travessia rotineira transformou-se em tragédia quando o navio foi torpedeado pelo submarino alemão U-20.</p>
+<p>Atingido no lado estibordo, o Lusitania sofreu uma segunda explosão interna, cuja causa ainda é debatida, e afundou em apenas 18 minutos. A rapidez com que o navio submergiu, aliada à dificuldade de lançar os botes salva-vidas, resultou na morte de 1.198 pessoas, entre passageiros e tripulantes. O naufrágio do Lusitania gerou indignação internacional e intensificou a pressão para que os Estados Unidos entrassem na guerra, o que ocorreu dois anos depois.</p>
+<p>O número de passageiros que morreram e sobreviveram em cada classe é dado abaixo.</p>
+<p><span class="math display">\[\begin{array}{l|cc} \hline
+\hbox{Classe} &amp; \hbox{Sobreviventes} &amp; \hbox{Mortos} \\ \hline
+\hbox{Primeira} &amp; 113 &amp; 177 \\
+\hbox{Segunda} &amp; 229 &amp; 372 \\
+\hbox{Terceira}  &amp; 134 &amp; 239 \\ \hline
+\end{array}\]</span></p>
+<p>Neste exemplo, vamos testar a hipótese de que tripulantes da Classe 1 tinham maior probabilidade de sobrevivência que os dados classes inferiores. Seja <span class="math inline">\(\alpha,\beta,\gamma\)</span> as probabilidades de sobrevivência das classes 1, 2 e 3, respectivamente, Considerando uma priori Beta(1,1) para cada classe, teremos que a posteriori para a probabilidade de sobrevivência é dada por</p>
+<ul>
+<li><span class="math inline">\(\alpha\sim\)</span>Beta(114,178) para a classe 1</li>
+<li><span class="math inline">\(\beta\sim\)</span>Beta(230,373) para a classe 2</li>
+<li><span class="math inline">\(\gamma\sim\)</span>Beta(135,240) para a classe 3</li>
+</ul>
+<p>O gráfico das posterioris é dado abaixo</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x, <span class="dv">114</span>,<span class="dv">178</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>), <span class="at">ylab =</span> <span class="st">'Densidades das posterioris'</span>, <span class="at">xlab =</span> <span class="st">'Probabilidade de sobrevivência'</span>, <span class="at">xlim=</span><span class="fu">c</span>(.<span class="dv">2</span>,.<span class="dv">6</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x, <span class="dv">230</span>,<span class="dv">373</span>), <span class="at">add =</span> T, <span class="at">col =</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x, <span class="dv">135</span>,<span class="dv">240</span>), <span class="at">add =</span> T ,<span class="at">col =</span><span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">c</span>(<span class="st">'Classe 1'</span>,<span class="st">'Classe 2'</span>,<span class="st">'Classe 3'</span>), <span class="at">lwd =</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">bty=</span><span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vamos simular uma amostra de tamanho <span class="math inline">\(B=1000000\)</span> das posterioris de <span class="math inline">\(\alpha,\beta,\gamma\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">1000000</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>alfa <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(B, <span class="dv">114</span>,<span class="dv">178</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>beta  <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(B, <span class="dv">230</span>,<span class="dv">373</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>gama  <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(B, <span class="dv">135</span>,<span class="dv">240</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Vamos testar a hipótese de que a probabilidade de sobrevivência de um indivíduo da Classe 1 foi maior que a de um indivíduo da Classe 2 e 3.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(alfa<span class="sc">&gt;</span>beta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.599994</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(alfa<span class="sc">&gt;</span>gama)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.788499</code></pre>
+</div>
+</div>
+<p>Observe que <span class="math inline">\(P(\alpha&gt;\gamma|\hbox{dados})\approx 0,78\)</span>, o que não dá suporte para afirmar que a probabilidade de sobrevivência dos tripulantes da primeira classe foi maior do que o da terceira. <span class="math display">\[\blacksquare\]</span></p>
 </div>
 </section>
 <section id="o-modelo-multivariado" class="level2" data-number="5.2">
@@ -358,13 +470,13 @@ window.Quarto = {
 <p>A Dirichlet<span class="math inline">\((a_1,\ldots,a_k)\)</span> possui as seguintes propriedades:</p>
 <ul>
 <li><span class="math inline">\(\theta_j\sim\hbox{Beta}(a_j,\sum_{i\neq j}a_i)\)</span></li>
-<li><span class="math inline">\((\theta_1,\ldots,\theta_i+\theta_j,\ldots,\theta_k)\sim\hbox{Diriculet}(a_1,\ldots,a_i+a_j,\ldots,a_k)\)</span></li>
+<li><span class="math inline">\((\theta_1,\ldots,\theta_i+\theta_j,\ldots,\theta_k)\sim\hbox{Dirichlet}(a_1,\ldots,a_i+a_j,\ldots,a_k)\)</span></li>
 </ul>
 <p>Da primeira propriedade, concluímos que <span class="math display">\[E(\theta_j)=\frac{a_j}{\sum_{i=1}^k a_i},\;\;Var(\theta_j)=\frac{E(\theta_j)(1-E(\theta_j))}{\sum_{i=1}^k a_i+1}.\]</span></p>
 <p>Utilizando o modelo conjugado, a distribuição a posteriori de <span class="math inline">\(\theta_1,\ldots,\theta_k\)</span> é</p>
 <p><span class="math display">\[f(\boldsymbol{\theta}|\boldsymbol{x})\propto \prod_{i=j}^k \theta_j^{n_j+a_j-1}\]</span> ou seja, <span class="math inline">\(\boldsymbol{\theta}|\boldsymbol{x}\sim\hbox{Dirichlet}(n_1+a_1,\ldots,n_k+a_k)\)</span>. Novamente, pode-se utilizar <span class="math inline">\(a_1=\cdots=a_k=1\)</span> para obter uma priori pouco informativa.</p>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.2</strong></span> <strong>Imagem corporal</strong></p>
+<p><span class="theorem-title"><strong>Example 5.4</strong></span> <strong>Imagem corporal</strong></p>
 <p>O projeto Estado nutricional e sua relação com a imagem corporal em escolares do município de Manaus foi submetido ao LabEst em 2013. Nele, estudantes identificavam como gostaria que fosse o seu corpo segundo a Escala de Stunkard, apresentada na imagem abaixo. Em seguida, uma série de medidas foram realizadas para determinar a real classificação do estudante. Com base nessas informações, cada estudante foi classificado segundo sua satisfação com o próprio corpo do seguinte modo:</p>
 <ul>
 <li><p>Satisfeito: seu desejo é equivalente ao seu estado atual.</p></li>
@@ -377,7 +489,7 @@ window.Quarto = {
 <figcaption>Escala de Stunkard</figcaption>
 </figure>
 </div>
-<p>Neste exemplo, vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumarizadas na tabela abaixo.</p>
+<p>Neste exemplo, vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumariadas na tabela abaixo.</p>
 <p><span class="math display">\[\begin{array}{c|ccc|c}\hline
 &amp;\hbox{Satisfeito} &amp; \hbox{Insatifeito por excesso} &amp; \hbox{Insatisfeito por magreza} &amp;\hbox{Total}\\ \hline
 \hbox{Masculino} &amp; 24 &amp; 10 &amp; 24 &amp; 58 \\
@@ -385,39 +497,112 @@ window.Quarto = {
 \end{array}
 \]</span> Cada estudante pode assumir uma das três classificações. Sejam <span class="math inline">\(\alpha_S,\alpha_E,\alpha_M\)</span> as probabilidades de alguém do sexo masculino estar classificado como Satisfeito, Insatisfeito por Excesso ou Insatisfeito por magreza, respectivamente. Então a função de verossimilhança para <span class="math inline">\(\boldsymbol{\alpha}\)</span> é</p>
 <p><span class="math display">\[L(\boldsymbol{\alpha})=\alpha_S^{24}\alpha_E^{10}\alpha_M^{24}.\]</span> Analogamente, fazendo <span class="math inline">\(\boldsymbol{\beta}=(\beta_S,\beta_E,\beta_M)\)</span>, as mesmas probabilidades para o sexo feminino, teremos que</p>
-<p><span class="math display">\[L(\boldsymbol{\alpha})=\beta_S^{14}\beta_E^{22}\\beta_M^{24}.\]</span></p>
-<p>Utilizando a priori Dirichelt(1,1,1) tanto para <span class="math inline">\(\boldsymbol{\alpha}\)</span> quanto para <span class="math inline">\(\boldsymbol{\beta}\)</span>, teremos que as respectivas posterioris para <span class="math inline">\(\boldsymbol{\alpha}\)</span> e <span class="math inline">\(\boldsymbol{\beta}\)</span> são Dirichelt(25,11,25) e Dirichlet(15,23,25).</p>
-<p>As posterioris para <span class="math inline">\(\alpha_M\)</span> e <span class="math inline">\(\beta_M\)</span> são Beta(25,36)e Beta(25,38). As estimativas pontuais são 0,40 e 0,39, respectivamente. A imagem abaixo mostra a insatisfação por magreza entre os sexos deve ser a mesma.</p>
+<p><span class="math display">\[L(\boldsymbol{\alpha})=\beta_S^{14}\beta_E^{22}\beta_M^{24}.\]</span></p>
+<p>Utilizando a priori Dirichlet(1,1,1) tanto para <span class="math inline">\(\boldsymbol{\alpha}\)</span> quanto para <span class="math inline">\(\boldsymbol{\beta}\)</span>, teremos que as respectivas posterioris para <span class="math inline">\(\boldsymbol{\alpha}\)</span> e <span class="math inline">\(\boldsymbol{\beta}\)</span> são Dirichelt(25,11,25) e Dirichlet(15,23,25).</p>
+<p>As posterioris para <span class="math inline">\(\alpha_M\)</span> e <span class="math inline">\(\beta_M\)</span> e são Beta(25,36) Beta(25,38). As estimativas pontuais são 0,40 e 0,39, respectivamente. A imagem abaixo mostra a insatisfação por magreza entre os sexos deve ser a mesma.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">25</span>,<span class="dv">36</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">'Probabilidade de insatisfação por magreza'</span>, <span class="at">ylab=</span> <span class="st">'Densidades marginais a posteriori'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>),<span class="at">xlim=</span><span class="fu">c</span>(.<span class="dv">1</span>,.<span class="dv">8</span>),<span class="at">col=</span><span class="st">'blue'</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">25</span>,<span class="dv">38</span>),<span class="at">add =</span> T, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">'red'</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">6</span>,.<span class="dv">2</span>),<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">6</span>), <span class="fu">c</span>(<span class="st">'Masculino'</span>,<span class="st">'Feminino'</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">'blue'</span>,<span class="st">'red'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">25</span>,<span class="dv">36</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">'Probabilidade de insatisfação por magreza'</span>, <span class="at">ylab=</span> <span class="st">'Densidades marginais a posteriori'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>),<span class="at">xlim=</span><span class="fu">c</span>(.<span class="dv">1</span>,.<span class="dv">8</span>),<span class="at">col=</span><span class="st">'blue'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">25</span>,<span class="dv">38</span>),<span class="at">add =</span> T, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">'red'</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">6</span>,.<span class="dv">2</span>),<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">6</span>), <span class="fu">c</span>(<span class="st">'Masculino'</span>,<span class="st">'Feminino'</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">'blue'</span>,<span class="st">'red'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bernoulli_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>As posterioris para <span class="math inline">\(\alpha_E\)</span> e <span class="math inline">\(\beta_E\)</span> são Beta(11,50)e Beta(23,40). As estimativas pontuais são 0,21 e 0,36, respectivamente. A imagem abaixo mostra que as mulheres em geral parecem possuir maior probabilidade de insatisfação por excesso.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">11</span>,<span class="dv">50</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">'Probabilidade de insatisfação por excesso'</span>, <span class="at">ylab=</span> <span class="st">'Densidades marginais a posteriori'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">6</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">23</span>,<span class="dv">40</span>),<span class="at">add =</span> T, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">2</span>,.<span class="dv">4</span>),<span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">7</span>), <span class="fu">c</span>(<span class="st">'Masculino'</span>,<span class="st">'Feminino'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">11</span>,<span class="dv">50</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">'Probabilidade de insatisfação por excesso'</span>, <span class="at">ylab=</span> <span class="st">'Densidades marginais a posteriori'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">6</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">23</span>,<span class="dv">40</span>),<span class="at">add =</span> T, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(.<span class="dv">2</span>,.<span class="dv">4</span>),<span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">7</span>), <span class="fu">c</span>(<span class="st">'Masculino'</span>,<span class="st">'Feminino'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bernoulli_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="bernoulli_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Podemos então construir a hipótese <span class="math inline">\(H:\alpha_E&lt;\beta_E\)</span> e, para testá-la, devemos ser capazes de calcular</p>
-<p><span class="math display">\[P(\alpha_E&lt;\beta_E|\hbox{dados})\]</span> Vamos discutir como realizar testes de hipóteses na próxima aula.</p>
+<p>Podemos então construir a hipótese <span class="math inline">\(H:\alpha_E&lt;\beta_E\)</span>. Abaixo, testamos essa hipótese:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">1000000</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>alfaE <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(B, <span class="dv">11</span>,<span class="dv">50</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>betaE <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(B, <span class="dv">23</span>,<span class="dv">40</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(alfaE<span class="sc">&lt;</span>betaE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.990628</code></pre>
 </div>
+</div>
+<p>Com uma probabilidade maior que 99%, há fortes evidências de que mulheres entre 16 e 17 anos se sentem mais insatisfeitas por excesso do que os homens de mesma idade.</p>
+</div>
+</section>
+<section id="exercícios" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">5.3</span> Exercícios</h2>
+<section id="eficácia-de-um-novo-medicamento" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="eficácia-de-um-novo-medicamento"><span class="header-section-number">5.3.1</span> Eficácia de um Novo Medicamento</h3>
+<p>Uma empresa farmacêutica desenvolveu um novo medicamento para tratar enxaquecas. Antes do lançamento, eles afirmam que o medicamento alivia a dor em pelo menos 80% dos pacientes. Um estudo independente com 250 pacientes revelou que 180 deles relataram alívio da dor. Os resultados do estudo fornecem evidências suficientes para rejeitar a alegação da empresa farmacêutica?</p>
+</section>
+<section id="preferência-por-uma-marca-de-café" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="preferência-por-uma-marca-de-café"><span class="header-section-number">5.3.2</span> Preferência por uma Marca de Café</h3>
+<p>Uma pesquisa de mercado afirma que 55% dos consumidores preferem a marca A de café à marca B. Uma amostra aleatória de 300 consumidores revelou que 180 deles preferem a marca A. Os resultados da amostra fornecem evidências suficientes para rejeitar a alegação da pesquisa de mercado?</p>
+</section>
+<section id="taxa-de-aprovação-em-um-exame" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="taxa-de-aprovação-em-um-exame"><span class="header-section-number">5.3.3</span> Taxa de Aprovação em um Exame</h3>
+<p>Uma escola afirma que a taxa de aprovação em um exame padronizado é de 70%. Uma amostra de 200 alunos revelou que 120 deles foram aprovados. Os resultados da amostra fornecem evidências suficientes para rejeitar a alegação da escola?</p>
+</section>
+<section id="eficácia-de-uma-campanha-de-vacinação" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="eficácia-de-uma-campanha-de-vacinação"><span class="header-section-number">5.3.4</span> Eficácia de uma Campanha de Vacinação</h3>
+<p>Uma campanha de vacinação contra a gripe foi realizada em uma cidade. Antes da campanha, a taxa de vacinação era de 35%. Após a campanha, uma amostra de 400 pessoas revelou que 180 delas foram vacinadas. Os resultados da amostra fornecem evidências suficientes para concluir que a campanha aumentou a taxa de vacinação?</p>
+</section>
+<section id="a-eficácia-da-pfizer" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="a-eficácia-da-pfizer"><span class="header-section-number">5.3.5</span> A eficácia da Pfizer</h3>
+<p>O artigo <span class="citation" data-cites="polack2020safety">Polack et al. (<a href="#ref-polack2020safety" role="doc-biblioref">2020</a>)</span> apresenta um estudo clínico de fase 3 randomizado e controlado por placebo que avaliou a eficácia da vacina BNT162b2 (Pfizer-BioNTech COVID-19) em participantes com 16 anos ou mais sem evidências de infecção por SARS-CoV-2. A tabela abaixo apresenta o número de participantes por grupo e o número de casos de Covid-19.</p>
+<p><span class="math display">\[\begin{array}{l|cc}\hline
+\hbox{Grupo} &amp; \hbox{Participantes} &amp; \hbox{Casos de Covid-19}\\\hline
+\hbox{Vacina} &amp; 18.198 &amp; 8 \\
+\hbox{Placebo} &amp; 18.325 &amp; 162 \\ \hline
+\end{array}\]</span></p>
+<p>Considere que o evento de interesse é contrair Covid-19</p>
+<ul>
+<li><p>Encontre a função de verossimilhança para cada grupo</p></li>
+<li><p>Utilizando a priori Beta(1,1) para a probabilidade de contrair Covid-19, encontre a distribuição a posteriori para cada grupo</p></li>
+<li><p>Faça um gráfico das posterioris e verifique se há evidências de que a vacinação é eficaz.</p></li>
+</ul>
+</section>
+<section id="o-naufrágio-do-lusitania-1915" class="level3" data-number="5.3.6">
+<h3 data-number="5.3.6" class="anchored" data-anchor-id="o-naufrágio-do-lusitania-1915"><span class="header-section-number">5.3.6</span> O Naufrágio do Lusitania (1915)</h3>
+<p>Neste capítulo, abordamos a tragédia do Lusitania. A tabela abaixo acrescenta os dados sobre a tripulação.</p>
+<p><span class="math display">\[\begin{array}{l|cc} \hline
+\hbox{Categoria} &amp; \hbox{Sobreviventes} &amp; \hbox{Mortos} \\ \hline
+\hbox{Primeira classe} &amp; 113 &amp; 177 \\
+\hbox{Segunda classe} &amp; 229 &amp; 372 \\
+\hbox{Terceira classe}  &amp; 134 &amp; 239 \\ \hline
+\hbox{Tripulação - abastecimento} &amp; 139 &amp; 167 \\
+\hbox{Tripulação - engenharia} &amp; 112 &amp; 201 \\
+\hbox{Tripulação - deck} &amp; 41 &amp; 37 \\
+\hline
+\end{array}\]</span></p>
+<p>Compare a probabilidade de sobrevivência entre os indivíduos dos diferentes tipos de tripulação e classes de passageiros, testando as hipóteses necessárias.</p>
+</section>
+<section id="imagem-corporal" class="level3" data-number="5.3.7">
+<h3 data-number="5.3.7" class="anchored" data-anchor-id="imagem-corporal"><span class="header-section-number">5.3.7</span> Imagem corporal</h3>
+<p>Neste capítulo, mostramos que homens e mulheres com idades entre 16 e 17 anos possuem expectativas diferentes em relação ao seu próprio corpo.</p>
+<p>Neste exercício, você vai verificar como essas expectativas variam dentro do mesmo sexo. Especificamente:</p>
+<ul>
+<li><p>Teste se há evidências de que os homens possuem probabilidade maior de estarem insatisfeitos por magreza do que satisfeitos.</p></li>
+<li><p>Teste se há evidências de que as mulheres possuem probabilidade maior de estarem insatisfeitas por excesso do que satisfeitas.</p></li>
+</ul>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-polack2020safety" class="csl-entry" role="listitem">
+Polack, Fernando P, Stephen J Thomas, Nicholas Kitchin, Judith Absalon, Alejandra Gurtman, Stephen Lockhart, John L Perez, et al. 2020. <span>“Safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.”</span> <em>New England Journal of Medicine</em> 383 (27): 2603–15.
+</div>
+</div>
+</section>
 </section>
 
 </main> <!-- /main -->
