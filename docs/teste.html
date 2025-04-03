@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -223,8 +257,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#testes-baseados-na-teoria-da-decisão" id="toc-testes-baseados-na-teoria-da-decisão" class="nav-link active" data-scroll-target="#testes-baseados-na-teoria-da-decisão"><span class="header-section-number">6.1</span> Testes baseados na teoria da decisão</a></li>
-  <li><a href="#o-fator-de-bayes" id="toc-o-fator-de-bayes" class="nav-link" data-scroll-target="#o-fator-de-bayes"><span class="header-section-number">7</span> O Fator de Bayes</a></li>
+  <li><a href="#testes-baseados-na-teoria-da-decisão" id="toc-testes-baseados-na-teoria-da-decisão" class="nav-link active" data-scroll-target="#testes-baseados-na-teoria-da-decisão"><span class="header-section-number">6.1</span> Testes baseados na teoria da decisão</a>
+  <ul class="collapse">
+  <li><a href="#a-função-de-perda-0-1" id="toc-a-função-de-perda-0-1" class="nav-link" data-scroll-target="#a-função-de-perda-0-1"><span class="header-section-number">6.1.1</span> A Função de Perda 0-1</a></li>
+  <li><a href="#a-função-de-perda-a-b" id="toc-a-função-de-perda-a-b" class="nav-link" data-scroll-target="#a-função-de-perda-a-b"><span class="header-section-number">6.1.2</span> A Função de Perda a-b</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -252,18 +289,47 @@ window.Quarto = {
 
 <section id="testes-baseados-na-teoria-da-decisão" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="testes-baseados-na-teoria-da-decisão"><span class="header-section-number">6.1</span> Testes baseados na teoria da decisão</h2>
-<p>Considere que <span class="math inline">\(X_1,\ldots,X_n\)</span> é uma amostra do modelo <span class="math inline">\(F(.|\theta)\)</span>. Seja <span class="math inline">\(H_0:\theta\in\Theta_0\)</span> a hipótese nula. Um teste de hipóteses é uma regra <span class="math inline">\(\varphi(x)\)</span> que recebe o valor 1 se a hipótese <span class="math inline">\(H_0\)</span> é aceita e 0 em caso contrário.</p>
-<p>Considere a função de perda 0-1:</p>
-<p><span class="math display">\[ \mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\;\;\hbox{se }\varphi(x)=I(\theta\in\Theta_0)\\1,\hbox{  se }\varphi(x)\neq I(\theta\in\Theta_0)\end{array}\right.\]</span></p>
-<p>A média a posteriori da função de perda é</p>
-<p><span class="math display">\[E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\int_{\Theta_0}I(\varphi(x)\neq 1)\pi(\theta|x)d\theta\]</span></p>
-<p>e o estimador de Bayes é o valor de <span class="math inline">\(varphi\)</span> que minimiza a esperança acima. Como <span class="math inline">\(\varphi\)</span> é uma indicadora, teremos que</p>
-<p><span class="math display">\[E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\left\{\begin{array}{l}P(\theta\in\Theta_0|x),\hbox{ se }\varphi\neq 1\\
-P(\theta\in\Theta_0^c|x),\hbox{ se }\varphi= 1
-\end{array}\right.\]</span></p>
-<p>Deste modo, aceitamos <span class="math inline">\(H_0\)</span> se <span class="math inline">\(P(\theta\in\Theta_0|x)&gt;P(\theta\in\Theta_0^c|x)\)</span> e rejeitamos em caso contrário.</p>
-<div class="alert alert-info">
-<p><strong>Exemplo</strong> Uma cadeia de <em>fast food</em> deseja saber se vale a pena trocar seus freezers tradicionais, que mantém a carne entre -<span class="math inline">\(17^o\)</span>C e <span class="math inline">\(-9^oC\)</span> por um com uma nova tecnologia (e mais cara!) que mantém a temperatura consistentemente em <span class="math inline">\(-17^oC\)</span>. Para tomar essa decisão, 32 bifes foram armazenados por 8 meses, sendo 16 bifes colocados no freezer tradicional e 16 no novo. Em seguida, um chefe preparou os 32 bifes de maneira idêntica e 16 clientes foram escolhidos ao acaso para avaliar o sabor dos bifes. Cada cliente recebeu um bife de cada freezer, mas a prova foi realizada às cegas.</p>
+<section id="a-função-de-perda-0-1" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="a-função-de-perda-0-1"><span class="header-section-number">6.1.1</span> A Função de Perda 0-1</h3>
+<p>Considere que <span class="math inline">\(X_1,\ldots,X_n\)</span> é uma amostra do modelo <span class="math inline">\(F(.|\theta)\)</span>. Seja <span class="math inline">\(H_0:\theta\in\Theta_0\)</span> a hipótese nula.</p>
+<p>Um teste de hipóteses é uma regra <span class="math inline">\(\varphi(x)\)</span> que recebe o valor 1 se a hipótese <span class="math inline">\(H_0\)</span> é aceita e 0 em caso contrário.</p>
+<p>Em relação à natureza da hipótese, observe que <span class="math display">\[I(\theta\in\Theta_0)=\left\{\begin{array}{ll}1,&amp;\hbox{ se }H_0\hbox{ é verdadeira}\\0,&amp;\hbox{ se }H_0\hbox{ é falsa}\end{array}\right..\]</span></p>
+<p>Novamente, considere a função de perda quadrática:</p>
+<p><span class="math display">\[ \mathcal{L}(\theta,\varphi)=(\varphi(x)-I(\theta\in\Theta_0))^2.\]</span> Definida deste modo, esta função também é denominada Função de Perda 0-1, uma vez que ela assume o valor 0 quando uma decisão correta é tomada e 1 caso contrário.</p>
+<p>A esperança a posteriori desta função de perda é</p>
+<p><span class="math display">\[E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\int \left(\phi(x)- I(\theta\in\Theta_0)\right)^2 f(\theta|x)d\theta\]</span></p>
+<p>e o estimador de Bayes é o valor de <span class="math inline">\(\varphi\)</span> que minimiza a esperança acima. Como <span class="math inline">\(\varphi\)</span> é uma indicadora, teremos duas situações:</p>
+<ul>
+<li>Se <span class="math inline">\(\phi(x)=0\)</span>, então</li>
+</ul>
+<p><span class="math display">\[\begin{align}E_{\theta|X}(\mathcal{L}(\theta,\varphi))&amp;=\int I(\theta\in\Theta_0)^2 f(\theta|x)d\theta\\&amp;=\int I(\theta\in\Theta_0) f(\theta|x)d\theta\\&amp;=\int_{\Theta_0 }f(\theta|x)d\theta=P(\theta\in\Theta_0|x)\end{align}\]</span></p>
+<ul>
+<li>Se <span class="math inline">\(\phi(x)=1\)</span>, então</li>
+</ul>
+<p><span class="math display">\[\begin{align}E_{\theta|X}(\mathcal{L}(\theta,\varphi))&amp;=\int (1-I(\theta\in\Theta_0)^2 f(\theta|x)d\theta\\&amp;=\int I(\theta\in\Theta_0^c) f(\theta|x)d\theta\\&amp;=\int_{\Theta_0^c }f(\theta|x)d\theta=P(\theta\notin\Theta_0|x)\end{align}\]</span></p>
+<p>Deste modo, se <span class="math inline">\(P(\theta\in\Theta_0|x)&gt;P(\theta\in\Theta_0^c|x)\)</span>, temos que <span class="math inline">\(\phi(\boldsymbol{x})=1\)</span> é a decisão que minimiza a perda a posteriori, ou seja, aceitamos <span class="math inline">\(H_0\)</span>. Em caso contrário, rejeitamos <span class="math inline">\(H_0\)</span>.</p>
+</section>
+<section id="a-função-de-perda-a-b" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored"><span class="header-section-number">6.1.2</span> A Função de Perda a-b</h3>
+<p>Suponha que <span class="math inline">\(P(\theta\in\Theta_0|\boldsymbol{x})=0,51\)</span>. Segundo a Função de Perda 0-1, deveríamos aceitar <span class="math inline">\(H_0\)</span>, uma vez que</p>
+<p><span class="math display">\[P(\theta\in\Theta_0|\boldsymbol{x})=0,51&gt;0,49=P(\theta\in\Theta_0^c|\boldsymbol{x})\]</span></p>
+<p>Isto ocorre porque a perda associada ao erro no teste de hipóteses é igual para qualquer decisão. Podemos associar valores diferentes, reforçando que um erro é mais sério que o outro.</p>
+<p>Considere que rejeitar <span class="math inline">\(H_0\)</span> quando ela é verdadeira (erro tipo I) gera uma perda <span class="math inline">\(a\)</span>, enquanto que aceitar <span class="math inline">\(H_0\)</span> quando ela é falsa (erro tipo II) gera uma perda <span class="math inline">\(b\)</span>. Para o erro mais grave, associamos um valor maior para a perda. A função de perda respectiva é denominada Perda <span class="math inline">\(a-b\)</span> e é dada por</p>
+<p><span class="math display">\[\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
+a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.\]</span></p>
+<p>A média a posteriori dessa função de perda é</p>
+<p><span class="math display">\[E_{\theta|\boldsymbol{x}}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|x)d\theta\]</span></p>
+<ul>
+<li><p>Se <span class="math inline">\(\varphi(x)=1\)</span>, teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|\boldsymbol{x})d\theta=bP(\theta\in\Theta_0^c|x)\]</span></p></li>
+<li><p>Se <span class="math inline">\(\varphi(x)=0\)</span> teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta=aP(\theta\in\Theta_0|x)\]</span> logo:</p></li>
+<li><p>Se <span class="math inline">\(bP(\theta\in\Theta_0^c|x)&gt;aP(\theta\in\Theta_0|x)\)</span> então a decisão minimiza a perda a posteriori é <span class="math inline">\(\varphi(\boldsymbol{x})=0\)</span>, ou seja, rejeitamos <span class="math inline">\(H_0\)</span>.</p></li>
+<li><p>Se <span class="math inline">\(bP(\theta\in\Theta_0^c|x)&lt;aP(\theta\in\Theta_0|x)\)</span> então a decisão minimiza a perda a posteriori é <span class="math inline">\(\varphi(\boldsymbol{x})=1\)</span>, ou seja, aceitamos <span class="math inline">\(H_0\)</span>.</p></li>
+</ul>
+<p>Na prática, aceitamos <span class="math inline">\(H_0\)</span> se <span class="math display">\[P(\theta\in\Theta_0|\boldsymbol{x})&gt;\frac{b}{b+a}\]</span></p>
+<p>Observe que, diferente do ponto de vista frequentista, estamos interessados em aceitar a hipótese <span class="math inline">\(H_0\)</span>. Deste modo, o erro tipo II é o mais preocupante, o que implica em <span class="math inline">\(b&gt;a\)</span>. Na prática, fixamos um valor para <span class="math inline">\(b/(a+b)\)</span>, como 0,95 ou 0,99 e comparamos com <span class="math inline">\(P(\theta\in\Theta_0|\boldsymbol{x})\)</span> para decidir se aceitamos <span class="math inline">\(H_0\)</span>.</p>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.3</strong></span> <strong>Fast food</strong></p>
+<p>Uma cadeia de <em>fast food</em> deseja saber se vale a pena trocar seus freezers tradicionais, que mantém a carne entre -<span class="math inline">\(17^o\)</span>C e <span class="math inline">\(-9^oC\)</span> por um com uma nova tecnologia (e mais cara!) que mantém a temperatura consistentemente em <span class="math inline">\(-17^oC\)</span>. Para tomar essa decisão, 32 bifes foram armazenados por 8 meses, sendo 16 bifes colocados no freezer tradicional e 16 no novo. Em seguida, um chefe preparou os 32 bifes de maneira idêntica e 16 clientes foram escolhidos ao acaso para avaliar o sabor dos bifes. Cada cliente recebeu um bife de cada freezer, mas a prova foi realizada às cegas.</p>
 <p>Podemos considerar a variável <span class="math inline">\(Y_i=1\)</span> se o <span class="math inline">\(i\)</span>-ésimo cliente preferiu o bife armazenado no freezer mais caro e <span class="math inline">\(Y_i=0\)</span> em caso contrário. Deste modo, <span class="math inline">\(Y_1,\ldots,Y_{16}|\theta\sim\hbox{Bernoulli}(\theta)\)</span>. Claramente, estamos interessados em testar <span class="math inline">\(H_0:\theta&gt;1/2\)</span>.</p>
 <p>Considere as seguintes prioris:</p>
 <div class="cell">
@@ -275,10 +341,10 @@ P(\theta\in\Theta_0^c|x),\hbox{ se }\varphi= 1
 </div>
 </div>
 </div>
-<p>A priori de Jeffreys dá mais massa para valores extremos, o que poderia favorecer a hipótese <span class="math inline">\(H_0\)</span>. A priori Uniforme(0,1) é aquela que parece não dar qualquer preferência. Por último, a priori Beta(2,2) pode ser vista como uma resitência à rejeitar que os dois armazenamentos são iguais.</p>
-<p>Dos 16 clientes, 13 preferiram os bifes que foram amarzenados com a tecnologia mais cara. Como as três prioris acima são casos particulares da distribuição Beta<span class="math inline">\((a,b)\)</span>, decidiremos sobre <span class="math inline">\(H_0\)</span> calculando</p>
+<p>A distribuiação a priori Beta(.5,.5) dá mais massa para valores extremos, o que poderia favorecer a hipótese <span class="math inline">\(H_0\)</span>. A priori Beta(1,1) é aquela que parece não dar qualquer preferência. Por último, a priori Beta(2,2) pode ser vista como uma leve resistência à rejeitar que os dois armazenamentos são iguais.</p>
+<p>Dos 16 clientes, 13 preferiram os bifes que foram armazenados com a tecnologia mais cara. Como as três prioris acima são casos particulares da distribuição Beta<span class="math inline">\((a,b)\)</span>, decidiremos sobre <span class="math inline">\(H_0\)</span> calculando</p>
 <p><span class="math display">\[P(\theta&gt;1/2|\textbf{y})=\int_0^{1/2}\frac{\theta^{13+a-1}(1-\theta)^{3+b-1}}{B(13+a,3+b)}\]</span></p>
-<p>que pode ser falciemente obtida com o comando <code>pbeta(.5,13+a,3+b, lower.tail =F)</code> Temos os seguintes resultados:</p>
+<p>que pode ser facilmente obtida com o comando <code>pbeta(.5,13+a,3+b, lower.tail =F)</code> Temos os seguintes resultados:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -288,7 +354,7 @@ P(\theta\in\Theta_0^c|x),\hbox{ se }\varphi= 1
 </thead>
 <tbody>
 <tr class="odd">
-<td>Jeffreys</td>
+<td>Beta(.5,.5)</td>
 <td>0,995</td>
 </tr>
 <tr class="even">
@@ -301,40 +367,137 @@ P(\theta\in\Theta_0^c|x),\hbox{ se }\varphi= 1
 </tr>
 </tbody>
 </table>
-<p>Considerando as prioris acima, a probabilidade a posteriori da hipótese nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da carne é melhor preservado no freezer com alta tecnologia</p>
+Considerando as prioris acima, a probabilidade a posteriori da hipótese nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da carne é melhor preservado no freezer com alta tecnologia
 </div>
-<p>Até o momento, assumimos que a perda associada ao erro no teste de hipóteses é igual para qualquer decisão. Considere então a função de perda <span class="math inline">\(a-b\)</span>, dada por</p>
-<p><span class="math display">\[\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
-a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.\]</span></p>
-<p>Utilizando a função de perda acima, temos que cada tipo de erro possui um valor de perda diferente. A média a posteriori dessa função de perda é</p>
-<p><span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta\]</span></p>
-<p>Se <span class="math inline">\(\varphi(x)=1\)</span>, teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta=bP(\theta\in\Theta_0^c|x)\]</span> e se <span class="math inline">\(varphi(x)=0\)</span> teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta=aP(\theta\in\Theta_0|x)\]</span> logo, o estimador de Bayes para a perda <span class="math inline">\(a-b\)</span> é <span class="math display">\[\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }bP(\theta\in\Theta_0^c|x)&lt;aP(\theta\in\Theta_0|x)\\
-0,\hbox{ se }bP(\theta\in\Theta_0^c|x)\geq aP(\theta\in\Theta_0|x)\end{array}\right.\]</span> ou, equivalentemente, <span class="math display">\[\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }P(\theta\in\Theta_0|x)&gt;\frac{b}{a+b}\\
-0,\hbox{ caso contrário}\end{array}\right.\]</span></p>
-<p>Utilizando a função de perda <span class="math inline">\(a-b\)</span>, <span class="math inline">\(H_0\)</span> é rejeitada sempre que a probabilidade a posteriori é menor que <span class="math inline">\(b/(a+b)\)</span>.</p>
-</section>
-<section id="o-fator-de-bayes" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> O Fator de Bayes</h1>
-<p>Considere novamente o problema dos freezers, da seção anterior. Note que a teoria desenvolvida acima não consegue testar <span class="math inline">\(H_0:\theta=1/2\)</span>, uma vez que este evento possui probabilidade nula a priori. Para contornar este problema, suponha que existem dois modelos competidores:</p>
+<section id="testes-utilizando-modelos" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="testes-utilizando-modelos"><span class="header-section-number">6.2</span> Testes utilizando modelos</h2>
+<p>Considere novamente o problema dos freezers, da seção anterior. Note que a teoria desenvolvida acima não consegue testar <span class="math inline">\(H_0:\theta=1/2\)</span>, uma vez que este evento possui probabilidade nula a priori.</p>
+<p>Para contornar este problema, suponha que existem dois modelos concorrentes:</p>
 <ul>
-<li><p><span class="math inline">\(M_0: y_i\sim\hbox{Bernoulli}(1/2)\)</span></p></li>
-<li><p><span class="math inline">\(M_1: y_i|\theta\hbox{Bernoulli}(\theta), \theta\sim\hbox{Uniforme}(0,1)\)</span></p></li>
+<li><p>Modelo <span class="math inline">\(M_0\)</span>: <span class="math inline">\(y_i\sim\hbox{Bernoulli}(1/2)\)</span></p></li>
+<li><p>Modelo <span class="math inline">\(M_1:\)</span></p></li>
 </ul>
-<p>Então, <span class="math display">\[f(y_1,\ldots,y_{16}|M_0)=\left(\frac{1}{2}\right)^{16}\]</span></p>
-<p>e <span class="math display">\[f(y_1,\ldots,y_{^16}|M_1)=\int_0^1\theta^{\sum_{i=1}^{16}y_i}(1-\theta)^{16-\sum_{i=1}^{16}y_i}d\theta=B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)\]</span> Colocando uma probabilidade a priori para cada modelo, teremos</p>
-<p><span class="math display">\[P(M_0|y_1,\ldots,y_{16})=\frac{\left(\frac{1}{2}\right)^{16}P(M_0)}{\left(\frac{1}{2}\right)^{16}P(M_0)+B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)P(M_1)}\]</span> Ainda considerando o exemplo anterior, assumindo <span class="math inline">\(P(M_0)=P(M_1)\)</span> e lembrando que <span class="math inline">\(\sum_i y_i=13\)</span>, tem-se <span class="math inline">\(P(M_0|y_1,\ldots,y_{16})=0,12\)</span>, o que nos leva a rejeitar <span class="math inline">\(H_0\)</span>.</p>
-<p>Note que esta nova abordagem leva a uma mudança na priori, uma vez que</p>
-<p><span class="math display">\[\pi(\theta)=P(M_0)\pi(\theta|M_0)+P(M_1)\pi(\theta|M_1)=P(M_0)I(\theta=\theta_0)+I(\theta\in (0,1))P(M_1)\]</span></p>
-<p>Para o caso geral, considere os modelos competidores <span class="math inline">\(M_0\)</span> e <span class="math inline">\(M_1\)</span>. Sejam ainda <span class="math inline">\(\pi_0(.)\)</span> e <span class="math inline">\(\pi_1(.)\)</span> as prioris sob <span class="math inline">\(H_0\)</span> e <span class="math inline">\(H_1\)</span>, repectivamente. O Fator de Bayes é definido por</p>
-<p><span class="math display">\[B_{01}(x)=\left.\frac{P(M_0|x)}{P(M_0)}\right/ \frac{P(M_1|x)}{P(M_1)}\]</span> onde <span class="math display">\[P(M_i|x)=\int f(x|\theta)\pi_i(\theta)d\theta.\]</span></p>
-<p>Se <span class="math inline">\(B_{01}(x)=1\)</span>, então não há diferença entre os modelos. Alternativamente, quanto maior for o valor do fator de Bayes, maior é a evidência a favor de <span class="math inline">\(H_0\)</span>. A escala de Jeffreys pode ser útil para tomada de decisão:</p>
-<p>Note que, se <span class="math inline">\(\pi_0(\theta)=I(\theta=\theta_0)\)</span>, <span class="math inline">\(\pi_1(\theta)=I(\theta=\theta_1)\)</span> e <span class="math inline">\(P(M_0)=P(M_1)\)</span>, o fator de Bayes se torna a estatística do teste de Neyman-Pearson</p>
-<p><span class="math display">\[B_{01}(x)=\frac{f(x|\theta_0)}{f(x|\theta_1)}\]</span></p>
+<p><span class="math display">\[\begin{align}
+y_i|\theta&amp;\sim\hbox{Bernoulli}(\theta),\\
+\theta&amp;\sim\hbox{Uniforme}(0,1)\end{align}\]</span></p>
+<p>Seja <span class="math inline">\(M_0\)</span> o evento no qual o modelo <span class="math inline">\(M_0\)</span> é o verdadeiro gerador da amostra. Observe que <span class="math display">\[f(y_1,\ldots,y_{16}|M_0)=\prod_{i=1}^{16}f(y_i|M_0)=\left(\frac{1}{2}\right)^{16}\]</span></p>
+<p>Já para o modelo <span class="math inline">\(M_1\)</span>, observe que</p>
+<p><span class="math display">\[\begin{align}f(y_1,\ldots,y_{16}|M_1)&amp;=
+\int_0^1 f(y_1,\ldots,y_{16}|\theta)f(\theta)d\theta\\
+&amp;=\int_0^1 \prod_{i=1}^{16}f(y_i|\theta)f(\theta)d\theta\\
+&amp;=\int_0^1 \prod_{i=1}^{16}\theta^{y_i}(1-\theta)^{1-y_i}d\theta\\
+&amp;=\int_0^1\theta^{\sum_{i=1}^{16}y_i}(1-\theta)^{16-\sum_{i=1}^{16}y_i}d\theta=B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right),\end{align}\]</span> onde <span class="math inline">\(B(.,.)\)</span> é a função beta.</p>
+<p>Sejam <span class="math inline">\(P(M_0)\)</span> e <span class="math inline">\(P(M_1)=1-P(M_0)\)</span> as probabilidades a priori dos modelos <span class="math inline">\(M_0\)</span> e <span class="math inline">\(M_1\)</span>. Então, a probabilidade a posteriori do modelo <span class="math inline">\(M_0\)</span> é dada por</p>
+<p><span class="math display">\[P(M_0|y_1,\ldots,y_{16})=\frac{\left(\frac{1}{2}\right)^{16}P(M_0)}{\left(\frac{1}{2}\right)^{16}P(M_0)+B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)P(M_1)}\]</span> Ainda considerando o exemplo anterior, assumindo <span class="math inline">\(P(M_0)=P(M_1)=1/2\)</span> e lembrando que <span class="math inline">\(\sum_i y_i=13\)</span>, tem-se</p>
+<p><span class="math display">\[P(M_0|y_1,\ldots,y_{16})=\frac{\left(\frac{1}{2}\right)^{17}}{\left(\frac{1}{2}\right)^{17}+B\left(14,4\right)\frac{1}{2}}\approx0,1268,\]</span> o que nos leva a rejeitar <span class="math inline">\(H_0\)</span>.</p>
+<div class="alert alert-info">
+<p><strong>Caso geral.</strong></p>
+<p>Para a amostra <span class="math inline">\(x_1,\ldots,x_n\)</span>, sejam <span class="math inline">\(M_1,\ldots,M_k\)</span> <span class="math inline">\(k\)</span> modelos paramétricos. Sejam <span class="math inline">\(\boldsymbol{\theta}_1,\ldots,\boldsymbol{\theta}_k\)</span>, e <span class="math inline">\(f(\boldsymbol{\theta}_1),\ldots,f(\boldsymbol{\theta}_k)\)</span> seus respectivos parâmetros e prioris. Para determinar o modelo mais adequado:</p>
+<ol type="1">
+<li><p>Atribua os valores a priori para <span class="math inline">\(P(M_1),\ldots,P(M_k)\)</span></p></li>
+<li><p>Para <span class="math inline">\(j=1,\ldots,k\)</span>, calcule <span class="math display">\[f(x_1,\ldots,x_n|M_j)=\int f(x_1,\ldots,x_n|\theta_j)f_j(\theta_j)d\theta_j\]</span></p></li>
+<li><p>Compute</p></li>
+</ol>
+<p><span class="math display">\[P(M_j|x_1,\ldots,x_n)=\frac{f(x_1,\ldots,x_n|M_j)P(M_j)}{\sum_{i=1}^k f(x_1,\ldots,x_n|M_i)P(M_i)}\]</span></p>
+<ol start="4" type="1">
+<li>Considere como adequado o modelo com maior probabilidade a posteriori</li>
+</ol>
+</div>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.1</strong></span> <strong>Imagem corporal</strong></p>
+<p>Considere novamente os dados sobre imagem corporal em escolares entre 16 e 17 anos, vistos no capítulo anterior e reproduzidos novamente abaixo.</p>
+<p>vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumariadas na tabela abaixo.</p>
+<p><span class="math display">\[\begin{array}{c|ccc|c}\hline
+&amp;\hbox{Satisfeito} &amp; \hbox{Insatisfeito por excesso} &amp; \hbox{Insatisfeito por magreza} &amp;\hbox{Total}\\ \hline
+\hbox{Masculino} &amp; 24 &amp; 10 &amp; 24 &amp; 58 \\
+\hbox{Feminino} &amp; 14 &amp; 22 &amp; 24 &amp; 60 \\ \hline
+\end{array}
+\]</span></p>
+<p>Anteriormente, assumimos que as probabilidades entre os sexos deveriam ser diferentes. Denotamos por <span class="math inline">\(\alpha_S,\alpha_E,\alpha_M\)</span> a probabilidade de um indivíduo do sexo masculino ser classificado como Satisfeito, Insatisfeito por Excesso e Insatisfeito por Magreza. Também denotamos por <span class="math inline">\(\beta_S,\beta_E,\beta_M\)</span> as mesmas probabilidades para o sexo feminino. Por último, Utilizamos a priori Dirichlet(1,1,1) para ambos os sexos. Vamos denotar esse modelo por <span class="math inline">\(M_1\)</span>.</p>
+<p>Seja <span class="math inline">\(x=(24,10,24)\)</span> as informações registradas para o sexo masculino e <span class="math inline">\(y=(14,22,24)\)</span> as informações para o sexo feminino. Então</p>
+<p><span class="math display">\[\begin{align}
+f(x,y|M_1)&amp;=\int f(x|\boldsymbol{\alpha})f(\boldsymbol{\alpha})d\boldsymbol{\alpha}\int f(y|\boldsymbol{\beta})f(\boldsymbol{\beta})d\boldsymbol{\beta}\\&amp;=
+\int_{\mathcal{S}^3} \alpha_S^{24}\alpha_E^{10}\alpha_M^{24}2d\boldsymbol{\alpha}\int_{\mathcal{S}^3} \beta_S^{14}\beta_E^{22}\beta_M^{24}2d\boldsymbol{\beta}\\&amp;=4\frac{\Gamma(25)\Gamma(11)\Gamma(25)}{\Gamma(61)}\frac{\Gamma(15)\Gamma(23)\Gamma(25)}{\Gamma(63)}
+\end{align}\]</span></p>
+<p>Considere agora o modelo <span class="math inline">\(M_2\)</span>, no qual não há diferença entre os sexos. Nesse caso, <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> são provenientes do mesmo modelo, com probabilidades <span class="math inline">\(\gamma_S,\gamma_E,\gamma_M\)</span>, respectivamente. Utilizando a priori Dirichlet(1,1,1), teremos</p>
+<p><span class="math display">\[\begin{align}f(x,y|M_2)&amp;=\int f(x|\boldsymbol{\gamma})f(y|\boldsymbol{\gamma})f(\boldsymbol{\gamma})d\boldsymbol{\gamma}\\&amp;=\int_{\mathcal{S}^3}\gamma_S^{38}\gamma_E^{32}\gamma_{M}^{48}2d\boldsymbol{\gamma}=2\frac{\Gamma(39)\Gamma(33)\Gamma(49)}{\Gamma(121)}.\end{align}\]</span></p>
+<p>Vamos assumir a priori que <span class="math inline">\(P(M_1)=P(M_2)=1/2\)</span>. Então, vamos testar se não há diferença na percepção da imagem corporal entre os sexos:</p>
+<p><span class="math display">\[P(M_2|x,y)=\frac{P(x,y|M_2)}{P(x,y|M_1)+P(x,y|M_2)}\]</span></p>
+<p>Vamos realizar esse cálculo no <code>R</code>:</p>
+<ul>
+<li><span class="math inline">\(P(x,y|M_1)\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>lprobA <span class="ot">&lt;-</span> <span class="fu">lgamma</span>(<span class="dv">25</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">11</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">25</span>)<span class="sc">-</span><span class="fu">lgamma</span>(<span class="dv">61</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>lprobB <span class="ot">&lt;-</span> <span class="fu">lgamma</span>(<span class="dv">15</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">23</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">25</span>)<span class="sc">-</span><span class="fu">lgamma</span>(<span class="dv">63</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span><span class="fu">exp</span>(lprobA <span class="sc">+</span>lprobB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><span class="math inline">\(P(x,y|M_2)\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>lprob <span class="ot">&lt;-</span> <span class="fu">lgamma</span>(<span class="dv">39</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">33</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">49</span>)<span class="sc">-</span><span class="fu">lgamma</span>(<span class="dv">121</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">exp</span>(lprob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><span class="math inline">\(P(M_2|x,y)\)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="sc">/</span> (m1 <span class="sc">+</span> m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2824985</code></pre>
+</div>
+</div>
+<p>Portanto, ficamos com o modelo que assume diferença entre os sexos.</p>
+</div>
+</section>
+<section id="o-fator-de-bayes" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="o-fator-de-bayes"><span class="header-section-number">6.3</span> O Fator de Bayes</h2>
+<p>Anteriormente, vimos que para uma coleção de <span class="math inline">\(k\)</span> modelos competidores, o modelo <span class="math inline">\(M_j\)</span> é preferível aos demais se <span class="math display">\[P(M_j|x)&gt;P(M_i|x).\]</span> para todo <span class="math inline">\(i\neq j\)</span>. Observe que</p>
+<p><span class="math display">\[\begin{align}P(M_j|x)&amp;=\frac{f(x|M_j)P(M_j)}{\sum_{i=1}^kf(x|M_j)P(M_j)}\\&amp;=P(M_j)\left[P(M_j)+\sum_{i\neq j}\frac{f(x|M_i)}{f(x|M_j)}P(M_i)\right]^{-1}\\
+&amp;=P(M_j)\left[P(M_j)+\sum_{i\neq j}B_{ij}(x)P(M_i)\right]^{-1}\end{align}\]</span> onde a quantidade <span class="math display">\[B_{ij}(x)=\frac{f(x|M_i)}{f(x|M_j)},\]</span> denominada Fator de Bayes, sumariza a informação da amostra para relacionar os modelo <span class="math inline">\(M_i\)</span> e <span class="math inline">\(M_j\)</span>.</p>
+<p>Para auxiliar na interpretação do Fator de Bayes, considere o caso com apenas dois modelos onde <span class="math inline">\(P(M_1)=P(M_2)\)</span>. Então <span class="math display">\[\begin{align}P(M_1|x)&amp;=
+&amp;=\left[1+B_{21}(x)\right]^{-1}\end{align}\]</span> Observe que, quanto maior for o valor <span class="math inline">\(B_{21}(x)\)</span>, menor será a evidência a favor do modelo <span class="math inline">\(M_1\)</span>.</p>
+<p>A escala de Jeffreys pode ser útil para tomada de decisão:</p>
+<p><span class="math display">\[\begin{array}{cl}\hline B_{01}(x) &amp; \text{Interpretação}\\ \hline
+&gt;100 &amp; \text{Evidência decisiva para } H_0 \\
+30-100 &amp; \text{Evidência muito forte para } H_0 \\
+10-30 &amp; \text{Evidência forte para } H_0 \\
+3-10 &amp; \text{Evidência substancial para } H_0 \\
+1-3 &amp; \text{Evidência fraca para } H_0 \\
+1/3-1 &amp; \text{Evidência fraca contra } H_0 \\
+1/10-1/3 &amp; \text{Evidência substancial contra } H_0 \\
+1/30-1/10 &amp; \text{Evidência forte contra } H_0 \\
+1/100-1/30 &amp; \text{Evidência muito forte contra } H_0 \\
+&lt;1/100 &amp; \text{Evidência decisiva contra } H_0 \\ \hline
+\end{array}\]</span></p>
+<p>Note que, se <span class="math inline">\(M_0\)</span> é equivalente à <span class="math inline">\(\theta_0\)</span> e <span class="math inline">\(M_1\)</span> é equivalente à <span class="math inline">\(\theta=\theta_1\)</span>, então o Fator de Bayes se torna a estatística do teste de Neyman-Pearson</p>
+<p><span class="math display">\[B_{01}(x)=\frac{f(x|\theta_0)}{f(x|\theta_1)}.\]</span></p>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.2</strong></span> <strong>Imagem corporal</strong></p>
+<p>Considerando <span class="math inline">\(M_1\)</span> como o modelo no qual as percepções sobre o corpo são provenientes de populações distintas e <span class="math inline">\(M_2\)</span> como o modelo no qual não havia diferença entre os grupos delimitados pelo sexo, obtivemos <span class="math inline">\(P(M_2|x,y)\approx 0,28\)</span>. Utilizando os mesmos comandos em <code>R</code>, teremos que o Fator de Bayes <span class="math inline">\(B_{21}\)</span> é dado por</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">/</span>m1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3937254</code></pre>
+</div>
+</div>
+<p>que gera evidência fraca em favor de <span class="math inline">\(M_1\)</span>.</p>
+</div>
 
 
 </section>
+</section></section></main></div>
 
-</main> <!-- /main -->
+
+
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -767,7 +930,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 

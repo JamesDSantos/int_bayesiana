@@ -2,27 +2,72 @@
 
 ## Testes baseados na teoria da decisão
 
-Considere que $X_1,\ldots,X_n$ é uma amostra do modelo $F(.|\theta)$. Seja $H_0:\theta\in\Theta_0$ a hipótese nula. Um teste de hipóteses é uma regra $\varphi(x)$ que recebe o valor 1 se a hipótese $H_0$ é aceita e 0 em caso contrário.
+### A Função de Perda 0-1
 
-Considere a função de perda 0-1:
+Considere que $X_1,\ldots,X_n$ é uma amostra do modelo $F(.|\theta)$. Seja $H_0:\theta\in\Theta_0$ a hipótese nula.
 
-$$ \mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\;\;\hbox{se }\varphi(x)=I(\theta\in\Theta_0)\\1,\hbox{  se }\varphi(x)\neq I(\theta\in\Theta_0)\end{array}\right.$$
+Um teste de hipóteses é uma regra $\varphi(x)$ que recebe o valor 1 se a hipótese $H_0$ é aceita e 0 em caso contrário.
 
-A média a posteriori da função de perda é
+Em relação à natureza da hipótese, observe que
+$$I(\theta\in\Theta_0)=\left\{\begin{array}{ll}1,&\hbox{ se }H_0\hbox{ é verdadeira}\\0,&\hbox{ se }H_0\hbox{ é falsa}\end{array}\right..$$
 
-$$E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\int_{\Theta_0}I(\varphi(x)\neq 1)\pi(\theta|x)d\theta$$
+Novamente, considere a função de perda quadrática:
 
-e o estimador de Bayes é o valor de $varphi$ que minimiza a esperança acima. Como $\varphi$ é uma indicadora, teremos que 
+$$ \mathcal{L}(\theta,\varphi)=(\varphi(x)-I(\theta\in\Theta_0))^2.$$
+Definida deste modo, esta função também é denominada Função de Perda 0-1, uma vez que ela assume o valor 0 quando uma decisão correta é tomada e 1 caso contrário.
 
+A esperança a posteriori desta função de perda é
 
-$$E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\left\{\begin{array}{l}P(\theta\in\Theta_0|x),\hbox{ se }\varphi\neq 1\\
-P(\theta\in\Theta_0^c|x),\hbox{ se }\varphi= 1
-\end{array}\right.$$
+$$E_{\theta|X}(\mathcal{L}(\theta,\varphi))=\int \left(\phi(x)- I(\theta\in\Theta_0)\right)^2 f(\theta|x)d\theta$$
 
-Deste modo, aceitamos $H_0$ se $P(\theta\in\Theta_0|x)>P(\theta\in\Theta_0^c|x)$ e rejeitamos em caso contrário.
+e o estimador de Bayes é o valor de $\varphi$ que minimiza a esperança acima. Como $\varphi$ é uma indicadora, teremos duas situações:
 
-<div class='alert alert-info'>
-<strong>Exemplo</strong> Uma cadeia de *fast food* deseja saber se vale a pena trocar seus freezers tradicionais, que mantém a carne entre -$17^o$C e $-9^oC$ por um com uma nova tecnologia (e mais cara!) que mantém a temperatura consistentemente em $-17^oC$. Para tomar essa decisão, 32 bifes foram armazenados por 8 meses, sendo 16 bifes colocados no freezer tradicional e 16 no novo. Em seguida, um chefe preparou os 32 bifes de maneira idêntica  e 16 clientes foram escolhidos ao acaso para avaliar o sabor dos bifes. Cada cliente recebeu um bife de cada freezer, mas a prova foi realizada às cegas. 
+* Se $\phi(x)=0$, então
+
+$$\begin{align}E_{\theta|X}(\mathcal{L}(\theta,\varphi))&=\int I(\theta\in\Theta_0)^2 f(\theta|x)d\theta\\&=\int I(\theta\in\Theta_0) f(\theta|x)d\theta\\&=\int_{\Theta_0 }f(\theta|x)d\theta=P(\theta\in\Theta_0|x)\end{align}$$
+
+* Se $\phi(x)=1$, então
+
+$$\begin{align}E_{\theta|X}(\mathcal{L}(\theta,\varphi))&=\int (1-I(\theta\in\Theta_0)^2 f(\theta|x)d\theta\\&=\int I(\theta\in\Theta_0^c) f(\theta|x)d\theta\\&=\int_{\Theta_0^c }f(\theta|x)d\theta=P(\theta\notin\Theta_0|x)\end{align}$$
+
+Deste modo, se $P(\theta\in\Theta_0|x)>P(\theta\in\Theta_0^c|x)$, temos que $\phi(\boldsymbol{x})=1$ é a decisão que minimiza a perda a posteriori, ou seja, aceitamos $H_0$. Em caso contrário, rejeitamos $H_0$.
+
+### A Função de Perda a-b
+
+Suponha que $P(\theta\in\Theta_0|\boldsymbol{x})=0,51$. Segundo a Função de Perda 0-1, deveríamos aceitar $H_0$, uma vez que 
+
+$$P(\theta\in\Theta_0|\boldsymbol{x})=0,51>0,49=P(\theta\in\Theta_0^c|\boldsymbol{x})$$
+
+Isto ocorre porque a perda associada ao erro no teste de hipóteses é igual para qualquer decisão. Podemos associar valores diferentes, reforçando que um erro é mais sério que o outro. 
+
+Considere que rejeitar $H_0$ quando ela é verdadeira (erro tipo I) gera uma perda $a$, enquanto que aceitar $H_0$ quando ela é falsa (erro tipo II) gera uma perda $b$. Para o erro mais grave, associamos um valor maior para a perda. A função de perda respectiva é denominada Perda $a-b$ e é dada por
+
+$$\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
+a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.$$
+
+A média a posteriori dessa função de perda é
+
+$$E_{\theta|\boldsymbol{x}}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|x)d\theta$$
+
+* Se $\varphi(x)=1$, teremos
+$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|\boldsymbol{x})d\theta=bP(\theta\in\Theta_0^c|x)$$
+* Se $\varphi(x)=0$ teremos
+$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta=aP(\theta\in\Theta_0|x)$$
+logo:
+
+* Se $bP(\theta\in\Theta_0^c|x)>aP(\theta\in\Theta_0|x)$ então a decisão minimiza a perda a posteriori é $\varphi(\boldsymbol{x})=0$, ou seja, rejeitamos $H_0$.
+
+* Se $bP(\theta\in\Theta_0^c|x)<aP(\theta\in\Theta_0|x)$ então a decisão minimiza a perda a posteriori é $\varphi(\boldsymbol{x})=1$, ou seja, aceitamos $H_0$.
+
+Na prática, aceitamos $H_0$ se 
+$$P(\theta\in\Theta_0|\boldsymbol{x})>\frac{b}{b+a}$$
+
+Observe que, diferente do ponto de vista frequentista, estamos interessados em aceitar a hipótese $H_0$. Deste modo, o erro tipo II é o mais preocupante, o que implica em $b>a$. Na prática, fixamos um valor para $b/(a+b)$, como 0,95 ou 0,99 e comparamos com $P(\theta\in\Theta_0|\boldsymbol{x})$ para decidir se aceitamos $H_0$.
+
+::: {#exm-}
+<strong>Fast food</strong> 
+
+Uma cadeia de *fast food* deseja saber se vale a pena trocar seus freezers tradicionais, que mantém a carne entre -$17^o$C e $-9^oC$ por um com uma nova tecnologia (e mais cara!) que mantém a temperatura consistentemente em $-17^oC$. Para tomar essa decisão, 32 bifes foram armazenados por 8 meses, sendo 16 bifes colocados no freezer tradicional e 16 no novo. Em seguida, um chefe preparou os 32 bifes de maneira idêntica  e 16 clientes foram escolhidos ao acaso para avaliar o sabor dos bifes. Cada cliente recebeu um bife de cada freezer, mas a prova foi realizada às cegas. 
 
 Podemos considerar a variável $Y_i=1$ se o $i$-ésimo cliente preferiu o bife armazenado no freezer mais caro e $Y_i=0$ em caso contrário. Deste modo, $Y_1,\ldots,Y_{16}|\theta\sim\hbox{Bernoulli}(\theta)$. Claramente, estamos interessados em testar $H_0:\theta>1/2$.
 
@@ -32,22 +77,22 @@ Considere as seguintes prioris:
 curve(dbeta(x,.5,.5),lwd = 2, xlab = expression(theta), ylab = expression(pi(theta)), ylim=c(0,3))
 curve(dbeta(x,1,1),lwd = 2, col ='tomato', add = T)
 curve(dbeta(x,2,2),lwd = 2, col ='lightblue3', add = T)
-legend('top',c('Jeffreys','Uniforme(0,1)','Beta(2,2)'), fill=c('black','tomato','lightblue3'), bty = 'n')
+legend('top',c('Beta(.5,.5)','Beta(1,1)','Beta(2,2)'), fill=c('black','tomato','lightblue3'), bty = 'n')
 ```
 
-A priori de Jeffreys dá mais massa para valores extremos, o que poderia favorecer a hipótese $H_0$. A priori Uniforme(0,1) é aquela que parece não dar qualquer preferência. Por último, a priori Beta(2,2) pode ser vista como uma resitência à rejeitar que os dois armazenamentos são iguais.
+A distribuiação a priori Beta(.5,.5) dá mais massa para valores extremos, o que poderia favorecer a hipótese $H_0$. A priori Beta(1,1) é aquela que parece não dar qualquer preferência. Por último, a priori Beta(2,2) pode ser vista como uma leve resistência à rejeitar que os dois armazenamentos são iguais.
 
-Dos 16 clientes, 13 preferiram os bifes que foram amarzenados com a tecnologia mais cara. Como as três prioris acima são casos particulares da distribuição Beta$(a,b)$, decidiremos sobre $H_0$ calculando
+Dos 16 clientes, 13 preferiram os bifes que foram armazenados com a tecnologia mais cara. Como as três prioris acima são casos particulares da distribuição Beta$(a,b)$, decidiremos sobre $H_0$ calculando
 
 $$P(\theta>1/2|\textbf{y})=\int_0^{1/2}\frac{\theta^{13+a-1}(1-\theta)^{3+b-1}}{B(13+a,3+b)}$$
 
-que pode ser falciemente obtida com o comando `pbeta(.5,13+a,3+b, lower.tail =F)`
+que pode ser facilmente obtida com o comando `pbeta(.5,13+a,3+b, lower.tail =F)`
 Temos os seguintes resultados:
 
 
 | Priori    | $P(H_0|\textbf{y})$ |
 |-----------|------------|
-| Jeffreys  | 0,995 |
+| Beta(.5,.5)  | 0,995 |
 | Uniforme  | 0,993 |
 | Beta(2,2) | 0,990 |
 
@@ -55,62 +100,165 @@ Temos os seguintes resultados:
 Considerando as prioris acima, a probabilidade a posteriori da hipótese nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da carne é melhor preservado no freezer com alta tecnologia
 </div>
 
-Até o momento, assumimos que a perda associada ao erro no teste de hipóteses é igual para qualquer decisão. Considere então a função de perda $a-b$, dada por
+## Testes utilizando modelos
 
-$$\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
-a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.$$
+Considere novamente o problema dos freezers, da seção anterior. Note que a teoria desenvolvida acima não consegue testar $H_0:\theta=1/2$, uma vez que este evento possui probabilidade nula a priori. 
 
-Utilizando a função de perda acima, temos que cada tipo de erro possui um valor de perda diferente. A média a posteriori dessa função de perda é
+Para contornar este problema, suponha que existem dois modelos concorrentes:
 
-$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta$$
+* Modelo $M_0$: $y_i\sim\hbox{Bernoulli}(1/2)$
 
-Se $\varphi(x)=1$, teremos
-$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)\pi(\theta|x)d\theta=bP(\theta\in\Theta_0^c|x)$$
-e se $varphi(x)=0$ teremos
-$$E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)\pi(\theta|x)d\theta=aP(\theta\in\Theta_0|x)$$
-logo, o estimador de Bayes para a perda $a-b$ é
-$$\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }bP(\theta\in\Theta_0^c|x)<aP(\theta\in\Theta_0|x)\\
-0,\hbox{ se }bP(\theta\in\Theta_0^c|x)\geq aP(\theta\in\Theta_0|x)\end{array}\right.$$
-ou, equivalentemente,
-$$\varphi(x)=\left\{\begin{array}{l}1,\hbox{ se }P(\theta\in\Theta_0|x)>\frac{b}{a+b}\\
-0,\hbox{ caso contrário}\end{array}\right.$$
+* Modelo $M_1:$
 
-Utilizando a função de perda $a-b$, $H_0$ é rejeitada sempre que a probabilidade a posteriori é menor que $b/(a+b)$.
+$$\begin{align}
+y_i|\theta&\sim\hbox{Bernoulli}(\theta),\\
+\theta&\sim\hbox{Uniforme}(0,1)\end{align}$$
 
-# O Fator de Bayes
 
-Considere novamente o problema dos freezers, da seção anterior. Note que a teoria desenvolvida acima não consegue testar $H_0:\theta=1/2$, uma vez que este evento possui probabilidade nula a priori. Para contornar este problema, suponha que existem dois modelos competidores:
+Seja $M_0$ o evento no qual o modelo $M_0$ é o verdadeiro gerador da amostra. Observe que 
+$$f(y_1,\ldots,y_{16}|M_0)=\prod_{i=1}^{16}f(y_i|M_0)=\left(\frac{1}{2}\right)^{16}$$
 
-* $M_0: y_i\sim\hbox{Bernoulli}(1/2)$
+Já para o modelo $M_1$, observe que
 
-* $M_1: y_i|\theta\hbox{Bernoulli}(\theta), \theta\sim\hbox{Uniforme}(0,1)$
+$$\begin{align}f(y_1,\ldots,y_{16}|M_1)&=
+\int_0^1 f(y_1,\ldots,y_{16}|\theta)f(\theta)d\theta\\
+&=\int_0^1 \prod_{i=1}^{16}f(y_i|\theta)f(\theta)d\theta\\
+&=\int_0^1 \prod_{i=1}^{16}\theta^{y_i}(1-\theta)^{1-y_i}d\theta\\
+&=\int_0^1\theta^{\sum_{i=1}^{16}y_i}(1-\theta)^{16-\sum_{i=1}^{16}y_i}d\theta=B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right),\end{align}$$
+onde $B(.,.)$ é a função beta. 
 
-Então,
-$$f(y_1,\ldots,y_{16}|M_0)=\left(\frac{1}{2}\right)^{16}$$
-
-e
-$$f(y_1,\ldots,y_{^16}|M_1)=\int_0^1\theta^{\sum_{i=1}^{16}y_i}(1-\theta)^{16-\sum_{i=1}^{16}y_i}d\theta=B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)$$
-Colocando uma probabilidade a priori para cada modelo, teremos
+Sejam $P(M_0)$ e $P(M_1)=1-P(M_0)$ as probabilidades a priori dos modelos $M_0$ e $M_1$. Então, a probabilidade a posteriori do modelo $M_0$ é dada por
 
 $$P(M_0|y_1,\ldots,y_{16})=\frac{\left(\frac{1}{2}\right)^{16}P(M_0)}{\left(\frac{1}{2}\right)^{16}P(M_0)+B\left(\sum_{i=1}^{16}y_i+1,16-\sum_{i=1}^{16}y_i+1\right)P(M_1)}$$
-Ainda considerando o exemplo anterior, assumindo $P(M_0)=P(M_1)$ e lembrando que $\sum_i y_i=13$, tem-se $P(M_0|y_1,\ldots,y_{16})=0,12$, o que nos leva a rejeitar $H_0$.
+Ainda considerando o exemplo anterior, assumindo $P(M_0)=P(M_1)=1/2$ e lembrando que $\sum_i y_i=13$, tem-se 
 
-Note que esta nova abordagem leva a uma mudança na priori, uma vez que
+$$P(M_0|y_1,\ldots,y_{16})=\frac{\left(\frac{1}{2}\right)^{17}}{\left(\frac{1}{2}\right)^{17}+B\left(14,4\right)\frac{1}{2}}\approx0,1268,$$
+o que nos leva a rejeitar $H_0$.
 
-$$\pi(\theta)=P(M_0)\pi(\theta|M_0)+P(M_1)\pi(\theta|M_1)=P(M_0)I(\theta=\theta_0)+I(\theta\in (0,1))P(M_1)$$
+<div class='alert alert-info'>
+**Caso geral.**
 
-Para o caso geral, considere os modelos competidores $M_0$ e $M_1$. Sejam ainda $\pi_0(.)$ e $\pi_1(.)$ as prioris sob $H_0$ e $H_1$, repectivamente. O Fator de Bayes é definido por
+Para a amostra $x_1,\ldots,x_n$, sejam $M_1,\ldots,M_k$ $k$ modelos paramétricos. Sejam $\boldsymbol{\theta}_1,\ldots,\boldsymbol{\theta}_k$, e $f(\boldsymbol{\theta}_1),\ldots,f(\boldsymbol{\theta}_k)$ seus respectivos parâmetros e prioris. Para determinar o modelo mais adequado:
 
-$$B_{01}(x)=\left.\frac{P(M_0|x)}{P(M_0)}\right/ \frac{P(M_1|x)}{P(M_1)}$$
-onde
-$$P(M_i|x)=\int f(x|\theta)\pi_i(\theta)d\theta.$$
+1. Atribua os valores a priori para $P(M_1),\ldots,P(M_k)$
 
-Se $B_{01}(x)=1$, então não há diferença entre os modelos. Alternativamente, quanto maior for o valor do fator de Bayes, maior é a evidência a favor de $H_0$. A escala de Jeffreys pode ser útil para tomada de decisão:
+2. Para $j=1,\ldots,k$, calcule
+$$f(x_1,\ldots,x_n|M_j)=\int f(x_1,\ldots,x_n|\theta_j)f_j(\theta_j)d\theta_j$$
+3. Compute
+
+$$P(M_j|x_1,\ldots,x_n)=\frac{f(x_1,\ldots,x_n|M_j)P(M_j)}{\sum_{i=1}^k f(x_1,\ldots,x_n|M_i)P(M_i)}$$
+
+4. Considere como adequado o modelo com maior probabilidade a posteriori
+</div>
+
+::: {#exm-}
+**Imagem corporal**
+
+Considere novamente os dados sobre imagem corporal em escolares entre 16 e 17 anos, vistos no capítulo anterior e reproduzidos novamente abaixo.
+
+vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumariadas na tabela abaixo.
+
+$$\begin{array}{c|ccc|c}\hline
+&\hbox{Satisfeito} & \hbox{Insatisfeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
+\hbox{Masculino} & 24 & 10 & 24 & 58 \\
+\hbox{Feminino} & 14 & 22 & 24 & 60 \\ \hline
+\end{array}
+$$
+
+Anteriormente, assumimos que as probabilidades entre os sexos deveriam ser diferentes. Denotamos por $\alpha_S,\alpha_E,\alpha_M$ a probabilidade de um indivíduo do sexo masculino ser classificado como Satisfeito, Insatisfeito por Excesso e Insatisfeito por Magreza. Também denotamos por $\beta_S,\beta_E,\beta_M$ as mesmas probabilidades para o sexo feminino. Por último, Utilizamos a priori Dirichlet(1,1,1) para ambos os sexos. Vamos denotar esse modelo por $M_1$. 
+
+Seja $x=(24,10,24)$ as informações registradas para o sexo masculino e $y=(14,22,24)$ as informações para o sexo feminino. Então
+
+$$\begin{align}
+f(x,y|M_1)&=\int f(x|\boldsymbol{\alpha})f(\boldsymbol{\alpha})d\boldsymbol{\alpha}\int f(y|\boldsymbol{\beta})f(\boldsymbol{\beta})d\boldsymbol{\beta}\\&=
+\int_{\mathcal{S}^3} \alpha_S^{24}\alpha_E^{10}\alpha_M^{24}2d\boldsymbol{\alpha}\int_{\mathcal{S}^3} \beta_S^{14}\beta_E^{22}\beta_M^{24}2d\boldsymbol{\beta}\\&=4\frac{\Gamma(25)\Gamma(11)\Gamma(25)}{\Gamma(61)}\frac{\Gamma(15)\Gamma(23)\Gamma(25)}{\Gamma(63)}
+\end{align}$$
+
+Considere agora o modelo $M_2$, no qual não há diferença entre os sexos. Nesse caso, $x$ e $y$ são provenientes do mesmo modelo, com probabilidades $\gamma_S,\gamma_E,\gamma_M$, respectivamente. Utilizando a priori Dirichlet(1,1,1), teremos
+
+$$\begin{align}f(x,y|M_2)&=\int f(x|\boldsymbol{\gamma})f(y|\boldsymbol{\gamma})f(\boldsymbol{\gamma})d\boldsymbol{\gamma}\\&=\int_{\mathcal{S}^3}\gamma_S^{38}\gamma_E^{32}\gamma_{M}^{48}2d\boldsymbol{\gamma}=2\frac{\Gamma(39)\Gamma(33)\Gamma(49)}{\Gamma(121)}.\end{align}$$
+
+Vamos assumir a priori que $P(M_1)=P(M_2)=1/2$. Então,
+vamos testar se não há diferença na percepção da imagem corporal entre os sexos:
+
+$$P(M_2|x,y)=\frac{P(x,y|M_2)}{P(x,y|M_1)+P(x,y|M_2)}$$
+
+Vamos realizar esse cálculo no `R`:
+
+* $P(x,y|M_1)$:
+```{r}
+# logaritmo da probabilidade:
+lprobA <- lgamma(25)+lgamma(11)+lgamma(25)-lgamma(61)
+lprobB <- lgamma(15)+lgamma(23)+lgamma(25)-lgamma(63)
+
+# probabilidade
+m1 <- 4*exp(lprobA +lprobB)
+```
+
+* $P(x,y|M_2)$:
+```{r}
+# logaritmo da probabilidade:
+lprob <- lgamma(39)+lgamma(33)+lgamma(49)-lgamma(121)
+
+# probabilidade
+m2 <- 2*exp(lprob)
+```
+
+* $P(M_2|x,y)$
+
+```{r}
+m2 / (m1 + m2)
+```
+
+Portanto, ficamos com o modelo que assume diferença entre os sexos.
+:::
+
+## O Fator de Bayes
+
+Anteriormente, vimos que para uma coleção de $k$ modelos competidores, o modelo $M_j$ é preferível aos demais se
+$$P(M_j|x)>P(M_i|x).$$
+para todo $i\neq j$. Observe que
 
 
+$$\begin{align}P(M_j|x)&=\frac{f(x|M_j)P(M_j)}{\sum_{i=1}^kf(x|M_j)P(M_j)}\\&=P(M_j)\left[P(M_j)+\sum_{i\neq j}\frac{f(x|M_i)}{f(x|M_j)}P(M_i)\right]^{-1}\\
+&=P(M_j)\left[P(M_j)+\sum_{i\neq j}B_{ij}(x)P(M_i)\right]^{-1}\end{align}$$
+onde a quantidade
+$$B_{ij}(x)=\frac{f(x|M_i)}{f(x|M_j)},$$
+denominada Fator de Bayes, sumariza a informação da amostra para relacionar os modelo $M_i$ e $M_j$. 
 
-Note que, se $\pi_0(\theta)=I(\theta=\theta_0)$, $\pi_1(\theta)=I(\theta=\theta_1)$ e $P(M_0)=P(M_1)$, o fator de Bayes se torna a estatística do teste de Neyman-Pearson
+Para auxiliar na interpretação do Fator de Bayes, considere o caso com apenas dois modelos onde $P(M_1)=P(M_2)$. Então
+$$\begin{align}P(M_1|x)&=
+&=\left[1+B_{21}(x)\right]^{-1}\end{align}$$
+Observe que, quanto maior for o valor $B_{21}(x)$, menor será a evidência a favor do modelo $M_1$. 
 
-$$B_{01}(x)=\frac{f(x|\theta_0)}{f(x|\theta_1)}$$
+
+A escala de Jeffreys pode ser útil para tomada de decisão:
+
+$$\begin{array}{cl}\hline B_{01}(x) & \text{Interpretação}\\ \hline
+>100 & \text{Evidência decisiva para } H_0 \\
+30-100 & \text{Evidência muito forte para } H_0 \\
+10-30 & \text{Evidência forte para } H_0 \\
+3-10 & \text{Evidência substancial para } H_0 \\
+1-3 & \text{Evidência fraca para } H_0 \\
+1/3-1 & \text{Evidência fraca contra } H_0 \\
+1/10-1/3 & \text{Evidência substancial contra } H_0 \\
+1/30-1/10 & \text{Evidência forte contra } H_0 \\
+1/100-1/30 & \text{Evidência muito forte contra } H_0 \\
+<1/100 & \text{Evidência decisiva contra } H_0 \\ \hline
+\end{array}$$
 
 
+Note que, se $M_0$ é equivalente à $\theta_0$ e $M_1$ é equivalente à $\theta=\theta_1$, então o Fator de Bayes se torna a estatística do teste de Neyman-Pearson
+
+$$B_{01}(x)=\frac{f(x|\theta_0)}{f(x|\theta_1)}.$$
+
+::: {#exm-}
+**Imagem corporal**
+
+Considerando $M_1$ como o modelo no qual as percepções sobre o corpo são provenientes de populações distintas e $M_2$ como o modelo no qual não havia diferença entre os grupos delimitados pelo sexo, obtivemos $P(M_2|x,y)\approx 0,28$. Utilizando os mesmos comandos em `R`, teremos que o Fator de Bayes $B_{21}$ é dado por
+
+```{r}
+m2/m1
+```
+que gera evidência fraca em favor de $M_1$.
+:::
