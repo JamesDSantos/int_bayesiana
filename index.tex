@@ -206,10 +206,10 @@
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
@@ -1303,7 +1303,7 @@ indivíduo da Classe 1 foi maior que a de um indivíduo da Classe 2 e 3.
 \end{Shaded}
 
 \begin{verbatim}
-[1] 0.600487
+[1] 0.601261
 \end{verbatim}
 
 \begin{Shaded}
@@ -1313,7 +1313,7 @@ indivíduo da Classe 1 foi maior que a de um indivíduo da Classe 2 e 3.
 \end{Shaded}
 
 \begin{verbatim}
-[1] 0.789323
+[1] 0.789288
 \end{verbatim}
 
 Observe que \(P(\alpha>\gamma|\hbox{dados})\approx 0,78\), o que não dá
@@ -1412,7 +1412,7 @@ Neste exemplo, vamos analisar o recorte dos resultados para alunos entre
 sumariadas na tabela abaixo.
 
 \[\begin{array}{c|ccc|c}\hline
-&\hbox{Satisfeito} & \hbox{Insatifeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
+&\hbox{Satisfeito} & \hbox{Insatisfeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
 \hbox{Masculino} & 24 & 10 & 24 & 58 \\
 \hbox{Feminino} & 14 & 22 & 24 & 60 \\ \hline
 \end{array}
@@ -1483,6 +1483,60 @@ testamos essa hipótese:
 Com uma probabilidade maior que 99\%, há fortes evidências de que
 mulheres entre 16 e 17 anos se sentem mais insatisfeitas por excesso do
 que os homens de mesma idade.
+
+\end{example}
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{Imagem corporal (continuação)}
+
+Neste exemplo, lidaremos apenas com o recorte dos indivíduos do sexo
+masculino entre 16 e 17 anos, reproduzido abaixo.
+
+\[\begin{array}{c|ccc|c}\hline
+&\hbox{Satisfeito} & \hbox{Insatisfeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
+\hbox{Masculino} & 24 & 10 & 24 & 58 \\ \hline
+\end{array}
+\]
+
+Considerando \(\boldsymbol{alpha}=(\alpha_S,\alpha_E,\alpha_M)\) como
+definidos anteriormente e utilizando a priori Dirichlet(1,1,1),
+obtivemos a posteriori
+\(\boldsymbol{\alpha}\sim\hbox{Dirichlet}(25,11,25)\).
+
+Vamos testar se a probabilidade de insatisfação por magreza é maior do
+que a por excesso, ou seja \(H: \alpha_M>\alpha_E\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#install.packages(\textquotesingle{}extraDistr\textquotesingle{})}
+\FunctionTok{require}\NormalTok{(extraDistr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Carregando pacotes exigidos: extraDistr
+\end{verbatim}
+
+\begin{verbatim}
+Warning: pacote 'extraDistr' foi compilado no R versão 4.4.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{B }\OtherTok{\textless{}{-}} \DecValTok{10000}
+\NormalTok{alpha }\OtherTok{\textless{}{-}} \FunctionTok{rdirichlet}\NormalTok{(B, }\FunctionTok{c}\NormalTok{(}\DecValTok{25}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{25}\NormalTok{))}
+\FunctionTok{mean}\NormalTok{( alpha[,}\DecValTok{3}\NormalTok{] }\SpecialCharTok{\textgreater{}}\NormalTok{ alpha[,}\DecValTok{2}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.9893
+\end{verbatim}
+
+Com uma probabilidade maior que 0,99, existem fortes evidências de que,
+para um indivíduo do sexo masculino entre 16 e 17 anos, a probabilidade
+de estar insatisfeito por excesso é menor do que por magreza.
 
 \end{example}
 
@@ -1642,58 +1696,6 @@ temos que \(\phi(\boldsymbol{x})=1\) é a decisão que minimiza a perda a
 posteriori, ou seja, aceitamos \(H_0\). Em caso contrário, rejeitamos
 \(H_0\).
 
-\subsection{A Função de Perda a-b}\label{a-funuxe7uxe3o-de-perda-a-b}
-
-Suponha que \(P(\theta\in\Theta_0|\boldsymbol{x})=0,51\). Segundo a
-Função de Perda 0-1, deveríamos aceitar \(H_0\), uma vez que
-
-\[P(\theta\in\Theta_0|\boldsymbol{x})=0,51>0,49=P(\theta\in\Theta_0^c|\boldsymbol{x})\]
-
-Isto ocorre porque a perda associada ao erro no teste de hipóteses é
-igual para qualquer decisão. Podemos associar valores diferentes,
-reforçando que um erro é mais sério que o outro.
-
-Considere que rejeitar \(H_0\) quando ela é verdadeira (erro tipo I)
-gera uma perda \(a\), enquanto que aceitar \(H_0\) quando ela é falsa
-(erro tipo II) gera uma perda \(b\). Para o erro mais grave, associamos
-um valor maior para a perda. A função de perda respectiva é denominada
-Perda \(a-b\) e é dada por
-
-\[\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
-a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.\]
-
-A média a posteriori dessa função de perda é
-
-\[E_{\theta|\boldsymbol{x}}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|x)d\theta\]
-
-\begin{itemize}
-\item
-  Se \(\varphi(x)=1\), teremos
-  \[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|\boldsymbol{x})d\theta=bP(\theta\in\Theta_0^c|x)\]
-\item
-  Se \(\varphi(x)=0\) teremos
-  \[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta=aP(\theta\in\Theta_0|x)\]
-  logo:
-\item
-  Se \(bP(\theta\in\Theta_0^c|x)>aP(\theta\in\Theta_0|x)\) então a
-  decisão minimiza a perda a posteriori é \(\varphi(\boldsymbol{x})=0\),
-  ou seja, rejeitamos \(H_0\).
-\item
-  Se \(bP(\theta\in\Theta_0^c|x)<aP(\theta\in\Theta_0|x)\) então a
-  decisão minimiza a perda a posteriori é \(\varphi(\boldsymbol{x})=1\),
-  ou seja, aceitamos \(H_0\).
-\end{itemize}
-
-Na prática, aceitamos \(H_0\) se
-\[P(\theta\in\Theta_0|\boldsymbol{x})>\frac{b}{b+a}\]
-
-Observe que, diferente do ponto de vista frequentista, estamos
-interessados em aceitar a hipótese \(H_0\). Deste modo, o erro tipo II é
-o mais preocupante, o que implica em \(b>a\). Na prática, fixamos um
-valor para \(b/(a+b)\), como 0,95 ou 0,99 e comparamos com
-\(P(\theta\in\Theta_0|\boldsymbol{x})\) para decidir se aceitamos
-\(H_0\).
-
 \begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
 
 Fast food
@@ -1749,6 +1751,190 @@ Beta(2,2) & 0,990 \\
 Considerando as prioris acima, a probabilidade a posteriori da hipótese
 nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da
 carne é melhor preservado no freezer com alta tecnologia
+
+\end{example}
+
+\subsection{A Função de Perda a-b}\label{a-funuxe7uxe3o-de-perda-a-b}
+
+Suponha que \(P(\theta\in\Theta_0|\boldsymbol{x})=0,51\). Segundo a
+Função de Perda 0-1, deveríamos aceitar \(H_0\), uma vez que
+
+\[P(\theta\in\Theta_0|\boldsymbol{x})=0,51>0,49=P(\theta\in\Theta_0^c|\boldsymbol{x})\]
+
+Isto ocorre porque a perda associada ao erro no teste de hipóteses é
+igual para qualquer decisão. Podemos associar valores diferentes,
+reforçando que um erro é mais sério que o outro.
+
+Considere que rejeitar \(H_0\) quando ela é verdadeira (erro tipo I)
+gera uma perda \(a\), enquanto que aceitar \(H_0\) quando ela é falsa
+(erro tipo II) gera uma perda \(b\). Para o erro mais grave, associamos
+um valor maior para a perda. A função de perda respectiva é denominada
+Perda \(a-b\) e é dada por
+
+\[\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
+a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.\]
+
+A média a posteriori dessa função de perda é
+
+\[E_{\theta|\boldsymbol{x}}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|x)d\theta\]
+
+\begin{itemize}
+\item
+  Se \(\varphi(x)=1\), teremos
+  \[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|\boldsymbol{x})d\theta=bP(\theta\in\Theta_0^c|x)\]
+\item
+  Se \(\varphi(x)=0\) teremos
+  \[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta=aP(\theta\in\Theta_0|x)\]
+  logo:
+\item
+  Se \(bP(\theta\in\Theta_0^c|x)>aP(\theta\in\Theta_0|x)\) então a
+  decisão minimiza a perda a posteriori é \(\varphi(\boldsymbol{x})=0\),
+  ou seja, rejeitamos \(H_0\).
+\item
+  Se \(bP(\theta\in\Theta_0^c|x)<aP(\theta\in\Theta_0|x)\) então a
+  decisão minimiza a perda a posteriori é \(\varphi(\boldsymbol{x})=1\),
+  ou seja, aceitamos \(H_0\).
+\end{itemize}
+
+Na prática, aceitamos \(H_0\) se
+\[P(\theta\in\Theta_0|\boldsymbol{x})>\frac{b}{b+a}\]
+
+Observe que, diferente do ponto de vista frequentista, estamos
+interessados em aceitar a hipótese \(H_0\). Deste modo, o erro tipo II é
+o mais preocupante, o que implica em \(b>a\). Na prática, fixamos um
+valor para \(b/(a+b)\), como 0,95 ou 0,99 e comparamos com
+\(P(\theta\in\Theta_0|\boldsymbol{x})\) para decidir se aceitamos
+\(H_0\).
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{Mudança de opinião}
+
+Durante a eleição presidencial americana de 1980 um estudo foi conduzido
+para determinar se um debate televisionado foi capaz de mudar as
+preferências dos telespectadores pelos candidatos. Foram selecionados 75
+adultos aleatoriamente e sua preferência entre os dois candidatos foi
+registrada. Após a conclusão do detabe, foi perguntado para as mesmas 75
+pessoas a sua preferência entre os dois candidatos. Os resultados estão
+sumariados abaixo.
+
+\[\begin{array}{c|c|c}\hline
+\text{Preferência antes } & \text{Preferência depois} & \text{Resultado} \\  
+\text{do debate} & \text{do debate} & \\ \hline
+\text{Carter} & \text{Carter} & 28 \\
+\text{Carter} & \text{Reagan} & 13 \\
+\text{Reagan} & \text{Reagan} & 27 \\ 
+\text{Reagan} & \text{Carter} & 7 \\ \hline
+\end{array}\]
+
+Neste exemplo, vamos testar se os dois candidatos foram igualmente
+capazes de mudar a opinião dos eleitores.
+
+Sabemos que 20 eleitores mudaram de opinição
+
+\begin{itemize}
+\item
+  \(\theta_{CC}\): a probabilidade do indivíduo preferir o candidato
+  Carter antes de depois do debate
+\item
+  \(\theta_{RR}\): a probabilidade do indivíduo preferir o candidato
+  Reagan antes de depois do debate
+\item
+  \(\theta_{CR}\): a probabilidade do indivíduo preferir o candidato
+  Carter e depois mudar para o Reagan.
+\item
+  \(\theta_{RC}\): a probabilidade do indivíduo preferir o candidato
+  Reagan e depois mudar para o Carter.
+\end{itemize}
+
+A função de verossimilhança para
+\(\boldsymbol{\theta}=(\theta_{CC},\theta_{CR},\theta_{RC},\theta_{RR})\)
+é
+
+\[L(\boldsymbol{\theta})\propto \theta_{CC}^{28}\theta_{CR}^{13}\theta_{RR}^{27}\theta_{RC}^{7}.\]
+
+Considerando a priori
+\(\boldsymbol{\theta}\sim\hbox{Dirichlet}(1,1,1,1)\), teremos a
+posteriori
+
+\[\boldsymbol{\theta}\sim\hbox{Dirichlet}(29,14,28,8),\]
+
+Estamos interessados nas probabilidades sobre mudança de opinião, ou
+seja, em \(\theta_{CR}\) e \(\theta_{RC}\), cujas posterioris são
+\[\begin{align}
+\theta_{CR}&\sim\hbox{Beta}(14,65)\\
+\theta_{RC}&\sim\hbox{Beta}(7,68)
+\end{align}\]
+
+Abaixo, apresentamos as posterioris de \(\theta_{CR}\) e
+\(\theta_{RC}\). Pode-se observar que o candidato Reagan parece ter
+certa vantagem.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{14}\NormalTok{,}\DecValTok{65}\NormalTok{), }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{15}\NormalTok{), }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{5}\NormalTok{), }\AttributeTok{xlab=} \StringTok{\textquotesingle{}Probabilidade de mudança\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab=}\StringTok{\textquotesingle{}Densidade a posteriori\textquotesingle{}}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dbeta}\NormalTok{(x,}\DecValTok{7}\NormalTok{,}\DecValTok{68}\NormalTok{), }\AttributeTok{add =}\NormalTok{ T, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{\textquotesingle{}topright\textquotesingle{}}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Mudança em favor do Reagan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Mudança em favor do Carter\textquotesingle{}}\NormalTok{), }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{lty=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{, }\AttributeTok{bty=}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{teste_files/figure-pdf/unnamed-chunk-2-1.pdf}
+
+Vamos testar se o debate do candidato Reagan foi mais eficaz para
+provocar a mudança de opinião, ou seja, \(H:\theta_{RC}<\theta_{CR}\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(extraDistr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Carregando pacotes exigidos: extraDistr
+\end{verbatim}
+
+\begin{verbatim}
+Warning: pacote 'extraDistr' foi compilado no R versão 4.4.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{B }\OtherTok{\textless{}{-}} \DecValTok{20000}
+\NormalTok{theta }\OtherTok{\textless{}{-}} \FunctionTok{rdirichlet}\NormalTok{(B, }\FunctionTok{c}\NormalTok{(}\DecValTok{29}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{28}\NormalTok{,}\DecValTok{8}\NormalTok{))}
+\NormalTok{thetaCR }\OtherTok{\textless{}{-}}\NormalTok{ theta[,}\DecValTok{2}\NormalTok{]}
+\NormalTok{thetaRC }\OtherTok{\textless{}{-}}\NormalTok{ theta[,}\DecValTok{4}\NormalTok{]}
+\FunctionTok{mean}\NormalTok{(thetaRC }\SpecialCharTok{\textless{}}\NormalTok{ thetaCR)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 0.9047
+\end{verbatim}
+
+Não há evidência forte o suficiente para aceitar a superioridade do
+Reagan para a mudança de opinião. Abaixo, mostramos o gráfico estimado
+para a posteriori de \(\theta_{CR},\theta_{RC}\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(MASS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Carregando pacotes exigidos: MASS
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{contour}\NormalTok{(}\FunctionTok{kde2d}\NormalTok{(thetaCR,thetaRC), }\AttributeTok{xlab=}\FunctionTok{expression}\NormalTok{(theta[CR]),}\AttributeTok{ylab=}\FunctionTok{expression}\NormalTok{(theta[RC]), }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\AttributeTok{lty=}\DecValTok{2}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{teste_files/figure-pdf/unnamed-chunk-4-1.pdf}
+
+\end{example}
 
 \section{Testes utilizando modelos}\label{testes-utilizando-modelos}
 
@@ -1824,6 +2010,25 @@ adequado:
   Considere como adequado o modelo com maior probabilidade a posteriori
 \end{enumerate}
 
+\textbf{Distribuição preditiva para o caso Bernoulli multivariado}
+
+A distribuição \[f(x)=\int L(\theta)f(\theta)d\theta=E(L(\theta))\] é
+denominada preditiva. Se
+\(\boldsymbol{X}|\boldsymbol{\theta}\sim\hbox{Bernoulli}(\theta_1,\ldots,\theta_k)\)
+e considerando o modelo conjugado
+\(\boldsymbol{\theta}\sim\hbox{Dirichlet}(\theta_1,\ldots,\theta_k)\),
+teremos que
+
+\[\begin{align}
+f(x)&=\int_{\mathcal{S}^k}\prod_{j=1}^k\theta_j^{n_j}\frac{\Gamma(\sum_{j=1}^k a_j)}{\prod_{j=1}^k \Gamma(a_j)}\prod_{j=1}^k \theta_j^{a_j-1}d\boldsymbol{\theta}\\
+&=\frac{\Gamma(\sum_{j=1}^k a_j)}{\prod_{j=1}^k \Gamma(a_j)}\int_{\mathcal{S}^k}\prod_{j=1}^k\theta_j^{n_j+a_j-1}d\boldsymbol{\theta}\\
+&=\frac{\Gamma(\sum_{j=1}^k a_j)}{\Gamma(n+\sum_{j=1}^k a_j)}\prod_{j=1}^k\frac{\Gamma(a_j+n_j)}{\Gamma(a_j)}
+\end{align}\]
+
+Além disso, se \(a_1=\cdots=a_k=1\), então
+
+\[f(x)=\frac{(k-1)!}{(n+k-1)!}\prod_{j=1}^k n_j!\]
+
 \begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
 
 \textbf{Imagem corporal}
@@ -1854,8 +2059,8 @@ Seja \(x=(24,10,24)\) as informações registradas para o sexo masculino e
 \(y=(14,22,24)\) as informações para o sexo feminino. Então
 
 \[\begin{align}
-f(x,y|M_1)&=\int f(x|\boldsymbol{\alpha})f(\boldsymbol{\alpha})d\boldsymbol{\alpha}\int f(y|\boldsymbol{\beta})f(\boldsymbol{\beta})d\boldsymbol{\beta}\\&=
-\int_{\mathcal{S}^3} \alpha_S^{24}\alpha_E^{10}\alpha_M^{24}2d\boldsymbol{\alpha}\int_{\mathcal{S}^3} \beta_S^{14}\beta_E^{22}\beta_M^{24}2d\boldsymbol{\beta}\\&=4\frac{\Gamma(25)\Gamma(11)\Gamma(25)}{\Gamma(61)}\frac{\Gamma(15)\Gamma(23)\Gamma(25)}{\Gamma(63)}
+f(x,y|M_1)&=f(x|M_1)f(y|M_1)\\
+&=\left[\frac{2!}{60!}24!10!24!\right]\left[\frac{2!}{62!}14!22!24!\right]
 \end{align}\]
 
 Considere agora o modelo \(M_2\), no qual não há diferença entre os
@@ -1863,7 +2068,7 @@ sexos. Nesse caso, \(x\) e \(y\) são provenientes do mesmo modelo, com
 probabilidades \(\gamma_S,\gamma_E,\gamma_M\), respectivamente.
 Utilizando a priori Dirichlet(1,1,1), teremos
 
-\[\begin{align}f(x,y|M_2)&=\int f(x|\boldsymbol{\gamma})f(y|\boldsymbol{\gamma})f(\boldsymbol{\gamma})d\boldsymbol{\gamma}\\&=\int_{\mathcal{S}^3}\gamma_S^{38}\gamma_E^{32}\gamma_{M}^{48}2d\boldsymbol{\gamma}=2\frac{\Gamma(39)\Gamma(33)\Gamma(49)}{\Gamma(121)}.\end{align}\]
+\[\begin{align}f(x,y|M_2)&=\frac{2!}{120!}38!32!48!\end{align}\]
 
 Vamos assumir a priori que \(P(M_1)=P(M_2)=1/2\). Então, vamos testar se
 não há diferença na percepção da imagem corporal entre os sexos:
@@ -1881,11 +2086,10 @@ Vamos realizar esse cálculo no \texttt{R}:
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# logaritmo da probabilidade:}
-\NormalTok{lprobA }\OtherTok{\textless{}{-}} \FunctionTok{lgamma}\NormalTok{(}\DecValTok{25}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{11}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{25}\NormalTok{)}\SpecialCharTok{{-}}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{61}\NormalTok{)}
-\NormalTok{lprobB }\OtherTok{\textless{}{-}} \FunctionTok{lgamma}\NormalTok{(}\DecValTok{15}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{23}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{25}\NormalTok{)}\SpecialCharTok{{-}}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{63}\NormalTok{)}
-
+\NormalTok{lprobA }\OtherTok{\textless{}{-}} \FunctionTok{lfactorial}\NormalTok{(}\DecValTok{2}\NormalTok{)}\SpecialCharTok{{-}}\FunctionTok{lfactorial}\NormalTok{(}\DecValTok{60}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{sum}\NormalTok{(}\FunctionTok{lfactorial}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{24}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{24}\NormalTok{)))}
+\NormalTok{lprobB }\OtherTok{\textless{}{-}} \FunctionTok{lfactorial}\NormalTok{(}\DecValTok{2}\NormalTok{)}\SpecialCharTok{{-}}\FunctionTok{lfactorial}\NormalTok{(}\DecValTok{62}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{sum}\NormalTok{(}\FunctionTok{lfactorial}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{14}\NormalTok{,}\DecValTok{22}\NormalTok{,}\DecValTok{24}\NormalTok{)))}
 \CommentTok{\# probabilidade}
-\NormalTok{m1 }\OtherTok{\textless{}{-}} \DecValTok{4}\SpecialCharTok{*}\FunctionTok{exp}\NormalTok{(lprobA }\SpecialCharTok{+}\NormalTok{lprobB)}
+\NormalTok{m1 }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(lprobA }\SpecialCharTok{+}\NormalTok{lprobB)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1898,10 +2102,9 @@ Vamos realizar esse cálculo no \texttt{R}:
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# logaritmo da probabilidade:}
-\NormalTok{lprob }\OtherTok{\textless{}{-}} \FunctionTok{lgamma}\NormalTok{(}\DecValTok{39}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{33}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{49}\NormalTok{)}\SpecialCharTok{{-}}\FunctionTok{lgamma}\NormalTok{(}\DecValTok{121}\NormalTok{)}
-
+\NormalTok{lprob }\OtherTok{\textless{}{-}} \FunctionTok{lfactorial}\NormalTok{(}\DecValTok{2}\NormalTok{)}\SpecialCharTok{{-}}\FunctionTok{lfactorial}\NormalTok{(}\DecValTok{120}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{sum}\NormalTok{( }\FunctionTok{lfactorial}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{38}\NormalTok{,}\DecValTok{32}\NormalTok{,}\DecValTok{48}\NormalTok{)))}
 \CommentTok{\# probabilidade}
-\NormalTok{m2 }\OtherTok{\textless{}{-}} \DecValTok{2}\SpecialCharTok{*}\FunctionTok{exp}\NormalTok{(lprob)}
+\NormalTok{m2 }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(lprob)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1988,6 +2191,618 @@ teremos que o Fator de Bayes \(B_{21}\) é dado por
 que gera evidência fraca em favor de \(M_1\).
 
 \end{example}
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{Pesquisa Quaest}
+
+Uma pesquisa foi realizada entre os dias 27 e 31 de março de 2025 e
+ouviu 2.024 eleitores presencialmente. Uma das perguntas foi: O quão
+frustrado você está com o governo Lula hoje? As opções eram 1) Muito
+frustrado, (2) Pouco frustrado, (3), Nada frustrado e (4) Não sabe/Não
+respondeu.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3014}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3288}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3699}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Categoria
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Percentual de respostas
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Número de pessoas (N=2024)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Muito frustrado & 36\% & 729 \\
+Pouco frustrado & 31\% & 627 \\
+Nada frustrado & 30\% & 607 \\
+Não sabe/Não responderam & 3\% & 61 \\
+\end{longtable}
+
+Observe que esta é uma pergunta tendenciosa, com uma opção neutra e duas
+negativas.
+
+Desconsiderando a categoria dos que não responderam, seja
+\(\boldsymbol{\theta}=(\theta_M,\theta_P,\theta_N)\) as probabilidades
+do indivíduo estar muito, pouco ou nada frustrado, respectivamente.
+
+Considere inicialmente o modelo, denotado por \(M_1\), no qual os
+entrevistados respondem esta pergunta ao acaso, ou seja
+\(\theta_M=\theta_P=\theta_N=1/3\). Então
+
+\[P(M_1|\text{dados})=\left(\frac{1}{3}\right)^{2024}\]
+
+Em seguida considere o modelo \(M_2\), no qual a verossimilhança é dada
+por
+\[L(\boldsymbol{\theta})\propto \theta_M^{729}\theta_P^{627}\theta_N^{607}.\]
+Escolhendo a priori \(\boldsymbol{\theta}\sim\hbox{Dirichlet}(1,1,1)\),
+teremos
+
+\[P(\text{Dados}|M_2)=\frac{2}{2026!}(729!)(627!)(607!)\]
+
+O fator de Bayes \(B_{21}\) é dado por
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# logP(dados|M2)}
+\NormalTok{logPm2 }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{2024}\SpecialCharTok{*}\FunctionTok{log}\NormalTok{(}\DecValTok{3}\NormalTok{)}
+
+\CommentTok{\# logP(dados|M1)}
+\NormalTok{logPm1 }\OtherTok{\textless{}{-}} \FunctionTok{log}\NormalTok{(}\DecValTok{2}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{sum}\NormalTok{(}\FunctionTok{lfactorial}\NormalTok{( }\FunctionTok{c}\NormalTok{(}\DecValTok{729}\NormalTok{,}\DecValTok{627}\NormalTok{,}\DecValTok{607}\NormalTok{)))}\SpecialCharTok{{-}}\FunctionTok{lfactorial}\NormalTok{(}\DecValTok{1965}\NormalTok{)}
+
+\CommentTok{\# Fator de Bayes}
+\FunctionTok{exp}\NormalTok{( logPm2 }\SpecialCharTok{{-}}\NormalTok{ logPm1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 1.02445e-29
+\end{verbatim}
+
+O fator de Bayes é muito pequeno, indicando que a hipótese de que as
+três probabilidades são iguais não é verdadeira.
+
+\end{example}
+
+\section{Exercícios}\label{exercuxedcios-1}
+
+\subsection{Mudança de opinião sobre
+vacinação}\label{mudanuxe7a-de-opiniuxe3o-sobre-vacinauxe7uxe3o}
+
+Uma pesquisadora está investigando a eficácia de uma nova campanha de
+saúde pública para aumentar a adesão à vacinação contra a gripe em uma
+determinada comunidade. Ela seleciona uma amostra de 100 indivíduos e
+registra se cada um tomou a vacina na temporada anterior (Antes da
+Campanha) e na temporada atual (Depois da Campanha). Os resultados estão
+apresentado abaixo.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2931}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2759}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3276}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1034}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Vacinado Depois
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Não Vacinado Depois
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Total
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Vacinado Antes} & 15 & 5 & 20 \\
+\textbf{Não Vacinado Antes} & 40 & 40 & 80 \\
+\textbf{Total} & 55 & 45 & 100 \\
+\end{longtable}
+
+Verifique se a campanha teve um efeito na adesão à vacinação.
+
+\bookmarksetup{startatroot}
+
+\chapter{O modelo Poisson}\label{o-modelo-poisson}
+
+\section{Sobre o modelo}\label{sobre-o-modelo}
+
+Seja \(N(t)\) o número de ocorrências observadas no intervalo de tempo
+\([0,t]\) (considere que \(N(0)=0\)). Note que o número de eventos no
+intervalo \((s,t]\) é dado por \(N(t)-N(s)\).
+
+Dizemos que \(N(t)\) tem incrementos independentes se, para quaisquer
+intervalos disjuntos \((s_0,t_0]\) e \((s_1,t_1]\), as contagens
+\(N(t_0)-N(s_0)\) e \(N(t_1)-N(s_1)\) são independentes.
+
+\(N(t)\) é denominado Processo de Poisson quando ele possui incrementos
+indepentes e, para qualquer intervalo \((s,t]\),
+
+\[P(N(t)-N(s)=x)=\frac{e^{-\lambda(t-s)[\lambda(t-s)]^x}}{x!},\] onde
+\(x=0,1,\ldots\) e \(\lambda>0\). Isto implica que
+\[E(N(t))=\lambda t,\] ou seja, o número esperado de ocorrências até o
+tempo \(t\) é diretamente proporcional à \(t\) e \(\lambda\) representa
+a taxa de crescimento. Para este processo, é verdade que
+\[\lim_{\delta\rightarrow 0}P(N(t+\delta)-N(t)>1)=0,\] ou seja, não é
+possível observar duas ou mais ocorrências simultaneamente.
+
+Em geral, os experimentos são desenhados para registrar contagens em
+intervalos regulares e disjuntos de tempo, como semanas ou anos.
+Considere que tais intervalos são
+\([0,s_1],(s_1,s_2],\ldots,(s_{n-1},t]\) e seja \(c\) o comprimento
+destes intervalos. Em geral, os dados são apresentados como contagens
+dentro destes intevalos, gerando as seguintes variáveis:
+
+\begin{itemize}
+\tightlist
+\item
+  \(X_1=N(s_1)\sim\hbox{Poisson}(\lambda c)\)
+\item
+  \(X_2=N(s_2)-N(s_1)\sim\hbox{Poisson}(\lambda c)\)
+\item
+  \(\cdots\)
+\item
+  \(X_n=N(t)-N(s_{n-1})\sim\hbox{Poisson}(\lambda c)\) ou seja,
+  \(X_1,\ldots,X_n\) são uma amostra aleatória do modelo
+  Poisson(\(\lambda c\)). Na prática, \(c=1\) por ser a unidade de
+  medida de tempo associada ao experimento (uma semana, um ano, etc).
+\end{itemize}
+
+\subsection{Tempos de chegadas e tempos de
+espera}\label{tempos-de-chegadas-e-tempos-de-espera}
+
+Para um processo de Poisson \(N(t)\), definimos o tempo de chegadas como
+o tempo entre duas observações consecutivas. Denotaremos o tempo de
+chegadas entre a \(i\)-ésima e a \(i-1\) ésima ocorrência por \(T_i\).
+
+É possível mostrar que \(T_i\) é independente de \(T_j\), para
+\(i\neq j\) e que \(T_i\sim\hbox{Exponencial}(\lambda)\). Por isso, para
+uma amostra aleatória de um modelo Exponencial(\(\lambda\)), o parâmetro
+\(\lambda\) é demoninado taxa.
+
+Definimos por tempo de espera da ocorrência \(n\) como o tempo
+transcorrido desde o início do processo até a ocorrência do \(n\)-ésimo
+evento. Este tempo de espera é denotado por \(S_n\). Exsitem dois
+resultados importantes relacionados ao tempo de espera:
+
+\begin{itemize}
+\item
+  \(S_n=T_1+\cdots+T_n\) tem distribuição Gama(\(n,\lambda\))
+\item
+  Dado que \(N(t)=n\), os tempos de espera dos eventos estão
+  uniformemente distribuídos dentro do intervalo \((0,t)\).
+\end{itemize}
+
+\subsection{Ocorrências de diversas
+classes}\label{ocorruxeancias-de-diversas-classes}
+
+Suponha que as ocorrências observadas podem ser classificadas em \(k\)
+categorias. Suponha que qualquer ocorrência tem probabilidade \(p_j\) de
+pertencer a categoria \(j\). Então
+
+\begin{itemize}
+\item
+  O número de ocorrências da classe \(j\) é um processo de Poisson com
+  taxa \(\lambda p_j\)
+\item
+  O número de ocorrências da classe \(j\) é independente do número de
+  ocorrências da classe \(i\), com \(i\neq j\)
+\end{itemize}
+
+\subsection{O processo de Poisson
+Espacial}\label{o-processo-de-poisson-espacial}
+
+Seja \(N(A)\) o número de ocorrências observadas em uma região de área
+\(A\). \(N(A)\) é denominado Processo de Poisson Espacial quando
+\(N(A)\sim\hbox{Poisson}(\lambda A)\) e, para duas regiões distintas de
+áreas \(B\) e \(C\), \(N(B)\) e \(N(C)\) são independentes.
+
+Note que, para um Processo de Poisson Espaical, dado \(N(A)=n\) as \(n\)
+ocorrências estão uniformemente distribuídas dentro da região \(A\)
+
+\section{Verossimilhança e priori
+conjugada}\label{verossimilhanuxe7a-e-priori-conjugada}
+
+Seja \(X_1,\ldots,X_n\) uma amostra aleatória do modelo
+Poisson\((\lambda)\). A verossimilhança deste modelo é dada por
+
+\[L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}\propto \theta^{\sum_{i=1}^n x_i}e^{-n\theta}.\]
+O modelo Poisson pertence à família exponencial e sua priori conjugada é
+\(\theta\sim\hbox{Gama}(r,s)\) e a posteriori é
+\(\hbox{Gama}(r+\sum_{i=1}^n x_i+r, s+n)\), conforme já discutido na
+Introdução. Os hiperparâmetros \(r\) e \(s\) podem ser interpretados
+como o total da contagem e o tamanho da amostra a priori.
+
+A média da posteriori é
+\[E(\theta|\mathbf{x})=\frac{\sum_{i=1}^{n}x_i+r}{n+s}=\frac{n}{n+s}\bar{x}+\frac{s}{n+s}E(\theta),\]
+onde fica claro que este estimador é uma média ponderada das informações
+provenientes das duas fontes de informação (sendo \(\bar{x}\) a
+estimativa de máxima verossimilhança e \(E(\theta)\) a média a priori).
+
+Se \(n\gg s\), então a média a posteriori dará maior peso para a
+informação dos dados.
+
+\section{Preditiva a posteriori}\label{preditiva-a-posteriori}
+
+A inferência bayesiana é baseada em duas fontes de informação:
+verossimilhança e priori. Já discutimos que, na maioria dos casos,
+estamos interessados em deixar a verossimilhança ter mais peso na
+posteriori. Agora, vamos discutir como verificar se a verossimilhança é
+adequada ao problema.
+
+Seja \(\boldsymbol{x}=\{x_1,\ldots,x_n\}\) a amostra observada e
+\(f(\theta|\boldsymbol{x})\) a posteriori obtida. Supondo que a
+informação sobre os parâmetros foi capturada de forma adequada, é de se
+esperar que uma nova observação \(x^*\) se comporte de modo semelhante a
+amostra observada. Podemos então obter a seguinte distribuição,
+denominada preditiva a posteriori:
+
+\[\begin{align}f(x^*|\boldsymbol{x})=\int f(x^*|\theta)f(\theta|\boldsymbol{x})d\theta.\end{align}\]
+
+Podemos comparar as características preditiva a posteriori com
+estatísticas livres de modelos como box-plots, histogramas, etc.
+
+\textbf{Preditiva a posteriori para o modelo Poisson}
+
+Para o modelo Poisson(\(\lambda\)) e para a posteriori
+Gama\((r_1,s_1)\), onde \(r_1=r+\sum_{i=1}^n x_i\) e \(s_1=n+s\),
+\[\begin{align}
+f(x^*|\boldsymbol{x})&=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})d\lambda\\
+&=\int_0^\infty\frac{e^{-\lambda}\lambda^{x^*}}{x^*!}\frac{s_1^{r_1}}{\Gamma(r_1)}\lambda^{r_1-1}e^{-s_1\lambda}d\lambda\\
+&=\frac{s_1^{r_1}}{\Gamma(r_1)x^*!}\int_0^\infty \lambda^{r_1+x^*-1}e^{-\lambda(s_1+1)}d\lambda\\
+&=\frac{\Gamma(r_1+x^*)}{\Gamma(r_1)x^*!}\left(\frac{s_1}{1+s_1}\right)^{r_1}\left(1 - \frac{s_1}{s_1+1}\right)^{x^*}
+\end{align}\] ou seja, a preditiva a posteriori tem distribuição
+
+\[\hbox{Binomial Negativa}\left(r_1,\frac{s_1}{1+s_1}\right).\]
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{A Blitz e os Bombardeios de Londres}
+
+Durante a Segunda Guerra Mundial, Londres sofreu intensos bombardeios
+aéreos pela Alemanha Nazista (conhecido como ``Blitz''). Estatísticos
+analisaram a distribuição das quedas de 537 bombas pela cidade para
+procurar padrões.
+
+Uma questão chave era se as bombas caíam aleatoriamente ou se havia
+algum padrão de alvo. Se as quedas de bombas fossem aleatórias, elas
+deveriam seguir uma distribuição de Poisson. Londres foi dividida em uma
+grade de com 576 setores de áreas iguais. O número de quedas de bombas
+em cada setor foi registrado.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3529}}
+  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.6471}}@{}}
+\caption{Quedas de bombas em Londres durante o Blitz.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Número de bombas
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Número de setores com x bombas
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Número de bombas
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Número de setores com x bombas
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 229 \\
+1 & 211 \\
+2 & 93 \\
+3 & 35 \\
+4 & 7 \\
+5 ou mais & 1 \\
+\end{longtable}
+
+Supondo que os dados seguem uma distribuição Poisson(\(\lambda\)),
+teremos \[L(\lambda)\propto e^{-576\lambda}\lambda^{537}.\] Considerando
+a priori \(\lambda\sim\hbox{Gama}(1,1)\), teremos a posteriori
+Gama\((538,577)\). A preditiva a posteriori para problema é
+
+\[\hbox{Binomial Negativa}(538,.9982).\]
+
+Observe que podemos estimar a frequência relativa dos eventos da tabela.
+Podemos comparar esses resultados com o que seria esperado da preditiva.
+O resultado é dado a seguir.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r1 }\OtherTok{=} \DecValTok{538}
+\NormalTok{p }\OtherTok{=} \DecValTok{577}\SpecialCharTok{/}\DecValTok{578}
+\StringTok{\textasciigrave{}}\AttributeTok{Número de bombas no setor}\StringTok{\textasciigrave{}} \OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\StringTok{\textquotesingle{}\textgreater{}4\textquotesingle{}}\NormalTok{)}
+\StringTok{\textasciigrave{}}\AttributeTok{Frequência relativa}\StringTok{\textasciigrave{}} \OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{229}\NormalTok{,}\DecValTok{211}\NormalTok{,}\DecValTok{93}\NormalTok{,}\DecValTok{35}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{1}\NormalTok{)}\SpecialCharTok{/}\DecValTok{576}
+\StringTok{\textasciigrave{}}\AttributeTok{Preditiva a posteriori}\StringTok{\textasciigrave{}} \OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{dnbinom}\NormalTok{( }\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\AttributeTok{size=}\NormalTok{r1, }\AttributeTok{prob =}\NormalTok{ p), }\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{pnbinom}\NormalTok{(}\DecValTok{4}\NormalTok{,}\AttributeTok{size=}\NormalTok{r1,}\AttributeTok{prob=}\NormalTok{p))}
+
+\NormalTok{dt }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Número de bombas no setor}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{\textasciigrave{}}\AttributeTok{Frequência relativa}\StringTok{\textasciigrave{}}\NormalTok{,}\StringTok{\textasciigrave{}}\AttributeTok{Preditiva a posteriori}\StringTok{\textasciigrave{}}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(dt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  Número.de.bombas.no.setor Frequência.relativa Preditiva.a.posteriori
+1                         0         0.397569444            0.393922155
+2                         1         0.366319444            0.366661107
+3                         2         0.161458333            0.170960499
+4                         3         0.060763889            0.053240294
+5                         4         0.012152778            0.012458045
+6                        >4         0.001736111            0.002757901
+\end{verbatim}
+
+A proximidade entre as frequências relativas e os resultados obtidos
+através da preditiva a posteriori dão evidências de que o modelo Poisson
+é adequado, ou ainda, que as bombas foram lançadas ao acaso.
+
+\end{example}
+
+\phantomsection\label{exm}
+\textbf{Número de suicídios revisitado}
+
+Na introdução, apresentamos o número de suicídios no Amazonas para os
+anos 2021, 2022 e 2023. Os dados podem ser vistos abaixo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{no\_suicidios }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{19}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{28}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{23}\NormalTok{,}\DecValTok{23}\NormalTok{, }\DecValTok{21}\NormalTok{,}
+\DecValTok{22}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{31}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{23}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{29}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{23}\NormalTok{,}
+\DecValTok{36}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{18}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{34}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{34}\NormalTok{,}
+\DecValTok{22}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{32}\NormalTok{, }\DecValTok{36}\NormalTok{, }\DecValTok{28}\NormalTok{, }\DecValTok{22}\NormalTok{ )}
+\end{Highlighting}
+\end{Shaded}
+
+Analisamos estes dados e obtivemos a posteriori Gama(953.8, 37.1) para a
+taxa. A distribuição da preditiva a posteriori é Binomial
+Negativa\((953.8\;,\;0,9737)\).
+
+A figura abaixo apresenta a função de distribuição empírica dos dados
+comparada com a função de distribuição da preditiva a posteriori. A
+aproximação é razoável o suficiente para aceitarmos o modelo proposto
+como válido.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{( }\FunctionTok{ecdf}\NormalTok{(no\_suicidios), }\AttributeTok{main =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab=}\StringTok{\textquotesingle{}Função de distribuição\textquotesingle{}}\NormalTok{, }\AttributeTok{xlab=}\FunctionTok{expression}\NormalTok{(x))}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{pnbinom}\NormalTok{(x,}\FunctionTok{sum}\NormalTok{(no\_suicidios)}\SpecialCharTok{+}\DecValTok{1}\NormalTok{,}\DecValTok{37}\SpecialCharTok{/}\DecValTok{38}\NormalTok{), }\AttributeTok{add=}\NormalTok{T, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{col =} \StringTok{\textquotesingle{}tomato\textquotesingle{}}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{\textquotesingle{}bottomright\textquotesingle{}}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Empírica\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Preditia a posteriori\textquotesingle{}}\NormalTok{), }\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\StringTok{\textquotesingle{}tomato\textquotesingle{}}\NormalTok{), }\AttributeTok{bty=}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-3-1.pdf}
+
+\section{O modelo Poisson para taxas}\label{o-modelo-poisson-para-taxas}
+
+A taxa é o cociente entre o número de casos de um evento em determinado
+intervalo de tempo e a população em risco, definida em um espaço e no
+mesmo intervalo de tempo (``pessoas-tempo'\,'). Note que, pela
+definição, a taxa é uma estatística.
+
+Seja \(n\) o tamanho da população no espaço/tempo e seja \(y\) o número
+de casos do evento de interesse. Então,
+
+\[\hbox{taxa} = \frac{y}{n}\]
+
+Contudo, como \(n\) tende a ser muito maior que \(y\), é comum reportar
+a taxa vezes \(10^k\), para algum \(k>0\).
+
+Exemplo: Segundo o Anuário de Segurança Pública 2022, em 2021 houveram
+68.885 casos de estupro. Considerando uma população de 212,7 milhões de
+habitantes, a taxa de estupro para aquele ano foi de
+\[\frac{68.885}{212.700.000}=3,23\times 10^{-4}\] casos por pessoa-ano.
+Como \(n\) tende a ser maior que \(y\), é comum considerar.
+
+Multiplicando a taxa por \(10^5\), temos uma taxa de 32,3 casos para
+cada 100.000 habitantes.
+
+Agora,considere que \(\theta\) é o parâmetro taxa. Então,
+
+\[\hat{\theta}=\frac{y}{n}\] é a estimativa para \(\theta\). Como \(y\)
+é uma contagem, é razoável supor que \[\theta =\frac{1}{n}E(Y|\theta).\]
+e um modelo possível seria \(y|\theta\sim\hbox{Poisson}(\theta n)\).
+
+Agora, considere que uma população está particionada em \(m\)
+localidades. Para um dado intervalo de tempo, sejam \(n_i\) e \(y_i\) a
+população da localidade \(i\) e seu respectivo número de casos
+observados. Suponha ainda que a taxa \(\theta\) é comum para a pooulação
+e que \(y_i\) é condicionalmente independente de \(y_j\) dado
+\(\theta\). Assumindo a distribuição Poisson, teremos
+
+\[L(\theta)=\prod_{i=1}^m\frac{e^{-\theta n_i}(\theta n_i)^{y_i}}{y_i!}\varpropto \theta^{\sum_{i=1}^m y_i}e^{-\theta \sum_{i=1}^m n_i}=\theta^{\sum_{i=1}^n y_i}e^{-\theta N},\]
+onde \(N=\sum_{i=1}^m n_i\) é o tamanho da população. Como a
+verossimilhança pertence à família exponencial, temos que o modelo
+Gama\((a,b)\) é conjugado gerando a posteriori
+
+\[\theta|\mathbf{y}\sim\hbox{Gama}\left(\sum_{i=1}^{m}y_i+a,N+b\right).\]
+
+A prioris impróprias \(\pi(\theta)\varpropto \theta^{-1}\) e
+\(\pi(\theta)\varpropto \theta^{-1/2}\) geram, respectivamente, as
+posterioris \(\hbox{Gama}(\sum_{i=1}^m y_i,N)\) e
+\(\hbox{Gama}(\sum_{i=1}^m y_i+1/2,N)\).
+
+\section{Exemplo 1: crime de estupro de vulnerável no interior do
+Amazonas}\label{exemplo-1-crime-de-estupro-de-vulneruxe1vel-no-interior-do-amazonas}
+
+Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero
+no Amazonas e compreendem os anos entre 2010 e 2012.
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Cidade & vitimas & Populacao feminina \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Amatura & 3 & 639 \\
+Atalaia do Norte & 6 & 905 \\
+Barreirinha & 12 & 1899 \\
+Benjamin Constant & 2 & 2036 \\
+Boa Vista do Ramos & 6 & 1060 \\
+Fonte Boa & 0 & 1438 \\
+Jutai & 1 & 1143 \\
+Maues & 13 & 3421 \\
+Nhamunda & 9 & 1168 \\
+Parintins & 20 & 6700 \\
+Santo Antonio do Ica & 7 & 1608 \\
+Sao Paulo de Olivenca & 5 & 2033 \\
+Tabatinga & 8 & 3095 \\
+Tonantins & 1 & 1186 \\
+\end{longtable}
+
+Considerando a priori \(\pi(\theta)\varpropto \theta^{-1/2}\) teremos:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# banco de dados}
+\NormalTok{casos }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{( }\DecValTok{3}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{13}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{1}\NormalTok{ )   }
+
+\NormalTok{pop }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{639}\NormalTok{, }\DecValTok{905}\NormalTok{, }\DecValTok{1899}\NormalTok{, }\DecValTok{2036}\NormalTok{, }\DecValTok{1060}\NormalTok{, }\DecValTok{1438}\NormalTok{, }\DecValTok{1143}\NormalTok{, }\DecValTok{3421}\NormalTok{, }\DecValTok{1168}\NormalTok{, }\DecValTok{6700}\NormalTok{, }\DecValTok{1608}\NormalTok{, }\DecValTok{2033}\NormalTok{, }\DecValTok{3095}\NormalTok{, }\DecValTok{1186}\NormalTok{)}
+\NormalTok{pop }\OtherTok{\textless{}{-}}\NormalTok{ pop}\SpecialCharTok{/}\DecValTok{10}\SpecialCharTok{\^{}}\DecValTok{5}
+
+\NormalTok{municipios }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{( }\StringTok{\textquotesingle{}Amatura\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Atl.Norte\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Barr\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BC\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}BV Ramos\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Fonte B\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Jutai\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Maues\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Nhamunda\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Parintins\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}StoIca\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}SP Olivenca\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Tbt\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Tonantins\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# posteriori}
+\NormalTok{a\_post }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(casos) }\SpecialCharTok{+}\NormalTok{ .}\DecValTok{5}
+\NormalTok{b\_post }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(pop)}
+
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{dgamma}\NormalTok{(x,a\_post,b\_post),}\DecValTok{230}\NormalTok{,}\DecValTok{450}\NormalTok{ ,}\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{xlab =} \FunctionTok{expression}\NormalTok{(theta), }\AttributeTok{ylab =} \StringTok{\textquotesingle{}densidade a posteriori\textquotesingle{}}\NormalTok{ )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-5-1.pdf}
+
+Abaixo, simulamos 50.000 amostras da preditiva a posteriori
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{B }\OtherTok{\textless{}{-}} \DecValTok{50000} \CommentTok{\# número de simulações da preditiva a posteriori}
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(casos)}
+
+\NormalTok{pred\_mun }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5000}\NormalTok{)\{}
+\NormalTok{  theta }\OtherTok{\textless{}{-}} \FunctionTok{rgamma}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{sum}\NormalTok{(casos) }\SpecialCharTok{+}\NormalTok{ .}\DecValTok{5}\NormalTok{, }\FunctionTok{sum}\NormalTok{(pop))}
+\NormalTok{  pred\_mun }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(pred\_mun, }\FunctionTok{rpois}\NormalTok{(m , theta }\SpecialCharTok{*}\NormalTok{ pop))}
+\NormalTok{\}}
+
+\NormalTok{pred\_mun }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(pred\_mun)}
+\FunctionTok{names}\NormalTok{(pred\_mun) }\OtherTok{\textless{}{-}}\NormalTok{ municipios}
+\FunctionTok{boxplot}\NormalTok{(pred\_mun)}
+\FunctionTok{points}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{14}\NormalTok{,casos, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{,}\AttributeTok{cex =} \FloatTok{1.2}\NormalTok{, }\AttributeTok{col =}\StringTok{\textquotesingle{}tomato\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oo }\OtherTok{\textless{}{-}} \FunctionTok{par}\NormalTok{()}
+\NormalTok{mat }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{m,}\AttributeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\NormalTok{mat }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(mat, }\FunctionTok{c}\NormalTok{(}\DecValTok{15}\NormalTok{,}\DecValTok{16}\NormalTok{))}
+\FunctionTok{layout}\NormalTok{(mat, }\AttributeTok{heights =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{14}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{))}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{m)\{}
+\NormalTok{  freq }\OtherTok{\textless{}{-}} \FunctionTok{prop.table}\NormalTok{( }\FunctionTok{table}\NormalTok{(pred\_mun[,i]) )}
+  \FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{cex =}\NormalTok{ .}\DecValTok{8}\NormalTok{)}
+  \FunctionTok{plot.new}\NormalTok{()}
+  \FunctionTok{plot.window}\NormalTok{(}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{46}\NormalTok{), }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{3}\NormalTok{))}
+  \FunctionTok{points}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{names}\NormalTok{(freq)), freq, }\AttributeTok{type=}\StringTok{\textquotesingle{}h\textquotesingle{}}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+  \FunctionTok{title}\NormalTok{(}\AttributeTok{ylab=}\NormalTok{municipios[i])}
+  \FunctionTok{points}\NormalTok{(casos[i],}\DecValTok{0}\NormalTok{,}\AttributeTok{pch=}\DecValTok{16}\NormalTok{,}\AttributeTok{col=}\StringTok{\textquotesingle{}tomato\textquotesingle{}}\NormalTok{,}\AttributeTok{cex=} \FloatTok{1.2}\NormalTok{)}
+  
+\NormalTok{\}}
+  \FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+  \FunctionTok{plot.new}\NormalTok{()}
+  \FunctionTok{plot.window}\NormalTok{(}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{46}\NormalTok{), }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{1}\NormalTok{))}
+  \FunctionTok{segments}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{05}\NormalTok{,}\DecValTok{46}\NormalTok{,.}\DecValTok{05}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+ \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{45}\NormalTok{,}\DecValTok{5}\NormalTok{))\{}
+    \FunctionTok{segments}\NormalTok{(j,.}\DecValTok{05}\NormalTok{,j,.}\DecValTok{03}\NormalTok{)}
+    \FunctionTok{text}\NormalTok{(j,.}\DecValTok{01}\NormalTok{,j)}
+\NormalTok{  \}}
+    \FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+  \FunctionTok{plot.new}\NormalTok{()}
+  \FunctionTok{plot.window}\NormalTok{(}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{46}\NormalTok{), }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{1}\NormalTok{))}
+  \FunctionTok{segments}\NormalTok{(}\DecValTok{0}\NormalTok{,.}\DecValTok{05}\NormalTok{,}\DecValTok{46}\NormalTok{,.}\DecValTok{05}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{45}\NormalTok{,}\DecValTok{5}\NormalTok{))\{}
+    \FunctionTok{segments}\NormalTok{(j,.}\DecValTok{05}\NormalTok{,j,.}\DecValTok{03}\NormalTok{)}
+    \FunctionTok{text}\NormalTok{(j,.}\DecValTok{01}\NormalTok{,j)}
+\NormalTok{  \}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-7-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(oo)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Warning in par(oo): parâmetro gráfico "cin" não pode ser especificado
+\end{verbatim}
+
+\begin{verbatim}
+Warning in par(oo): parâmetro gráfico "cra" não pode ser especificado
+\end{verbatim}
+
+\begin{verbatim}
+Warning in par(oo): parâmetro gráfico "csi" não pode ser especificado
+\end{verbatim}
+
+\begin{verbatim}
+Warning in par(oo): parâmetro gráfico "cxy" não pode ser especificado
+\end{verbatim}
+
+\begin{verbatim}
+Warning in par(oo): parâmetro gráfico "din" não pode ser especificado
+\end{verbatim}
+
+\begin{verbatim}
+Warning in par(oo): parâmetro gráfico "page" não pode ser especificado
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{m)\{}
+\NormalTok{p[i] }\OtherTok{\textless{}{-}} \DecValTok{2}\SpecialCharTok{*}\FunctionTok{min}\NormalTok{(}\FunctionTok{mean}\NormalTok{(pred\_mun[,i] }\SpecialCharTok{\textgreater{}}\NormalTok{ casos[i]),}
+\FunctionTok{mean}\NormalTok{(pred\_mun[,i] }\SpecialCharTok{\textless{}}\NormalTok{ casos[i]))}
+\NormalTok{\}}
+
+\FunctionTok{data.frame}\NormalTok{(municipios,p)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+    municipios      p
+1      Amatura 0.3396
+2    Atl.Norte 0.0672
+3         Barr 0.0292
+4           BC 0.0212
+5     BV Ramos 0.1372
+6      Fonte B 0.0000
+7        Jutai 0.0440
+8        Maues 0.5108
+9     Nhamunda 0.0140
+10   Parintins 0.6236
+11      StoIca 0.3408
+12 SP Olivenca 0.4164
+13         Tbt 0.4420
+14   Tonantins 0.0456
+\end{verbatim}
 
 \bookmarksetup{startatroot}
 
@@ -2787,9 +3602,9 @@ posteriori:
 \begin{verbatim}
 x_til
            0            1            2            3            4            5 
-0.6156614831 0.1959531171 0.1151538923 0.0491440174 0.0173734484 0.0049836187 
-           6            7            8 
-0.0012920493 0.0003230123 0.0001153615 
+6.130312e-01 1.976605e-01 1.147847e-01 4.981311e-02 1.755803e-02 5.191269e-03 
+           6            7            8            9 
+1.453555e-03 3.922292e-04 9.228923e-05 2.307231e-05 
 \end{verbatim}
 
 Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo
@@ -3064,60 +3879,280 @@ Abaixo implementamos o amostrador de Gibbs
 
 \bookmarksetup{startatroot}
 
-\chapter{O modelo Poisson revisitado}\label{o-modelo-poisson-revisitado}
+\chapter{O modelo Poisson}\label{o-modelo-poisson-1}
 
-\section{Verossimilhança, prioris e
-posterioris}\label{verossimilhanuxe7a-prioris-e-posterioris}
+\section{Sobre o modelo}\label{sobre-o-modelo-1}
 
-Dizemos que \(X|\theta\) tem distribuição Poisson se sua função de
-probabilidade é dada por \[f(x|\theta)=\frac{e^{-\theta}\theta^x}{x!},\]
-onde \(x=0,1,\ldots\) e \(\theta>0\). O parâmetro \(\theta\) é
-denominado taxa. Para este modelo \[E(X|\theta)=Var(X|\theta)=\theta.\]
+Seja \(N(t)\) o número de ocorrências observadas no intervalo de tempo
+\([0,t]\) (considere que \(N(0)=0\)). Note que o número de eventos no
+intervalo \((s,t]\) é dado por \(N(t)-N(s)\).
 
-Esta é uma das distribuições para contagens mais importantes. A
-verossimilhança deste modelo, para uma amostra de vaiid, é dada por
-\[L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}.\]
-O modelo Poisson pertence à família exponencial e sua \textit{priori}
-conjugada é \(\theta\sim\hbox{Gama}(r,s)\), onde \(r\) e \(s\) podem ser
-interpretados como o total da contagem e o tamanho da amostra
-\textit{a priori}.
+Dizemos que \(N(t)\) tem incrementos independentes se, para quaisquer
+intervalos disjuntos \((s_0,t_0]\) e \((s_1,t_1]\), as contagens
+\(N(t_0)-N(s_0)\) e \(N(t_1)-N(s_1)\) são independentes.
 
-Neste caso, a \textit{posteriori} é
-\(\hbox{Gama}(r+\sum_{i=1}^n x_i+r, s+n)\).
+\(N(t)\) é denominado Processo de Poisson quando ele possui incrementos
+indepentes e, para qualquer intervalo \((s,t]\),
 
-A média da \textit{posteriori} é
+\[P(N(t)-N(s)=x)=\frac{e^{-\lambda(t-s)[\lambda(t-s)]^x}}{x!},\] onde
+\(x=0,1,\ldots\) e \(\lambda>0\). Isto implica que
+\[E(N(t))=\lambda t,\] ou seja, o número esperado de ocorrências até o
+tempo \(t\) é diretamente proporcional à \(t\) e \(\lambda\) representa
+a taxa de crescimento. Para este processo, é verdade que
+\[\lim_{\delta\rightarrow 0}P(N(t+\delta)-N(t)>1)=0,\] ou seja, não é
+possível observar duas ou mais ocorrências simultaneamente.
+
+Em geral, os experimentos são desenhados para registrar contagens em
+intervalos regulares e disjuntos de tempo, como semanas ou anos.
+Considere que tais intervalos são
+\([0,s_1],(s_1,s_2],\ldots,(s_{n-1},t]\) e seja \(c\) o comprimento
+destes intervalos. Em geral, os dados são apresentados como contagens
+dentro destes intevalos, gerando as seguintes variáveis:
+
+\begin{itemize}
+\tightlist
+\item
+  \(X_1=N(s_1)\sim\hbox{Poisson}(\lambda c)\)
+\item
+  \(X_2=N(s_2)-N(s_1)\sim\hbox{Poisson}(\lambda c)\)
+\item
+  \(\cdots\)
+\item
+  \(X_n=N(t)-N(s_{n-1})\sim\hbox{Poisson}(\lambda c)\) ou seja,
+  \(X_1,\ldots,X_n\) são uma amostra aleatória do modelo
+  Poisson(\(\lambda c\)). Na prática, \(c=1\) por ser a unidade de
+  medida de tempo associada ao experimento (uma semana, um ano, etc).
+\end{itemize}
+
+\subsection{Tempos de chegadas e tempos de
+espera}\label{tempos-de-chegadas-e-tempos-de-espera-1}
+
+Para um processo de Poisson \(N(t)\), definimos o tempo de chegadas como
+o tempo entre duas observações consecutivas. Denotaremos o tempo de
+chegadas entre a \(i\)-ésima e a \(i-1\) ésima ocorrência por \(T_i\).
+
+É possível mostrar que \(T_i\) é independente de \(T_j\), para
+\(i\neq j\) e que \(T_i\sim\hbox{Exponencial}(\lambda)\). Por isso, para
+uma amostra aleatória de um modelo Exponencial(\(\lambda\)), o parâmetro
+\(\lambda\) é demoninado taxa.
+
+Definimos por tempo de espera da ocorrência \(n\) como o tempo
+transcorrido desde o início do processo até a ocorrência do \(n\)-ésimo
+evento. Este tempo de espera é denotado por \(S_n\). Exsitem dois
+resultados importantes relacionados ao tempo de espera:
+
+\begin{itemize}
+\item
+  \(S_n=T_1+\cdots+T_n\) tem distribuição Gama(\(n,\lambda\))
+\item
+  Dado que \(N(t)=n\), os tempos de espera dos eventos estão
+  uniformemente distribuídos dentro do intervalo \((0,t)\).
+\end{itemize}
+
+\subsection{Ocorrências de diversas
+classes}\label{ocorruxeancias-de-diversas-classes-1}
+
+Suponha que as ocorrências observadas podem ser classificadas em \(k\)
+categorias. Suponha que qualquer ocorrência tem probabilidade \(p_j\) de
+pertencer a categoria \(j\). Então
+
+\begin{itemize}
+\item
+  O número de ocorrências da classe \(j\) é um processo de Poisson com
+  taxa \(\lambda p_j\)
+\item
+  O número de ocorrências da classe \(j\) é independente do número de
+  ocorrências da classe \(i\), com \(i\neq j\)
+\end{itemize}
+
+\subsection{O processo de Poisson
+Espacial}\label{o-processo-de-poisson-espacial-1}
+
+Seja \(N(A)\) o número de ocorrências observadas em uma região de área
+\(A\). \(N(A)\) é denominado Processo de Poisson Espacial quando
+\(N(A)\sim\hbox{Poisson}(\lambda A)\) e, para duas regiões distintas de
+áreas \(B\) e \(C\), \(N(B)\) e \(N(C)\) são independentes.
+
+Note que, para um Processo de Poisson Espaical, dado \(N(A)=n\) as \(n\)
+ocorrências estão uniformemente distribuídas dentro da região \(A\)
+
+\section{Verossimilhança e priori
+conjugada}\label{verossimilhanuxe7a-e-priori-conjugada-1}
+
+Seja \(X_1,\ldots,X_n\) uma amostra aleatória do modelo
+Poisson\((\lambda)\). A verossimilhança deste modelo é dada por
+
+\[L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}\propto \theta^{\sum_{i=1}^n x_i}e^{-n\theta}.\]
+O modelo Poisson pertence à família exponencial e sua priori conjugada é
+\(\theta\sim\hbox{Gama}(r,s)\) e a posteriori é
+\(\hbox{Gama}(r+\sum_{i=1}^n x_i+r, s+n)\), conforme já discutido na
+Introdução. Os hiperparâmetros \(r\) e \(s\) podem ser interpretados
+como o total da contagem e o tamanho da amostra a priori.
+
+A média da posteriori é
 \[E(\theta|\mathbf{x})=\frac{\sum_{i=1}^{n}x_i+r}{n+s}=\frac{n}{n+s}\bar{x}+\frac{s}{n+s}E(\theta),\]
 onde fica claro que este estimador é uma média ponderada das informações
 provenientes das duas fontes de informação (sendo \(\bar{x}\) a
-estimativa de máxima verossimilhança e \(E(\theta)\) a média
-\textit{a priori}).
+estimativa de máxima verossimilhança e \(E(\theta)\) a média a priori).
 
 Se \(n\gg s\), então a média a posteriori dará maior peso para a
 informação dos dados.
 
-A informação de Fisher é \[\mathcal{I}(\theta)=\frac{1}{\theta}\]
+\section{Preditiva a posteriori}\label{preditiva-a-posteriori-1}
 
-Assim, a priori de Jeffreys é dada por
-\[f(\theta)\propto \theta^{-\frac{1}{2}},\] sendo, portanto, uma priori
-imprópria. Contudo,
-\[f(\theta|\mathbf{x})\propto e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i} \theta^{-\frac{1}{2}},\]
-logo, a posteriori é própria, tendo distribuição
-\(Gama(\sum_{i=1}^{n}x_i+1/2,n)\).
+A inferência bayesiana é baseada em duas fontes de informação:
+verossimilhança e priori. Já discutimos que, na maioria dos casos,
+estamos interessados em deixar a verossimilhança ter mais peso na
+posteriori. Agora, vamos discutir como verificar se a verossimilhança é
+adequada ao problema.
 
-Considere a posteriori \(\theta|\mathbf{x}\sim\hbox{Gama}(r_1,s_1)\).
-Podemos retirar uma amostra da preditiva \textit{a posteriori} do
-seguinte modo:
+Seja \(\boldsymbol{x}=\{x_1,\ldots,x_n\}\) a amostra observada e
+\(f(\theta|\boldsymbol{x})\) a posteriori obtida. Supondo que a
+informação sobre os parâmetros foi capturada de forma adequada, é de se
+esperar que uma nova observação \(x^*\) se comporte de modo semelhante a
+amostra observada. Podemos então obter a seguinte distribuição,
+denominada preditiva a posteriori:
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Gere \(\theta_j\sim\hbox{Gama}(r_1,s_1)\)
-\end{enumerate}
+\[\begin{align}f(x^*|\boldsymbol{x})=\int f(x^*|\theta)f(\theta|\boldsymbol{x})d\theta.\end{align}\]
 
-2.Gere \(\tilde{\mathbf{x}}\sim\hbox{Poisson}(\theta_j)\).
+Podemos comparar as características preditiva a posteriori com
+estatísticas livres de modelos como box-plots, histogramas, etc.
 
-\section{O modelo Poisson para taxas}\label{o-modelo-poisson-para-taxas}
+\textbf{Preditiva a posteriori para o modelo Poisson}
+
+Para o modelo Poisson(\(\lambda\)) e para a posteriori
+Gama\((r_1,s_1)\), onde \(r_1=r+\sum_{i=1}^n x_i\) e \(s_1=n+s\),
+\[\begin{align}
+f(x^*|\boldsymbol{x})&=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})d\lambda\\
+&=\int_0^\infty\frac{e^{-\lambda}\lambda^{x^*}}{x^*!}\frac{s_1^{r_1}}{\Gamma(r_1)}\lambda^{r_1-1}e^{-s_1\lambda}d\lambda\\
+&=\frac{s_1^{r_1}}{\Gamma(r_1)x^*!}\int_0^\infty \lambda^{r_1+x^*-1}e^{-\lambda(s_1+1)}d\lambda\\
+&=\frac{\Gamma(r_1+x^*)}{\Gamma(r_1)x^*!}\left(\frac{s_1}{1+s_1}\right)^{r_1}\left(1 - \frac{s_1}{s_1+1}\right)^{x^*}
+\end{align}\] ou seja, a preditiva a posteriori tem distribuição
+
+\[\hbox{Binomial Negativa}\left(r_1,\frac{s_1}{1+s_1}\right).\]
+
+\begin{example}[]\protect\hypertarget{exm-}{}\label{exm-}
+
+\textbf{A Blitz e os Bombardeios de Londres}
+
+Durante a Segunda Guerra Mundial, Londres sofreu intensos bombardeios
+aéreos pela Alemanha Nazista (conhecido como ``Blitz''). Estatísticos
+analisaram a distribuição das quedas de 537 bombas pela cidade para
+procurar padrões.
+
+Uma questão chave era se as bombas caíam aleatoriamente ou se havia
+algum padrão de alvo. Se as quedas de bombas fossem aleatórias, elas
+deveriam seguir uma distribuição de Poisson. Londres foi dividida em uma
+grade de com 576 setores de áreas iguais. O número de quedas de bombas
+em cada setor foi registrado.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3529}}
+  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.6471}}@{}}
+\caption{Quedas de bombas em Londres durante o Blitz.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Número de bombas
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Número de setores com x bombas
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Número de bombas
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Número de setores com x bombas
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 229 \\
+1 & 211 \\
+2 & 93 \\
+3 & 35 \\
+4 & 7 \\
+5 ou mais & 1 \\
+\end{longtable}
+
+Supondo que os dados seguem uma distribuição Poisson(\(\lambda\)),
+teremos \[L(\lambda)\propto e^{-576\lambda}\lambda^{537}.\] Considerando
+a priori \(\lambda\sim\hbox{Gama}(1,1)\), teremos a posteriori
+Gama\((538,577)\). A preditiva a posteriori para problema é
+
+\[\hbox{Binomial Negativa}(538,.9982).\]
+
+Observe que podemos estimar a frequência relativa dos eventos da tabela.
+Podemos comparar esses resultados com o que seria esperado da preditiva.
+O resultado é dado a seguir.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r1 }\OtherTok{=} \DecValTok{538}
+\NormalTok{p }\OtherTok{=} \DecValTok{577}\SpecialCharTok{/}\DecValTok{578}
+\StringTok{\textasciigrave{}}\AttributeTok{Número de bombas no setor}\StringTok{\textasciigrave{}} \OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\StringTok{\textquotesingle{}\textgreater{}4\textquotesingle{}}\NormalTok{)}
+\StringTok{\textasciigrave{}}\AttributeTok{Frequência relativa}\StringTok{\textasciigrave{}} \OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{229}\NormalTok{,}\DecValTok{211}\NormalTok{,}\DecValTok{93}\NormalTok{,}\DecValTok{35}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{1}\NormalTok{)}\SpecialCharTok{/}\DecValTok{576}
+\StringTok{\textasciigrave{}}\AttributeTok{Preditiva a posteriori}\StringTok{\textasciigrave{}} \OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{dnbinom}\NormalTok{( }\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\AttributeTok{size=}\NormalTok{r1, }\AttributeTok{prob =}\NormalTok{ p), }\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{pnbinom}\NormalTok{(}\DecValTok{4}\NormalTok{,}\AttributeTok{size=}\NormalTok{r1,}\AttributeTok{prob=}\NormalTok{p))}
+
+\NormalTok{dt }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Número de bombas no setor}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{\textasciigrave{}}\AttributeTok{Frequência relativa}\StringTok{\textasciigrave{}}\NormalTok{,}\StringTok{\textasciigrave{}}\AttributeTok{Preditiva a posteriori}\StringTok{\textasciigrave{}}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(dt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  Número.de.bombas.no.setor Frequência.relativa Preditiva.a.posteriori
+1                         0         0.397569444            0.393922155
+2                         1         0.366319444            0.366661107
+3                         2         0.161458333            0.170960499
+4                         3         0.060763889            0.053240294
+5                         4         0.012152778            0.012458045
+6                        >4         0.001736111            0.002757901
+\end{verbatim}
+
+A proximidade entre as frequências relativas e os resultados obtidos
+através da preditiva a posteriori dão evidências de que o modelo Poisson
+é adequado, ou ainda, que as bombas foram lançadas ao acaso.
+
+\end{example}
+
+\phantomsection\label{exm}
+\textbf{Número de suicídios revisitado}
+
+Na introdução, apresentamos o número de suicídios no Amazonas para os
+anos 2021, 2022 e 2023. Os dados podem ser vistos abaixo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{no\_suicidios }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{19}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{28}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{23}\NormalTok{,}\DecValTok{23}\NormalTok{, }\DecValTok{21}\NormalTok{,}
+\DecValTok{22}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{31}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{23}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{29}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{23}\NormalTok{,}
+\DecValTok{36}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{18}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{34}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{26}\NormalTok{, }\DecValTok{34}\NormalTok{,}
+\DecValTok{22}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{32}\NormalTok{, }\DecValTok{36}\NormalTok{, }\DecValTok{28}\NormalTok{, }\DecValTok{22}\NormalTok{ )}
+\end{Highlighting}
+\end{Shaded}
+
+Analisamos estes dados e obtivemos a posteriori Gama(953.8, 37.1) para a
+taxa. A distribuição da preditiva a posteriori é Binomial
+Negativa\((953.8\;,\;0,9737)\).
+
+A figura abaixo apresenta a função de distribuição empírica dos dados
+comparada com a função de distribuição da preditiva a posteriori. A
+aproximação é razoável o suficiente para aceitarmos o modelo proposto
+como válido.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{( }\FunctionTok{ecdf}\NormalTok{(no\_suicidios), }\AttributeTok{main =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab=}\StringTok{\textquotesingle{}Função de distribuição\textquotesingle{}}\NormalTok{, }\AttributeTok{xlab=}\FunctionTok{expression}\NormalTok{(x))}
+\FunctionTok{curve}\NormalTok{(}\FunctionTok{pnbinom}\NormalTok{(x,}\FunctionTok{sum}\NormalTok{(no\_suicidios)}\SpecialCharTok{+}\DecValTok{1}\NormalTok{,}\DecValTok{37}\SpecialCharTok{/}\DecValTok{38}\NormalTok{), }\AttributeTok{add=}\NormalTok{T, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{col =} \StringTok{\textquotesingle{}tomato\textquotesingle{}}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{\textquotesingle{}bottomright\textquotesingle{}}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Empírica\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Preditia a posteriori\textquotesingle{}}\NormalTok{), }\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\StringTok{\textquotesingle{}tomato\textquotesingle{}}\NormalTok{), }\AttributeTok{bty=}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-3-1.pdf}
+
+\section{O modelo Poisson para
+taxas}\label{o-modelo-poisson-para-taxas-1}
 
 A taxa é o cociente entre o número de casos de um evento em determinado
 intervalo de tempo e a população em risco, definida em um espaço e no
@@ -3167,7 +4202,7 @@ posterioris \(\hbox{Gama}(\sum_{i=1}^m y_i,N)\) e
 \(\hbox{Gama}(\sum_{i=1}^m y_i+1/2,N)\).
 
 \section{Exemplo 1: crime de estupro de vulnerável no interior do
-Amazonas}\label{exemplo-1-crime-de-estupro-de-vulneruxe1vel-no-interior-do-amazonas}
+Amazonas}\label{exemplo-1-crime-de-estupro-de-vulneruxe1vel-no-interior-do-amazonas-1}
 
 Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero
 no Amazonas e compreendem os anos entre 2010 e 2012.
@@ -3219,7 +4254,7 @@ Considerando a priori \(\pi(\theta)\varpropto \theta^{-1/2}\) teremos:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{poisson_files/figure-pdf/unnamed-chunk-2-1.pdf}
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-5-1.pdf}
 
 Abaixo, simulamos 50.000 amostras da preditiva a posteriori
 
@@ -3241,7 +4276,7 @@ Abaixo, simulamos 50.000 amostras da preditiva a posteriori
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{poisson_files/figure-pdf/unnamed-chunk-3-1.pdf}
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-6-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3279,7 +4314,7 @@ Abaixo, simulamos 50.000 amostras da preditiva a posteriori
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{poisson_files/figure-pdf/unnamed-chunk-4-1.pdf}
+\includegraphics{poisson_files/figure-pdf/unnamed-chunk-7-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3325,19 +4360,19 @@ Warning in par(oo): parâmetro gráfico "page" não pode ser especificado
 
 \begin{verbatim}
     municipios      p
-1      Amatura 0.3408
-2    Atl.Norte 0.0644
-3         Barr 0.0224
-4           BC 0.0164
-5     BV Ramos 0.1436
+1      Amatura 0.3396
+2    Atl.Norte 0.0672
+3         Barr 0.0292
+4           BC 0.0212
+5     BV Ramos 0.1372
 6      Fonte B 0.0000
-7        Jutai 0.0548
-8        Maues 0.4940
-9     Nhamunda 0.0144
-10   Parintins 0.6732
-11      StoIca 0.3264
-12 SP Olivenca 0.4328
-13         Tbt 0.4400
+7        Jutai 0.0440
+8        Maues 0.5108
+9     Nhamunda 0.0140
+10   Parintins 0.6236
+11      StoIca 0.3408
+12 SP Olivenca 0.4164
+13         Tbt 0.4420
 14   Tonantins 0.0456
 \end{verbatim}
 
@@ -3357,8 +4392,6 @@ Alejandra Gurtman, Stephen Lockhart, John L Perez, et al. 2020.
 \emph{New England Journal of Medicine} 383 (27): 2603--15.
 
 \end{CSLReferences}
-
-\end{example}
 
 
 

@@ -233,32 +233,38 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./poisson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -451,11 +457,11 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(alfa<span class="sc">&gt;</span>beta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.60056</code></pre>
+<pre><code>[1] 0.601123</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(alfa<span class="sc">&gt;</span>gama)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.789482</code></pre>
+<pre><code>[1] 0.789622</code></pre>
 </div>
 </div>
 <p>Observe que <span class="math inline">\(P(\alpha&gt;\gamma|\hbox{dados})\approx 0,78\)</span>, o que não dá suporte para afirmar que a probabilidade de sobrevivência dos tripulantes da primeira classe foi maior do que o da terceira. <span class="math display">\[\blacksquare\]</span></p>
@@ -491,7 +497,7 @@ window.Quarto = {
 </div>
 <p>Neste exemplo, vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumariadas na tabela abaixo.</p>
 <p><span class="math display">\[\begin{array}{c|ccc|c}\hline
-&amp;\hbox{Satisfeito} &amp; \hbox{Insatifeito por excesso} &amp; \hbox{Insatisfeito por magreza} &amp;\hbox{Total}\\ \hline
+&amp;\hbox{Satisfeito} &amp; \hbox{Insatisfeito por excesso} &amp; \hbox{Insatisfeito por magreza} &amp;\hbox{Total}\\ \hline
 \hbox{Masculino} &amp; 24 &amp; 10 &amp; 24 &amp; 58 \\
 \hbox{Feminino} &amp; 14 &amp; 22 &amp; 24 &amp; 60 \\ \hline
 \end{array}
@@ -537,6 +543,34 @@ window.Quarto = {
 </div>
 </div>
 <p>Com uma probabilidade maior que 99%, há fortes evidências de que mulheres entre 16 e 17 anos se sentem mais insatisfeitas por excesso do que os homens de mesma idade.</p>
+</div>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 5.5</strong></span> <strong>Imagem corporal (continuação)</strong></p>
+<p>Neste exemplo, lidaremos apenas com o recorte dos indivíduos do sexo masculino entre 16 e 17 anos, reproduzido abaixo.</p>
+<p><span class="math display">\[\begin{array}{c|ccc|c}\hline
+&amp;\hbox{Satisfeito} &amp; \hbox{Insatisfeito por excesso} &amp; \hbox{Insatisfeito por magreza} &amp;\hbox{Total}\\ \hline
+\hbox{Masculino} &amp; 24 &amp; 10 &amp; 24 &amp; 58 \\ \hline
+\end{array}
+\]</span></p>
+<p>Considerando <span class="math inline">\(\boldsymbol{alpha}=(\alpha_S,\alpha_E,\alpha_M)\)</span> como definidos anteriormente e utilizando a priori Dirichlet(1,1,1), obtivemos a posteriori <span class="math inline">\(\boldsymbol{\alpha}\sim\hbox{Dirichlet}(25,11,25)\)</span>.</p>
+<p>Vamos testar se a probabilidade de insatisfação por magreza é maior do que a por excesso, ou seja <span class="math inline">\(H: \alpha_M&gt;\alpha_E\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('extraDistr')</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(extraDistr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Carregando pacotes exigidos: extraDistr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: pacote 'extraDistr' foi compilado no R versão 4.4.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fu">rdirichlet</span>(B, <span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">11</span>,<span class="dv">25</span>))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>( alpha[,<span class="dv">3</span>] <span class="sc">&gt;</span> alpha[,<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9893</code></pre>
+</div>
+</div>
+<p>Com uma probabilidade maior que 0,99, existem fortes evidências de que, para um indivíduo do sexo masculino entre 16 e 17 anos, a probabilidade de estar insatisfeito por excesso é menor do que por magreza.</p>
 </div>
 </section>
 <section id="exercícios" class="level2" data-number="5.3">

@@ -1,26 +1,153 @@
-# O modelo Poisson revisitado
+# O modelo Poisson
 
-## Verossimilhança, prioris e posterioris
+## Sobre o modelo 
 
-Dizemos que $X|\theta$ tem distribuição Poisson se sua função de probabilidade é dada por $$f(x|\theta)=\frac{e^{-\theta}\theta^x}{x!},$$ onde $x=0,1,\ldots$ e $\theta>0$. O parâmetro $\theta$ é denominado taxa. Para este modelo $$E(X|\theta)=Var(X|\theta)=\theta.$$
+Seja $N(t)$ o número de ocorrências observadas no intervalo de tempo $[0,t]$ (considere que $N(0)=0$). Note que o número de eventos no intervalo $(s,t]$ é dado por $N(t)-N(s)$. 
 
-Esta é uma das distribuições para contagens mais importantes. A verossimilhança deste modelo, para uma amostra de vaiid, é dada por $$L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}.$$ O modelo Poisson pertence à família exponencial e sua \textit{priori} conjugada é $\theta\sim\hbox{Gama}(r,s)$, onde $r$ e $s$ podem ser interpretados como o total da contagem e o tamanho da amostra \textit{a priori}.
+Dizemos que $N(t)$ tem incrementos independentes se, para quaisquer intervalos disjuntos $(s_0,t_0]$ e $(s_1,t_1]$, as contagens $N(t_0)-N(s_0)$ e $N(t_1)-N(s_1)$ são independentes. 
 
-Neste caso, a \textit{posteriori} é $\hbox{Gama}(r+\sum_{i=1}^n x_i+r, s+n)$.
+$N(t)$ é denominado Processo de Poisson quando ele possui incrementos indepentes e, para qualquer intervalo $(s,t]$,
 
-A média da \textit{posteriori} é $$E(\theta|\mathbf{x})=\frac{\sum_{i=1}^{n}x_i+r}{n+s}=\frac{n}{n+s}\bar{x}+\frac{s}{n+s}E(\theta),$$ onde fica claro que este estimador é uma média ponderada das informações provenientes das duas fontes de informação (sendo $\bar{x}$ a estimativa de máxima verossimilhança e $E(\theta)$ a média \textit{a priori}).
+$$P(N(t)-N(s)=x)=\frac{e^{-\lambda(t-s)[\lambda(t-s)]^x}}{x!},$$
+onde $x=0,1,\ldots$ e $\lambda>0$. Isto implica que
+$$E(N(t))=\lambda t,$$
+ou seja, o número esperado de ocorrências até o tempo $t$ é diretamente proporcional à $t$ e $\lambda$ representa a taxa de crescimento. Para este processo, é verdade que
+$$\lim_{\delta\rightarrow 0}P(N(t+\delta)-N(t)>1)=0,$$
+ou seja, não é possível observar duas ou mais ocorrências simultaneamente.
+
+Em geral, os experimentos são desenhados para registrar contagens em intervalos regulares e disjuntos de tempo, como semanas ou anos. Considere que tais intervalos são $[0,s_1],(s_1,s_2],\ldots,(s_{n-1},t]$ e seja $c$ o comprimento destes intervalos. Em geral, os dados são apresentados como contagens dentro destes intevalos, gerando as seguintes variáveis:
+
+* $X_1=N(s_1)\sim\hbox{Poisson}(\lambda c)$
+* $X_2=N(s_2)-N(s_1)\sim\hbox{Poisson}(\lambda c)$
+* $\cdots$
+* $X_n=N(t)-N(s_{n-1})\sim\hbox{Poisson}(\lambda c)$
+ou seja, $X_1,\ldots,X_n$ são uma amostra aleatória do modelo Poisson($\lambda c$). Na prática, $c=1$  por ser a unidade de medida de tempo associada ao experimento (uma semana, um ano, etc).
+
+### Tempos de chegadas e tempos de espera
+
+Para um processo de Poisson $N(t)$, definimos o tempo de chegadas como o tempo entre duas observações consecutivas. Denotaremos o tempo de chegadas entre a $i$-ésima e a $i-1$ ésima ocorrência por $T_i$.  
+
+É possível mostrar que $T_i$ é independente de $T_j$, para $i\neq j$ e que $T_i\sim\hbox{Exponencial}(\lambda)$. Por isso, para uma amostra aleatória de um modelo Exponencial($\lambda$), o parâmetro $\lambda$ é demoninado taxa. 
+
+Definimos por tempo de espera da ocorrência $n$ como o tempo transcorrido desde o início do processo até a ocorrência do $n$-ésimo evento. Este tempo de espera é denotado por $S_n$.
+Exsitem dois resultados importantes relacionados ao tempo de espera:
+
+* $S_n=T_1+\cdots+T_n$ tem distribuição Gama($n,\lambda$)
+
+* Dado que $N(t)=n$, os tempos de espera dos eventos estão uniformemente distribuídos dentro do intervalo $(0,t)$.
+
+### Ocorrências de diversas classes
+
+Suponha que as ocorrências observadas podem ser classificadas em $k$ categorias. Suponha que qualquer ocorrência tem probabilidade $p_j$ de pertencer a categoria $j$. Então
+
+* O número de ocorrências da classe $j$ é um processo de Poisson com taxa $\lambda p_j$
+
+* O número de ocorrências da classe $j$ é independente do número de ocorrências da classe $i$, com $i\neq j$
+
+
+### O processo de Poisson Espacial
+
+Seja $N(A)$ o número de ocorrências observadas em uma região de área $A$. $N(A)$ é denominado Processo de Poisson Espacial quando $N(A)\sim\hbox{Poisson}(\lambda A)$ e, para duas regiões distintas de áreas $B$ e $C$, $N(B)$ e $N(C)$ são independentes.
+
+Note que, para um Processo de Poisson Espaical, dado $N(A)=n$ as $n$ ocorrências estão uniformemente distribuídas dentro da região $A$
+
+## Verossimilhança e priori conjugada
+
+Seja $X_1,\ldots,X_n$ uma amostra aleatória do modelo Poisson$(\lambda)$. A verossimilhança deste modelo é dada por 
+
+$$L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}\propto \theta^{\sum_{i=1}^n x_i}e^{-n\theta}.$$ O modelo Poisson pertence à família exponencial e sua priori conjugada é $\theta\sim\hbox{Gama}(r,s)$ e a posteriori é $\hbox{Gama}(r+\sum_{i=1}^n x_i+r, s+n)$, conforme já discutido na Introdução. Os hiperparâmetros $r$ e $s$ podem ser interpretados como o total da contagem e o tamanho da amostra a priori. 
+
+A média da posteriori é $$E(\theta|\mathbf{x})=\frac{\sum_{i=1}^{n}x_i+r}{n+s}=\frac{n}{n+s}\bar{x}+\frac{s}{n+s}E(\theta),$$ onde fica claro que este estimador é uma média ponderada das informações provenientes das duas fontes de informação (sendo $\bar{x}$ a estimativa de máxima verossimilhança e $E(\theta)$ a média a priori).
 
 Se $n\gg s$, então a média a posteriori dará maior peso para a informação dos dados.
 
-A informação de Fisher é $$\mathcal{I}(\theta)=\frac{1}{\theta}$$
+## Preditiva a posteriori
 
-Assim, a priori de Jeffreys é dada por $$f(\theta)\propto \theta^{-\frac{1}{2}},$$ sendo, portanto, uma priori imprópria. Contudo, $$f(\theta|\mathbf{x})\propto e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i} \theta^{-\frac{1}{2}},$$ logo, a posteriori é própria, tendo distribuição $Gama(\sum_{i=1}^{n}x_i+1/2,n)$.
+A inferência bayesiana é baseada em duas fontes de informação: verossimilhança e priori. Já discutimos que, na maioria dos casos, estamos interessados em deixar a verossimilhança ter mais peso na posteriori. Agora, vamos discutir como verificar se a verossimilhança é adequada ao problema.
 
-Considere a posteriori $\theta|\mathbf{x}\sim\hbox{Gama}(r_1,s_1)$. Podemos retirar uma amostra da preditiva \textit{a posteriori} do seguinte modo:
+Seja $\boldsymbol{x}=\{x_1,\ldots,x_n\}$ a amostra observada e $f(\theta|\boldsymbol{x})$ a posteriori obtida. Supondo que a informação sobre os parâmetros foi capturada de forma adequada, é de se esperar que uma nova observação $x^*$ se comporte de modo semelhante a amostra observada. Podemos então obter a seguinte distribuição, denominada preditiva a posteriori:
 
-1.  Gere $\theta_j\sim\hbox{Gama}(r_1,s_1)$
+$$\begin{align}f(x^*|\boldsymbol{x})=\int f(x^*|\theta)f(\theta|\boldsymbol{x})d\theta.\end{align}$$
 
-2.Gere $\tilde{\mathbf{x}}\sim\hbox{Poisson}(\theta_j)$.
+Podemos comparar as características preditiva a posteriori com estatísticas livres de modelos como box-plots, histogramas, etc.
+
+<div class='alert alert-success'>
+**Preditiva a posteriori para o modelo Poisson**
+
+Para o modelo Poisson($\lambda$) e para a posteriori Gama$(r_1,s_1)$, onde $r_1=r+\sum_{i=1}^n x_i$ e $s_1=n+s$,
+$$\begin{align}
+f(x^*|\boldsymbol{x})&=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})d\lambda\\
+&=\int_0^\infty\frac{e^{-\lambda}\lambda^{x^*}}{x^*!}\frac{s_1^{r_1}}{\Gamma(r_1)}\lambda^{r_1-1}e^{-s_1\lambda}d\lambda\\
+&=\frac{s_1^{r_1}}{\Gamma(r_1)x^*!}\int_0^\infty \lambda^{r_1+x^*-1}e^{-\lambda(s_1+1)}d\lambda\\
+&=\frac{\Gamma(r_1+x^*)}{\Gamma(r_1)x^*!}\left(\frac{s_1}{1+s_1}\right)^{r_1}\left(1 - \frac{s_1}{s_1+1}\right)^{x^*}
+\end{align}$$
+ou seja, a preditiva a posteriori tem distribuição 
+
+$$\hbox{Binomial Negativa}\left(r_1,\frac{s_1}{1+s_1}\right).$$ 
+</div>
+
+
+:::{#exm-}
+**A Blitz e os Bombardeios de Londres**
+
+Durante a Segunda Guerra Mundial, Londres sofreu intensos bombardeios aéreos pela Alemanha Nazista (conhecido como "Blitz"). Estatísticos analisaram a distribuição das quedas de 537 bombas pela cidade para procurar padrões.
+
+Uma questão chave era se as bombas caíam aleatoriamente ou se havia algum padrão de alvo. Se as quedas de bombas fossem aleatórias, elas deveriam seguir uma distribuição de Poisson. Londres foi dividida em uma grade de com 576 setores de áreas iguais. O número de quedas de bombas em cada setor foi registrado.
+
+| Número de bombas   | Número de setores com x bombas | 
+| :----------------------- | :------------------------------------------: |
+| 0                       | 229                                         |
+| 1                       | 211                                         | 
+| 2                       | 93                                          | 
+| 3                       | 35                                          |
+| 4                | 7                                          | 
+| 5 ou mais | 1 |
+: Quedas de bombas em Londres durante o Blitz.
+
+Supondo que os dados seguem uma distribuição Poisson($\lambda$), teremos
+$$L(\lambda)\propto e^{-576\lambda}\lambda^{537}.$$
+Considerando a priori $\lambda\sim\hbox{Gama}(1,1)$, teremos a posteriori Gama$(538,577)$. A preditiva a posteriori para problema é
+
+$$\hbox{Binomial Negativa}(538,.9982).$$
+
+Observe que podemos estimar a frequência relativa dos eventos da tabela. Podemos comparar esses resultados com o que seria esperado da preditiva. O resultado é dado a seguir.
+
+```{r}
+r1 = 538
+p = 577/578
+`Número de bombas no setor` <- c(0,1,2,3,4,'>4')
+`Frequência relativa` <- c(229,211,93,35,7,1)/576
+`Preditiva a posteriori` <- c(dnbinom( 0:4, size=r1, prob = p), 1-pnbinom(4,size=r1,prob=p))
+
+dt <- data.frame(`Número de bombas no setor`, `Frequência relativa`,`Preditiva a posteriori`)
+
+print(dt)
+```
+
+A proximidade entre as frequências relativas e os resultados obtidos através da preditiva a posteriori dão evidências de que o modelo Poisson é adequado, ou ainda, que as bombas foram lançadas ao acaso.
+:::
+
+::: {#exm}
+**Número de suicídios revisitado**
+
+Na introdução, apresentamos o número de suicídios no Amazonas para os anos 2021, 2022 e 2023. Os dados podem ser vistos abaixo.
+
+```{r}
+no_suicidios <- c(19, 26, 30, 28, 25, 23,23, 21,
+22, 27, 31, 22, 23, 21, 29, 27, 26, 23,
+36, 27, 24, 21, 18, 22, 34, 27, 26, 26, 34,
+22, 27, 25, 32, 36, 28, 22 )
+```
+
+Analisamos estes dados e obtivemos a posteriori Gama(953.8, 37.1) para a taxa. A distribuição da preditiva a posteriori é Binomial Negativa$(953.8\;,\;0,9737)$. 
+
+A figura abaixo apresenta a função de distribuição empírica dos dados comparada com a função de distribuição da preditiva a posteriori. A aproximação é razoável o suficiente para aceitarmos o modelo proposto como válido.
+
+```{r}
+plot( ecdf(no_suicidios), main = '', ylab='Função de distribuição', xlab=expression(x))
+curve(pnbinom(x,sum(no_suicidios)+1,37/38), add=T, lwd = 2, col = 'tomato')
+legend('bottomright', c('Empírica','Preditia a posteriori'), col=c(1,'tomato'), bty='n')
+```
 
 ## O modelo Poisson para taxas
 

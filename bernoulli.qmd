@@ -234,7 +234,7 @@ O projeto Estado nutricional e sua relação com a imagem corporal em escolares 
 Neste exemplo, vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumariadas na tabela abaixo.
 
 $$\begin{array}{c|ccc|c}\hline
-&\hbox{Satisfeito} & \hbox{Insatifeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
+&\hbox{Satisfeito} & \hbox{Insatisfeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
 \hbox{Masculino} & 24 & 10 & 24 & 58 \\
 \hbox{Feminino} & 14 & 22 & 24 & 60 \\ \hline
 \end{array}
@@ -276,8 +276,35 @@ betaE <- rbeta(B, 23,40)
 mean(alfaE<betaE)
 ```
 Com uma probabilidade maior que 99%, há fortes evidências de que mulheres entre 16 e 17 anos se sentem mais insatisfeitas por excesso do que os homens de mesma idade.
+
 :::
 
+::: {#exm-}
+**Imagem corporal (continuação)**
+
+Neste exemplo, lidaremos apenas com o recorte dos indivíduos do sexo masculino entre 16 e 17 anos, reproduzido abaixo.
+
+$$\begin{array}{c|ccc|c}\hline
+&\hbox{Satisfeito} & \hbox{Insatisfeito por excesso} & \hbox{Insatisfeito por magreza} &\hbox{Total}\\ \hline
+\hbox{Masculino} & 24 & 10 & 24 & 58 \\ \hline
+\end{array}
+$$
+
+Considerando $\boldsymbol{alpha}=(\alpha_S,\alpha_E,\alpha_M)$ como definidos anteriormente e utilizando a priori Dirichlet(1,1,1), obtivemos a posteriori $\boldsymbol{\alpha}\sim\hbox{Dirichlet}(25,11,25)$. 
+
+Vamos testar se a probabilidade de insatisfação por magreza é maior do que a por excesso, ou seja $H: \alpha_M>\alpha_E$. 
+
+```{r}
+#install.packages('extraDistr')
+require(extraDistr)
+B <- 10000
+alpha <- rdirichlet(B, c(25,11,25))
+mean( alpha[,3] > alpha[,2])
+```
+
+
+Com uma probabilidade maior que 0,99, existem fortes evidências de que, para um indivíduo do sexo masculino entre 16 e 17 anos, a probabilidade de estar insatisfeito por excesso é menor do que por magreza.
+:::
 
 ## Exercícios
 

@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./normal.html" rel="next">
+<link href="./poisson.html" rel="next">
 <link href="./bernoulli.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -213,32 +213,38 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./poisson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -261,6 +267,12 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#a-função-de-perda-0-1" id="toc-a-função-de-perda-0-1" class="nav-link" data-scroll-target="#a-função-de-perda-0-1"><span class="header-section-number">6.1.1</span> A Função de Perda 0-1</a></li>
   <li><a href="#a-função-de-perda-a-b" id="toc-a-função-de-perda-a-b" class="nav-link" data-scroll-target="#a-função-de-perda-a-b"><span class="header-section-number">6.1.2</span> A Função de Perda a-b</a></li>
+  </ul></li>
+  <li><a href="#testes-utilizando-modelos" id="toc-testes-utilizando-modelos" class="nav-link" data-scroll-target="#testes-utilizando-modelos"><span class="header-section-number">6.2</span> Testes utilizando modelos</a></li>
+  <li><a href="#o-fator-de-bayes" id="toc-o-fator-de-bayes" class="nav-link" data-scroll-target="#o-fator-de-bayes"><span class="header-section-number">6.3</span> O Fator de Bayes</a></li>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">6.4</span> Exercícios</a>
+  <ul class="collapse">
+  <li><a href="#mudança-de-opinião-sobre-vacinação" id="toc-mudança-de-opinião-sobre-vacinação" class="nav-link" data-scroll-target="#mudança-de-opinião-sobre-vacinação"><span class="header-section-number">6.4.1</span> Mudança de opinião sobre vacinação</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -308,27 +320,8 @@ window.Quarto = {
 </ul>
 <p><span class="math display">\[\begin{align}E_{\theta|X}(\mathcal{L}(\theta,\varphi))&amp;=\int (1-I(\theta\in\Theta_0)^2 f(\theta|x)d\theta\\&amp;=\int I(\theta\in\Theta_0^c) f(\theta|x)d\theta\\&amp;=\int_{\Theta_0^c }f(\theta|x)d\theta=P(\theta\notin\Theta_0|x)\end{align}\]</span></p>
 <p>Deste modo, se <span class="math inline">\(P(\theta\in\Theta_0|x)&gt;P(\theta\in\Theta_0^c|x)\)</span>, temos que <span class="math inline">\(\phi(\boldsymbol{x})=1\)</span> é a decisão que minimiza a perda a posteriori, ou seja, aceitamos <span class="math inline">\(H_0\)</span>. Em caso contrário, rejeitamos <span class="math inline">\(H_0\)</span>.</p>
-</section>
-<section id="a-função-de-perda-a-b" class="level3" data-number="6.1.2">
-<h3 data-number="6.1.2" class="anchored"><span class="header-section-number">6.1.2</span> A Função de Perda a-b</h3>
-<p>Suponha que <span class="math inline">\(P(\theta\in\Theta_0|\boldsymbol{x})=0,51\)</span>. Segundo a Função de Perda 0-1, deveríamos aceitar <span class="math inline">\(H_0\)</span>, uma vez que</p>
-<p><span class="math display">\[P(\theta\in\Theta_0|\boldsymbol{x})=0,51&gt;0,49=P(\theta\in\Theta_0^c|\boldsymbol{x})\]</span></p>
-<p>Isto ocorre porque a perda associada ao erro no teste de hipóteses é igual para qualquer decisão. Podemos associar valores diferentes, reforçando que um erro é mais sério que o outro.</p>
-<p>Considere que rejeitar <span class="math inline">\(H_0\)</span> quando ela é verdadeira (erro tipo I) gera uma perda <span class="math inline">\(a\)</span>, enquanto que aceitar <span class="math inline">\(H_0\)</span> quando ela é falsa (erro tipo II) gera uma perda <span class="math inline">\(b\)</span>. Para o erro mais grave, associamos um valor maior para a perda. A função de perda respectiva é denominada Perda <span class="math inline">\(a-b\)</span> e é dada por</p>
-<p><span class="math display">\[\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
-a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.\]</span></p>
-<p>A média a posteriori dessa função de perda é</p>
-<p><span class="math display">\[E_{\theta|\boldsymbol{x}}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|x)d\theta\]</span></p>
-<ul>
-<li><p>Se <span class="math inline">\(\varphi(x)=1\)</span>, teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|\boldsymbol{x})d\theta=bP(\theta\in\Theta_0^c|x)\]</span></p></li>
-<li><p>Se <span class="math inline">\(\varphi(x)=0\)</span> teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta=aP(\theta\in\Theta_0|x)\]</span> logo:</p></li>
-<li><p>Se <span class="math inline">\(bP(\theta\in\Theta_0^c|x)&gt;aP(\theta\in\Theta_0|x)\)</span> então a decisão minimiza a perda a posteriori é <span class="math inline">\(\varphi(\boldsymbol{x})=0\)</span>, ou seja, rejeitamos <span class="math inline">\(H_0\)</span>.</p></li>
-<li><p>Se <span class="math inline">\(bP(\theta\in\Theta_0^c|x)&lt;aP(\theta\in\Theta_0|x)\)</span> então a decisão minimiza a perda a posteriori é <span class="math inline">\(\varphi(\boldsymbol{x})=1\)</span>, ou seja, aceitamos <span class="math inline">\(H_0\)</span>.</p></li>
-</ul>
-<p>Na prática, aceitamos <span class="math inline">\(H_0\)</span> se <span class="math display">\[P(\theta\in\Theta_0|\boldsymbol{x})&gt;\frac{b}{b+a}\]</span></p>
-<p>Observe que, diferente do ponto de vista frequentista, estamos interessados em aceitar a hipótese <span class="math inline">\(H_0\)</span>. Deste modo, o erro tipo II é o mais preocupante, o que implica em <span class="math inline">\(b&gt;a\)</span>. Na prática, fixamos um valor para <span class="math inline">\(b/(a+b)\)</span>, como 0,95 ou 0,99 e comparamos com <span class="math inline">\(P(\theta\in\Theta_0|\boldsymbol{x})\)</span> para decidir se aceitamos <span class="math inline">\(H_0\)</span>.</p>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.3</strong></span> <strong>Fast food</strong></p>
+<p><span class="theorem-title"><strong>Example 6.1</strong></span> <strong>Fast food</strong></p>
 <p>Uma cadeia de <em>fast food</em> deseja saber se vale a pena trocar seus freezers tradicionais, que mantém a carne entre -<span class="math inline">\(17^o\)</span>C e <span class="math inline">\(-9^oC\)</span> por um com uma nova tecnologia (e mais cara!) que mantém a temperatura consistentemente em <span class="math inline">\(-17^oC\)</span>. Para tomar essa decisão, 32 bifes foram armazenados por 8 meses, sendo 16 bifes colocados no freezer tradicional e 16 no novo. Em seguida, um chefe preparou os 32 bifes de maneira idêntica e 16 clientes foram escolhidos ao acaso para avaliar o sabor dos bifes. Cada cliente recebeu um bife de cada freezer, mas a prova foi realizada às cegas.</p>
 <p>Podemos considerar a variável <span class="math inline">\(Y_i=1\)</span> se o <span class="math inline">\(i\)</span>-ésimo cliente preferiu o bife armazenado no freezer mais caro e <span class="math inline">\(Y_i=0\)</span> em caso contrário. Deste modo, <span class="math inline">\(Y_1,\ldots,Y_{16}|\theta\sim\hbox{Bernoulli}(\theta)\)</span>. Claramente, estamos interessados em testar <span class="math inline">\(H_0:\theta&gt;1/2\)</span>.</p>
 <p>Considere as seguintes prioris:</p>
@@ -367,8 +360,104 @@ a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\
 </tr>
 </tbody>
 </table>
-Considerando as prioris acima, a probabilidade a posteriori da hipótese nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da carne é melhor preservado no freezer com alta tecnologia
+<p>Considerando as prioris acima, a probabilidade a posteriori da hipótese nula é de pelo menos 0,99, o que nos leva a concluir que o sabor da carne é melhor preservado no freezer com alta tecnologia</p>
 </div>
+</section>
+<section id="a-função-de-perda-a-b" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="a-função-de-perda-a-b"><span class="header-section-number">6.1.2</span> A Função de Perda a-b</h3>
+<p>Suponha que <span class="math inline">\(P(\theta\in\Theta_0|\boldsymbol{x})=0,51\)</span>. Segundo a Função de Perda 0-1, deveríamos aceitar <span class="math inline">\(H_0\)</span>, uma vez que</p>
+<p><span class="math display">\[P(\theta\in\Theta_0|\boldsymbol{x})=0,51&gt;0,49=P(\theta\in\Theta_0^c|\boldsymbol{x})\]</span></p>
+<p>Isto ocorre porque a perda associada ao erro no teste de hipóteses é igual para qualquer decisão. Podemos associar valores diferentes, reforçando que um erro é mais sério que o outro.</p>
+<p>Considere que rejeitar <span class="math inline">\(H_0\)</span> quando ela é verdadeira (erro tipo I) gera uma perda <span class="math inline">\(a\)</span>, enquanto que aceitar <span class="math inline">\(H_0\)</span> quando ela é falsa (erro tipo II) gera uma perda <span class="math inline">\(b\)</span>. Para o erro mais grave, associamos um valor maior para a perda. A função de perda respectiva é denominada Perda <span class="math inline">\(a-b\)</span> e é dada por</p>
+<p><span class="math display">\[\mathcal{L}(\theta,\varphi)=\left\{\begin{array}{l}0,\hbox{ se }\varphi(x)=I(\theta\in\Theta_0)\\
+a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\hbox{ e }\theta\notin\Theta_0\end{array}\right.\]</span></p>
+<p>A média a posteriori dessa função de perda é</p>
+<p><span class="math display">\[E_{\theta|\boldsymbol{x}}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta+b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|x)d\theta\]</span></p>
+<ul>
+<li><p>Se <span class="math inline">\(\varphi(x)=1\)</span>, teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=b\int_{\Theta_0^c}I(\varphi(x)=1)f(\theta|\boldsymbol{x})d\theta=bP(\theta\in\Theta_0^c|x)\]</span></p></li>
+<li><p>Se <span class="math inline">\(\varphi(x)=0\)</span> teremos <span class="math display">\[E_{\theta|x}(\mathcal{L}(\theta,\varphi))=a\int_{\Theta_0}I(\varphi(x)=0)f(\theta|x)d\theta=aP(\theta\in\Theta_0|x)\]</span> logo:</p></li>
+<li><p>Se <span class="math inline">\(bP(\theta\in\Theta_0^c|x)&gt;aP(\theta\in\Theta_0|x)\)</span> então a decisão minimiza a perda a posteriori é <span class="math inline">\(\varphi(\boldsymbol{x})=0\)</span>, ou seja, rejeitamos <span class="math inline">\(H_0\)</span>.</p></li>
+<li><p>Se <span class="math inline">\(bP(\theta\in\Theta_0^c|x)&lt;aP(\theta\in\Theta_0|x)\)</span> então a decisão minimiza a perda a posteriori é <span class="math inline">\(\varphi(\boldsymbol{x})=1\)</span>, ou seja, aceitamos <span class="math inline">\(H_0\)</span>.</p></li>
+</ul>
+<p>Na prática, aceitamos <span class="math inline">\(H_0\)</span> se <span class="math display">\[P(\theta\in\Theta_0|\boldsymbol{x})&gt;\frac{b}{b+a}\]</span></p>
+<p>Observe que, diferente do ponto de vista frequentista, estamos interessados em aceitar a hipótese <span class="math inline">\(H_0\)</span>. Deste modo, o erro tipo II é o mais preocupante, o que implica em <span class="math inline">\(b&gt;a\)</span>. Na prática, fixamos um valor para <span class="math inline">\(b/(a+b)\)</span>, como 0,95 ou 0,99 e comparamos com <span class="math inline">\(P(\theta\in\Theta_0|\boldsymbol{x})\)</span> para decidir se aceitamos <span class="math inline">\(H_0\)</span>.</p>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.2</strong></span> <strong>Mudança de opinião</strong></p>
+<p>Durante a eleição presidencial americana de 1980 um estudo foi conduzido para determinar se um debate televisionado foi capaz de mudar as preferências dos telespectadores pelos candidatos. Foram selecionados 75 adultos aleatoriamente e sua preferência entre os dois candidatos foi registrada. Após a conclusão do detabe, foi perguntado para as mesmas 75 pessoas a sua preferência entre os dois candidatos. Os resultados estão sumariados abaixo.</p>
+<p><span class="math display">\[\begin{array}{c|c|c}\hline
+\text{Preferência antes } &amp; \text{Preferência depois} &amp; \text{Resultado} \\  
+\text{do debate} &amp; \text{do debate} &amp; \\ \hline
+\text{Carter} &amp; \text{Carter} &amp; 28 \\
+\text{Carter} &amp; \text{Reagan} &amp; 13 \\
+\text{Reagan} &amp; \text{Reagan} &amp; 27 \\
+\text{Reagan} &amp; \text{Carter} &amp; 7 \\ \hline
+\end{array}\]</span></p>
+<p>Neste exemplo, vamos testar se os dois candidatos foram igualmente capazes de mudar a opinião dos eleitores.</p>
+<p>Sabemos que 20 eleitores mudaram de opinição</p>
+<ul>
+<li><p><span class="math inline">\(\theta_{CC}\)</span>: a probabilidade do indivíduo preferir o candidato Carter antes de depois do debate</p></li>
+<li><p><span class="math inline">\(\theta_{RR}\)</span>: a probabilidade do indivíduo preferir o candidato Reagan antes de depois do debate</p></li>
+<li><p><span class="math inline">\(\theta_{CR}\)</span>: a probabilidade do indivíduo preferir o candidato Carter e depois mudar para o Reagan.</p></li>
+<li><p><span class="math inline">\(\theta_{RC}\)</span>: a probabilidade do indivíduo preferir o candidato Reagan e depois mudar para o Carter.</p></li>
+</ul>
+<p>A função de verossimilhança para <span class="math inline">\(\boldsymbol{\theta}=(\theta_{CC},\theta_{CR},\theta_{RC},\theta_{RR})\)</span> é</p>
+<p><span class="math display">\[L(\boldsymbol{\theta})\propto \theta_{CC}^{28}\theta_{CR}^{13}\theta_{RR}^{27}\theta_{RC}^{7}.\]</span></p>
+<p>Considerando a priori <span class="math inline">\(\boldsymbol{\theta}\sim\hbox{Dirichlet}(1,1,1,1)\)</span>, teremos a posteriori</p>
+<p><span class="math display">\[\boldsymbol{\theta}\sim\hbox{Dirichlet}(29,14,28,8),\]</span></p>
+<p>Estamos interessados nas probabilidades sobre mudança de opinião, ou seja, em <span class="math inline">\(\theta_{CR}\)</span> e <span class="math inline">\(\theta_{RC}\)</span>, cujas posterioris são <span class="math display">\[\begin{align}
+\theta_{CR}&amp;\sim\hbox{Beta}(14,65)\\
+\theta_{RC}&amp;\sim\hbox{Beta}(7,68)
+\end{align}\]</span></p>
+<p>Abaixo, apresentamos as posterioris de <span class="math inline">\(\theta_{CR}\)</span> e <span class="math inline">\(\theta_{RC}\)</span>. Pode-se observar que o candidato Reagan parece ter certa vantagem.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">14</span>,<span class="dv">65</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">15</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">5</span>), <span class="at">xlab=</span> <span class="st">'Probabilidade de mudança'</span>, <span class="at">ylab=</span><span class="st">'Densidade a posteriori'</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x,<span class="dv">7</span>,<span class="dv">68</span>), <span class="at">add =</span> T, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">c</span>(<span class="st">'Mudança em favor do Reagan'</span>, <span class="st">'Mudança em favor do Carter'</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">bty=</span><span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="teste_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vamos testar se o debate do candidato Reagan foi mais eficaz para provocar a mudança de opinião, ou seja, <span class="math inline">\(H:\theta_{RC}&lt;\theta_{CR}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(extraDistr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Carregando pacotes exigidos: extraDistr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: pacote 'extraDistr' foi compilado no R versão 4.4.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">rdirichlet</span>(B, <span class="fu">c</span>(<span class="dv">29</span>,<span class="dv">14</span>,<span class="dv">28</span>,<span class="dv">8</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>thetaCR <span class="ot">&lt;-</span> theta[,<span class="dv">2</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>thetaRC <span class="ot">&lt;-</span> theta[,<span class="dv">4</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(thetaRC <span class="sc">&lt;</span> thetaCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.90505</code></pre>
+</div>
+</div>
+<p>Não há evidência forte o suficiente para aceitar a superioridade do Reagan para a mudança de opinião. Abaixo, mostramos o gráfico estimado para a posteriori de <span class="math inline">\(\theta_{CR},\theta_{RC}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MASS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Carregando pacotes exigidos: MASS</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(<span class="fu">kde2d</span>(thetaCR,thetaRC), <span class="at">xlab=</span><span class="fu">expression</span>(theta[CR]),<span class="at">ylab=</span><span class="fu">expression</span>(theta[RC]), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="teste_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
 <section id="testes-utilizando-modelos" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="testes-utilizando-modelos"><span class="header-section-number">6.2</span> Testes utilizando modelos</h2>
 <p>Considere novamente o problema dos freezers, da seção anterior. Note que a teoria desenvolvida acima não consegue testar <span class="math inline">\(H_0:\theta=1/2\)</span>, uma vez que este evento possui probabilidade nula a priori.</p>
@@ -403,8 +492,19 @@ y_i|\theta&amp;\sim\hbox{Bernoulli}(\theta),\\
 <li>Considere como adequado o modelo com maior probabilidade a posteriori</li>
 </ol>
 </div>
+<div class="alert alert-success">
+<p><strong>Distribuição preditiva para o caso Bernoulli multivariado</strong></p>
+<p>A distribuição <span class="math display">\[f(x)=\int L(\theta)f(\theta)d\theta=E(L(\theta))\]</span> é denominada preditiva. Se <span class="math inline">\(\boldsymbol{X}|\boldsymbol{\theta}\sim\hbox{Bernoulli}(\theta_1,\ldots,\theta_k)\)</span> e considerando o modelo conjugado <span class="math inline">\(\boldsymbol{\theta}\sim\hbox{Dirichlet}(\theta_1,\ldots,\theta_k)\)</span>, teremos que</p>
+<p><span class="math display">\[\begin{align}
+f(x)&amp;=\int_{\mathcal{S}^k}\prod_{j=1}^k\theta_j^{n_j}\frac{\Gamma(\sum_{j=1}^k a_j)}{\prod_{j=1}^k \Gamma(a_j)}\prod_{j=1}^k \theta_j^{a_j-1}d\boldsymbol{\theta}\\
+&amp;=\frac{\Gamma(\sum_{j=1}^k a_j)}{\prod_{j=1}^k \Gamma(a_j)}\int_{\mathcal{S}^k}\prod_{j=1}^k\theta_j^{n_j+a_j-1}d\boldsymbol{\theta}\\
+&amp;=\frac{\Gamma(\sum_{j=1}^k a_j)}{\Gamma(n+\sum_{j=1}^k a_j)}\prod_{j=1}^k\frac{\Gamma(a_j+n_j)}{\Gamma(a_j)}
+\end{align}\]</span></p>
+<p>Além disso, se <span class="math inline">\(a_1=\cdots=a_k=1\)</span>, então</p>
+<p><span class="math display">\[f(x)=\frac{(k-1)!}{(n+k-1)!}\prod_{j=1}^k n_j!\]</span></p>
+</div>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.1</strong></span> <strong>Imagem corporal</strong></p>
+<p><span class="theorem-title"><strong>Example 6.3</strong></span> <strong>Imagem corporal</strong></p>
 <p>Considere novamente os dados sobre imagem corporal em escolares entre 16 e 17 anos, vistos no capítulo anterior e reproduzidos novamente abaixo.</p>
 <p>vamos analisar o recorte dos resultados para alunos entre 16 e 17 anos, diferenciando entre os sexos. As frequências estão sumariadas na tabela abaixo.</p>
 <p><span class="math display">\[\begin{array}{c|ccc|c}\hline
@@ -416,11 +516,11 @@ y_i|\theta&amp;\sim\hbox{Bernoulli}(\theta),\\
 <p>Anteriormente, assumimos que as probabilidades entre os sexos deveriam ser diferentes. Denotamos por <span class="math inline">\(\alpha_S,\alpha_E,\alpha_M\)</span> a probabilidade de um indivíduo do sexo masculino ser classificado como Satisfeito, Insatisfeito por Excesso e Insatisfeito por Magreza. Também denotamos por <span class="math inline">\(\beta_S,\beta_E,\beta_M\)</span> as mesmas probabilidades para o sexo feminino. Por último, Utilizamos a priori Dirichlet(1,1,1) para ambos os sexos. Vamos denotar esse modelo por <span class="math inline">\(M_1\)</span>.</p>
 <p>Seja <span class="math inline">\(x=(24,10,24)\)</span> as informações registradas para o sexo masculino e <span class="math inline">\(y=(14,22,24)\)</span> as informações para o sexo feminino. Então</p>
 <p><span class="math display">\[\begin{align}
-f(x,y|M_1)&amp;=\int f(x|\boldsymbol{\alpha})f(\boldsymbol{\alpha})d\boldsymbol{\alpha}\int f(y|\boldsymbol{\beta})f(\boldsymbol{\beta})d\boldsymbol{\beta}\\&amp;=
-\int_{\mathcal{S}^3} \alpha_S^{24}\alpha_E^{10}\alpha_M^{24}2d\boldsymbol{\alpha}\int_{\mathcal{S}^3} \beta_S^{14}\beta_E^{22}\beta_M^{24}2d\boldsymbol{\beta}\\&amp;=4\frac{\Gamma(25)\Gamma(11)\Gamma(25)}{\Gamma(61)}\frac{\Gamma(15)\Gamma(23)\Gamma(25)}{\Gamma(63)}
+f(x,y|M_1)&amp;=f(x|M_1)f(y|M_1)\\
+&amp;=\left[\frac{2!}{60!}24!10!24!\right]\left[\frac{2!}{62!}14!22!24!\right]
 \end{align}\]</span></p>
 <p>Considere agora o modelo <span class="math inline">\(M_2\)</span>, no qual não há diferença entre os sexos. Nesse caso, <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> são provenientes do mesmo modelo, com probabilidades <span class="math inline">\(\gamma_S,\gamma_E,\gamma_M\)</span>, respectivamente. Utilizando a priori Dirichlet(1,1,1), teremos</p>
-<p><span class="math display">\[\begin{align}f(x,y|M_2)&amp;=\int f(x|\boldsymbol{\gamma})f(y|\boldsymbol{\gamma})f(\boldsymbol{\gamma})d\boldsymbol{\gamma}\\&amp;=\int_{\mathcal{S}^3}\gamma_S^{38}\gamma_E^{32}\gamma_{M}^{48}2d\boldsymbol{\gamma}=2\frac{\Gamma(39)\Gamma(33)\Gamma(49)}{\Gamma(121)}.\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}f(x,y|M_2)&amp;=\frac{2!}{120!}38!32!48!\end{align}\]</span></p>
 <p>Vamos assumir a priori que <span class="math inline">\(P(M_1)=P(M_2)=1/2\)</span>. Então, vamos testar se não há diferença na percepção da imagem corporal entre os sexos:</p>
 <p><span class="math display">\[P(M_2|x,y)=\frac{P(x,y|M_2)}{P(x,y|M_1)+P(x,y|M_2)}\]</span></p>
 <p>Vamos realizar esse cálculo no <code>R</code>:</p>
@@ -428,28 +528,26 @@ f(x,y|M_1)&amp;=\int f(x|\boldsymbol{\alpha})f(\boldsymbol{\alpha})d\boldsymbol{
 <li><span class="math inline">\(P(x,y|M_1)\)</span>:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>lprobA <span class="ot">&lt;-</span> <span class="fu">lgamma</span>(<span class="dv">25</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">11</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">25</span>)<span class="sc">-</span><span class="fu">lgamma</span>(<span class="dv">61</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>lprobB <span class="ot">&lt;-</span> <span class="fu">lgamma</span>(<span class="dv">15</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">23</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">25</span>)<span class="sc">-</span><span class="fu">lgamma</span>(<span class="dv">63</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span><span class="fu">exp</span>(lprobA <span class="sc">+</span>lprobB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>lprobA <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">60</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">24</span>,<span class="dv">10</span>,<span class="dv">24</span>)))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>lprobB <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">62</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">14</span>,<span class="dv">22</span>,<span class="dv">24</span>)))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(lprobA <span class="sc">+</span>lprobB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><span class="math inline">\(P(x,y|M_2)\)</span>:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>lprob <span class="ot">&lt;-</span> <span class="fu">lgamma</span>(<span class="dv">39</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">33</span>)<span class="sc">+</span><span class="fu">lgamma</span>(<span class="dv">49</span>)<span class="sc">-</span><span class="fu">lgamma</span>(<span class="dv">121</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">exp</span>(lprob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>lprob <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">120</span>)<span class="sc">+</span><span class="fu">sum</span>( <span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">38</span>,<span class="dv">32</span>,<span class="dv">48</span>)))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(lprob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><span class="math inline">\(P(M_2|x,y)\)</span></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="sc">/</span> (m1 <span class="sc">+</span> m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="sc">/</span> (m1 <span class="sc">+</span> m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2824985</code></pre>
 </div>
@@ -480,24 +578,126 @@ f(x,y|M_1)&amp;=\int f(x|\boldsymbol{\alpha})f(\boldsymbol{\alpha})d\boldsymbol{
 <p>Note que, se <span class="math inline">\(M_0\)</span> é equivalente à <span class="math inline">\(\theta_0\)</span> e <span class="math inline">\(M_1\)</span> é equivalente à <span class="math inline">\(\theta=\theta_1\)</span>, então o Fator de Bayes se torna a estatística do teste de Neyman-Pearson</p>
 <p><span class="math display">\[B_{01}(x)=\frac{f(x|\theta_0)}{f(x|\theta_1)}.\]</span></p>
 <div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.2</strong></span> <strong>Imagem corporal</strong></p>
+<p><span class="theorem-title"><strong>Example 6.4</strong></span> <strong>Imagem corporal</strong></p>
 <p>Considerando <span class="math inline">\(M_1\)</span> como o modelo no qual as percepções sobre o corpo são provenientes de populações distintas e <span class="math inline">\(M_2\)</span> como o modelo no qual não havia diferença entre os grupos delimitados pelo sexo, obtivemos <span class="math inline">\(P(M_2|x,y)\approx 0,28\)</span>. Utilizando os mesmos comandos em <code>R</code>, teremos que o Fator de Bayes <span class="math inline">\(B_{21}\)</span> é dado por</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">/</span>m1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">/</span>m1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3937254</code></pre>
 </div>
 </div>
 <p>que gera evidência fraca em favor de <span class="math inline">\(M_1\)</span>.</p>
 </div>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.5</strong></span> <strong>Pesquisa Quaest</strong></p>
+<p>Uma pesquisa foi realizada entre os dias 27 e 31 de março de 2025 e ouviu 2.024 eleitores presencialmente. Uma das perguntas foi: O quão frustrado você está com o governo Lula hoje? As opções eram 1) Muito frustrado, (2) Pouco frustrado, (3), Nada frustrado e (4) Não sabe/Não respondeu.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 32%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Categoria</th>
+<th style="text-align: center;">Percentual de respostas</th>
+<th style="text-align: center;">Número de pessoas (N=2024)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Muito frustrado</td>
+<td style="text-align: center;">36%</td>
+<td style="text-align: center;">729</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pouco frustrado</td>
+<td style="text-align: center;">31%</td>
+<td style="text-align: center;">627</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nada frustrado</td>
+<td style="text-align: center;">30%</td>
+<td style="text-align: center;">607</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Não sabe/Não responderam</td>
+<td style="text-align: center;">3%</td>
+<td style="text-align: center;">61</td>
+</tr>
+</tbody>
+</table>
+<p>Observe que esta é uma pergunta tendenciosa, com uma opção neutra e duas negativas.</p>
+<p>Desconsiderando a categoria dos que não responderam, seja <span class="math inline">\(\boldsymbol{\theta}=(\theta_M,\theta_P,\theta_N)\)</span> as probabilidades do indivíduo estar muito, pouco ou nada frustrado, respectivamente.</p>
+<p>Considere inicialmente o modelo, denotado por <span class="math inline">\(M_1\)</span>, no qual os entrevistados respondem esta pergunta ao acaso, ou seja <span class="math inline">\(\theta_M=\theta_P=\theta_N=1/3\)</span>. Então</p>
+<p><span class="math display">\[P(M_1|\text{dados})=\left(\frac{1}{3}\right)^{2024}\]</span></p>
+<p>Em seguida considere o modelo <span class="math inline">\(M_2\)</span>, no qual a verossimilhança é dada por <span class="math display">\[L(\boldsymbol{\theta})\propto \theta_M^{729}\theta_P^{627}\theta_N^{607}.\]</span> Escolhendo a priori <span class="math inline">\(\boldsymbol{\theta}\sim\hbox{Dirichlet}(1,1,1)\)</span>, teremos</p>
+<p><span class="math display">\[P(\text{Dados}|M_2)=\frac{2}{2026!}(729!)(627!)(607!)\]</span></p>
+<p>O fator de Bayes <span class="math inline">\(B_{21}\)</span> é dado por</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logP(dados|M2)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>logPm2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2024</span><span class="sc">*</span><span class="fu">log</span>(<span class="dv">3</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># logP(dados|M1)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>logPm1 <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>( <span class="fu">c</span>(<span class="dv">729</span>,<span class="dv">627</span>,<span class="dv">607</span>)))<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">1965</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fator de Bayes</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>( logPm2 <span class="sc">-</span> logPm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.02445e-29</code></pre>
+</div>
+</div>
+<p>O fator de Bayes é muito pequeno, indicando que a hipótese de que as três probabilidades são iguais não é verdadeira.</p>
+</div>
+</section>
+<section id="exercícios" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">6.4</span> Exercícios</h2>
+<section id="mudança-de-opinião-sobre-vacinação" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="mudança-de-opinião-sobre-vacinação"><span class="header-section-number">6.4.1</span> Mudança de opinião sobre vacinação</h3>
+<p>Uma pesquisadora está investigando a eficácia de uma nova campanha de saúde pública para aumentar a adesão à vacinação contra a gripe em uma determinada comunidade. Ela seleciona uma amostra de 100 indivíduos e registra se cada um tomou a vacina na temporada anterior (Antes da Campanha) e na temporada atual (Depois da Campanha). Os resultados estão apresentado abaixo.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 27%">
+<col style="width: 32%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;">Vacinado Depois</th>
+<th style="text-align: center;">Não Vacinado Depois</th>
+<th style="text-align: center;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Vacinado Antes</strong></td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Não Vacinado Antes</strong></td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">45</td>
+<td style="text-align: center;">100</td>
+</tr>
+</tbody>
+</table>
+<p>Verifique se a campanha teve um efeito na adesão à vacinação.</p>
 
 
 </section>
-</section></section></main></div>
+</section>
 
-
-
- <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -925,12 +1125,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./normal.html" class="pagination-link" aria-label="O modelo normal">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./poisson.html" class="pagination-link" aria-label="O modelo Poisson">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
- <!-- /content -->
+</div> <!-- /content -->
 
 
 

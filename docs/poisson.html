@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; O modelo Poisson revisitado – Introdução à Inferência Bayesiana</title>
+<title>7&nbsp; O modelo Poisson – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
-<link href="./misturas.html" rel="prev">
+<link href="./normal.html" rel="next">
+<link href="./teste.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./poisson.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./poisson.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -213,32 +213,38 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./poisson.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./poisson.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></span></a>
+  <a href="./poisson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -257,9 +263,14 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#verossimilhança-prioris-e-posterioris" id="toc-verossimilhança-prioris-e-posterioris" class="nav-link active" data-scroll-target="#verossimilhança-prioris-e-posterioris"><span class="header-section-number">11.1</span> Verossimilhança, prioris e posterioris</a></li>
-  <li><a href="#o-modelo-poisson-para-taxas" id="toc-o-modelo-poisson-para-taxas" class="nav-link" data-scroll-target="#o-modelo-poisson-para-taxas"><span class="header-section-number">11.2</span> O modelo Poisson para taxas</a></li>
-  <li><a href="#exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas" id="toc-exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas" class="nav-link" data-scroll-target="#exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas"><span class="header-section-number">11.3</span> Exemplo 1: crime de estupro de vulnerável no interior do Amazonas</a></li>
+  <li><a href="#sobre-o-modelo" id="toc-sobre-o-modelo" class="nav-link active" data-scroll-target="#sobre-o-modelo"><span class="header-section-number">7.1</span> Sobre o modelo</a>
+  <ul class="collapse">
+  <li><a href="#tempos-de-chegadas-e-tempos-de-espera" id="toc-tempos-de-chegadas-e-tempos-de-espera" class="nav-link" data-scroll-target="#tempos-de-chegadas-e-tempos-de-espera"><span class="header-section-number">7.1.1</span> Tempos de chegadas e tempos de espera</a></li>
+  <li><a href="#ocorrências-de-diversas-classes" id="toc-ocorrências-de-diversas-classes" class="nav-link" data-scroll-target="#ocorrências-de-diversas-classes"><span class="header-section-number">7.1.2</span> Ocorrências de diversas classes</a></li>
+  <li><a href="#o-processo-de-poisson-espacial" id="toc-o-processo-de-poisson-espacial" class="nav-link" data-scroll-target="#o-processo-de-poisson-espacial"><span class="header-section-number">7.1.3</span> O processo de Poisson Espacial</a></li>
+  </ul></li>
+  <li><a href="#verossimilhança-e-priori-conjugada" id="toc-verossimilhança-e-priori-conjugada" class="nav-link" data-scroll-target="#verossimilhança-e-priori-conjugada"><span class="header-section-number">7.2</span> Verossimilhança e priori conjugada</a></li>
+  <li><a href="#preditiva-a-posteriori" id="toc-preditiva-a-posteriori" class="nav-link" data-scroll-target="#preditiva-a-posteriori"><span class="header-section-number">7.3</span> Preditiva a posteriori</a></li>
   </ul>
 </nav>
     </div>
@@ -268,7 +279,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">O modelo Poisson revisitado</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></h1>
 </div>
 
 
@@ -285,23 +296,159 @@ window.Quarto = {
 </header>
 
 
-<section id="verossimilhança-prioris-e-posterioris" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="verossimilhança-prioris-e-posterioris"><span class="header-section-number">11.1</span> Verossimilhança, prioris e posterioris</h2>
-<p>Dizemos que <span class="math inline">\(X|\theta\)</span> tem distribuição Poisson se sua função de probabilidade é dada por <span class="math display">\[f(x|\theta)=\frac{e^{-\theta}\theta^x}{x!},\]</span> onde <span class="math inline">\(x=0,1,\ldots\)</span> e <span class="math inline">\(\theta&gt;0\)</span>. O parâmetro <span class="math inline">\(\theta\)</span> é denominado taxa. Para este modelo <span class="math display">\[E(X|\theta)=Var(X|\theta)=\theta.\]</span></p>
-<p>Esta é uma das distribuições para contagens mais importantes. A verossimilhança deste modelo, para uma amostra de vaiid, é dada por <span class="math display">\[L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}.\]</span> O modelo Poisson pertence à família exponencial e sua conjugada é <span class="math inline">\(\theta\sim\hbox{Gama}(r,s)\)</span>, onde <span class="math inline">\(r\)</span> e <span class="math inline">\(s\)</span> podem ser interpretados como o total da contagem e o tamanho da amostra .</p>
-<p>Neste caso, a é <span class="math inline">\(\hbox{Gama}(r+\sum_{i=1}^n x_i+r, s+n)\)</span>.</p>
-<p>A média da é <span class="math display">\[E(\theta|\mathbf{x})=\frac{\sum_{i=1}^{n}x_i+r}{n+s}=\frac{n}{n+s}\bar{x}+\frac{s}{n+s}E(\theta),\]</span> onde fica claro que este estimador é uma média ponderada das informações provenientes das duas fontes de informação (sendo <span class="math inline">\(\bar{x}\)</span> a estimativa de máxima verossimilhança e <span class="math inline">\(E(\theta)\)</span> a média ).</p>
-<p>Se <span class="math inline">\(n\gg s\)</span>, então a média a posteriori dará maior peso para a informação dos dados.</p>
-<p>A informação de Fisher é <span class="math display">\[\mathcal{I}(\theta)=\frac{1}{\theta}\]</span></p>
-<p>Assim, a priori de Jeffreys é dada por <span class="math display">\[f(\theta)\propto \theta^{-\frac{1}{2}},\]</span> sendo, portanto, uma priori imprópria. Contudo, <span class="math display">\[f(\theta|\mathbf{x})\propto e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i} \theta^{-\frac{1}{2}},\]</span> logo, a posteriori é própria, tendo distribuição <span class="math inline">\(Gama(\sum_{i=1}^{n}x_i+1/2,n)\)</span>.</p>
-<p>Considere a posteriori <span class="math inline">\(\theta|\mathbf{x}\sim\hbox{Gama}(r_1,s_1)\)</span>. Podemos retirar uma amostra da preditiva do seguinte modo:</p>
-<ol type="1">
-<li>Gere <span class="math inline">\(\theta_j\sim\hbox{Gama}(r_1,s_1)\)</span></li>
-</ol>
-<p>2.Gere <span class="math inline">\(\tilde{\mathbf{x}}\sim\hbox{Poisson}(\theta_j)\)</span>.</p>
+<section id="sobre-o-modelo" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sobre-o-modelo"><span class="header-section-number">7.1</span> Sobre o modelo</h2>
+<p>Seja <span class="math inline">\(N(t)\)</span> o número de ocorrências observadas no intervalo de tempo <span class="math inline">\([0,t]\)</span> (considere que <span class="math inline">\(N(0)=0\)</span>). Note que o número de eventos no intervalo <span class="math inline">\((s,t]\)</span> é dado por <span class="math inline">\(N(t)-N(s)\)</span>.</p>
+<p>Dizemos que <span class="math inline">\(N(t)\)</span> tem incrementos independentes se, para quaisquer intervalos disjuntos <span class="math inline">\((s_0,t_0]\)</span> e <span class="math inline">\((s_1,t_1]\)</span>, as contagens <span class="math inline">\(N(t_0)-N(s_0)\)</span> e <span class="math inline">\(N(t_1)-N(s_1)\)</span> são independentes.</p>
+<p><span class="math inline">\(N(t)\)</span> é denominado Processo de Poisson quando ele possui incrementos indepentes e, para qualquer intervalo <span class="math inline">\((s,t]\)</span>,</p>
+<p><span class="math display">\[P(N(t)-N(s)=x)=\frac{e^{-\lambda(t-s)[\lambda(t-s)]^x}}{x!},\]</span> onde <span class="math inline">\(x=0,1,\ldots\)</span> e <span class="math inline">\(\lambda&gt;0\)</span>. Isto implica que <span class="math display">\[E(N(t))=\lambda t,\]</span> ou seja, o número esperado de ocorrências até o tempo <span class="math inline">\(t\)</span> é diretamente proporcional à <span class="math inline">\(t\)</span> e <span class="math inline">\(\lambda\)</span> representa a taxa de crescimento. Para este processo, é verdade que <span class="math display">\[\lim_{\delta\rightarrow 0}P(N(t+\delta)-N(t)&gt;1)=0,\]</span> ou seja, não é possível observar duas ou mais ocorrências simultaneamente.</p>
+<p>Em geral, os experimentos são desenhados para registrar contagens em intervalos regulares e disjuntos de tempo, como semanas ou anos. Considere que tais intervalos são <span class="math inline">\([0,s_1],(s_1,s_2],\ldots,(s_{n-1},t]\)</span> e seja <span class="math inline">\(c\)</span> o comprimento destes intervalos. Em geral, os dados são apresentados como contagens dentro destes intevalos, gerando as seguintes variáveis:</p>
+<ul>
+<li><span class="math inline">\(X_1=N(s_1)\sim\hbox{Poisson}(\lambda c)\)</span></li>
+<li><span class="math inline">\(X_2=N(s_2)-N(s_1)\sim\hbox{Poisson}(\lambda c)\)</span></li>
+<li><span class="math inline">\(\cdots\)</span></li>
+<li><span class="math inline">\(X_n=N(t)-N(s_{n-1})\sim\hbox{Poisson}(\lambda c)\)</span> ou seja, <span class="math inline">\(X_1,\ldots,X_n\)</span> são uma amostra aleatória do modelo Poisson(<span class="math inline">\(\lambda c\)</span>). Na prática, <span class="math inline">\(c=1\)</span> por ser a unidade de medida de tempo associada ao experimento (uma semana, um ano, etc).</li>
+</ul>
+<section id="tempos-de-chegadas-e-tempos-de-espera" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="tempos-de-chegadas-e-tempos-de-espera"><span class="header-section-number">7.1.1</span> Tempos de chegadas e tempos de espera</h3>
+<p>Para um processo de Poisson <span class="math inline">\(N(t)\)</span>, definimos o tempo de chegadas como o tempo entre duas observações consecutivas. Denotaremos o tempo de chegadas entre a <span class="math inline">\(i\)</span>-ésima e a <span class="math inline">\(i-1\)</span> ésima ocorrência por <span class="math inline">\(T_i\)</span>.</p>
+<p>É possível mostrar que <span class="math inline">\(T_i\)</span> é independente de <span class="math inline">\(T_j\)</span>, para <span class="math inline">\(i\neq j\)</span> e que <span class="math inline">\(T_i\sim\hbox{Exponencial}(\lambda)\)</span>. Por isso, para uma amostra aleatória de um modelo Exponencial(<span class="math inline">\(\lambda\)</span>), o parâmetro <span class="math inline">\(\lambda\)</span> é demoninado taxa.</p>
+<p>Definimos por tempo de espera da ocorrência <span class="math inline">\(n\)</span> como o tempo transcorrido desde o início do processo até a ocorrência do <span class="math inline">\(n\)</span>-ésimo evento. Este tempo de espera é denotado por <span class="math inline">\(S_n\)</span>. Exsitem dois resultados importantes relacionados ao tempo de espera:</p>
+<ul>
+<li><p><span class="math inline">\(S_n=T_1+\cdots+T_n\)</span> tem distribuição Gama(<span class="math inline">\(n,\lambda\)</span>)</p></li>
+<li><p>Dado que <span class="math inline">\(N(t)=n\)</span>, os tempos de espera dos eventos estão uniformemente distribuídos dentro do intervalo <span class="math inline">\((0,t)\)</span>.</p></li>
+</ul>
 </section>
-<section id="o-modelo-poisson-para-taxas" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="o-modelo-poisson-para-taxas"><span class="header-section-number">11.2</span> O modelo Poisson para taxas</h2>
+<section id="ocorrências-de-diversas-classes" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="ocorrências-de-diversas-classes"><span class="header-section-number">7.1.2</span> Ocorrências de diversas classes</h3>
+<p>Suponha que as ocorrências observadas podem ser classificadas em <span class="math inline">\(k\)</span> categorias. Suponha que qualquer ocorrência tem probabilidade <span class="math inline">\(p_j\)</span> de pertencer a categoria <span class="math inline">\(j\)</span>. Então</p>
+<ul>
+<li><p>O número de ocorrências da classe <span class="math inline">\(j\)</span> é um processo de Poisson com taxa <span class="math inline">\(\lambda p_j\)</span></p></li>
+<li><p>O número de ocorrências da classe <span class="math inline">\(j\)</span> é independente do número de ocorrências da classe <span class="math inline">\(i\)</span>, com <span class="math inline">\(i\neq j\)</span></p></li>
+</ul>
+</section>
+<section id="o-processo-de-poisson-espacial" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="o-processo-de-poisson-espacial"><span class="header-section-number">7.1.3</span> O processo de Poisson Espacial</h3>
+<p>Seja <span class="math inline">\(N(A)\)</span> o número de ocorrências observadas em uma região de área <span class="math inline">\(A\)</span>. <span class="math inline">\(N(A)\)</span> é denominado Processo de Poisson Espacial quando <span class="math inline">\(N(A)\sim\hbox{Poisson}(\lambda A)\)</span> e, para duas regiões distintas de áreas <span class="math inline">\(B\)</span> e <span class="math inline">\(C\)</span>, <span class="math inline">\(N(B)\)</span> e <span class="math inline">\(N(C)\)</span> são independentes.</p>
+<p>Note que, para um Processo de Poisson Espaical, dado <span class="math inline">\(N(A)=n\)</span> as <span class="math inline">\(n\)</span> ocorrências estão uniformemente distribuídas dentro da região <span class="math inline">\(A\)</span></p>
+</section>
+</section>
+<section id="verossimilhança-e-priori-conjugada" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="verossimilhança-e-priori-conjugada"><span class="header-section-number">7.2</span> Verossimilhança e priori conjugada</h2>
+<p>Seja <span class="math inline">\(X_1,\ldots,X_n\)</span> uma amostra aleatória do modelo Poisson<span class="math inline">\((\lambda)\)</span>. A verossimilhança deste modelo é dada por</p>
+<p><span class="math display">\[L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}\propto \theta^{\sum_{i=1}^n x_i}e^{-n\theta}.\]</span> O modelo Poisson pertence à família exponencial e sua priori conjugada é <span class="math inline">\(\theta\sim\hbox{Gama}(r,s)\)</span> e a posteriori é <span class="math inline">\(\hbox{Gama}(r+\sum_{i=1}^n x_i+r, s+n)\)</span>, conforme já discutido na Introdução. Os hiperparâmetros <span class="math inline">\(r\)</span> e <span class="math inline">\(s\)</span> podem ser interpretados como o total da contagem e o tamanho da amostra a priori.</p>
+<p>A média da posteriori é <span class="math display">\[E(\theta|\mathbf{x})=\frac{\sum_{i=1}^{n}x_i+r}{n+s}=\frac{n}{n+s}\bar{x}+\frac{s}{n+s}E(\theta),\]</span> onde fica claro que este estimador é uma média ponderada das informações provenientes das duas fontes de informação (sendo <span class="math inline">\(\bar{x}\)</span> a estimativa de máxima verossimilhança e <span class="math inline">\(E(\theta)\)</span> a média a priori).</p>
+<p>Se <span class="math inline">\(n\gg s\)</span>, então a média a posteriori dará maior peso para a informação dos dados.</p>
+</section>
+<section id="preditiva-a-posteriori" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="preditiva-a-posteriori"><span class="header-section-number">7.3</span> Preditiva a posteriori</h2>
+<p>A inferência bayesiana é baseada em duas fontes de informação: verossimilhança e priori. Já discutimos que, na maioria dos casos, estamos interessados em deixar a verossimilhança ter mais peso na posteriori. Agora, vamos discutir como verificar se a verossimilhança é adequada ao problema.</p>
+<p>Seja <span class="math inline">\(\boldsymbol{x}=\{x_1,\ldots,x_n\}\)</span> a amostra observada e <span class="math inline">\(f(\theta|\boldsymbol{x})\)</span> a posteriori obtida. Supondo que a informação sobre os parâmetros foi capturada de forma adequada, é de se esperar que uma nova observação <span class="math inline">\(x^*\)</span> se comporte de modo semelhante a amostra observada. Podemos então obter a seguinte distribuição, denominada preditiva a posteriori:</p>
+<p><span class="math display">\[\begin{align}f(x^*|\boldsymbol{x})=\int f(x^*|\theta)f(\theta|\boldsymbol{x})d\theta.\end{align}\]</span></p>
+<p>Podemos comparar as características preditiva a posteriori com estatísticas livres de modelos como box-plots, histogramas, etc.</p>
+<div class="alert alert-success">
+<p><strong>Preditiva a posteriori para o modelo Poisson</strong></p>
+<p>Para o modelo Poisson(<span class="math inline">\(\lambda\)</span>) e para a posteriori Gama<span class="math inline">\((r_1,s_1)\)</span>, onde <span class="math inline">\(r_1=r+\sum_{i=1}^n x_i\)</span> e <span class="math inline">\(s_1=n+s\)</span>, <span class="math display">\[\begin{align}
+f(x^*|\boldsymbol{x})&amp;=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})d\lambda\\
+&amp;=\int_0^\infty\frac{e^{-\lambda}\lambda^{x^*}}{x^*!}\frac{s_1^{r_1}}{\Gamma(r_1)}\lambda^{r_1-1}e^{-s_1\lambda}d\lambda\\
+&amp;=\frac{s_1^{r_1}}{\Gamma(r_1)x^*!}\int_0^\infty \lambda^{r_1+x^*-1}e^{-\lambda(s_1+1)}d\lambda\\
+&amp;=\frac{\Gamma(r_1+x^*)}{\Gamma(r_1)x^*!}\left(\frac{s_1}{1+s_1}\right)^{r_1}\left(1 - \frac{s_1}{s_1+1}\right)^{x^*}
+\end{align}\]</span> ou seja, a preditiva a posteriori tem distribuição</p>
+<p><span class="math display">\[\hbox{Binomial Negativa}\left(r_1,\frac{s_1}{1+s_1}\right).\]</span></p>
+</div>
+<div id="exm-" class="theorem example">
+<p><span class="theorem-title"><strong>Example 7.1</strong></span> <strong>A Blitz e os Bombardeios de Londres</strong></p>
+<p>Durante a Segunda Guerra Mundial, Londres sofreu intensos bombardeios aéreos pela Alemanha Nazista (conhecido como “Blitz”). Estatísticos analisaram a distribuição das quedas de 537 bombas pela cidade para procurar padrões.</p>
+<p>Uma questão chave era se as bombas caíam aleatoriamente ou se havia algum padrão de alvo. Se as quedas de bombas fossem aleatórias, elas deveriam seguir uma distribuição de Poisson. Londres foi dividida em uma grade de com 576 setores de áreas iguais. O número de quedas de bombas em cada setor foi registrado.</p>
+<table class="caption-top table">
+<caption>Quedas de bombas em Londres durante o Blitz.</caption>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Número de bombas</th>
+<th style="text-align: center;">Número de setores com x bombas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: center;">229</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: center;">211</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: center;">93</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: center;">35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5 ou mais</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p>Supondo que os dados seguem uma distribuição Poisson(<span class="math inline">\(\lambda\)</span>), teremos <span class="math display">\[L(\lambda)\propto e^{-576\lambda}\lambda^{537}.\]</span> Considerando a priori <span class="math inline">\(\lambda\sim\hbox{Gama}(1,1)\)</span>, teremos a posteriori Gama<span class="math inline">\((538,577)\)</span>. A preditiva a posteriori para problema é</p>
+<p><span class="math display">\[\hbox{Binomial Negativa}(538,.9982).\]</span></p>
+<p>Observe que podemos estimar a frequência relativa dos eventos da tabela. Podemos comparar esses resultados com o que seria esperado da preditiva. O resultado é dado a seguir.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">=</span> <span class="dv">538</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="dv">577</span><span class="sc">/</span><span class="dv">578</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">Número de bombas no setor</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="st">'&gt;4'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">Frequência relativa</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">229</span>,<span class="dv">211</span>,<span class="dv">93</span>,<span class="dv">35</span>,<span class="dv">7</span>,<span class="dv">1</span>)<span class="sc">/</span><span class="dv">576</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">Preditiva a posteriori</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">dnbinom</span>( <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">size=</span>r1, <span class="at">prob =</span> p), <span class="dv">1</span><span class="sc">-</span><span class="fu">pnbinom</span>(<span class="dv">4</span>,<span class="at">size=</span>r1,<span class="at">prob=</span>p))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">`</span><span class="at">Número de bombas no setor</span><span class="st">`</span>, <span class="st">`</span><span class="at">Frequência relativa</span><span class="st">`</span>,<span class="st">`</span><span class="at">Preditiva a posteriori</span><span class="st">`</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Número.de.bombas.no.setor Frequência.relativa Preditiva.a.posteriori
+1                         0         0.397569444            0.393922155
+2                         1         0.366319444            0.366661107
+3                         2         0.161458333            0.170960499
+4                         3         0.060763889            0.053240294
+5                         4         0.012152778            0.012458045
+6                        &gt;4         0.001736111            0.002757901</code></pre>
+</div>
+</div>
+<p>A proximidade entre as frequências relativas e os resultados obtidos através da preditiva a posteriori dão evidências de que o modelo Poisson é adequado, ou ainda, que as bombas foram lançadas ao acaso.</p>
+</div>
+<div id="exm">
+<p><strong>Número de suicídios revisitado</strong></p>
+<p>Na introdução, apresentamos o número de suicídios no Amazonas para os anos 2021, 2022 e 2023. Os dados podem ser vistos abaixo.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>no_suicidios <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">26</span>, <span class="dv">30</span>, <span class="dv">28</span>, <span class="dv">25</span>, <span class="dv">23</span>,<span class="dv">23</span>, <span class="dv">21</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">31</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">21</span>, <span class="dv">29</span>, <span class="dv">27</span>, <span class="dv">26</span>, <span class="dv">23</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>, <span class="dv">27</span>, <span class="dv">24</span>, <span class="dv">21</span>, <span class="dv">18</span>, <span class="dv">22</span>, <span class="dv">34</span>, <span class="dv">27</span>, <span class="dv">26</span>, <span class="dv">26</span>, <span class="dv">34</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">25</span>, <span class="dv">32</span>, <span class="dv">36</span>, <span class="dv">28</span>, <span class="dv">22</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Analisamos estes dados e obtivemos a posteriori Gama(953.8, 37.1) para a taxa. A distribuição da preditiva a posteriori é Binomial Negativa<span class="math inline">\((953.8\;,\;0,9737)\)</span>.</p>
+<p>A figura abaixo apresenta a função de distribuição empírica dos dados comparada com a função de distribuição da preditiva a posteriori. A aproximação é razoável o suficiente para aceitarmos o modelo proposto como válido.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( <span class="fu">ecdf</span>(no_suicidios), <span class="at">main =</span> <span class="st">''</span>, <span class="at">ylab=</span><span class="st">'Função de distribuição'</span>, <span class="at">xlab=</span><span class="fu">expression</span>(x))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">pnbinom</span>(x,<span class="fu">sum</span>(no_suicidios)<span class="sc">+</span><span class="dv">1</span>,<span class="dv">37</span><span class="sc">/</span><span class="dv">38</span>), <span class="at">add=</span>T, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">'tomato'</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'bottomright'</span>, <span class="fu">c</span>(<span class="st">'Empírica'</span>,<span class="st">'Preditia a posteriori'</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="st">'tomato'</span>), <span class="at">bty=</span><span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="poisson_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="o-modelo-poisson-para-taxas" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="o-modelo-poisson-para-taxas"><span class="header-section-number">7.4</span> O modelo Poisson para taxas</h2>
 <p>A taxa é o cociente entre o número de casos de um evento em determinado intervalo de tempo e a população em risco, definida em um espaço e no mesmo intervalo de tempo (``pessoas-tempo’’). Note que, pela definição, a taxa é uma estatística.</p>
 <p>Seja <span class="math inline">\(n\)</span> o tamanho da população no espaço/tempo e seja <span class="math inline">\(y\)</span> o número de casos do evento de interesse. Então,</p>
 <p><span class="math display">\[\hbox{taxa} = \frac{y}{n}\]</span></p>
@@ -317,8 +464,8 @@ window.Quarto = {
 <p><span class="math display">\[\theta|\mathbf{y}\sim\hbox{Gama}\left(\sum_{i=1}^{m}y_i+a,N+b\right).\]</span></p>
 <p>A prioris impróprias <span class="math inline">\(\pi(\theta)\varpropto \theta^{-1}\)</span> e <span class="math inline">\(\pi(\theta)\varpropto \theta^{-1/2}\)</span> geram, respectivamente, as posterioris <span class="math inline">\(\hbox{Gama}(\sum_{i=1}^m y_i,N)\)</span> e <span class="math inline">\(\hbox{Gama}(\sum_{i=1}^m y_i+1/2,N)\)</span>.</p>
 </section>
-<section id="exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas"><span class="header-section-number">11.3</span> Exemplo 1: crime de estupro de vulnerável no interior do Amazonas</h2>
+<section id="exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas"><span class="header-section-number">7.5</span> Exemplo 1: crime de estupro de vulnerável no interior do Amazonas</h2>
 <p>Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero no Amazonas e compreendem os anos entre 2010 e 2012.</p>
 <table class="caption-top table">
 <thead>
@@ -403,91 +550,91 @@ window.Quarto = {
 </table>
 <p>Considerando a priori <span class="math inline">\(\pi(\theta)\varpropto \theta^{-1/2}\)</span> teremos:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># banco de dados</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>casos <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">13</span>, <span class="dv">9</span>, <span class="dv">20</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">1</span> )   </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">639</span>, <span class="dv">905</span>, <span class="dv">1899</span>, <span class="dv">2036</span>, <span class="dv">1060</span>, <span class="dv">1438</span>, <span class="dv">1143</span>, <span class="dv">3421</span>, <span class="dv">1168</span>, <span class="dv">6700</span>, <span class="dv">1608</span>, <span class="dv">2033</span>, <span class="dv">3095</span>, <span class="dv">1186</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> pop<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">5</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>municipios <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">'Amatura'</span>, <span class="st">'Atl.Norte'</span>, <span class="st">'Barr'</span>, <span class="st">'BC'</span>,<span class="st">'BV Ramos'</span>, <span class="st">'Fonte B'</span>, <span class="st">'Jutai'</span>, <span class="st">'Maues'</span>, <span class="st">'Nhamunda'</span>, <span class="st">'Parintins'</span>, <span class="st">'StoIca'</span>, <span class="st">'SP Olivenca'</span>, <span class="st">'Tbt'</span>,<span class="st">'Tonantins'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># banco de dados</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>casos <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">13</span>, <span class="dv">9</span>, <span class="dv">20</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">1</span> )   </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">639</span>, <span class="dv">905</span>, <span class="dv">1899</span>, <span class="dv">2036</span>, <span class="dv">1060</span>, <span class="dv">1438</span>, <span class="dv">1143</span>, <span class="dv">3421</span>, <span class="dv">1168</span>, <span class="dv">6700</span>, <span class="dv">1608</span>, <span class="dv">2033</span>, <span class="dv">3095</span>, <span class="dv">1186</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> pop<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">5</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>municipios <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">'Amatura'</span>, <span class="st">'Atl.Norte'</span>, <span class="st">'Barr'</span>, <span class="st">'BC'</span>,<span class="st">'BV Ramos'</span>, <span class="st">'Fonte B'</span>, <span class="st">'Jutai'</span>, <span class="st">'Maues'</span>, <span class="st">'Nhamunda'</span>, <span class="st">'Parintins'</span>, <span class="st">'StoIca'</span>, <span class="st">'SP Olivenca'</span>, <span class="st">'Tbt'</span>,<span class="st">'Tonantins'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># posteriori</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>a_post <span class="ot">&lt;-</span> <span class="fu">sum</span>(casos) <span class="sc">+</span> .<span class="dv">5</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>b_post <span class="ot">&lt;-</span> <span class="fu">sum</span>(pop)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x,a_post,b_post),<span class="dv">230</span>,<span class="dv">450</span> ,<span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(theta), <span class="at">ylab =</span> <span class="st">'densidade a posteriori'</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># posteriori</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>a_post <span class="ot">&lt;-</span> <span class="fu">sum</span>(casos) <span class="sc">+</span> .<span class="dv">5</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>b_post <span class="ot">&lt;-</span> <span class="fu">sum</span>(pop)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x,a_post,b_post),<span class="dv">230</span>,<span class="dv">450</span> ,<span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(theta), <span class="at">ylab =</span> <span class="st">'densidade a posteriori'</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="poisson_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="poisson_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Abaixo, simulamos 50.000 amostras da preditiva a posteriori</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span> <span class="co"># número de simulações da preditiva a posteriori</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(casos)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pred_mun <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>){</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  theta <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="fu">sum</span>(casos) <span class="sc">+</span> .<span class="dv">5</span>, <span class="fu">sum</span>(pop))</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  pred_mun <span class="ot">&lt;-</span> <span class="fu">rbind</span>(pred_mun, <span class="fu">rpois</span>(m , theta <span class="sc">*</span> pop))</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>pred_mun <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(pred_mun)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pred_mun) <span class="ot">&lt;-</span> municipios</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pred_mun)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>,casos, <span class="at">pch=</span><span class="dv">16</span>,<span class="at">cex =</span> <span class="fl">1.2</span>, <span class="at">col =</span><span class="st">'tomato'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span> <span class="co"># número de simulações da preditiva a posteriori</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(casos)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pred_mun <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>){</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  theta <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="fu">sum</span>(casos) <span class="sc">+</span> .<span class="dv">5</span>, <span class="fu">sum</span>(pop))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  pred_mun <span class="ot">&lt;-</span> <span class="fu">rbind</span>(pred_mun, <span class="fu">rpois</span>(m , theta <span class="sc">*</span> pop))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>pred_mun <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(pred_mun)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pred_mun) <span class="ot">&lt;-</span> municipios</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pred_mun)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>,casos, <span class="at">pch=</span><span class="dv">16</span>,<span class="at">cex =</span> <span class="fl">1.2</span>, <span class="at">col =</span><span class="st">'tomato'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="poisson_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="poisson_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">&lt;-</span> <span class="fu">par</span>()</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span>m,<span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mat, <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">16</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(mat, <span class="at">heights =</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">14</span>,.<span class="dv">5</span>,.<span class="dv">5</span>))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m){</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  freq <span class="ot">&lt;-</span> <span class="fu">prop.table</span>( <span class="fu">table</span>(pred_mun[,i]) )</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">cex =</span> .<span class="dv">8</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">3</span>))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="fu">as.numeric</span>(<span class="fu">names</span>(freq)), freq, <span class="at">type=</span><span class="st">'h'</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">title</span>(<span class="at">ylab=</span>municipios[i])</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(casos[i],<span class="dv">0</span>,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'tomato'</span>,<span class="at">cex=</span> <span class="fl">1.2</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">1</span>))</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>,.<span class="dv">05</span>,<span class="dv">46</span>,.<span class="dv">05</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a> <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">45</span>,<span class="dv">5</span>)){</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">segments</span>(j,.<span class="dv">05</span>,j,.<span class="dv">03</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(j,.<span class="dv">01</span>,j)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">1</span>))</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>,.<span class="dv">05</span>,<span class="dv">46</span>,.<span class="dv">05</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">45</span>,<span class="dv">5</span>)){</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">segments</span>(j,.<span class="dv">05</span>,j,.<span class="dv">03</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(j,.<span class="dv">01</span>,j)</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">&lt;-</span> <span class="fu">par</span>()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span>m,<span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mat, <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">16</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(mat, <span class="at">heights =</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">14</span>,.<span class="dv">5</span>,.<span class="dv">5</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m){</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  freq <span class="ot">&lt;-</span> <span class="fu">prop.table</span>( <span class="fu">table</span>(pred_mun[,i]) )</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">cex =</span> .<span class="dv">8</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">3</span>))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="fu">as.numeric</span>(<span class="fu">names</span>(freq)), freq, <span class="at">type=</span><span class="st">'h'</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">title</span>(<span class="at">ylab=</span>municipios[i])</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(casos[i],<span class="dv">0</span>,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'tomato'</span>,<span class="at">cex=</span> <span class="fl">1.2</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">1</span>))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>,.<span class="dv">05</span>,<span class="dv">46</span>,.<span class="dv">05</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a> <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">45</span>,<span class="dv">5</span>)){</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">segments</span>(j,.<span class="dv">05</span>,j,.<span class="dv">03</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(j,.<span class="dv">01</span>,j)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">1</span>))</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>,.<span class="dv">05</span>,<span class="dv">46</span>,.<span class="dv">05</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">45</span>,<span class="dv">5</span>)){</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">segments</span>(j,.<span class="dv">05</span>,j,.<span class="dv">03</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(j,.<span class="dv">01</span>,j)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="poisson_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="poisson_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in par(oo): parâmetro gráfico "cin" não pode ser especificado</code></pre>
 </div>
@@ -508,33 +655,35 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m){</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>p[i] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">min</span>(<span class="fu">mean</span>(pred_mun[,i] <span class="sc">&gt;</span> casos[i]),</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pred_mun[,i] <span class="sc">&lt;</span> casos[i]))</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(municipios,p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m){</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>p[i] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">min</span>(<span class="fu">mean</span>(pred_mun[,i] <span class="sc">&gt;</span> casos[i]),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pred_mun[,i] <span class="sc">&lt;</span> casos[i]))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(municipios,p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    municipios      p
-1      Amatura 0.3364
-2    Atl.Norte 0.0720
-3         Barr 0.0328
+1      Amatura 0.3148
+2    Atl.Norte 0.0688
+3         Barr 0.0292
 4           BC 0.0228
-5     BV Ramos 0.1336
+5     BV Ramos 0.1348
 6      Fonte B 0.0000
-7        Jutai 0.0516
-8        Maues 0.5048
-9     Nhamunda 0.0148
-10   Parintins 0.6524
-11      StoIca 0.3448
-12 SP Olivenca 0.4288
-13         Tbt 0.4296
-14   Tonantins 0.0472</code></pre>
+7        Jutai 0.0464
+8        Maues 0.5084
+9     Nhamunda 0.0076
+10   Parintins 0.6656
+11      StoIca 0.3452
+12 SP Olivenca 0.4232
+13         Tbt 0.4392
+14   Tonantins 0.0388</code></pre>
 </div>
 </div>
 
 
+</section>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -960,13 +1109,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./misturas.html" class="pagination-link" aria-label="Misturas de distribuições">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span>
+      <a href="./teste.html" class="pagination-link" aria-label="Testes de hipóteses">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link" aria-label="References">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./normal.html" class="pagination-link" aria-label="O modelo normal">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
