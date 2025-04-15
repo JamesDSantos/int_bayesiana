@@ -449,29 +449,153 @@ f(x^*|\boldsymbol{x})&amp;=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})
 </div>
 <section id="o-modelo-poisson-para-taxas" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="o-modelo-poisson-para-taxas"><span class="header-section-number">7.4</span> O modelo Poisson para taxas</h2>
-<p>A taxa é o cociente entre o número de casos de um evento em determinado intervalo de tempo e a população em risco, definida em um espaço e no mesmo intervalo de tempo (``pessoas-tempo’’). Note que, pela definição, a taxa é uma estatística.</p>
-<p>Seja <span class="math inline">\(n\)</span> o tamanho da população no espaço/tempo e seja <span class="math inline">\(y\)</span> o número de casos do evento de interesse. Então,</p>
-<p><span class="math display">\[\hbox{taxa} = \frac{y}{n}\]</span></p>
-<p>Contudo, como <span class="math inline">\(n\)</span> tende a ser muito maior que <span class="math inline">\(y\)</span>, é comum reportar a taxa vezes <span class="math inline">\(10^k\)</span>, para algum <span class="math inline">\(k&gt;0\)</span>.</p>
+<p>A taxa é o cociente entre o número de casos de um evento em determinado intervalo de tempo e a população em risco, definida em um espaço e no mesmo intervalo de tempo “pessoas-tempo”. Note que, pela definição, a taxa é uma estatística.</p>
+<p>Seja <span class="math inline">\(N\)</span> o tamanho da população no espaço/tempo e seja <span class="math inline">\(y\)</span> o número de casos do evento de interesse. Então,</p>
+<p><span class="math display">\[\hbox{taxa} = \frac{y}{N}\]</span></p>
+<p>Contudo, como <span class="math inline">\(N\)</span> tende a ser muito maior que <span class="math inline">\(y\)</span>, é comum reportar a taxa vezes <span class="math inline">\(10^k\)</span>, para algum <span class="math inline">\(k&gt;0\)</span>.</p>
 <div class="alert alert-success">
-<p><strong>Exemplo</strong>: Segundo o Anuário de Segurança Pública 2022, em 2021 houveram 68.885 casos de estupro. Considerando uma população de 212,7 milhões de habitantes, a taxa de estupro para aquele ano foi de <span class="math display">\[\frac{68.885}{212.700.000}=3,23\times 10^{-4}\]</span> casos por pessoa-ano. Como <span class="math inline">\(n\)</span> tende a ser maior que <span class="math inline">\(y\)</span>, é comum considerar.</p>
+<p><strong>Exemplo</strong>: Segundo o Anuário de Segurança Pública 2022, em 2021 houveram 68.885 casos de estupro. Considerando uma população de 212,7 milhões de habitantes, a taxa de estupro para aquele ano foi de <span class="math display">\[\frac{68.885}{212.700.000}=3,23\times 10^{-4}\]</span> casos por pessoa-ano.</p>
 <p>Multiplicando a taxa por <span class="math inline">\(10^5\)</span>, temos uma taxa de 32,3 casos para cada 100.000 habitantes.</p>
 </div>
-<p>Agora,considere que <span class="math inline">\(\theta\)</span> é o parâmetro taxa. Então,</p>
-<p><span class="math display">\[\hat{\theta}=\frac{y}{n}\]</span> é a estimativa para <span class="math inline">\(\theta\)</span>. Como <span class="math inline">\(y\)</span> é uma contagem, é razoável supor que <span class="math display">\[\theta =\frac{1}{n}E(Y|\theta).\]</span> e um modelo possível seria <span class="math inline">\(y|\theta\sim\hbox{Poisson}(\theta n)\)</span>.</p>
-<p>Agora, considere que uma população está particionada em <span class="math inline">\(m\)</span> localidades. Para um dado intervalo de tempo, sejam <span class="math inline">\(n_i\)</span> e <span class="math inline">\(y_i\)</span> a população da localidade <span class="math inline">\(i\)</span> e seu respectivo número de casos observados. Suponha ainda que a taxa <span class="math inline">\(\theta\)</span> é comum para a pooulação e que <span class="math inline">\(y_i\)</span> é condicionalmente independente de <span class="math inline">\(y_j\)</span> dado <span class="math inline">\(\theta\)</span>. Assumindo a distribuição Poisson, teremos</p>
-<p><span class="math display">\[L(\theta)=\prod_{i=1}^m\frac{e^{-\theta n_i}(\theta n_i)^{y_i}}{y_i!}\varpropto \theta^{\sum_{i=1}^m y_i}e^{-\theta \sum_{i=1}^m n_i}=\theta^{\sum_{i=1}^n y_i}e^{-\theta N},\]</span> onde <span class="math inline">\(N=\sum_{i=1}^m n_i\)</span> é o tamanho da população. Como a verossimilhança pertence à família exponencial, temos que o modelo Gama<span class="math inline">\((a,b)\)</span> é conjugado gerando a posteriori</p>
-<p><span class="math display">\[\theta|\mathbf{y}\sim\hbox{Gama}\left(\sum_{i=1}^{m}y_i+a,N+b\right).\]</span></p>
-<p>A prioris impróprias <span class="math inline">\(\pi(\theta)\varpropto \theta^{-1}\)</span> e <span class="math inline">\(\pi(\theta)\varpropto \theta^{-1/2}\)</span> geram, respectivamente, as posterioris <span class="math inline">\(\hbox{Gama}(\sum_{i=1}^m y_i,N)\)</span> e <span class="math inline">\(\hbox{Gama}(\sum_{i=1}^m y_i+1/2,N)\)</span>.</p>
-</section>
-<section id="exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="exemplo-1-crime-de-estupro-de-vulnerável-no-interior-do-amazonas"><span class="header-section-number">7.5</span> Exemplo 1: crime de estupro de vulnerável no interior do Amazonas</h2>
-<p>Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero no Amazonas e compreendem os anos entre 2010 e 2012.</p>
+<p>Agora,considere que <span class="math inline">\(\lambda\)</span> é o parâmetro taxa (ou seja, caso por <span class="math inline">\(10^k\)</span> pessoas). Então,</p>
+<p><span class="math display">\[\hat{\lambda}=\frac{y}{N}\]</span> é a estimativa para <span class="math inline">\(\lambda\)</span>. Como <span class="math inline">\(y\)</span> é uma contagem, é razoável supor que <span class="math display">\[\lambda =\frac{1}{N}E(Y|\lambda),\]</span> e um modelo com essa parametrização seria <span class="math inline">\(y|\lambda\sim\hbox{Poisson}(\lambda n)\)</span>.</p>
+<p>Agora, considere que a população está particionada em <span class="math inline">\(m\)</span> localidades. Para um dado intervalo de tempo, sejam <span class="math inline">\(N_i\)</span> e <span class="math inline">\(y_i\)</span> a população da localidade <span class="math inline">\(i\)</span> e seu respectivo número de casos observados. Suponha ainda que a taxa <span class="math inline">\(\lambda\)</span> é comum para a população e que <span class="math inline">\(y_i\)</span> e <span class="math inline">\(y_j\)</span> são independentes dado <span class="math inline">\(\lambda\)</span>. Assumindo a distribuição Poisson, teremos</p>
+<p><span class="math display">\[L(\lambda)=\prod_{i=1}^m\frac{e^{-\lambda n_i}(\lambda N_i)^{y_i}}{y_i!}\varpropto \lambda^{\sum_{i=1}^m y_i}e^{-\lambda \sum_{i=1}^m N_i}=\lambda^{\sum_{i=1}^n y_i}e^{-\lambda N},\]</span> onde <span class="math inline">\(N=\sum_{i=1}^m N_i\)</span> é o tamanho da população. Como a verossimilhança pertence à família exponencial, temos que o modelo Gama<span class="math inline">\((r,s)\)</span> é conjugado gerando a posteriori</p>
+<p><span class="math display">\[\lambda|\mathbf{y}\sim\hbox{Gama}\left(\sum_{i=1}^{m}y_i+r,N+s\right)\equiv \hbox{Gamma}(r_1,s_1).\]</span></p>
+<p>Considere agora um novo valor observado da localidade <span class="math inline">\(i\)</span>. Sua preditiva a posteriori é dada por</p>
+<p><span class="math display">\[\begin{align}
+f(y^*_i|\boldsymbol{y})&amp;=\int_0^\infty f(y^*_i|\lambda)f(\lambda|\boldsymbol{y})d\lambda\\
+&amp;\int_0^\infty \frac{e^{-\lambda N_i}(\lambda N_i)^{y_i^*}}{y_i^*!}\frac{s_1^{r_1}}{\Gamma(r_1)}\lambda^{r_1-1}e^{-\lambda s_1}d\lambda\\
+&amp;=\frac{\Gamma(r_1+y_i^*)}{y_i^*!\Gamma(r_1)}\left(\frac{s_i}{N_i+s_i}\right)^{r_1}\left(1-\frac{s_i}{N_i+s_i}\right)^{y_i^*},
+\end{align}\]</span> ou seja, <span class="math display">\[y_i^*|\boldsymbol{y}\sim\text{Binomial Negativa}\left(r_1,\frac{s_1}{N_i+s_1}\right),\]</span> cujo valor esperado é <span class="math display">\[E(y_i^*|\boldsymbol{y})=\frac{r_1}{s_1}N_i.\]</span> Observe que <span class="math inline">\(y_1^*\)</span> e <span class="math inline">\(y_j^*\)</span> possuem a mesma distribuição somente se <span class="math inline">\(N_i=N_j\)</span>.</p>
+<div id="exm">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Unidade Federativa</th>
+<th>População Estimada (1º de Julho de 2024)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>São Paulo</td>
+<td>45.973.194</td>
+</tr>
+<tr class="even">
+<td>Minas Gerais</td>
+<td>21.322.691</td>
+</tr>
+<tr class="odd">
+<td>Rio de Janeiro</td>
+<td>17.219.679</td>
+</tr>
+<tr class="even">
+<td>Bahia</td>
+<td>14.850.513</td>
+</tr>
+<tr class="odd">
+<td>Paraná</td>
+<td>11.824.665</td>
+</tr>
+<tr class="even">
+<td>Rio Grande do Sul</td>
+<td>11.229.915</td>
+</tr>
+<tr class="odd">
+<td>Pernambuco</td>
+<td>9.539.029</td>
+</tr>
+<tr class="even">
+<td>Ceará</td>
+<td>9.233.656</td>
+</tr>
+<tr class="odd">
+<td>Pará</td>
+<td>8.664.306</td>
+</tr>
+<tr class="even">
+<td>Santa Catarina</td>
+<td>8.058.441</td>
+</tr>
+<tr class="odd">
+<td>Goiás</td>
+<td>7.350.483</td>
+</tr>
+<tr class="even">
+<td>Maranhão</td>
+<td>7.010.960</td>
+</tr>
+<tr class="odd">
+<td>Amazonas</td>
+<td>4.281.209</td>
+</tr>
+<tr class="even">
+<td>Paraíba</td>
+<td>4.145.040</td>
+</tr>
+<tr class="odd">
+<td>Espírito Santo</td>
+<td>4.102.129</td>
+</tr>
+<tr class="even">
+<td>Mato Grosso</td>
+<td>3.836.399</td>
+</tr>
+<tr class="odd">
+<td>Rio Grande do Norte</td>
+<td>3.446.071</td>
+</tr>
+<tr class="even">
+<td>Piauí</td>
+<td>3.375.646</td>
+</tr>
+<tr class="odd">
+<td>Alagoas</td>
+<td>3.220.104</td>
+</tr>
+<tr class="even">
+<td>Distrito Federal</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Mato Grosso do Sul</td>
+<td>2.901.895</td>
+</tr>
+<tr class="even">
+<td>Sergipe</td>
+<td>2.291.077</td>
+</tr>
+<tr class="odd">
+<td>Rondônia</td>
+<td>1.746.227</td>
+</tr>
+<tr class="even">
+<td>Tocantins</td>
+<td>1.577.342</td>
+</tr>
+<tr class="odd">
+<td>Acre</td>
+<td>880.631</td>
+</tr>
+<tr class="even">
+<td>Amapá</td>
+<td>802.837</td>
+</tr>
+<tr class="odd">
+<td>Roraima</td>
+<td>716.793</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="exm">
+<p><strong>Crime de estupro de vulnerável no interior do Amazonas</strong></p>
+<p>Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero no Amazonas e compreendem os anos entre 2010 e 2012. A população em risco é o número de mulheres co menos de 14 anos.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Cidade</th>
-<th>vitimas</th>
+<th>Vítimas</th>
 <th>Populacao feminina</th>
 </tr>
 </thead>
@@ -548,7 +672,7 @@ f(x^*|\boldsymbol{x})&amp;=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})
 </tr>
 </tbody>
 </table>
-<p>Considerando a priori <span class="math inline">\(\pi(\theta)\varpropto \theta^{-1/2}\)</span> teremos:</p>
+<p>Abaixo, organizamos os dados. A população é dividida por <span class="math inline">\(10^5\)</span> para que a taxa seja interpretada como número de casos para cada 100.000 mulheres menores de 14 anos.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># banco de dados</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>casos <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">13</span>, <span class="dv">9</span>, <span class="dv">20</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">1</span> )   </span>
@@ -556,37 +680,23 @@ f(x^*|\boldsymbol{x})&amp;=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">639</span>, <span class="dv">905</span>, <span class="dv">1899</span>, <span class="dv">2036</span>, <span class="dv">1060</span>, <span class="dv">1438</span>, <span class="dv">1143</span>, <span class="dv">3421</span>, <span class="dv">1168</span>, <span class="dv">6700</span>, <span class="dv">1608</span>, <span class="dv">2033</span>, <span class="dv">3095</span>, <span class="dv">1186</span>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> pop<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">5</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>municipios <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">'Amatura'</span>, <span class="st">'Atl.Norte'</span>, <span class="st">'Barr'</span>, <span class="st">'BC'</span>,<span class="st">'BV Ramos'</span>, <span class="st">'Fonte B'</span>, <span class="st">'Jutai'</span>, <span class="st">'Maues'</span>, <span class="st">'Nhamunda'</span>, <span class="st">'Parintins'</span>, <span class="st">'StoIca'</span>, <span class="st">'SP Olivenca'</span>, <span class="st">'Tbt'</span>,<span class="st">'Tonantins'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>municipios <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">'Amaturá'</span>, <span class="st">'Ataláia do Norte'</span>, <span class="st">'Barreirinha'</span>, <span class="st">'Benjamin Constant'</span>,<span class="st">'Boa Vista do Ramos'</span>, <span class="st">'Fonte Boa'</span>, <span class="st">'Jutaí'</span>, <span class="st">'Maués'</span>, <span class="st">'Nhamunda'</span>, <span class="st">'Parintins'</span>, <span class="st">'Sto Antônio do Iça'</span>, <span class="st">'São Paulo de Olivença'</span>, <span class="st">'Tabatinga'</span>,<span class="st">'Tonantins'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>A veromissilhança é dada por <span class="math display">\[L(\lambda)\propto \lambda^{93}e^{-0,28331\lambda }.\]</span> Utilizando a priori <span class="math inline">\(\lambda\sim\hbox{Gama}(.5,.00001)\)</span>, teremos a posteriori <span class="math inline">\(\lambda\sim\hbox{Gama}(93.5,0.28332)\)</span></p>
+<p>Vamos calcular o número de casos esperado segundo a preditiva a posteriori para cada município.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># posteriori</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>a_post <span class="ot">&lt;-</span> <span class="fu">sum</span>(casos) <span class="sc">+</span> .<span class="dv">5</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>b_post <span class="ot">&lt;-</span> <span class="fu">sum</span>(pop)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x,a_post,b_post),<span class="dv">230</span>,<span class="dv">450</span> ,<span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(theta), <span class="at">ylab =</span> <span class="st">'densidade a posteriori'</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="poisson_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> .<span class="dv">00001</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(casos) <span class="sc">+</span> r</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(pop) <span class="sc">+</span> s</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>esperado <span class="ot">&lt;-</span> r1 <span class="sc">*</span> pop <span class="sc">/</span> s1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</div>
-<p>Abaixo, simulamos 50.000 amostras da preditiva a posteriori</p>
+<p>O gráfico abaixo apresenta o valor da média da preditiva a posteriori contra o número de casos observados. Como esperado, os pares ordenados flutuam em torno da linha <span class="math inline">\(y=x\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span> <span class="co"># número de simulações da preditiva a posteriori</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(casos)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pred_mun <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>){</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  theta <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="fu">sum</span>(casos) <span class="sc">+</span> .<span class="dv">5</span>, <span class="fu">sum</span>(pop))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  pred_mun <span class="ot">&lt;-</span> <span class="fu">rbind</span>(pred_mun, <span class="fu">rpois</span>(m , theta <span class="sc">*</span> pop))</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>pred_mun <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(pred_mun)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pred_mun) <span class="ot">&lt;-</span> municipios</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pred_mun)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>,casos, <span class="at">pch=</span><span class="dv">16</span>,<span class="at">cex =</span> <span class="fl">1.2</span>, <span class="at">col =</span><span class="st">'tomato'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(casos, esperado, <span class="at">xlab =</span> <span class="st">'Casos observados'</span>, <span class="at">ylab =</span> <span class="st">'Casos esperados'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">lty =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -595,38 +705,24 @@ f(x^*|\boldsymbol{x})&amp;=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})
 </div>
 </div>
 </div>
+<p>Mesmo que os pontos no gráfico acima estejam flutuando em torno da reta <span class="math inline">\(y=x\)</span>, é importante determinar se sua distância até a reta é razoável. Podemos construir intervalos de 95% (de predição) para <span class="math inline">\(y^*_i\)</span> utilizando os quantis da preditiva a posteriori, ou seja, encontrando <span class="math inline">\(q_1\)</span> e <span class="math inline">\(q_2\)</span> tais que <span class="math display">\[\begin{align}
+P(Y_i^*\leq q_1|\boldsymbol{y})&amp;=0,025\\
+P(Y_i^*\leq q_2|\boldsymbol{y})&amp;=0,975.
+\end{align}
+\]</span></p>
+<p>Observe ainda que <span class="math display">\[0,95\approx P(q_1\leq Y_i^*\leq q_2|\boldsymbol{y})=P\left(\frac{q_1}{N_i}\leq \frac{Y_i^*}{N_i}\leq \frac{q_2}{N_i}|\boldsymbol{y}\right),\]</span> o que implica que <span class="math inline">\((q_1,q_2)/N_i\)</span> é um intervalo para taxa esperada. Abaixo construímos os intervalos de 95% (de predição) e colocamos o número de casos observados.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">&lt;-</span> <span class="fu">par</span>()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span>m,<span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mat, <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">16</span>))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(mat, <span class="at">heights =</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">14</span>,.<span class="dv">5</span>,.<span class="dv">5</span>))</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># limites do intervalo</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>lim_inf <span class="ot">&lt;-</span> <span class="fu">qnbinom</span>(.<span class="dv">025</span>, <span class="at">size =</span> r1, <span class="at">prob =</span> s1<span class="sc">/</span>(pop<span class="sc">+</span>s1))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>lim_sup <span class="ot">&lt;-</span> <span class="fu">qnbinom</span>(.<span class="dv">975</span>, <span class="at">size =</span> r1, <span class="at">prob =</span> s1<span class="sc">/</span>(pop<span class="sc">+</span>s1))</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m){</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  freq <span class="ot">&lt;-</span> <span class="fu">prop.table</span>( <span class="fu">table</span>(pred_mun[,i]) )</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">cex =</span> .<span class="dv">8</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">3</span>))</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="fu">as.numeric</span>(<span class="fu">names</span>(freq)), freq, <span class="at">type=</span><span class="st">'h'</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">title</span>(<span class="at">ylab=</span>municipios[i])</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(casos[i],<span class="dv">0</span>,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'tomato'</span>,<span class="at">cex=</span> <span class="fl">1.2</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">1</span>))</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>,.<span class="dv">05</span>,<span class="dv">46</span>,.<span class="dv">05</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a> <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">45</span>,<span class="dv">5</span>)){</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">segments</span>(j,.<span class="dv">05</span>,j,.<span class="dv">03</span>)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(j,.<span class="dv">01</span>,j)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.new</span>()</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">46</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">1</span>))</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>,.<span class="dv">05</span>,<span class="dv">46</span>,.<span class="dv">05</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">45</span>,<span class="dv">5</span>)){</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">segments</span>(j,.<span class="dv">05</span>,j,.<span class="dv">03</span>)</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(j,.<span class="dv">01</span>,j)</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># gráfico</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.window</span>( <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="dv">1000</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">15</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(lim_inf<span class="sc">/</span>pop,<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>,lim_sup<span class="sc">/</span>pop,<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>, municipios, <span class="at">adj =</span><span class="dv">0</span> )</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(casos<span class="sc">/</span>pop, <span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>, <span class="at">pch =</span> <span class="dv">22</span>, <span class="at">cex =</span>.<span class="dv">9</span>, <span class="at">bg =</span> <span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -634,54 +730,72 @@ f(x^*|\boldsymbol{x})&amp;=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in par(oo): parâmetro gráfico "cin" não pode ser especificado</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in par(oo): parâmetro gráfico "cra" não pode ser especificado</code></pre>
+<p>Alguns municípios, como Nanhunda, foram substimados, enquanto outros, como Fonte Boa, foram superestimados. Para estes 14 intervalos, é esperado que <span class="math inline">\(14\times 0,05=0,7\)</span> deles não cubram <span class="math inline">\(y_i\)</span>, o que não está ocorrendo. Portanto, considerar que todos os municípios possuem a mesma taxa pode ser um equívoco.</p>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in par(oo): parâmetro gráfico "csi" não pode ser especificado</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in par(oo): parâmetro gráfico "cxy" não pode ser especificado</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in par(oo): parâmetro gráfico "din" não pode ser especificado</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in par(oo): parâmetro gráfico "page" não pode ser especificado</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m){</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>p[i] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">min</span>(<span class="fu">mean</span>(pred_mun[,i] <span class="sc">&gt;</span> casos[i]),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pred_mun[,i] <span class="sc">&lt;</span> casos[i]))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(municipios,p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    municipios      p
-1      Amatura 0.3148
-2    Atl.Norte 0.0688
-3         Barr 0.0292
-4           BC 0.0228
-5     BV Ramos 0.1348
-6      Fonte B 0.0000
-7        Jutai 0.0464
-8        Maues 0.5084
-9     Nhamunda 0.0076
-10   Parintins 0.6656
-11      StoIca 0.3452
-12 SP Olivenca 0.4232
-13         Tbt 0.4392
-14   Tonantins 0.0388</code></pre>
-</div>
-</div>
+</section>
+<section id="exercícios" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">7.5</span> Exercícios</h2>
+<section id="mortes-por-coice-de-cavalo" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="mortes-por-coice-de-cavalo"><span class="header-section-number">7.5.1</span> Mortes por coice de cavalo</h3>
+<p>Ladislaus Bortkiewicz é o responsável pela popularização da distribuição Poisson. Em seu livro intitulado A Lei dos Pequenos Números, é apresentado um conjunto de dados no qual foi rastreado o número de mortes por coice de cavalo em 14 corpos do exército prussiano ao longo de 20 anos (de 1875 a 1894).</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Mortes por corpo <span class="math inline">\(\times\)</span> ano</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>109</td>
+<td>65</td>
+<td>22</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Determine se a distribuição Poisson é adequada para este conjunto de dados. Em caso afirmativo, estime a taxa e dê um intervalo de credibilidade de 95%.</p>
+</section>
+<section id="suicídios-no-amazonas-considerando-capital-e-interior" class="level3" data-number="7.5.2">
+<h3 data-number="7.5.2" class="anchored" data-anchor-id="suicídios-no-amazonas-considerando-capital-e-interior"><span class="header-section-number">7.5.2</span> Suicídios no Amazonas considerando capital e interior</h3>
+<p>O Amazonas possui uma característica peculiar: aproximadamente 50% da população vive na capital. Vimos anteriormente que o número de suicídios, considerando os anos entre 2021 e 2023, podem ser modelados por uma Poisson. A tabela abaixo divide esses dados entre capital e interior.</p>
+<table class="caption-top table">
+<caption>Número de suicídios divididos entre capital e interior</caption>
+<thead>
+<tr class="header">
+<th>Ano</th>
+<th>2021</th>
+<th>2022</th>
+<th>2023</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Capital</td>
+<td>133</td>
+<td>124</td>
+<td>138</td>
+<td>395</td>
+</tr>
+<tr class="even">
+<td>Interior</td>
+<td>164</td>
+<td>173</td>
+<td>201</td>
+<td>538</td>
+</tr>
+</tbody>
+</table>
+<p>Determine se há evidências de que essas taxas são diferentes.</p>
 
 
+</section>
 </section>
 </div>
 </section>
