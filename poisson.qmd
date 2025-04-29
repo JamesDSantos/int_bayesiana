@@ -214,7 +214,7 @@ e podemos comparar o ajuste considerando a distribuição de $y^*_i/N_i$ com $y_
 require(gsheet)
 url <- 'https://docs.google.com/spreadsheets/d/11Sr8mqilWCe6Dj8TO6PgTYpJT292vbon1XnB0Co1Trc/edit?usp=sharing'
 
-dados <- gsheet2tbl(url)
+dados <- data.frame(gsheet2tbl(url))
 print(dados)
 ```
 
@@ -253,13 +253,13 @@ plot.window( xlim = c(-70,120), ylim=c(0,27))
 segments(lim_inf/N,1:27,lim_sup/N,1:27, lwd = 2)
 text(-70,1:27, unlist(dados[,1]), adj =0 ,col=cores)
 points(taxas, 1:27, pch = 22, cex =.9, bg = cores)
-
+axis(1,at = seq(0,120,20))
 ```
 
 Observe que o modelo de considera uma taxa única para o país se ajusta bem para os estados Alagoas, Maranhão, Piauí, Rio de Janeiro e Sergipe. Unidades da Federação como Amazonas, Bahia, Ceará, Distrito Federal, Minas Gerais, Pernambuco, Rio Grande do Norte e São Paulo, possuem taxas menores do que as preditas. Os demais estados possuem taxas maiores do que as preditas. 
 :::
 
-### Modelo com várias taxas
+### Modelo com uma taxas por localidade
 
 O último exemplo da seção anterior mostra que o modelo com taxa única pode ser falho. Existem algumas explicações para este fenômeno, como: 
 
@@ -309,11 +309,11 @@ plot(density(taxas))
 curve(dgamma(x,3.6,.07),add = T, lwd = 2, col ='tomato')
 ```
 
-Vamos utilizar a priori $\lamda_i\sim\hbox{Gama}(3,6\;,\;0,07)$ para reanalizar este banco de dados, agora com múltiplas taxas.
+Vamos utilizar a priori $\lambda_i\sim\hbox{Gama}(3,6\;,\;0,07)$ para analizar este banco de dados, agora com múltiplas taxas.
 
 
 ```{r}
-# hiperparametrosr
+# hiperparametros
 r = 3.6
 s = .07
 
@@ -333,10 +333,149 @@ plot.window( xlim = c(-70,120), ylim=c(0,27))
 segments(lim_inf/N,1:27,lim_sup/N,1:27, lwd = 2)
 text(-70,1:27, unlist(dados[,1]), adj =0 ,col=cores)
 points(taxas, 1:27, pch = 22, cex =.9, bg = cores)
+axis(1, at=seq(0,120,20))
 
 ```
 
+As múltiplas taxas apresentam um cenário mais honesto, acomodando cada estado a sua própria realidade. Abaixo, apresentamos um mapa com a taxa estimada.
+
+```{r}
+# Carregar as bibliotecas necessárias
+library(leaflet)
+library(geobr)
+
+# Obter os dados geográficos das Unidades da Federação do Brasil usando geobr
+brasil_uf <- read_state() # Ou o ano mais recente disponível
+
+# colocar os estados em ordem alfabética
+brasil_uf <- brasil_uf[order(brasil_uf$name_state), ]
+
+# adicionar as taxas
+brasil_uf$taxa <- r1/s1
+
+# Definir uma paleta de cores com base nos valores das taxas
+pal <- colorNumeric(palette = "viridis", domain = brasil_uf$taxa)
+
+# Criar o mapa leaflet
+mapa_leaflet <- leaflet(brasil_uf) %>%
+  setView(lng = -55, lat = -15, zoom = 3) %>% # Centralizar o mapa no Brasil
+  addTiles() %>% # Adicionar camadas de mapa base (OpenStreetMap por padrão)
+  addPolygons(
+    fillColor = ~pal(taxa),
+    weight = 1,
+    color = "#000000",
+    fillOpacity = 0.7,
+    label = ~paste0(name_state, ": ", round(taxa, 2)), # Adicionar rótulos ao passar o mouse
+    highlightOptions = highlightOptions(color = "white", weight = 2, bringToFront = TRUE)
+  ) %>%
+  addLegend(pal = pal, values = ~taxa, title = "Taxa", opacity = 1)
+
+# Exibir o mapa (opcional, se você estiver em um ambiente interativo)
+mapa_leaflet
+```
+
 :::
+
+### Análise de agrupamentos para taxas
+
+Até o momento estudamos dois exemplos extremos:
+
+* Um modelo com uma única taxa por localidade
+* Um modelo com uma taxa por localidade
+
+Um modo útil para deicidir qual abordagem é a mais interessante é o uso de um critério de informação. Recordemos que tais critério são escritos como
+
+$$-2\log L(\hat{\theta})+2k,$$
+onde $L(\theta)$ é a função de verossimilhança, $\hat{\theta}$ é uma estimativa para $\theta$ e $k$ é uma penalidade relacionada ao número de parâmetros do modelo. Por causa do sinal negativo em $L(.)$, temos que o modelo preferível é aquele com menor valor do critério. 
+
+Em inferência bayesiana é comum o uso do Critério de Informação de Desvio (DIC), onde $\hat{\theta}=E(\theta|\boldsymbol{x})$ e 
+$$k=\frac{1}{2}Var_{\theta|\boldsymbol{x}}(\log L(\theta)).$$
+
+Observe que o cálculo direto de $k$ não é trivial. Entretanto, o DIC pode ser facilmente obtido via o Método de Monte Carlo.
+
+
+<div class = 'alert alert-success'>
+**Algoritmo: Calculando o DIC via Monte Carlo**
+
+1. Simule $\theta_1,\ldots,\theta_B$ da distribuição a posteriori de $\theta$.
+2. Estime $E(\theta|\boldsymbol{x})$ por
+$$\hat{\theta}=\frac{1}{B}\sum_{j=1}^B \theta_j$$
+3. Faça $v_j=-2\log L(\theta_j)$. Estime $k$ por
+$$k=\frac{1}{2B}\sum_{j=1}^B(v_j-\bar{v})^2$$
+4. Calcule o DIC:
+
+$$DIC=-2\log L(\hat{\theta})+2k.$$
+</div>
+
+
+::: {#exm}
+**Comparando os dois modelos para as taxas**
+
+No começo desta seção, estudamo a taxa de crimes de estupro no Brasil, considerando uma única taxa $\lambda$ comum a todas as unidades da federação. Encontramos a posteriori $\lambda\sim\hbox{Gama}(74931,2083)$. O DIC para este modelo é
+
+```{r}
+B = 10000 # número de simulações
+lambda <- rgamma( B, 74931, 2083) # simulações da posteriori
+
+# média a posteriori
+lambda_chapeu <- mean(lambda)
+
+# calculo de k
+vj <- sapply( lambda, function(l) -2*sum(dpois( dados[,3], l*N, log = T)))
+k <- .5*var(vj)
+
+DIC0 <- -2*sum( dpois(dados[,3], lambda_chapeu*N, log = T) ) +2*k
+DIC0
+```
+
+Posteriormente, criamos um modelo com uma taxa por unidade da federação. Para a $i$ésima unidade, a posteriori da taxa foi dada ´por $\lambda_i\sim\hbox{Gama}(y_i+3,6\;\;,\;\;N_i+0,07)$. O DIC para este modelo é
+
+
+```{r}
+B = 10000 # número de simulações
+# hiperparâmetros comuns
+r = 3.6
+s = .07
+
+# simulações da posteriori
+lambda <- sapply(1:B, function(x) rgamma(27, dados[,3]+3.6, N+.07) )
+
+# média a posteriori para cada taxa
+lambda_chapeu <- rowMeans(lambda)
+
+# calculo de k
+vj <- apply( lambda, 2, function(l) -2*sum(dpois( dados[,3], l*N, log = T)))
+k <- .5*var(vj)
+
+DICtodos <- -2*sum( dpois(dados[,3], lambda_chapeu*N, log = T) ) +2*k
+DICtodos
+```
+Observe que o modelo com uma taxa por unidade da federação possui o menor valor do DIC, sendo assim o mais parcimonioso entre os dois.
+
+:::
+
+
+Seja $S=\{1,\ldots,m\}$ o conjunto das $m$ localidades. Suponha que é razoável particionar $S$ e $k$ grupos. Por último, considere que todas as localidades dentro de uma partição compartilham a mesma taxa, ou seja, para $j$ dentro da partição $S_t$, 
+tem-se que $y_i|\lambda_t\sim\hbox{Poisson}(\lambda_tN_i)$, onde $\lambda_t\sim\hbox{Gama}(r_t,s_t)$. O desafio aqui é determinar se a localidade pertence à partição $S_t$. 
+
+Considere que a localidade $i$ pertence à partição $t$. Defina o vetor coluna $z_i$, de comprimento de comprimento $k$, composto de zeros exceto na coordenada $t$, que vale 1. Defina $z_{i,s}$ como a $s$-ésima coordenada do vetor $z_i$. Então 
+
+$$\prod_{j=1}^k \lambda_j^{z_{i,j}}=\lambda_t=\sum_{j=1}^k \lambda_j z_{i,j}.$$
+Deste modo, temos que $y_i|z_i,\lambda\sim\hbox{Poisson}(\prod_{j=1}^k\lambda_j^{z_{i,j}} N_i)$. e a função de verossimilhança é dada por
+
+$$L(\lambda,z)=\prod_{i=1}^m \frac{e^{-\sum_{j=1}^k\lambda_jz_{i,j}N_i}[\prod_{j=1}^k \lambda_j^{z_{i,j}} N_i]^{y_i}}{y_i!}\propto \prod_{i=1}^m \left[\prod_{j=1}^ke^{-\lambda_jz_{i,j}N_i}\right]\left[\prod_{j=1}^k \lambda_j^{z_{i,j}} N_i\right]^{y_i}=\prod_{j=1}^k e^{-\lambda_j\sum_{i=1}^m z_{i,j}N_i}\lambda_j^{\sum_{i=1}^m z_{i,j}y_i}$$
+Observe que $z_j$ é desconhecido e vamos tratá-lo como parâmetro. Pela sua natureza, pode-se pensar em utilizar a priori $z_j\sim\hbox{Bernoulli Multivariada}(p_1,\ldots,p_k)$.
+
+Vamos assumir que a priori de $z_1,\ldots,z_m$ é independente da priori $\lambda_1,\ldots,\lambda_k$.  
+
+Para determinar a posteriori de $(\lambda,z)$, observe que
+
+$$\begin{align}f(\lambda,z|\boldsymbol{y})&\propto L(\lambda,z)f(\lambda)f(z)\\&\propto\prod_{j=1}^k e^{-\lambda_j\sum_{i=1}^m z_{i,j}N_i}\lambda_j^{\sum_{i=1}^m z_{i,j}y_i}\prod_{j=1}^k \lambda_j^{r_j-1}e^{-\lambda_js_j}\prod_{i=1}^m \prod_{j=1}^k p_j^{z_{i,j}}\end{align}$$
+Note que
+$$f(\lambda|z,\boldsymbol{y})$$
+
+$z_i\sim\hbox{Bernoulli Multivariada}(p_1,\ldots,p_k)$
+
 
 ## Exercícios
 
@@ -346,7 +485,7 @@ Ladislaus Bortkiewicz é o responsável pela popularização da distribuição P
 
 |Mortes por corpo $\times$ ano | 0 |  1|   2|   3|   4| 
 |---|--|--|---|---|
-|109|65|22|  3|  1|
+||109|65|22|  3|  1|
 
 Determine se a distribuição Poisson é adequada para este conjunto de dados. Em caso afirmativo, estime a taxa e dê um intervalo de credibilidade de 95%.
 

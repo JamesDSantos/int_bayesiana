@@ -427,26 +427,23 @@ a,\hbox{ se }\varphi(x)=0\hbox{ e }\theta\in\Theta_0\\b,\hbox{ se }\varphi(x)=1\
 <div class="cell-output cell-output-stderr">
 <pre><code>Carregando pacotes exigidos: extraDistr</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pacote 'extraDistr' foi compilado no R versão 4.4.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">rdirichlet</span>(B, <span class="fu">c</span>(<span class="dv">29</span>,<span class="dv">14</span>,<span class="dv">28</span>,<span class="dv">8</span>))</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>thetaCR <span class="ot">&lt;-</span> theta[,<span class="dv">2</span>]</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>thetaRC <span class="ot">&lt;-</span> theta[,<span class="dv">4</span>]</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(thetaRC <span class="sc">&lt;</span> thetaCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">rdirichlet</span>(B, <span class="fu">c</span>(<span class="dv">29</span>,<span class="dv">14</span>,<span class="dv">28</span>,<span class="dv">8</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>thetaCR <span class="ot">&lt;-</span> theta[,<span class="dv">2</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>thetaRC <span class="ot">&lt;-</span> theta[,<span class="dv">4</span>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(thetaRC <span class="sc">&lt;</span> thetaCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.90655</code></pre>
+<pre><code>[1] 0.9046</code></pre>
 </div>
 </div>
 <p>Não há evidência forte o suficiente para aceitar a superioridade do Reagan para a mudança de opinião. Abaixo, mostramos o gráfico estimado para a posteriori de <span class="math inline">\(\theta_{CR},\theta_{RC}\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MASS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MASS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Carregando pacotes exigidos: MASS</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(<span class="fu">kde2d</span>(thetaCR,thetaRC), <span class="at">xlab=</span><span class="fu">expression</span>(theta[CR]),<span class="at">ylab=</span><span class="fu">expression</span>(theta[RC]), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(<span class="fu">kde2d</span>(thetaCR,thetaRC), <span class="at">xlab=</span><span class="fu">expression</span>(theta[CR]),<span class="at">ylab=</span><span class="fu">expression</span>(theta[RC]), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -528,26 +525,26 @@ f(x,y|M_1)&amp;=f(x|M_1)f(y|M_1)\\
 <li><span class="math inline">\(P(x,y|M_1)\)</span>:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>lprobA <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">60</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">24</span>,<span class="dv">10</span>,<span class="dv">24</span>)))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>lprobB <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">62</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">14</span>,<span class="dv">22</span>,<span class="dv">24</span>)))</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(lprobA <span class="sc">+</span>lprobB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>lprobA <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">60</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">24</span>,<span class="dv">10</span>,<span class="dv">24</span>)))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lprobB <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">62</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">14</span>,<span class="dv">22</span>,<span class="dv">24</span>)))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(lprobA <span class="sc">+</span>lprobB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><span class="math inline">\(P(x,y|M_2)\)</span>:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>lprob <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">120</span>)<span class="sc">+</span><span class="fu">sum</span>( <span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">38</span>,<span class="dv">32</span>,<span class="dv">48</span>)))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(lprob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo da probabilidade:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>lprob <span class="ot">&lt;-</span> <span class="fu">lfactorial</span>(<span class="dv">2</span>)<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">120</span>)<span class="sc">+</span><span class="fu">sum</span>( <span class="fu">lfactorial</span>(<span class="fu">c</span>(<span class="dv">38</span>,<span class="dv">32</span>,<span class="dv">48</span>)))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidade</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(lprob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><span class="math inline">\(P(M_2|x,y)\)</span></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="sc">/</span> (m1 <span class="sc">+</span> m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="sc">/</span> (m1 <span class="sc">+</span> m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2824985</code></pre>
 </div>
@@ -581,7 +578,7 @@ f(x,y|M_1)&amp;=f(x|M_1)f(y|M_1)\\
 <p><span class="theorem-title"><strong>Example 6.4</strong></span> <strong>Imagem corporal</strong></p>
 <p>Considerando <span class="math inline">\(M_1\)</span> como o modelo no qual as percepções sobre o corpo são provenientes de populações distintas e <span class="math inline">\(M_2\)</span> como o modelo no qual não havia diferença entre os grupos delimitados pelo sexo, obtivemos <span class="math inline">\(P(M_2|x,y)\approx 0,28\)</span>. Utilizando os mesmos comandos em <code>R</code>, teremos que o Fator de Bayes <span class="math inline">\(B_{21}\)</span> é dado por</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">/</span>m1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">/</span>m1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3937254</code></pre>
 </div>
@@ -635,14 +632,14 @@ f(x,y|M_1)&amp;=f(x|M_1)f(y|M_1)\\
 <p><span class="math display">\[P(\text{Dados}|M_2)=\frac{2}{2026!}(729!)(627!)(607!)\]</span></p>
 <p>O fator de Bayes <span class="math inline">\(B_{21}\)</span> é dado por</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logP(dados|M2)</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>logPm2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2024</span><span class="sc">*</span><span class="fu">log</span>(<span class="dv">3</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># logP(dados|M1)</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>logPm1 <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>( <span class="fu">c</span>(<span class="dv">729</span>,<span class="dv">627</span>,<span class="dv">607</span>)))<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">1965</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fator de Bayes</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>( logPm2 <span class="sc">-</span> logPm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logP(dados|M2)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>logPm2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2024</span><span class="sc">*</span><span class="fu">log</span>(<span class="dv">3</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># logP(dados|M1)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>logPm1 <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">+</span><span class="fu">sum</span>(<span class="fu">lfactorial</span>( <span class="fu">c</span>(<span class="dv">729</span>,<span class="dv">627</span>,<span class="dv">607</span>)))<span class="sc">-</span><span class="fu">lfactorial</span>(<span class="dv">1965</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fator de Bayes</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>( logPm2 <span class="sc">-</span> logPm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.02445e-29</code></pre>
 </div>

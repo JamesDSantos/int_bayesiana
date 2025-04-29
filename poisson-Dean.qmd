@@ -1,0 +1,431 @@
+# O modelo Poisson
+
+## Sobre o modelo 
+
+Seja $N(t)$ o número de ocorrências observadas no intervalo de tempo $[0,t]$ (considere que $N(0)=0$). Note que o número de eventos no intervalo $(s,t]$ é dado por $N(t)-N(s)$. 
+
+Dizemos que $N(t)$ tem incrementos independentes se, para quaisquer intervalos disjuntos $(s_0,t_0]$ e $(s_1,t_1]$, as contagens $N(t_0)-N(s_0)$ e $N(t_1)-N(s_1)$ são independentes. 
+
+$N(t)$ é denominado Processo de Poisson quando ele possui incrementos indepentes e, para qualquer intervalo $(s,t]$,
+
+$$P(N(t)-N(s)=x)=\frac{e^{-\lambda(t-s)[\lambda(t-s)]^x}}{x!},$$
+onde $x=0,1,\ldots$ e $\lambda>0$. Isto implica que
+$$E(N(t))=\lambda t,$$
+ou seja, o número esperado de ocorrências até o tempo $t$ é diretamente proporcional à $t$ e $\lambda$ representa a taxa de crescimento. Para este processo, é verdade que
+$$\lim_{\delta\rightarrow 0}P(N(t+\delta)-N(t)>1)=0,$$
+ou seja, não é possível observar duas ou mais ocorrências simultaneamente.
+
+Em geral, os experimentos são desenhados para registrar contagens em intervalos regulares e disjuntos de tempo, como semanas ou anos. Considere que tais intervalos são $[0,s_1],(s_1,s_2],\ldots,(s_{n-1},t]$ e seja $c$ o comprimento destes intervalos. Em geral, os dados são apresentados como contagens dentro destes intevalos, gerando as seguintes variáveis:
+
+* $X_1=N(s_1)\sim\hbox{Poisson}(\lambda c)$
+* $X_2=N(s_2)-N(s_1)\sim\hbox{Poisson}(\lambda c)$
+* $\cdots$
+* $X_n=N(t)-N(s_{n-1})\sim\hbox{Poisson}(\lambda c)$
+ou seja, $X_1,\ldots,X_n$ são uma amostra aleatória do modelo Poisson($\lambda c$). Na prática, $c=1$  por ser a unidade de medida de tempo associada ao experimento (uma semana, um ano, etc).
+
+### Tempo de chegada e de espera
+
+Para um processo de Poisson $N(t)$, definimos o tempo de chegada como o tempo entre duas observações consecutivas. Denotaremos o tempo de chegadas entre a $i$-ésima e a $(i-1)$- ésima ocorrência por $T_i$.  
+
+É possível mostrar que $T_i$ é independente de $T_j$, para $i\neq j$ e que $T_i\sim\hbox{Exponencial}(\lambda)$. Por isso, para uma amostra aleatória de um modelo Exponencial($\lambda$), o parâmetro $\lambda$ é denominado taxa. 
+
+Definimos por tempo de espera da ocorrência $n$ como o tempo transcorrido desde o início do processo até a ocorrência do $n$-ésimo evento. Este tempo de espera é denotado por $S_n$.
+Exsitem dois resultados importantes relacionados ao tempo de espera:
+
+* $S_n=T_1+\cdots+T_n$ tem distribuição Gama($n,\lambda$)
+
+* Dado que $N(t)=n$, os tempos de espera dos eventos estão uniformemente distribuídos dentro do intervalo $(0,t)$.
+
+### Ocorrências de diversas classes
+
+Suponha que as ocorrências observadas podem ser classificadas em $k$ categorias. Suponha que qualquer ocorrência tem probabilidade $p_j$ de pertencer a categoria $j$. Então
+
+* O número de ocorrências da classe $j$ é um processo de Poisson com taxa $\lambda p_j$
+
+* O número de ocorrências da classe $j$ é independente do número de ocorrências da classe $i$, com $i\neq j$
+
+
+### O processo de Poisson Espacial
+
+Seja $N(A)$ o número de ocorrências observadas em uma região de área $A$. $N(A)$ é denominado Processo de Poisson Espacial quando $N(A)\sim\hbox{Poisson}(\lambda A)$ e, para duas regiões distintas de áreas $B$ e $C$, $N(B)$ e $N(C)$ são independentes.
+
+Note que, para um Processo de Poisson Espaical, dado $N(A)=n$ as $n$ ocorrências estão uniformemente distribuídas dentro da região $A$
+
+## Verossimilhança e priori conjugada
+
+Seja $X_1,\ldots,X_n$ uma amostra aleatória do modelo Poisson$(\lambda)$. A verossimilhança deste modelo é dada por 
+
+$$L(\theta)=\frac{e^{-n\theta}\theta^{\sum_{i=1}^{n}x_i}}{\prod_{i=1}^{n}x_i!}\propto \theta^{\sum_{i=1}^n x_i}e^{-n\theta}.$$ O modelo Poisson pertence à família exponencial e sua priori conjugada é $\theta\sim\hbox{Gama}(r,s)$ e a posteriori é $\hbox{Gama}(r+\sum_{i=1}^n x_i, s+n)$, conforme já discutido na Introdução. Os hiperparâmetros $r$ e $s$ podem ser interpretados como o total da contagem e o tamanho da amostra a priori. 
+
+A média da posteriori é $$E(\theta|\mathbf{x})=\frac{\sum_{i=1}^{n}x_i+r}{n+s}=\frac{n}{n+s}\bar{x}+\frac{s}{n+s}E(\theta),$$ onde fica claro que este estimador é uma média ponderada das informações provenientes das duas fontes de informação (sendo $\bar{x}$ a estimativa de máxima verossimilhança e $E(\theta)$ a média a priori).
+
+Se $n\gg s$, então a média a posteriori dará maior peso para a informação dos dados.
+
+## Preditiva a posteriori
+
+A inferência bayesiana é baseada em duas fontes de informação: verossimilhança e priori. Já discutimos que, na maioria dos casos, estamos interessados em deixar a verossimilhança ter mais peso na posteriori. Agora, vamos discutir como verificar se a verossimilhança é adequada ao problema.
+
+Seja $\boldsymbol{x}=\{x_1,\ldots,x_n\}$ a amostra observada e $f(\theta|\boldsymbol{x})$ a posteriori obtida. Supondo que a informação sobre os parâmetros foi capturada de forma adequada, é de se esperar que uma nova observação $x^*$ se comporte de modo semelhante a amostra observada. Podemos então obter a seguinte distribuição, denominada preditiva a posteriori:
+
+$$\begin{align}f(x^*|\boldsymbol{x})=\int f(x^*|\theta)f(\theta|\boldsymbol{x})d\theta.\end{align}$$
+
+Podemos comparar as características preditiva a posteriori com estatísticas livres de modelos como box-plots, histogramas, etc.
+
+<div class='alert alert-success'>
+**Preditiva a posteriori para o modelo Poisson**
+
+Para o modelo Poisson($\lambda$) e para a posteriori Gama$(r_1,s_1)$, onde $r_1=r+\sum_{i=1}^n x_i$ e $s_1=n+s$,
+$$\begin{align}
+f(x^*|\boldsymbol{x})&=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})d\lambda\\
+&=\int_0^\infty\frac{e^{-\lambda}\lambda^{x^*}}{x^*!}\frac{s_1^{r_1}}{\Gamma(r_1)}\lambda^{r_1-1}e^{-s_1\lambda}d\lambda\\
+&=\frac{s_1^{r_1}}{\Gamma(r_1)x^*!}\int_0^\infty \lambda^{r_1+x^*-1}e^{-\lambda(s_1+1)}d\lambda\\
+&=\frac{\Gamma(r_1+x^*)}{\Gamma(r_1)x^*!}\left(\frac{s_1}{1+s_1}\right)^{r_1}\left(1 - \frac{s_1}{s_1+1}\right)^{x^*}
+\end{align}$$
+ou seja, a preditiva a posteriori tem distribuição 
+
+$$\hbox{Binomial Negativa}\left(r_1,\frac{s_1}{1+s_1}\right).$$ 
+</div>
+
+
+:::{#exm-}
+**A Blitz e os Bombardeios de Londres**
+
+Durante a Segunda Guerra Mundial, Londres sofreu intensos bombardeios aéreos pela Alemanha Nazista (conhecido como "Blitz"). Estatísticos analisaram a distribuição das quedas de 537 bombas pela cidade para procurar padrões.
+
+Uma questão chave era se as bombas caíam aleatoriamente ou se havia algum padrão de alvo. Se as quedas de bombas fossem aleatórias, elas deveriam seguir uma distribuição de Poisson. Londres foi dividida em uma grade de com 576 setores de áreas iguais. O número de quedas de bombas em cada setor foi registrado.
+
+| Número de bombas   | Número de setores com x bombas | 
+| :----------------------- | :------------------------------------------: |
+| 0                       | 229                                         |
+| 1                       | 211                                         | 
+| 2                       | 93                                          | 
+| 3                       | 35                                          |
+| 4                | 7                                          | 
+| 5 ou mais | 1 |
+: Quedas de bombas em Londres durante o Blitz.
+
+Supondo que os dados seguem uma distribuição Poisson($\lambda$), teremos
+$$L(\lambda)\propto e^{-576\lambda}\lambda^{537}.$$
+Considerando a priori $\lambda\sim\hbox{Gama}(1,1)$, teremos a posteriori Gama$(538,577)$. A preditiva a posteriori para problema é
+
+$$\hbox{Binomial Negativa}(538,.9982).$$
+
+Observe que podemos estimar a frequência relativa dos eventos da tabela. Podemos comparar esses resultados com o que seria esperado da preditiva. O resultado é dado a seguir.
+
+```{r}
+r1 = 538
+p = 577/578
+`Número de bombas no setor` <- c(0,1,2,3,4,'>4')
+`Frequência relativa` <- c(229,211,93,35,7,1)/576
+`Preditiva a posteriori` <- c(dnbinom( 0:4, size=r1, prob = p), 1-pnbinom(4,size=r1,prob=p))
+
+dt <- data.frame(`Número de bombas no setor`, `Frequência relativa`,`Preditiva a posteriori`)
+
+print(dt)
+```
+
+A proximidade entre as frequências relativas e os resultados obtidos através da preditiva a posteriori dão evidências de que o modelo Poisson é adequado, ou ainda, que as bombas foram lançadas ao acaso.
+:::
+
+::: {#exm}
+**Número de suicídios revisitado**
+
+Na introdução, apresentamos o número de suicídios no Amazonas para os anos 2021, 2022 e 2023. Os dados podem ser vistos abaixo.
+
+```{r}
+no_suicidios <- c(19, 26, 30, 28, 25, 23,23, 21,
+22, 27, 31, 22, 23, 21, 29, 27, 26, 23,
+36, 27, 24, 21, 18, 22, 34, 27, 26, 26, 34,
+22, 27, 25, 32, 36, 28, 22 )
+```
+
+Analisamos estes dados e obtivemos a posteriori Gama(953.8, 37.1) para a taxa. A distribuição da preditiva a posteriori é Binomial Negativa$(953.8\;,\;0,9737)$. 
+
+A figura abaixo apresenta a função de distribuição empírica dos dados comparada com a função de distribuição da preditiva a posteriori. A aproximação é razoável o suficiente para aceitarmos o modelo proposto como válido.
+
+```{r}
+plot( ecdf(no_suicidios), main = '', ylab='Função de distribuição', xlab=expression(x))
+curve(pnbinom(x,sum(no_suicidios)+1,37/38), add=T, lwd = 2, col = 'tomato')
+legend('bottomright', c('Empírica','Preditia a posteriori'), col=c(1,'tomato'), bty='n')
+```
+:::
+
+
+## O modelo Poisson para taxas
+
+### Modelo de taxa única
+
+A taxa é o quociente entre o número de casos de um evento em determinado intervalo de tempo e a população em risco, definida em um espaço e no mesmo intervalo de tempo "pessoas-tempo". Note que, pela definição, a taxa é uma estatística.
+
+Seja $N$ o tamanho da população no espaço/tempo e seja $y$ o número de casos do evento de interesse. Então,
+
+$$\hbox{taxa} = \frac{y}{N}$$
+
+Contudo, como $N$ tende a ser muito maior que $y$, é comum reportar a taxa vezes $10^k$, para algum $k>0$. O mais comum é ter $k=5$ e esta convenção é adotada aqui.
+
+::: {#exm}
+**Crime de estupro no país** Segundo o Anuário de Segurança Pública 2023, em 2022 houveram 74.930 casos de estupro. Considerando uma população de 208,2 milhões de habitantes, a taxa de estupro para aquele ano foi de $$\frac{68.885}{208.200.000}\times 10^{-5}=35,98$$ casos por pessoa-ano. 
+
+Portanto, temos uma taxa de 35,98 casos para cada 100.000 habitantes.
+:::
+
+Agora, considere que $\lambda$ é o parâmetro taxa. Então,
+
+$$\hat{\lambda}=\frac{y}{N}$$ é a estimativa para $\lambda$. Como $y$ é uma contagem, é razoável supor que $$\lambda =\frac{1}{N}E(Y|\lambda),$$ e um modelo com essa parametrização seria $y|\lambda\sim\hbox{Poisson}(\lambda N)$.
+Observe que, na prática $N$ já está dividido por $10^5$. 
+
+::: {#exm} 
+**Crime de estupro no país (cont.)**
+Seja $y$ o número de crimes de estupro dados no exemplo anterior. Seja $n=212.700.000/10^5=2082$ a população do país dividida por $10^5$. Considerando o modelo $y|\lambda\hbox{Poisson}(2082\lambda)$ temos a seguinte verossimilhança para $\lambda$:
+
+$$L(\lambda)\propto \lambda^{74930}e^{-2082\lambda  }$$
+Utilizando a priori Gama(1,1) (que representa um caso para cada 100.000 habitantes), teremos a posteriori Gama(74931,2083) e a estimativa 
+$$E(\lambda|y)=\frac{74931}{2083}=35,97.$$
+ou seja, 35,97 casos a cada 100.000 habitantes.
+:::
+
+
+Agora, considere que a população está particionada em $m$ localidades. Sejam $N_i$ e $y_i$ a população da localidade $i$ e seu respectivo número de casos observados. Suponha ainda que a taxa $\lambda$ é comum para a população e que $y_i$ e $y_j$ são independentes dado $\lambda$. Assumindo a distribuição Poisson, teremos
+
+$$L(\lambda)=\prod_{i=1}^m\frac{e^{-\lambda n_i}(\lambda N_i)^{y_i}}{y_i!}\varpropto \lambda^{\sum_{i=1}^m y_i}e^{-\lambda \sum_{i=1}^m N_i}=\lambda^{\sum_{i=1}^n y_i}e^{-\lambda N},$$ onde $N=\sum_{i=1}^m N_i$ é o tamanho da população. Como a verossimilhança pertence à família exponencial, temos que o modelo Gama$(r,s)$ é conjugado gerando a posteriori
+
+$$\lambda|\mathbf{y}\sim\hbox{Gama}\left(\sum_{i=1}^{m}y_i+r,N+s\right)\equiv \hbox{Gamma}(r_1,s_1).$$
+Observe que essa posteriori é identica a obtida no exemplo anterior, quando consideramos o número de casos na população.
+
+Considere agora um novo valor observado da localidade $i$. Sua preditiva a posteriori é dada por
+
+$$\begin{align}
+f(y^*_i|\boldsymbol{y})&=\int_0^\infty f(y^*_i|\lambda)f(\lambda|\boldsymbol{y})d\lambda\\
+&\int_0^\infty \frac{e^{-\lambda N_i}(\lambda N_i)^{y_i^*}}{y_i^*!}\frac{s_1^{r_1}}{\Gamma(r_1)}\lambda^{r_1-1}e^{-\lambda s_1}d\lambda\\
+&=\frac{\Gamma(r_1+y_i^*)}{y_i^*!\Gamma(r_1)}\left(\frac{s_i}{N_i+s_i}\right)^{r_1}\left(1-\frac{s_i}{N_i+s_i}\right)^{y_i^*},
+\end{align}$$
+ou seja,
+$$y_i^*|\boldsymbol{y}\sim\text{Binomial Negativa}\left(r_1,\frac{s_1}{N_i+s_1}\right),$$
+cujo valor esperado é 
+$$E(y_i^*|\boldsymbol{y})=\frac{r_1}{s_1}N_i.$$
+
+Deste modo, a taxa da preditiva a posteriori é dada por
+$$E(\frac{y_i^*}{N_i}|\boldsymbol{y})=\frac{r_1}{s_1}$$
+e podemos comparar o ajuste considerando a distribuição de $y^*_i/N_i$ com $y_i/N_i$.
+
+:::{#exm}
+**Crime de estupro no país (cont.)** Os dados deste exemplo estão no banco abaixo.
+
+```{r}
+require(gsheet)
+url <- 'https://docs.google.com/spreadsheets/d/11Sr8mqilWCe6Dj8TO6PgTYpJT292vbon1XnB0Co1Trc/edit?usp=sharing'
+
+dados <- gsheet2tbl(url)
+print(dados)
+```
+
+Utilizando a posteriori Gama(74931,2083), teremos que
+$$y_i^*|\hbox{dados}\sim\hbox{Binomial Negativa}\left(74931,\frac{2083}{N_i+2083}\right).$$
+
+Podemos construir intervalos de 95% (de predição) para $y^*_i$ utilizando os quantis da preditiva a posteriori, ou seja, encontrando $q_1$ e $q_2$ tais que
+$$\begin{align}
+P(Y_i^*\leq q_1|\boldsymbol{y})&=0,025\\
+P(Y_i^*\leq q_2|\boldsymbol{y})&=0,975.
+\end{align}
+$$
+
+Observe ainda que
+$$0,95\approx P(q_1\leq Y_i^*\leq q_2|\boldsymbol{y})=P\left(\frac{q_1}{N_i}\leq \frac{Y_i^*}{N_i}\leq \frac{q_2}{N_i}|\boldsymbol{y}\right),$$
+o que implica que $(q_1,q_2)/N_i$ é um intervalo de predição de 95% para taxa esperada. Abaixo construímos estes intervalos e contrastamos com a taxa observada.  
+
+```{r}
+# taxas observadas
+N <- unlist(dados[,2]/100000)
+taxas <- unlist(dados[,3]/N)
+
+# posteriori
+r1 = 74931
+s1 = 2083
+
+# limites do intervalo da preditiva a posteriori
+lim_inf <- qnbinom(.025, size = r1, prob = s1/(N+s1))
+lim_sup <- qnbinom(.975, size = r1, prob = s1/(N+s1))
+
+# gráfico
+cores = c('red','green4','red',rep('orange',4),'red','red','green4',
+          'red','red',rep(c('orange','red'),2), 'orange','green4','green4','orange',rep('red',4),'orange','green4','red')
+plot.new()
+plot.window( xlim = c(-70,120), ylim=c(0,27))
+segments(lim_inf/N,1:27,lim_sup/N,1:27, lwd = 2)
+text(-70,1:27, unlist(dados[,1]), adj =0 ,col=cores)
+points(taxas, 1:27, pch = 22, cex =.9, bg = cores)
+axis(1,at = seq(0,120,20))
+```
+
+Observe que o modelo de considera uma taxa única para o país se ajusta bem para os estados Alagoas, Maranhão, Piauí, Rio de Janeiro e Sergipe. Unidades da Federação como Amazonas, Bahia, Ceará, Distrito Federal, Minas Gerais, Pernambuco, Rio Grande do Norte e São Paulo, possuem taxas menores do que as preditas. Os demais estados possuem taxas maiores do que as preditas. 
+:::
+
+### Modelo com várias taxas
+
+O último exemplo da seção anterior mostra que o modelo com taxa única pode ser falho. Existem algumas explicações para este fenômeno, como: 
+
+* O evento observado não depende apenas do tamanho da população. O crime de estupro, por exemplo, depende de variáveis como vunerabilidade social e aparelhamento do estado para o acolhimento das vítimas. 
+
+* O evento observado pode ser raro. Eventos raros são mais difíceis de serem observados em populações menores, o que causa distorções.
+
+Podemos tentar mitigar os efeitos acima considerando um modelo no qual cada região possui sua própria taxa, i.e.
+
+$$y_i|\lambda_i\sim\hbox{Poisson}(\lambda_i N_i).$$
+Considerando a priori $\lambda_i\sim\hbox{Gama}(r,s)$, teremos 
+
+$$\begin{align}
+\lambda_i| \hbox{dados} & \sim \hbox{Gama}(r+y_i,s+N_i)\\
+y^*_i|\hbox{Dados}&\sim\hbox{Binomial Negativa}\left(r+y_i,\frac{s}{s+N_i}\right)
+\end{align}$$
+
+Observe que mesmo que cada região tenha a sua própria taxa, a informação a priori é a mesma para todas elas. Deste modo, é importante que a priori reflita as várias possibilidades de taxas.
+
+:::{#exm}
+**Crime de estupro no país (cont.)** Considere que as taxas para cada unidade da federação são independentes e identicamente distribuídas. Abaixo apresentamos a densidade estimada via método do núcleo para as 
+taxas.
+
+```{r}
+plot(density(taxas))
+curve(dgamma(x,100,.5),add = T)
+```
+
+Vimos na Introdução que uma priori Gama$(r,s)$ pode ser elicitada utilizando as seguintes fórmulas:
+
+$$\begin{align}a&=\left(\frac{\hbox{média}}{desvio}\right)^2\\
+b=\frac{a}{\hbox{média}}\end{align}$$
+
+Fazendo os cálculos abaixo
+```{r}
+media = mean(taxas)
+desvio = sd(taxas)
+r = (media/desvio)^2
+s = r/media
+r;s
+```
+
+A próxima figura reapresenta a densidade estimada em conjunto com a densidade Gama(3,6\;,\;0,07)
+
+```{r}
+plot(density(taxas))
+curve(dgamma(x,3.6,.07),add = T, lwd = 2, col ='tomato')
+```
+
+Vamos utilizar a priori $\lambda_i\sim\hbox{Gama}(3,6\;,\;0,07)$ para analizar este banco de dados, agora com múltiplas taxas.
+
+
+```{r}
+# hiperparametros
+r = 3.6
+s = .07
+
+# posterioris
+r1 = unlist(dados[,3])+r
+s1 = N + s
+
+# limites do intervalo da preditiva a posteriori
+lim_inf <- qnbinom(.025, size = r1, prob = s1/(N+s1))
+lim_sup <- qnbinom(.975, size = r1, prob = s1/(N+s1))
+
+# gráfico
+cores = c('red','green4','red',rep('orange',4),'red','red','green4',
+          'red','red',rep(c('orange','red'),2), 'orange','green4','green4','orange',rep('red',4),'orange','green4','red')
+plot.new()
+plot.window( xlim = c(-70,120), ylim=c(0,27))
+segments(lim_inf/N,1:27,lim_sup/N,1:27, lwd = 2)
+text(-70,1:27, unlist(dados[,1]), adj =0 ,col=cores)
+points(taxas, 1:27, pch = 22, cex =.9, bg = cores)
+axis(1, at=seq(0,120,20))
+
+```
+
+As múltiplas taxas apresentam um cenário mais honesto, acomodando cada estado a sua própria realidade. Abaixo, apresentamos um mapa com a taxa estimada.
+
+```{r}
+# Carregar as bibliotecas necessárias
+library(leaflet)
+library(geobr)
+
+# Obter os dados geográficos das Unidades da Federação do Brasil usando geobr
+brasil_uf <- read_state() # Ou o ano mais recente disponível
+
+# colocar os estados em ordem alfabética
+brasil_uf <- brasil_uf[order(brasil_uf$name_state), ]
+
+# adicionar as taxas
+brasil_uf$taxa <- r1/s1
+
+# Definir uma paleta de cores com base nos valores das taxas
+pal <- colorNumeric(palette = "viridis", domain = brasil_uf$taxa)
+
+# Criar o mapa leaflet
+mapa_leaflet <- leaflet(brasil_uf) %>%
+  setView(lng = -55, lat = -15, zoom = 3) %>% # Centralizar o mapa no Brasil
+  addTiles() %>% # Adicionar camadas de mapa base (OpenStreetMap por padrão)
+  addPolygons(
+    fillColor = ~pal(taxa),
+    weight = 1,
+    color = "#000000",
+    fillOpacity = 0.7,
+    label = ~paste0(name_state, ": ", round(taxa, 2)), # Adicionar rótulos ao passar o mouse
+    highlightOptions = highlightOptions(color = "white", weight = 2, bringToFront = TRUE)
+  ) %>%
+  addLegend(pal = pal, values = ~taxa, title = "Taxa", opacity = 1)
+
+# Exibir o mapa (opcional, se você estiver em um ambiente interativo)
+mapa_leaflet
+```
+
+:::
+
+### Análise de agrupamentos para taxas
+
+
+
+
+## Exercícios
+
+### Mortes por coice de cavalo
+
+Ladislaus Bortkiewicz é o responsável pela popularização da distribuição Poisson. Em seu livro intitulado A Lei dos Pequenos Números, é apresentado um conjunto de dados no qual foi rastreado o número de mortes por coice de cavalo em 14 corpos do exército prussiano ao longo de 20 anos (de 1875 a 1894). 
+
+|Mortes por corpo $\times$ ano | 0 |  1|   2|   3|   4| 
+|---|--|--|---|---|
+||109|65|22|  3|  1|
+
+Determine se a distribuição Poisson é adequada para este conjunto de dados. Em caso afirmativo, estime a taxa e dê um intervalo de credibilidade de 95%.
+
+
+### Suicídios no Amazonas considerando capital e interior
+
+O Amazonas possui uma característica peculiar: aproximadamente 50% da população vive na capital. Vimos anteriormente que o número de suicídios, considerando os anos entre 2021 e 2023, podem ser modelados por uma Poisson. A tabela abaixo divide esses dados entre capital e interior.
+
+| Ano | 2021 | 2022 | 2023 | Total |
+|-----|------|------|------|-------|
+|Capital| 133|124|138 |395|
+|Interior|164|173|201|538|
+: Número de suicídios divididos entre capital e interior
+
+Determine se há evidências de que essas taxas são diferentes.
+
+### Crime de estupro de vulnerável no interior do Amazonas**
+
+Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero no Amazonas e compreendem os anos entre 2010 e 2012. A população em risco é o número de mulheres com menos de 14 anos.
+
+| Cidade                | Vítimas | Populacao feminina |
+|-----------------------|---------|--------------------|
+| Amatura               | 3       | 639                |
+| Atalaia do Norte      | 6       | 905                |
+| Barreirinha           | 12      | 1899               |
+| Benjamin Constant     | 2       | 2036               |
+| Boa Vista do Ramos    | 6       | 1060               |
+| Fonte Boa             | 0       | 1438               |
+| Jutai                 | 1       | 1143               |
+| Maues                 | 13      | 3421               |
+| Nhamunda              | 9       | 1168               |
+| Parintins             | 20      | 6700               |
+| Santo Antonio do Ica  | 7       | 1608               |
+| Sao Paulo de Olivenca | 5       | 2033               |
+| Tabatinga             | 8       | 3095               |
+| Tonantins             | 1       | 1186               |
+
+Verifique se é possível utilizar uma única taxa para explicar este banco de dados. Em caso contrário, estime uma taxa para cada município. O que você pode destacar de sua análise?
