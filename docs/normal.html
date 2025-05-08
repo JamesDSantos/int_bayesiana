@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; O estimador de bayes – Introdução à Inferência Bayesiana</title>
+<title>8&nbsp; O modelo normal – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./bernoulli.html" rel="next">
-<link href="./conjugada.html" rel="prev">
+<link href="./negativeBinomial.html" rel="next">
+<link href="./poisson.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +110,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./estimacao.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./normal.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -195,7 +161,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./estimacao.html" class="sidebar-item-text sidebar-link active">
+  <a href="./estimacao.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></span></a>
   </div>
 </li>
@@ -219,7 +185,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./normal.html" class="sidebar-item-text sidebar-link">
+  <a href="./normal.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
@@ -264,15 +230,26 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a-distribuição-normal-gama" id="toc-a-distribuição-normal-gama" class="nav-link active" data-scroll-target="#a-distribuição-normal-gama"><span class="header-section-number">8.1</span> A distribuição normal-gama</a></li>
+  <li><a href="#a-função-de-verossimilhança" id="toc-a-função-de-verossimilhança" class="nav-link" data-scroll-target="#a-função-de-verossimilhança"><span class="header-section-number">8.2</span> A função de verossimilhança</a></li>
+  <li><a href="#posteriori-com-prioris-impróprias" id="toc-posteriori-com-prioris-impróprias" class="nav-link" data-scroll-target="#posteriori-com-prioris-impróprias"><span class="header-section-number">8.3</span> Posteriori com prioris impróprias</a></li>
+  <li><a href="#posteriori-com-a-priori-de-jeffreys" id="toc-posteriori-com-a-priori-de-jeffreys" class="nav-link" data-scroll-target="#posteriori-com-a-priori-de-jeffreys"><span class="header-section-number">8.4</span> Posteriori com a priori de Jeffreys</a></li>
+  <li><a href="#posteriori-para-a-priori-conjugada" id="toc-posteriori-para-a-priori-conjugada" class="nav-link" data-scroll-target="#posteriori-para-a-priori-conjugada"><span class="header-section-number">8.5</span> Posteriori para a priori conjugada</a></li>
+  <li><a href="#detecção-de-outliers" id="toc-detecção-de-outliers" class="nav-link" data-scroll-target="#detecção-de-outliers"><span class="header-section-number">8.6</span> Detecção de outliers</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></h1>
 </div>
 
 
@@ -289,54 +266,147 @@ window.Quarto = {
 </header>
 
 
-<p>Considere o problema de tomar alguma decisão sobre <span class="math inline">\(\theta\)</span> utilizando uma estatística <span class="math inline">\(T(\mathbf{x})\)</span>.</p>
-<p>Podemos determinar o quão ruim é a nossa decisão definindo uma função de perda <span class="math inline">\(\mathcal{L}(\theta,T)\)</span>, com as seguintes características:</p>
-<ul>
-<li><p><span class="math inline">\(\mathcal{L}(\theta,T)=0\)</span> sempre que <span class="math inline">\(T\)</span> for a decisão correta em relação à <span class="math inline">\(\theta\)</span></p></li>
-<li><p><span class="math inline">\(\mathcal{L}(\theta,T)&gt;0\)</span> em caso contrário.</p></li>
-</ul>
-<p>Por exemplo, se <span class="math inline">\(T\)</span> for um estimador para <span class="math inline">\(\theta\)</span>, a decisão correta seria ter <span class="math inline">\(T=\theta\)</span>. Além disso, quanto mais afastado <span class="math inline">\(T\)</span> estiver de <span class="math inline">\(\theta\)</span>, pior é a decisão e maior deveria ser a perda.</p>
-<p>No problema de estimação pontual, é usual utilizar a perda quadrática: <span class="math display">\[\mathcal{L}(\theta,T)=(T-\theta)^2,\]</span> cujo esboço do gráfico é dado abaixo:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>( x<span class="sc">^</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="fu">expression</span>(theta <span class="sc">-</span><span class="dv">2</span>),<span class="fu">expression</span>(theta <span class="sc">-</span><span class="dv">1</span>),<span class="fu">expression</span>(theta),<span class="fu">expression</span>(theta <span class="sc">+</span><span class="dv">1</span>),<span class="fu">expression</span>(theta <span class="sc">+</span><span class="dv">2</span>) ))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>( <span class="at">ylab =</span> <span class="st">'Perda quadrática'</span>,<span class="at">xlab =</span> <span class="st">'T'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="estimacao_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Para uma decisão <span class="math inline">\(T\)</span> podemos calcular a perda média <span class="math display">\[R_T(\theta)=E(\mathcal{L}(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}\]</span> A função acima é conhecida como risco da decisão <span class="math inline">\(T\)</span> e é variável em <span class="math inline">\(\theta\)</span>. Seu uso é simples: se <span class="math inline">\(R_T(\theta)&lt;R_U(\theta)\)</span>, então em média a decisão <span class="math inline">\(T\)</span> tem menor perda que <span class="math inline">\(U\)</span>. Assim, a melhor escolha entre as duas decisão é <span class="math inline">\(U\)</span>.</p>
-<p>O risco associado à perda quadrática é denominado erro quadrático médio:</p>
-<p><span class="math display">\[R_T(\theta)=E(T-\theta)^2= Var(T)+(E(T|\theta)-\theta)^2\]</span> Ele possui papel importante na inferência pontual frequentista, como por exemplo, para definir o melhor estimador não viciado de variância uniformemente mínima.</p>
-<p>O risco de Bayes da decisão <span class="math inline">\(T\)</span> é o valor esperado do seu respectivo risco , <span class="math display">\[r_T=\int R_T(\theta)f(\theta)d\theta,\]</span> sendo portanto uma constante. Qualquer decisão com o menor risco para todo <span class="math inline">\(\theta\)</span> também tem o menor risco de Bayes. Dizemos que <span class="math inline">\(T\)</span> é o estimador de Bayes se <span class="math inline">\(r_T&lt;r_U\)</span> para qualquer decisão <span class="math inline">\(U\)</span>.</p>
-<div class="alert alert-success">
-<p><strong>Teorema</strong></p>
-<p>O estimador <span class="math inline">\(T\)</span> que minimiza <span class="math display">\[\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\theta\]</span> é o estimador de Bayes.</p>
-</div>
-<div class="alert alert-info">
-<p><strong>Exemplo</strong></p>
-<p>Vamos encontrar o estimador de Bayes para a perda quadrática. Temos que</p>
-<p><span class="math display">\[\begin{align*}\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\theta&amp;=\int (T(\mathbf{x})-\theta)^2f(\theta|\mathbf{x})d\theta\\
-    &amp;=T(\mathbf{x})^2 +\int \theta^2f(\theta|\mathbf{x})d\theta-2T(\mathbf{x})\int \theta f(\theta|\mathbf{x})d\theta\\
-    &amp;= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x})\\
-    &amp;= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x}) \pm E(\theta|\mathbf{x})^2\\
-    &amp;=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +E(\theta^2|\mathbf{x})-E(\theta|\mathbf{x})^2\\
-    &amp;=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +Var(\theta|\mathbf{x})
-\end{align*}\]</span> A função acima é minimizada em <span class="math inline">\(T(\mathbf{x})=E(\theta|\mathbf{x})\)</span>. Disto, mostra-se que <span class="math display">\[r_T\geq Var(\theta|\mathbf{x})\]</span> e a variância da posteriori pode ser utilizada como medida de erro. Como a unidade deste erro está ao quadrado, é usual utilizarmos o desvio padrão da posteriori como medida de erro.</p>
-</div>
-<div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.1</strong></span> Seja <span class="math inline">\(X_1,\ldots,X_n\)</span> uma amostra aleatória do modelo Exponencial(<span class="math inline">\(\theta\)</span>) e considere a priori <span class="math inline">\(\theta\sim\hbox{Gama}(a,b)\)</span>. Sabemos que <span class="math inline">\(\theta|\boldsymbol{x}\sim\hbox{Gama}(s+n,r+\sum_{i=1}^n x_i)\)</span>. Então, o estimador de Bayes segundo a perda quadrática é <span class="math display">\[T(\boldsymbol{x})=E(\theta|\boldsymbol{x})=\frac{s+n}{r+\sum_{i=1}^n x_i},\]</span> e o erro associado é <span class="math display">\[\sqrt{Var(\theta|\boldsymbol{x})}=\sqrt{\frac{s+n}{(r+\sum_{i=1}^n x_i)^2}}=\sqrt{\frac{E(\theta|\boldsymbol{x})^2}{s+n}}=\frac{E(\theta|\boldsymbol{x})}{\sqrt{n+s}}.\]</span></p>
-<p>Note que, como esperado, o erro decresce na medida que <span class="math inline">\(n\)</span> cresce.</p>
-</div>
+<section id="a-distribuição-normal-gama" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="a-distribuição-normal-gama"><span class="header-section-number">8.1</span> A distribuição normal-gama</h2>
+<p>Dizemos que <span class="math inline">\((X,Y)\sim NG(\mu,n_0,\nu,d^2)\)</span> (lê-se normal-gama) se sua função densidade conjunta é dada por</p>
+<p><span class="math display">\[f(x,y)\propto y^{\frac{\nu+1}{2}-1}\exp\left\{-\frac{y}{2}n_0\left[(x-\mu)^2 + d^2\right]\right\}\]</span></p>
+<p>onde <span class="math inline">\(\mu,x\in\mathbb{R}\)</span> e <span class="math inline">\(d,y,c\in\mathbb{R}_+\)</span>. Colocando os termos que não dependem de <span class="math inline">\(x\)</span> junto com a constante de proporcionalidade, podemos mostrar que</p>
+<p><span class="math display">\[f(x|y)\propto \exp\left\{-\frac{y}{2}n_0(x-\mu)^2\right\}\]</span> ou seja, <span class="math inline">\(X|y\sim\hbox{Normal}(\mu,y^{-1}/n_0)\)</span>. Além disso, integrando <span class="math inline">\(f(x,y)\)</span> em <span class="math inline">\(x\)</span>, mostramos que</p>
+<p><span class="math display">\[f(y)\propto y^{\frac{\nu+1}{2}-1}e^{-\frac{yn_0d^2}{2}}\int_{\mathbb{R}}\exp\left\{-\frac{y}{2}\left[n_0(x-\mu)^2\right]\right\}d\mu\propto y^{\frac{\nu}{2}-1}e^{-\frac{n_0d^2}{2}y}\]</span> ou seja, <span class="math inline">\(Y\sim\hbox{Gama}(\nu/2, n_0d^2/2)\)</span>. Por último, integrando <span class="math inline">\(f(x,y)\)</span> em <span class="math inline">\(y\)</span> teremos</p>
+<p><span class="math display">\[\begin{align}f(x)&amp;\propto \int_0^\infty y^{\frac{\nu+1}{2}-1}\exp\left\{-\frac{y}{2}n_0\left[(x-\mu)^2 + d^2\right]\right\}dy \\&amp;\propto \Gamma\left(\frac{\nu+1}{2}\right)\left\{1+\frac{\nu}{d^2}\frac{(x-\mu)^2}{\nu}\right\}^{-\frac{\nu+1}{2}}\end{align}\]</span> ou seja, <span class="math inline">\(X\sim t_{\nu}(\mu, d^2/\nu)\)</span>. Em especial, se <span class="math inline">\(\nu&gt;1\)</span> então <span class="math inline">\(E(X)=\mu\)</span> e, se <span class="math inline">\(\nu&gt;2\)</span> teremos que <span class="math display">\[Var(X)=\frac{d^2}{\nu-2}\]</span></p>
+</section>
+<section id="a-função-de-verossimilhança" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="a-função-de-verossimilhança"><span class="header-section-number">8.2</span> A função de verossimilhança</h2>
+<p>Seja <span class="math inline">\(X_1,\ldots,X_n\)</span> uma amostra aleatória do modelo <span class="math inline">\(X|\mu,\phi\sim\hbox{Normal}(\mu,\phi^{-1})\)</span>, onde <span class="math inline">\(\phi\)</span>, denominado precisão, é o inverso da variância. A função de verossimilhança deste modelo pode ser escrita como</p>
+<p><span class="math display">\[L(\mu,\phi)\propto \phi^{\frac{n}{2}}\exp\left\{-\frac{n\phi}{2}(\bar{x}-\mu)^2 -\frac{ns^2\phi}{2}\right\}\]</span> onde <span class="math display">\[s^2=\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})^2\]</span> é a estimativa de máxima verossimilhança para <span class="math inline">\(\phi^{-1}\)</span>.</p>
+</section>
+<section id="posteriori-com-prioris-impróprias" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="posteriori-com-prioris-impróprias"><span class="header-section-number">8.3</span> Posteriori com prioris impróprias</h2>
+<p>Considerando as prioris impróprias <span class="math inline">\(\pi(\phi)\propto \phi^{-1}\)</span>, <span class="math inline">\(\pi(\mu)\propto 1\)</span> e que <span class="math inline">\(\pi(\mu,\phi)=\pi(\mu)\pi(\phi)\)</span>, teremos que</p>
+<p><span class="math display">\[\pi(\mu,\phi|\boldsymbol{x})\propto \phi^{\frac{n}{2}-1}\left\{-\frac{\phi}{2}n\left[ (\bar{x}-\mu)^2 +s^2\right]\right\}\]</span> ou seja, <span class="math inline">\(\mu,\phi|\boldsymbol{x}\sim\hbox{NG}(\bar{x},n,n-1,s^2)\)</span>, o que implica em:</p>
+<p><span class="math display">\[\begin{align}
+\mu|\phi,\boldsymbol{x}&amp;\sim\hbox{Normal}\left(\bar{x},\frac{\phi^{-1}}{n}\right)\\
+\phi|\boldsymbol{x}&amp;\sim\hbox{Gama}\left(\frac{n-1}{2},\frac{ns^2}{2}\right)\\
+\mu|\boldsymbol{x}&amp;\sim t_{n-1}\left(\bar{x},\frac{s^2}{n-1}\right)
+\end{align}\]</span></p>
+<p>Disto, teremos que</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parâmetro</th>
+<th>Estimativa</th>
+<th>Erro</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\mu\)</span></td>
+<td><span class="math inline">\(\bar{x}\)</span></td>
+<td><span class="math inline">\(\frac{s}{\sqrt{n-3}}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\phi\)</span></td>
+<td><span class="math inline">\(\frac{n-1}{ns^2}\)</span></td>
+<td><span class="math inline">\(\frac{\sqrt{2(n-1)}}{s^2n}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="posteriori-com-a-priori-de-jeffreys" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="posteriori-com-a-priori-de-jeffreys"><span class="header-section-number">8.4</span> Posteriori com a priori de Jeffreys</h2>
+<p>O logaritmo da função de verossimilhança é</p>
+<p><span class="math display">\[l(\mu,\phi)=\frac{n}{2}\log\phi -\frac{n}{2}\phi\left[(\bar{x}-\mu)^2 + s^2\right]\]</span></p>
+<p>As derivadas de primeira ordem em <span class="math inline">\(\mu\)</span> e <span class="math inline">\(\phi\)</span> são <span class="math display">\[\begin{align}
+\frac{\partial}{\partial \mu}l(\mu,\phi)&amp;=n\phi(\bar{x}-\mu)\\
+\frac{\partial}{\partial \phi}l(\mu,\phi)&amp;=\frac{n}{2\phi}-\frac{n}{2}\left[(\bar{x}-\mu)^2 + s^2\right]\\
+\end{align}\]</span></p>
+<p>e as de segunda ordem são <span class="math display">\[\begin{align}
+\frac{\partial^2}{\partial \mu^2}l(\mu,\phi)&amp;=-n\phi\\
+\frac{\partial^2}{\partial \phi^2}l(\mu,\phi)&amp;=-\frac{n}{2\phi^2}\\
+\frac{\partial^2}{\partial \mu\partial \phi}l(\mu,\phi)&amp;=0\\
+\end{align}
+\]</span> logo, a matriz de informação de Fisher é <span class="math display">\[\mathcal{I}_n(\mu,\phi)=n\left[\begin{array}{cc}\phi &amp; 0 \\0 &amp; \frac{1}{2\phi^2}\end{array}\right],\]</span> e a priori de Jeffreys é <span class="math display">\[\pi(\mu,\phi)\propto \sqrt{|\mathcal{I}_n(\mu,\phi)|}=\phi^{-1/2},\]</span> que implica na posteriori</p>
+<p><span class="math display">\[\pi(\mu,\phi|\boldsymbol{x})\propto \phi^{\frac{n+1}{2}-1}\left\{-\frac{n\phi}{2}\left[(\bar{x}-\mu)^2 +s^2 \right]\right\}\]</span> ou seja, <span class="math inline">\(\mu,\phi|\boldsymbol{x}\sim\hbox{NG}(\bar{x},n,n,s^2)\)</span>, o que implica em:</p>
+<p><span class="math display">\[\begin{align}
+\mu|\phi,\boldsymbol{x}&amp;\sim\hbox{Normal}\left(\bar{x},\frac{\phi^{-1}}{n}\right)\\
+\phi|\boldsymbol{x}&amp;\sim\hbox{Gama}\left(\frac{n}{2},\frac{ns^2}{2}\right)\\
+\mu|\boldsymbol{x}&amp;\sim t_{n}\left(\bar{x},\frac{s^2}{n}\right)
+\end{align}\]</span></p>
+<p>Disto, teremos que</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parâmetro</th>
+<th>Estimativa</th>
+<th>Erro</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\mu\)</span></td>
+<td><span class="math inline">\(\bar{x}\)</span></td>
+<td><span class="math inline">\(\frac{s}{\sqrt{n-2}}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\phi\)</span></td>
+<td><span class="math inline">\(\frac{1}{s^{2}}\)</span></td>
+<td><span class="math inline">\(\frac{\sqrt{2}}{s^2\sqrt{n}}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="posteriori-para-a-priori-conjugada" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="posteriori-para-a-priori-conjugada"><span class="header-section-number">8.5</span> Posteriori para a priori conjugada</h2>
+<p>Considere que <span class="math inline">\((\mu,\phi)\sim \hbox{NG}(m_0,n_0,\nu_0,s^2_0)\)</span>. Esta priori é conjugada para o modelo normal, uma vez que</p>
+<p><span class="math display">\[\begin{align}
+\pi(\mu,\phi|\boldsymbol{x})&amp;\propto \phi^{\frac{n}{2}}\exp\left\{-\frac{\phi}{2}n\left[(\bar{x}-\mu)^2+ s^2\right]\right\}\phi^{\frac{\nu_0+1}{2}-1}\exp\left\{-\frac{\phi}{2}n_0\left[(\mu-m_0)^2 + s_0^2\right]\right\}\\
+&amp;\phi^{\frac{\nu_0+n}{2}-1}\exp\left\{-\frac{\phi}{2}\left[n(\bar{x}-\mu)^2 + n_0(\mu-m_0)^2+ns^2 + n_0s^2_0\right]\right\}\end{align}.\]</span> Como <span class="math display">\[n(\bar{x}-\mu)^2 +n_0(\mu-m_0)^2 = (n+n_0)(\mu-m_1)^2+\frac{n n_0}{n+n_0}(\bar{x}-m_0)^2\]</span> onde <span class="math display">\[\begin{align}
+m_1&amp;=\frac{n}{n+n_0}\bar{x}+\frac{n_0}{n+n_0}m_0
+\end{align},\]</span> teremos <span class="math display">\[\begin{align}
+\pi(\mu,\phi|\boldsymbol{x})&amp;\propto \phi^{\frac{\nu_1+1}{2}-1}\exp\left\{-\frac{\phi}{2}n_1\left[(\mu-m_1)^2 + d_1^2\right]\right\}\end{align},\]</span> onde <span class="math display">\[\begin{align}
+\nu_1&amp;=\nu_0+n\\
+n_1&amp;=n_0+n\\
+m_1&amp;=\frac{n}{n1}\bar{x}+\frac{n_0}{n_1}m_0\\
+d_1^2&amp; = \frac{n_0n}{n_1^2}(\bar{x}-m_0)^2+\frac{n}{n_1}s^2 + \frac{n_0}{n_1}s^2_0
+\end{align}\]</span> ou seja, <span class="math inline">\(\mu,\phi|\boldsymbol{x}\sim\hbox{NG}(m_1,n+n_0,\nu_0+n,d_1^2)\)</span>, o que implica em:</p>
+<p><span class="math display">\[\begin{align}
+\mu|\phi,\boldsymbol{x}&amp;\sim\hbox{Normal}\left(m_1,\frac{\phi^{-1}}{n+n_0}\right)\\
+\phi|\boldsymbol{x}&amp;\sim\hbox{Gama}\left(\frac{n+\nu_0}{2},\frac{(n+n_0)d_1^2}{2}\right)\\
+\mu|\boldsymbol{x}&amp;\sim t_{n}\left(m_1,\frac{d^2_1}{\nu_0+n}\right)
+\end{align}\]</span></p>
+<p>Disto, teremos que</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 40%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parâmetro</th>
+<th>Estimativa</th>
+<th>Erro</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\mu\)</span></td>
+<td><span class="math inline">\(\frac{n}{n+n_0}\bar{x}+\frac{n_0}{n+n_0}m_0\)</span></td>
+<td><span class="math inline">\(\frac{d_1}{\sqrt{n+\nu_0-2}}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\phi\)</span></td>
+<td><span class="math inline">\(\frac{n+\nu_0}{(n+n_0)d_1^2}\)</span></td>
+<td><span class="math inline">\(\frac{\sqrt{2(n+\nu_0)}}{d_1^2(n+n_0)}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="detecção-de-outliers" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="detecção-de-outliers"><span class="header-section-number">8.6</span> Detecção de outliers</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -761,13 +831,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./conjugada.html" class="pagination-link" aria-label="Famílias conjugadas">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></span>
+      <a href="./poisson.html" class="pagination-link" aria-label="O modelo Poisson">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./bernoulli.html" class="pagination-link" aria-label="O modelo Bernoulli">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

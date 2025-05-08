@@ -249,6 +249,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -299,19 +305,18 @@ window.Quarto = {
 <pre><code>Carregando pacotes exigidos: gsheet</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">'https://docs.google.com/spreadsheets/d/1dLDCjA9a8UgXA9sJ1TNCVvRCDFITalewGkHlc__Eg20/edit?usp=sharing'</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>No encoding supplied: defaulting to UTF-8.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(url)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>               REGIAO     TIPO SEXO   PERIODO TOTAL
-1        Região Norte AGRESSAO Masc 2001-2003  7628
-2     Região Nordeste AGRESSAO Masc 2001-2003 29652
-3      Região Sudeste AGRESSAO Masc 2001-2003 63411
-4          Região Sul AGRESSAO Masc 2001-2003 12428
-5 Região Centro-Oeste AGRESSAO Masc 2001-2003  9319
-6        Região Norte AGRESSAO  Fem 2001-2003   677</code></pre>
+<pre><code># A tibble: 6 × 5
+  REGIAO              TIPO     SEXO  PERIODO   TOTAL
+  &lt;chr&gt;               &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;
+1 Região Norte        AGRESSAO Masc  2001-2003  7628
+2 Região Nordeste     AGRESSAO Masc  2001-2003 29652
+3 Região Sudeste      AGRESSAO Masc  2001-2003 63411
+4 Região Sul          AGRESSAO Masc  2001-2003 12428
+5 Região Centro-Oeste AGRESSAO Masc  2001-2003  9319
+6 Região Norte        AGRESSAO Fem   2001-2003   677</code></pre>
 </div>
 </div>
 </section>

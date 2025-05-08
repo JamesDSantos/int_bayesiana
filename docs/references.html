@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; O estimador de bayes – Introdução à Inferência Bayesiana</title>
+<title>References – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,41 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-</style>
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -64,8 +49,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./bernoulli.html" rel="next">
-<link href="./conjugada.html" rel="prev">
+<link href="./mcmc.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,35 +87,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -144,7 +99,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./estimacao.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./references.html">References</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -195,7 +150,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./estimacao.html" class="sidebar-item-text sidebar-link active">
+  <a href="./estimacao.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></span></a>
   </div>
 </li>
@@ -255,7 +210,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="./references.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -272,7 +227,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></h1>
+<h1 class="title">References</h1>
 </div>
 
 
@@ -289,51 +244,14 @@ window.Quarto = {
 </header>
 
 
-<p>Considere o problema de tomar alguma decisão sobre <span class="math inline">\(\theta\)</span> utilizando uma estatística <span class="math inline">\(T(\mathbf{x})\)</span>.</p>
-<p>Podemos determinar o quão ruim é a nossa decisão definindo uma função de perda <span class="math inline">\(\mathcal{L}(\theta,T)\)</span>, com as seguintes características:</p>
-<ul>
-<li><p><span class="math inline">\(\mathcal{L}(\theta,T)=0\)</span> sempre que <span class="math inline">\(T\)</span> for a decisão correta em relação à <span class="math inline">\(\theta\)</span></p></li>
-<li><p><span class="math inline">\(\mathcal{L}(\theta,T)&gt;0\)</span> em caso contrário.</p></li>
-</ul>
-<p>Por exemplo, se <span class="math inline">\(T\)</span> for um estimador para <span class="math inline">\(\theta\)</span>, a decisão correta seria ter <span class="math inline">\(T=\theta\)</span>. Além disso, quanto mais afastado <span class="math inline">\(T\)</span> estiver de <span class="math inline">\(\theta\)</span>, pior é a decisão e maior deveria ser a perda.</p>
-<p>No problema de estimação pontual, é usual utilizar a perda quadrática: <span class="math display">\[\mathcal{L}(\theta,T)=(T-\theta)^2,\]</span> cujo esboço do gráfico é dado abaixo:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.window</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>( x<span class="sc">^</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> T)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="fu">expression</span>(theta <span class="sc">-</span><span class="dv">2</span>),<span class="fu">expression</span>(theta <span class="sc">-</span><span class="dv">1</span>),<span class="fu">expression</span>(theta),<span class="fu">expression</span>(theta <span class="sc">+</span><span class="dv">1</span>),<span class="fu">expression</span>(theta <span class="sc">+</span><span class="dv">2</span>) ))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>( <span class="at">ylab =</span> <span class="st">'Perda quadrática'</span>,<span class="at">xlab =</span> <span class="st">'T'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="estimacao_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-polack2020safety" class="csl-entry" role="listitem">
+Polack, Fernando P, Stephen J Thomas, Nicholas Kitchin, Judith Absalon,
+Alejandra Gurtman, Stephen Lockhart, John L Perez, et al. 2020.
+<span>“Safety and Efficacy of the BNT162b2 mRNA Covid-19
+Vaccine.”</span> <em>New England Journal of Medicine</em> 383 (27):
+2603–15.
 </div>
-</div>
-</div>
-<p>Para uma decisão <span class="math inline">\(T\)</span> podemos calcular a perda média <span class="math display">\[R_T(\theta)=E(\mathcal{L}(\theta,T))=\int L(\theta,T(\mathbf{x}))f(\mathbf{x}|\theta)d\mathbf{x}\]</span> A função acima é conhecida como risco da decisão <span class="math inline">\(T\)</span> e é variável em <span class="math inline">\(\theta\)</span>. Seu uso é simples: se <span class="math inline">\(R_T(\theta)&lt;R_U(\theta)\)</span>, então em média a decisão <span class="math inline">\(T\)</span> tem menor perda que <span class="math inline">\(U\)</span>. Assim, a melhor escolha entre as duas decisão é <span class="math inline">\(U\)</span>.</p>
-<p>O risco associado à perda quadrática é denominado erro quadrático médio:</p>
-<p><span class="math display">\[R_T(\theta)=E(T-\theta)^2= Var(T)+(E(T|\theta)-\theta)^2\]</span> Ele possui papel importante na inferência pontual frequentista, como por exemplo, para definir o melhor estimador não viciado de variância uniformemente mínima.</p>
-<p>O risco de Bayes da decisão <span class="math inline">\(T\)</span> é o valor esperado do seu respectivo risco , <span class="math display">\[r_T=\int R_T(\theta)f(\theta)d\theta,\]</span> sendo portanto uma constante. Qualquer decisão com o menor risco para todo <span class="math inline">\(\theta\)</span> também tem o menor risco de Bayes. Dizemos que <span class="math inline">\(T\)</span> é o estimador de Bayes se <span class="math inline">\(r_T&lt;r_U\)</span> para qualquer decisão <span class="math inline">\(U\)</span>.</p>
-<div class="alert alert-success">
-<p><strong>Teorema</strong></p>
-<p>O estimador <span class="math inline">\(T\)</span> que minimiza <span class="math display">\[\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\theta\]</span> é o estimador de Bayes.</p>
-</div>
-<div class="alert alert-info">
-<p><strong>Exemplo</strong></p>
-<p>Vamos encontrar o estimador de Bayes para a perda quadrática. Temos que</p>
-<p><span class="math display">\[\begin{align*}\int \mathcal{L}(\theta,T(\mathbf{x}))f(\theta|\mathbf{x})d\theta&amp;=\int (T(\mathbf{x})-\theta)^2f(\theta|\mathbf{x})d\theta\\
-    &amp;=T(\mathbf{x})^2 +\int \theta^2f(\theta|\mathbf{x})d\theta-2T(\mathbf{x})\int \theta f(\theta|\mathbf{x})d\theta\\
-    &amp;= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x})\\
-    &amp;= T(\mathbf{x})^2 + E(\theta^2|\mathbf{x}) -2T(\mathbf{x})E(\theta|\mathbf{x}) \pm E(\theta|\mathbf{x})^2\\
-    &amp;=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +E(\theta^2|\mathbf{x})-E(\theta|\mathbf{x})^2\\
-    &amp;=\left( T(\mathbf{x}) - E(\theta|\mathbf{x})\right)^2 +Var(\theta|\mathbf{x})
-\end{align*}\]</span> A função acima é minimizada em <span class="math inline">\(T(\mathbf{x})=E(\theta|\mathbf{x})\)</span>. Disto, mostra-se que <span class="math display">\[r_T\geq Var(\theta|\mathbf{x})\]</span> e a variância da posteriori pode ser utilizada como medida de erro. Como a unidade deste erro está ao quadrado, é usual utilizarmos o desvio padrão da posteriori como medida de erro.</p>
-</div>
-<div id="exm-" class="theorem example">
-<p><span class="theorem-title"><strong>Example 4.1</strong></span> Seja <span class="math inline">\(X_1,\ldots,X_n\)</span> uma amostra aleatória do modelo Exponencial(<span class="math inline">\(\theta\)</span>) e considere a priori <span class="math inline">\(\theta\sim\hbox{Gama}(a,b)\)</span>. Sabemos que <span class="math inline">\(\theta|\boldsymbol{x}\sim\hbox{Gama}(s+n,r+\sum_{i=1}^n x_i)\)</span>. Então, o estimador de Bayes segundo a perda quadrática é <span class="math display">\[T(\boldsymbol{x})=E(\theta|\boldsymbol{x})=\frac{s+n}{r+\sum_{i=1}^n x_i},\]</span> e o erro associado é <span class="math display">\[\sqrt{Var(\theta|\boldsymbol{x})}=\sqrt{\frac{s+n}{(r+\sum_{i=1}^n x_i)^2}}=\sqrt{\frac{E(\theta|\boldsymbol{x})^2}{s+n}}=\frac{E(\theta|\boldsymbol{x})}{\sqrt{n+s}}.\]</span></p>
-<p>Note que, como esperado, o erro decresce na medida que <span class="math inline">\(n\)</span> cresce.</p>
 </div>
 
 
@@ -761,14 +679,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./conjugada.html" class="pagination-link" aria-label="Famílias conjugadas">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></span>
+      <a href="./mcmc.html" class="pagination-link" aria-label="Tópicos em Método de Monte Carlo via Cadeias de Markov">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./bernoulli.html" class="pagination-link" aria-label="O modelo Bernoulli">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
