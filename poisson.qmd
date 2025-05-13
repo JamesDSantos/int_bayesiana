@@ -376,14 +376,14 @@ mapa_leaflet
 
 :::
 
-### Análise de agrupamentos para taxas
+### Análise de agrupamentos para taxas - modelagem 1
 
 Até o momento estudamos dois exemplos extremos:
 
 * Um modelo com uma única taxa por localidade
 * Um modelo com uma taxa por localidade
 
-Um modo útil para deicidir qual abordagem é a mais interessante é o uso de um critério de informação. Recordemos que tais critério são escritos como
+Um modo útil para decidir qual abordagem é a mais interessante é o uso de um critério de informação. Recordemos que tais critério são escritos como
 
 $$-2\log L(\hat{\theta})+2k,$$
 onde $L(\theta)$ é a função de verossimilhança, $\hat{\theta}$ é uma estimativa para $\theta$ e $k$ é uma penalidade relacionada ao número de parâmetros do modelo. Por causa do sinal negativo em $L(.)$, temos que o modelo preferível é aquele com menor valor do critério. 
@@ -455,27 +455,346 @@ Observe que o modelo com uma taxa por unidade da federação possui o menor valo
 :::
 
 
-Seja $S=\{1,\ldots,m\}$ o conjunto das $m$ localidades. Suponha que é razoável particionar $S$ e $k$ grupos. Por último, considere que todas as localidades dentro de uma partição compartilham a mesma taxa, ou seja, para $j$ dentro da partição $S_t$, 
-tem-se que $y_i|\lambda_t\sim\hbox{Poisson}(\lambda_tN_i)$, onde $\lambda_t\sim\hbox{Gama}(r_t,s_t)$. O desafio aqui é determinar se a localidade pertence à partição $S_t$. 
+Seja $S=\{1,\ldots,m\}$ o conjunto das $m$ localidades. Suponha que é razoável particionar $S$ em $k$ grupos. Por último, considere que todas as localidades dentro de uma partição compartilham a mesma taxa, ou seja, para $j$ dentro da partição $S_t$, 
+tem-se que $y_i|\lambda_t\sim\hbox{Poisson}(\lambda_tN_i)$, onde $\lambda_t\sim\hbox{Gama}(r_t,s_t)$. O desafio aqui é determinar se a localidade pertence à partição $S_t$.
 
-Considere que a localidade $i$ pertence à partição $t$. Defina o vetor coluna $z_i$, de comprimento de comprimento $k$, composto de zeros exceto na coordenada $t$, que vale 1. Defina $z_{i,s}$ como a $s$-ésima coordenada do vetor $z_i$. Então 
+Podemos utilizar alguma técnica não paramétrica de agrupamento e então consideramos essa classificação para fins da modelagem.
 
-$$\prod_{j=1}^k \lambda_j^{z_{i,j}}=\lambda_t=\sum_{j=1}^k \lambda_j z_{i,j}.$$
-Deste modo, temos que $y_i|z_i,\lambda\sim\hbox{Poisson}(\prod_{j=1}^k\lambda_j^{z_{i,j}} N_i)$. e a função de verossimilhança é dada por
 
-$$L(\lambda,z)=\prod_{i=1}^m \frac{e^{-\sum_{j=1}^k\lambda_jz_{i,j}N_i}[\prod_{j=1}^k \lambda_j^{z_{i,j}} N_i]^{y_i}}{y_i!}\propto \prod_{i=1}^m \left[\prod_{j=1}^ke^{-\lambda_jz_{i,j}N_i}\right]\left[\prod_{j=1}^k \lambda_j^{z_{i,j}} N_i\right]^{y_i}=\prod_{j=1}^k e^{-\lambda_j\sum_{i=1}^m z_{i,j}N_i}\lambda_j^{\sum_{i=1}^m z_{i,j}y_i}$$
-Observe que $z_j$ é desconhecido e vamos tratá-lo como parâmetro. Pela sua natureza, pode-se pensar em utilizar a priori $z_j\sim\hbox{Bernoulli Multivariada}(p_1,\ldots,p_k)$.
+:::{#exm}
+**Análise de agrupamento para as taxas de crimes de estupro**
 
-Vamos assumir que a priori de $z_1,\ldots,z_m$ é independente da priori $\lambda_1,\ldots,\lambda_k$.  
+Considerando o mapa dado no exemplo anterior, podemos conjecturar que existem em torno de 3 a 5 agrupamentos das taxas. 
 
-Para determinar a posteriori de $(\lambda,z)$, observe que
+Começando nossa análise com três grupos, podemos fazer uma classificação inicial das taxas utilizando o método das $k$-médias para obter uma classificação inicial
 
-$$\begin{align}f(\lambda,z|\boldsymbol{y})&\propto L(\lambda,z)f(\lambda)f(z)\\&\propto\prod_{j=1}^k e^{-\lambda_j\sum_{i=1}^m z_{i,j}N_i}\lambda_j^{\sum_{i=1}^m z_{i,j}y_i}\prod_{j=1}^k \lambda_j^{r_j-1}e^{-\lambda_js_j}\prod_{i=1}^m \prod_{j=1}^k p_j^{z_{i,j}}\end{align}$$
-Note que
-$$f(\lambda|z,\boldsymbol{y})$$
+```{r}
+grupos = 3
+km = kmeans(taxas,grupos)
+```
 
-$z_i\sim\hbox{Bernoulli Multivariada}(p_1,\ldots,p_k)$
+Apresentamos a seguir os agrupamentos encontrados:
+```{r}
+# Grupo 1
+dados[,1][km$cluster == 1]
+# Grupo 2
+dados[,1][km$cluster == 2]
+# Grupo 3
+dados[,1][km$cluster == 3]
+```
+Em seguinda, podemos utilizar essa classificação para construir as três prioris para as taxas. Lembremos que
+$$E(\lambda)=\frac{r}{s}$$
+e que 
+$$Var(\lambda)=\frac{E(\lambda)}{s}$$
 
+Vamos escolher para os parâmetros da priori $r\approx \tau\text{taxa}$ e $s=\tau$. Deste modo, a média da priori estará próxima da taxa e a variância vai ser controlada por $\tau.$. Vamos escolhe $\tau=0,1$  
+```{r}
+r = s = NULL
+tau = .1
+for(i in 1:grupos){
+  media = mean(taxas[km$cluster == i])
+  r[i] <- media*tau
+  s[i] <- tau
+}
+```
+
+As posterioris estão podem ser calculadas para cada um dos três agrupamentos.
+
+```{r}
+r1 = s1 = NULL
+for(i in 1:grupos){
+  r1[i] <- r[i] + sum( dados[,3][km$cluster == i])
+  s1[i] <- s[i] + sum( N[km$cluster == i])
+}
+```
+Abaixo apresentamos as 3 posterioris.
+```{r}
+curve(dgamma(x,r1[1],s1[1]),10,120, ylab = 'Posteriori',xlab='Taxa')
+curve(dgamma(x,r1[2],s1[2]),add=TRUE, col = 2)
+curve(dgamma(x,r1[3],s1[3]),add=TRUE, col = 3)
+legend('topright',c('Grupo 1','Grupo 2', 'Grupo 3'), col=1:3, lty=1, bty='n')
+```
+
+Podemos então calcular o DIC para esse novo modelo.
+
+```{r}
+B = 1000 # número de simulações
+
+# simulações da posteriori
+lambda1 <- rgamma(B, r1[1], s1[1]) 
+lambda2 <- rgamma(B, r1[2], s1[2]) 
+lambda3 <- rgamma(B, r1[3], s1[3]) 
+
+# média a posteriori para cada taxa
+lambda_chapeu <- c(mean(lambda1),mean(lambda2),mean(lambda3)) 
+# calculo de k
+vj <- apply( cbind(lambda1,lambda2,lambda3), 1, function(l){ 
+  t1 = -2*sum(dpois( dados[,3][km$cluster==1], l[1]*N[km$cluster==1], log = T))
+  t2 = -2*sum(dpois( dados[,3][km$cluster==2], l[2]*N[km$cluster==2], log = T))
+  t3 = -2*sum(dpois( dados[,3][km$cluster==3], l[3]*N[km$cluster==3], log = T))
+  t1+t2+t3
+})
+k <- .5*var(vj)
+
+
+  t1 = -2*sum(dpois( dados[,3][km$cluster==1], lambda_chapeu[1]*N[km$cluster==1], log = T))
+  t2 = -2*sum(dpois( dados[,3][km$cluster==2], lambda_chapeu[2]*N[km$cluster==2], log = T))
+  t3 = -2*sum(dpois( dados[,3][km$cluster==3], lambda_chapeu[3]*N[km$cluster==3], log = T))
+
+DIC3 <- (t1+t2+t3) +2*k
+DIC3
+```
+Observe que este modelo é mais interessante que o modelo com uma única taxa (DIC 11.771) mas menos interessante que o modelo com uma taxa por UF (DIC 307). 
+
+:::
+
+### Análise  de agrupamento - modelagem 2
+
+Anteriormente, utilizamos os dados para construir a priori. 
+Nesta seção, vamos tratar o problema sob o ponto de vista puramente bayesiano.
+
+Seja $z_{j}=(z_{j,1},\ldots,z_{j,k})\sim\hbox{Bernoulli Multivariada}(p_1,\ldots,p_k)$. Aqui, a coordenada onde $z_j$ é igual a um representa o conjunto da partição a qual a localidade $j$ pertence. Sem perda de generalidade, podemos escrever
+
+$$f(y_j|z_j,\lambda_1,\ldots,\lambda_k)=\prod_{t=1}^k\left[\frac{e^{-\lambda_t N_t}(\lambda_tN_t)^{y_j}}{y_j!}\right]^{z_{j,t}},$$
+
+Observe que a verossimilhança original não é mais Poisson, uma vez que 
+$$f(y_j|\lambda)=\sum_{z_{j}}\prod_{t=1}^k\left[\frac{e^{-\lambda_t N_t}(\lambda_tN_t)^{y_j}}{y_j!}\right]^{z_{j,t}} f(z_{j})$$
+Observe que é natural assumir que $z_j\sim\hbox{Bernoulli M}(p_1,\ldots,p_k)$. Considerando as prioris $lambda_t\sim\hbox{Gama}(r_t,s_t)$,  e $p\hbox{Dirichlet}(a_1,\ldots,a_k)$ teremos a posteriori
+
+$$\begin{align} f(\lambda_1,\ldots,\lambda_k,z_1,\ldots,z_m|\hbox{dados})&\propto \prod_{j=1}^m\prod_{t=1}^k\left[\frac{e^{-\lambda_t N_j}(\lambda_tN_j)^{y_j}}{y_j!}\right]^{z_{j,t}}\\&\times \prod_{t=1}^k \frac{s_t^{r_t}}{\Gamma(r_t)}\lambda_t^{r_t-1}e^{-s_t\lambda_t}\\&\times \prod_{j=1}^m \prod_{t=1}^k p_t^{z_{j,t}}\times \prod_{t=1}^k p_t^{a_t-1} \end{align}$$
+
+
+<div class = 'alert alert-success>
+**Condicionais completas** Seja $f(x_1,\ldots,x_k)$ uma função de densidade/probabilidade conjunta e seja $x_{(-t)}=\{x_1,\ldots,x_k\}/\{x_t\}$. Para $t=1,\ldots,k$ as funções densidade/probabilidade dadas por
+$f(x_t|x_{(-t)})$ são denominadas condicionais completas.
+
+Para fins de notação, escreveremos a condicional completa de $x_t$ como $f(x_t|\hbox{resto})$.
+</div>
+
+Vamos encontrar a condicional completa para $\lambda_t$. Para tanto, procuramos dentro da expressão todos os termos que não são $\lambda_t$ e os  colocamos na constante de proporcionalidade.
+
+$$\begin{align} f(\lambda_t|\hbox{resto})&\prod_{j=1}^ m\left[e^{-\lambda_t N_j}(\lambda_tN_j)^{y_j}\right]^{z_{j,t}}\times\lambda_t^{r_t-1}e^{-s_t\lambda_t}\\&=\lambda_t^{r_t+\sum_{j=1}^m y_jz_{j,t}-1}e^{-[s_t+\sum_{j=1}^m N_jz_{j,t}]\lambda_t}\\&\sim\hbox{Gama}\left(r_t+\sum_{j=1}^m y_jz_{j,t},s_t+\sum_{j=1}^mN_jz_{j,t}\right)\end{align}$$
+
+De modo análogo, podemos encontrar a condicional completa para $z_j$:
+
+$$\begin{align}
+f(z_j|\hbox{resto})&\propto \prod_{t=1}^{k}\left[\frac{e^{-\lambda_t  N_t}[ \lambda_t N_t ]^{y_j} } {y_j!} \right]^{z_{j,t}} p_{t}^{z_{j,t}}=\prod_{t=1}^{k}\left[p_t\frac{e^{-\lambda_t  N_t}[ \lambda_t N_t ]^{y_j} } {y_j!}\right]^{z_{j,t}}\\
+&\sim \hbox{Bernoulli M}\left(\frac{p_1 g(y_j|\lambda_1)}{\sum_{t=1}^k p_t g(y_j|\lambda_t)},\ldots,\frac{p_k g(y_j|\lambda_k)}{\sum_{t=1}^k p_t g(y_j|\lambda_t)}\right)
+\end{align}$$
+onde $g(y|\lambda)$ é a função de probabilidade da distribuição Poisson com taxa $\lambda$.
+
+Por último, podemos encontrar a condicional completa de $p$:
+
+$$\begin{align}f(p|\hbox{resto})\propto \prod_{j=1}^m \prod_{t=1}^k p_t^{z_{j,t}}\times \prod_{t=1}^k p_t^{a_t-1}=\prod_{j=1}^k p_t^{a_t+\sum_{j=1}^m z_{j,t}-1}\\ \sim\hbox{Dirichlet}\left(a_1+\sum_{j=1}^m z_{j,1},\ldots,a_k+\sum_{j=1}^m z_{j,k}\right)\end{align}$$
+Uma vez que temos todas as condicionais completas, podemos simular da posteriori utilizando o amostrador de Gibbs.
+
+<div class='alert alert-success'>
+**Amostrador de Gibbs** Considere que desejamos simular amostras da distribuição conjunta de $X,Y,Z$.
+
+Comece com um valor arbitrário $(x_0,y_0,z_0)$. Para $i$ variando de 1 até $B$:
+
+1. Simule $x_i\sim f(x|y_{i-1},z_{i-1})$
+
+2. Simule $y_i\sim f(y|x_{i},z_{i-1})$
+
+3. Simule $z_i\sim f(z|x_{i},y_{i})$
+</div>
+
+:::{#exm}
+**Análise de agrupamento para as taxas de crimes de estupro**
+
+Considerando o mapa dado no exemplo anterior, podemos conjecturar que existem em torno de 3 a 5 agrupamentos das taxas. 
+
+Començando nossa análise com três grupos, podemos fazer uma classificação inicial das taxas utilizando o método das $k$-médias para obter uma classificação inicial
+
+```{r}
+grupos = 3
+km = kmeans(taxas,grupos)
+```
+Em seguinda, podemos utilizar essa classificação para construir as três prioris para as taxas.
+
+```{r}
+r = s = NULL
+tau = .1
+for(i in 1:grupos){
+  media = mean(taxas[km$cluster == i])
+  r[i] <- tau*media
+  s[i] <- tau
+}
+```
+Considerando a priori $p\sim\hbox{Dirichlet}(1,1,1)$, temos os seguinte amostrador de Gibbs:
+
+
+```{r}
+require(extraDistr)
+B <- 50000
+y = dados[,3]
+N <- unlist(dados[,2]/100000)
+
+lambda <- array( NA_real_, c(B+1,grupos) )
+p      <- array( NA_real_, c(B+1,grupos) )
+z      <- array( NA_real_, c(B+1,27))
+lambda[1,] <- r/s
+z[1,] <- km$cluster
+p[1,] <- as.vector(table(z)/27)
+
+# condicional completa de lambda
+for(i in 1:B){
+  for(t in 1:grupos){
+    lambda[i+1,t] <- rgamma(1, r[t]+sum(y[z[i,]==t]), s[t]+sum(N[z[i,]==t]))
+  }
+  
+# condicional completa de p  
+  a = NULL
+  for(t in 1:grupos){
+    a = c(a, sum(z[i,]==t))
+  }
+  p[i+1,] <- rdirichlet(1, 1+a)
+  
+# condicional completa de z
+  for(j in 1:27){
+    z[i+1,j] <- sample(1:grupos,1,T, p[i+1,]*dpois(y[j],lambda[i+1,]*N[j]))  
+  }
+  
+}
+```
+
+Vamos eliminar metade das simulações (burn-in) e manter as amostras de 15 em 15. Abaixo apresentamos o traceplot das simulação e um dos correlogramas.
+
+```{r}
+lambda_post <- lambda[seq(B/2,B,15),]
+z_post <-      z[seq(B/2,B,15),]
+p_post <-      p[seq(B/2,B,15),]
+ts.plot(lambda_post)
+acf(lambda_post[,1])
+```
+
+Vamos calcular o DIC para o modelo encontrado. 
+
+```{r}
+# média a posteriori para os parâmetros
+lambda_chapeu <- colMeans(lambda_post)
+p_chapeu <- colMeans(p_post)
+
+# calculo de k
+vj <- apply( cbind(lambda_post,p_post), 1, function(w){
+   veross = NULL
+   u = ncol(lambda)
+   for(i in 1:u){
+     veross = cbind(veross , w[i+u]*dpois(dados[,3],w[i]*N))
+   }
+   -2*sum( log(rowSums(veross)))
+}) 
+  
+k <- .5*var(vj)
+
+veross = NULL
+   for(i in 1:ncol(lambda_post)){
+      veross = cbind(veross , p_chapeu[i]*dpois(dados[,3],lambda_chapeu[i]*N))
+   }
+DIC3 <- -2*sum( log(rowSums(veross) )) +2*k
+DIC3
+```
+
+Observe que este valor semelhante ao encontrado na análise anterior. Para determinar os agrupamentos, podemos verificar a distribuição a posteriori de $z_j$. Por exemplo, a posteriori de $z_j$ para o Acre é dada abaixo
+
+
+```{r}
+tb <- table(z_post[,1])
+plot(prop.table(tb), ylab='f(z|dados)',xlab='Grupo')
+```
+
+```{r echo = FALSE}
+Agrupamentos <- function(grupos){
+  km = kmeans(taxas,grupos)
+  r = s = NULL
+  for(i in 1:grupos){
+    media = mean(taxas[km$cluster == i])
+    r[i] <- media*.1
+    s[i] <- .1
+  }
+  require(extraDistr)
+  B <- 50000
+  y = dados[,3]
+  N <- unlist(dados[,2]/100000)
+
+  lambda <- array( NA_real_, c(B+1,grupos) )
+  p      <- array( NA_real_, c(B+1,grupos) )
+  z      <- array( NA_real_, c(B+1,27))
+  lambda[1,] <- r/s
+  z[1,] <- km$cluster
+  p[1,] <- as.vector(table(z)/27)
+
+  # condicional completa de lambda
+  for(i in 1:B){
+    for(t in 1:grupos){
+      lambda[i+1,t] <- rgamma(1, r[t]+sum(y[z[i,]==t]), s[t]+sum(N[z[i,]==t]))
+    }
+    
+  # condicional completa de p  
+      a = NULL
+  for(t in 1:grupos){
+    a = c(a, sum(z[i,]==t))
+  }
+  p[i+1,] <- rdirichlet(1, 1+a)
+
+  # condicional completa de z
+    for(j in 1:27){
+      z[i+1,j] <- sample(1:grupos,1,T, p[i+1,]*dpois(y[j],lambda[i+1,]*N[j]))  
+    }
+    
+  }
+
+  lambda_post <- lambda[seq(B/2,B,15),]
+  z_post <-      z[seq(B/2,B,15),]
+  p_post <-      p[seq(B/2,B,15),]
+  lambda_chapeu <- colMeans(lambda_post)
+  p_chapeu <- colMeans(p_post)
+
+  # calculo de k
+  vj <- apply( cbind(lambda_post,p_post), 1, function(w){
+     veross = NULL
+     u = ncol(lambda)
+     for(i in 1:u){
+       veross = cbind(veross , w[i+u]*dpois(dados[,3],w[i]*N))
+     }
+     -2*sum( log(rowSums(veross)))
+  }) 
+  
+  k <- .5*var(vj)
+
+  veross = NULL
+     for(i in 1:ncol(lambda_post)){
+        veross = cbind(veross , p_chapeu[i]*dpois(dados[,3],lambda_chapeu[i]*N))
+     }
+  DIC <- -2*sum( log(rowSums(veross) )) +2*k
+ DIC
+}
+```
+Variando o número de grupos, obtivemos os seguintes valores para o DIC
+
+```{r echo = FALSE}
+`Número de grupos`  <- 2:12
+DIC <- c(3043,2200,1442,1247,732,672,630,535,489,502,1015)
+print(data.frame(`Número de grupos`,DIC))
+```
+
+A tabela acima mostra que parece ser razoável dividir estes dados em 10 grupos. Após refazer a análise com 10 grupos,  identificamos os seguintes agrupamentos através da moda da posteriori de $z_j$
+
+```{r}
+grupo_posteriori <- c(8,1,2,6,1,6,7,5,3,1,5,10,6,3,9,3,7,1,1,7,5,3,8,10,7,4,10)
+
+media_post = c(32.78140,  82.46029,  56.16715,  40.46941,  48.68677,  21.15481,  27.73506, 114.13073,  13.53351,  66.20056)
+Estados = `Taxa média a posteriori` = NULL
+for(i in 1:10){
+  Estados[i] <- paste(dados[,1][grupo_posteriori==i], collapse = ', ')
+  `Taxa média a posteriori`[i] = media_post[i] 
+}
+print(data.frame(Estados,`Taxa média a posteriori`),width = 30)
+  
+```
+
+:::
 
 ## Exercícios
 
@@ -523,4 +842,4 @@ Os dados a seguir foram cedidos pelo Observatório de Violência de Gênero no A
 | Tabatinga             | 8       | 3095               |
 | Tonantins             | 1       | 1186               |
 
-Verifique se é possível utilizar uma única taxa para explicar este banco de dados. Em caso contrário, estime uma taxa para cada município. O que você pode destacar de sua análise?
+Ajuste o modelo de taxa única e o modelo de uma taxa para cada município, calcule o DIC de cada e verifique qual é o modelo mais adequado. Em seguida, tente melhorar o ajuste procurando um agrupamento. 
