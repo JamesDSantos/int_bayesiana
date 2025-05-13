@@ -16,8 +16,8 @@ book:
     - teste.qmd
     - poisson.qmd
     - normal.qmd
-    - negativeBinomial.qmd
     - aproximacaoNormal.qmd
+    - negativeBinomial.qmd
     - misturas.qmd
     - poisson.qmd
     - mcmc.qmd

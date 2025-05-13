@@ -148,7 +148,7 @@ plot( ecdf(no_suicidios), main = '', ylab='Função de distribuição', xlab=exp
 curve(pnbinom(x,sum(no_suicidios)+1,37/38), add=T, lwd = 2, col = 'tomato')
 legend('bottomright', c('Empírica','Preditia a posteriori'), col=c(1,'tomato'), bty='n')
 ```
-
+:::
 
 ## O modelo Poisson para taxas
 
