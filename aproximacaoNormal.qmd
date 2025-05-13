@@ -1,12 +1,14 @@
 # Aproximação normal e seu uso com o Metropolis-Hastings
 
 ## Aproximação da posteriori pela distribuição normal
+
 Assuma que $\boldsymbol{\theta}\in\mathbb{R}^q$. Seja $\ell(\boldsymbol{\theta})=\log L(\boldsymbol{\theta})$ a função log-verossimilhança e $\hat{\boldsymbol{\theta}}$ a estimativa de máxima verossimilhaça para $\boldsymbol{\theta}$. Considere a seguinte aproximação de $\ell(\boldsymbol{\theta})$ em séries de Taylor
 
 $$\ell(\boldsymbol{\theta})\approx  \ell(\hat{\boldsymbol{\theta}})+\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\mathcal{H}(\hat{\boldsymbol{\theta}})(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})$$
 onde $\boldsymbol{\theta}$ é a matriz hessiana (de derivadas segunda) aplicada em $\hat{\boldsymbol{\theta}}$. 
+
 Deste modo, teremos que
-$$\pi(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}\pi(\boldsymbol{\theta})$$
+$$f(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}f(\boldsymbol{\theta})$$
 
 Utilizando a priori imprópria $\pi(\boldsymbol{\theta})$, temos que $\boldsymbol{\theta}|\boldsymbol{x}\approx \hbox{Normal}(\hat{\boldsymbol{\theta}},-\mathcal{H}(\hat{\boldsymbol{\theta}})^{-1})$.
 
