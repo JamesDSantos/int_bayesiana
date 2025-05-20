@@ -1,5 +1,49 @@
 # Aproximação normal e seu uso com o Metropolis-Hastings
 
+## A priori imprópria
+
+Considerando o problema de elicitar uma priori para $\theta\in\(0,1)$, a distribuição  Uniforme(0,1) surge como uma candidato confortável, uma vez que dá probabilidades iguais para quaisquer intervalos de $(0,1)$ de mesmo comprimento.
+
+De modo análogo, se $\theta\in(a,b)$, a distribuição Uniforme$(a,b)$ é uma escolha interessante quando o objetivo é dar pouco peso para a informação a priori.
+
+Considere então que $\theta\in\mathbb{R}$. Na prática, há um subintervalo $(a,b)\in\mathbb{R}$ que contém quasse toda a massa da posteriori. Nesse caso, podemos utilizar a priori Uniforme$(a,b)$, obtendo 
+$$f(\theta|\boldsymbol{x})=\frac{L(\theta)\frac{1}{b-a}}{\int_a^bL(\theta)\frac{1}{b-a}d\theta}=\frac{L(\theta)}{\int_a^b L(\theta)d\theta}.$$
+Se permitirmos que $a=-\infty$ e $b=+\infty$, teremos
+$$f(\theta|\boldsymbol{x})=\frac{L(\theta)\frac{1}{b-a}}{\int_a^bL(\theta)\frac{1}{b-a}d\theta}=\frac{L(\theta)}{\int_\mathbb{R} L(\theta)d\theta}\propto L(\theta).$$
+Desde que $\int_{\mathbb{R}}L(\theta)<\infty$, teremos que $f(\theta|\boldsymbol{x})$ é de fato uma posteriori. A priori associada nesse caso é dada por 
+$$f(\theta)=1$$
+para todo $\theta\in\mathbb{R}$. Como essa priori não é uma função densidade, ela é denominada **imprópria**.
+
+:::{#exm }
+*Priori imprópria para o modelo normal*
+
+Seja $x_1,\ldots,x_n$ uma amostra observada do modelo Normal($\mu$,1), cuja função de verossimilhança é dada por
+$$L(\mu)=\frac{1}{(2\pi)^{n/2}}e^{-\frac{n}{2}(\bar{x}-\mu)^2-\frac{n}{2}s^2}.$$
+Considere a priori imprópria para $\mu$. Como
+$$\int_\mathbb{R}L(\mu)d\mu=\frac{1}{(2\pi)^{n/2}}e^{-\frac{n}{2}s^2}\int_{\mathbb{R}}e^{-\frac{n}{2}(\bar{x}-\mu)^2}d\mu=\frac{1}{(2\pi)^{n/2}}e^{-\frac{n}{2}s^2}\sqrt{\frac{2\pi}{n}}<\infty,$$
+temos que 
+$$f(\mu|\boldsymbol{x})\propto L(\mu)\propto e^{-\frac{n}{2}(\mu-\bar{x})^2},$$
+ou seja $\mu|\boldsymbol{x}\sim\hbox{Normal}(\bar{x},1/n)$.
+:::
+
+Quando $\theta\in(0,\infty)$, é usual realizar a transformação $\lambda = \log(\theta)\in\mathbb{R}$. Considerando uma priori imprópria para $\lambda$, teremos 
+$$f(\lambda|\boldsymbol{x})=\frac{L(e^{\lambda})}{\int_\mathbb{R}L(e^{\lambda})d\lambda},$$
+desde que a integral no denominador seja finita. Podemos então utilizar o método do jacobiano para obter a posteriori para $\theta$:
+
+$$f(\theta|\boldsymbol{x})\propto L(\theta)\frac{d\lambda}{d\theta}=L(\theta)\frac{1}{\theta}.$$
+Portanto, quando $\theta\in(0,1)$, utilizamos a priori (imprópria)
+$$f(\theta)=\frac{1}{\theta},$$
+para todo $\theta>0$, considerando que
+$$\int_0^\infty L(\theta)\frac{1}{\theta}d\theta <\infty.$$
+
+:::{#exm }
+*Priori imprópria para a Poisson* Seja $x_1,\ldots,x_n$ uma amostra observada do modelo Poisson($\lambda$). Observe que
+$$\begin{align}\int_0^\infty L(\lambda)\frac{1}{\lambda}d\lambda&=\int_0^\infty \frac{e^{-n\lambda}\lambda^{\sum_{i=1}^n x_i}}{\prod_{i=1^n }x_i!}\frac{1}{\lambda}d\lambda=\frac{1}{\prod_{i=1}^nx_i!}\int_0^\infty\lambda^{\sum_{i=1}^n x_i-1}e^{-n\lambda}d\lambda\\&=\frac{\Gamma(\sum_{i=1}^n x_i)}{\prod_{i=1}^n x_i!}\frac{1}{n^{\sum_{i=1}^n x_i}}<\infty\end{align}$$
+portanto, a posteriori para $\lambda$ é
+$$f(\lambda|\boldsymbol{x})\propto L(\lambda)\frac{1}{\lambda}\propto \lambda^{\sum_{i=1}^n x_i-1}e^{-n\lambda},$$
+ou seja, $\lambda|\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i,n).$
+:::
+
 ## Aproximação da posteriori pela distribuição normal
 
 Assuma que $\boldsymbol{\theta}\in\mathbb{R}^q$. Seja $\ell(\boldsymbol{\theta})=\log L(\boldsymbol{\theta})$ a função log-verossimilhança e $\hat{\boldsymbol{\theta}}$ a estimativa de máxima verossimilhaça para $\boldsymbol{\theta}$. Considere a seguinte aproximação de $\ell(\boldsymbol{\theta})$ em séries de Taylor
@@ -10,24 +54,47 @@ onde $\boldsymbol{\theta}$ é a matriz hessiana (de derivadas segunda) aplicada 
 Deste modo, teremos que
 $$f(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}f(\boldsymbol{\theta})$$
 
-Utilizando a priori imprópria $\pi(\boldsymbol{\theta})$, temos que $\boldsymbol{\theta}|\boldsymbol{x}\approx \hbox{Normal}(\hat{\boldsymbol{\theta}},-\mathcal{H}(\hat{\boldsymbol{\theta}})^{-1})$.
+Utilizando a priori imprópria $f(\boldsymbol{\theta})\propto 1$, temos que $\boldsymbol{\theta}|\boldsymbol{x}\approx \hbox{Normal}(\hat{\boldsymbol{\theta}},-\mathcal{H}(\hat{\boldsymbol{\theta}})^{-1})$.
+
+Se $\theta$ for um escalar, teremos
+
+$$f(\theta| \boldsymbol{x} )\propto \exp \left\{ -\frac{1}{2} (\theta-\hat{\theta})^2\left[-\left.\frac{d^2}{d\theta^2}\ell(\theta)\right|_{\theta=\hat{\theta}}\right]\right\}f(\boldsymbol{\theta})$$
+e, ao utilizar a priori imprópria novamente, teremos $$\theta|\boldsymbol{x}\sim\hbox{Normal}\left(\hat{\theta},-\left.\frac{d^2}{d\theta^2}\ell(\theta)\right|_{\theta=\hat{\theta}}\right).$$
+
+<div class='alert alert-success'>
+*Importante* Para que a aproximação normal faça sentido, é necessário que a priori utilizada seja a imprópria ou uma conjugada. Para tanto, é necessário que o espaço paramétrico de $\theta$ seja a reta e alguma transformação pode ser necessária.
+
+Seja então $\psi$ o parâmetro original e seja $\theta=g(\psi)$ o parâmetro transformado tal que $\theta\in(-\infty,+\infty)$. Após aproximar a posteriori de $\theta$ para a normal:
+
+1. Simule $\theta_1,\ldots,\theta_B$ da normal aproximada
+2. Crie a amostra $\psi_1=g^{-1}(\theta_1),\ldots,\psi_B=g^{-1}(\theta_B)$
+3. Faça inferências sobre $\psi$ utilizando a amostra $\psi_1,\ldots,\psi_B$. 
+</div>
+
 
 Note que as informações necessárias para a aproximação da posteriori acima podem ser obtidas via função `optim`.
 
 <div class='alert alert-info'>
-<strong>Exemplo </strong> A amostra abaixo foi simulada do modelo Gama$(\alpha,\beta)$ (o valor dos parâmetros foram omitidos de propósito)
+<strong>Exemplo </strong> 
 
-```{r echo = F}
-set.seed(1)
-x <- rgamma(20,2,3)
-```
+O USGS reune diversas informações. Entre elas, em https://earthquake.usgs.gov/earthquakes/search/, é possível obter informações sobre terremotos ocorridos no globo para um período longo de tempo. Os dados abaixo apresentam o tempo ocorrido entre terremos nos últimos 10 anos (entre maio de 2025 e maio de 2025)
 
 ```{r}
-x
+require(gsheet)
+url = 'https://docs.google.com/spreadsheets/d/1Pg0AGENj8Cf9e5yqvbXnhEZ7jgY3sBSb6ETtGUwZtpQ/edit?usp=sharing'
+
+x = gsheet2tbl(url)
+x = x$Tempo
 ```
 
-Como $\alpha,\beta>0$, considere que
-$\alpha=\exp\{\theta_1\}$ e $\beta=\exp\{\theta_2\}$ (deste modo, $\boldsymbol{\theta}\in\mathbb{R}^2$). 
+Vamos supor que o modelo Gama($\alpha$,$\beta$) é adequado para este banco de dados. Embora o modelo Gama possua conjugada, a mesma não é trivial para propósitos de aplicação.
+
+Vamos considerar a aproximação normal para este modelo. Como $\alpha,\beta>0$, considere as seguintes transformações para a reta:
+
+1. $\alpha=\exp\{\theta_1\}$
+2. $\beta=\exp\{\theta_2\}$
+
+Deste modo, $\boldsymbol{\theta}\in\mathbb{R}^2$. 
 
 A função de log-verossimilhança deste modelo é
 ```{r}
@@ -44,13 +111,13 @@ opt
 
 No objeto `opt`, a lista `par` é o vetor com  as estimativas de máxima verossimilhança, enquanto que `hessian` é o valor de $-\mathcal{H}(\hat{\boldsymbol{\theta}})$.
 
-A inversa de `opt$hessian` vai dar a matriz de covariância entre $\theta_1$ e $\theta_2$ a posteriori.
+A inversa de `opt$hessian` vai dar a matriz de covariância entre $\theta_1$ e $\theta_2$ da posteriori.
 
 ```{r}
 Sigma <- solve(opt$hessian)
 Sigma
 ```
-Agora, podemos simular $\theta_1$ e $\theta_2$ a posteriori:
+Agora, podemos simular $\theta_1$ e $\theta_2$ a posteriori, considerando a priori imprópria:
 
 ```{r}
 require(mvtnorm)
@@ -60,41 +127,80 @@ theta_sim <- rmvnorm(500, opt$par, Sigma)
 Por último, podemos fazer inferências sobre $\alpha=\exp\{\theta_1\}$ e $\beta=\exp\{\theta_2\}$:
 
 ```{r}
+alpha = exp(theta_sim[,1])
+beta = exp(theta_sim[,2])
 # intervalos de credibilidade para alfa
-quantile(exp(theta_sim[,1]), c(.025,.975))
+quantile(alpha, c(.025,.975))
 
 # intervalos de credibilidade para beta
-quantile(exp(theta_sim[,2]), c(.025,.975))
-
+quantile(beta, c(.025,.975))
 ```
+Com a amostra a posteriori simulada, podemos simular amostras da preditiva a posteriori.
+
+```{r}
+n <- length(x)
+y_pred <- array(NA_real_, c(500, n))
+for(i in 1:500){
+  y_pred[i,] <- rgamma(n, alpha[i], beta[i])
+}
+```
+
+Podemos então construir um intervalo de predição para a função de distribuição empírica da preditiva a posteriori e compará-lo com a distribuição empírica dos dados.
+
+```{r}
+Fd_sim = apply(y_pred,1, function(y){
+  Fd = ecdf(y)
+  Fd(sort(x))
+})
+
+qq = apply(Fd_sim,1, function(x) quantile(x,c(.025,.977)))
+
+plot(ecdf(x), main = '')
+lines(sort(x),qq[1,], col =2)
+lines(sort(x),qq[2,], col =2)
+```
+
+
 </div>
 
-## Metropolis revisitado
+## O algoritmo Metropolis em conjunto com a aproximação normal
 
-A diferença entre o algoritmo Metropolis e o Metropolis-Hastings está na escolha da distribuição proposta. No primeiro, a proposta é simétrica,
-$$g(x|y)=g(y|x).$$
-Com isso, teremos que 
-$$\frac{f(x)}{f(y)}\frac{g(y|x)}{g(x|y)}=\frac{f(x)}{f(y)}$$
-e a probabilidade de aceitação da cadeia é baseada somente na distribuição alvo $f$.
+Considere que desejamos simular da posteriori $f(\theta|\boldsymbol{x})$, onde $\theta\in\mathbb{R}^d$. Para tanto, podemos utilizar o método de Monte Carlo via Cadeias de Markov conhecido como Metropolis.
 
-No algoritmo Metropolis, é comum escolher a distribuição proposta como  sendo uma normal. Uma escolha razoável é utilizar como proposta aproximação normal vista na seção anterior.
+<div class='alert alert-success'>
+*Metropolis*
+
+Comece com um valo inicial $\theta^{(0)}$. Para a $i$-ésima iteração:
+
+1. Simule $\theta^*\sim\hbox{Normal}(\theta^{(i-1)},S)$
+
+2. Calcule a razão
+
+$$\rho=\frac{f(\theta^*|\boldsymbol{x})}{f(\theta^{(i-1)}|\boldsymbol{x})}$$
+3. Simule $u\sim\hbox{Uniforme}(0,1)$. Se $u<\rho$, faça $\theta^{(i)}=\theta^*$. Senão, faça $\theta^{(i)}=\theta^{(i-1)}$.
+</div>
+
+A distribuição dada no passo 1 do algoritmo acima é denominada *proposta* e uma escolha razoável para ela é a aproximação normal da posteriori.
+
+Portanto, podemos utilizar a aproximação normal como distribuição proposta para obter amostras da posteriori original.
 
 <div class='alert alert-info'>
-<strong>Exemplo </strong> Consideremos novamente a amostra do exemplo anterior. A função de verossimilhança é
-$$L(\theta)=\prod_{i=1}^n \frac{\beta(\theta_2)^{\alpha(\theta_1)}}{\Gamma(\alpha(\theta_1))} x_i^{\alpha(\theta_1)-1}e^{-\beta(\theta_2)x_i}$$
-onde $\alpha(\theta_1)=e^{\theta_1}$, $\beta(\theta_2)=e^{\theta_2}$. Além disso ,considere ad prioris independentes
-$\theta_i\sim\hbox{Normal}(0,100)$.
-Então, devemos simular do modelo
+<strong>Exemplo </strong> 
+Consideremos novamente a amostra do exemplo anterior. A função de verossimilhança, com os parâmetros transformados é dada por
+$$L(\theta)=\prod_{i=1}^n \frac{(e^{\theta_2} )^{e ^{\theta_1}}}{\Gamma(e^{\theta_1})} x_i^{e^{\theta_1}-1}e^{-e^{\theta_2}x_i}$$
+Além disso ,considere ad prioris independentes
+$\theta_i\sim\hbox{Normal}(0,100)$,
+onde a variância alta foi escolhida para que a priori fosse pouco informativa. Então, devemos simular do modelo
 
-$$\pi(\theta|\boldsymbol{x})\propto \left[\frac{\beta(\theta_2)^{\alpha(\theta_1)}}{\Gamma(\alpha(\theta_1))}\right]^n \left[\prod_{i=1}^n x_i\right]^{\alpha(\theta_1)}e^{-\beta(\theta_2)\sum_{i=1}^{n}x_i}e^{-\frac{1}{200}(\theta_1^2 + \theta_2^2)}$$
+$$f(\theta|\boldsymbol{x})\propto L(\theta )e^{-\frac{1}{200}(\theta_1^2 + \theta_2^2)}$$
 
 A posteriori aproximada, que encontramos no exemplo anterior é 
-$$\boldsymbol{\theta}|\boldsymbol{x}\approx N \left[ \left(\begin{array}{c}1,24\\1,56 \end{array}\right),\left(\begin{array}{cc}0,09 & 0,09\\0,09 &0,11\end{array}\right)\right]$$
+$$\boldsymbol{\theta}|\boldsymbol{x}\approx N \left[ \left(\begin{array}{c}-0,3936\\-0,1853 \end{array}\right),\left(\begin{array}{cc}0,0003 & 0,0003\\0,0003 &0,0006\end{array}\right)\right]$$
 
 Vamos aproveitar a estrutura de covariâncias acima para usar a proposta
 
-$$\boldsymbol{\theta}^*|\boldsymbol{x}\sim N \left[ \boldsymbol{\theta}^{(j-1)},\tau\left(\begin{array}{cc}0,09 & 0,09\\0,09 &0,11\end{array}\right)\right]$$
-onde $\boldsymbol{\theta}^*$ é o candidato gerado e $\boldsymbol{\theta}^{(j)}$ é o estado atual da cadeia e $\tau$ é o **tunning** da cadeia.
+$$\boldsymbol{\theta}^*|\boldsymbol{x}\sim N \left[ \boldsymbol{\theta}^{(j-1)},\tau\left(\begin{array}{cc}0,0003 & 0,0003\\0,0003 &0,0006\end{array}\right)\right]$$
+onde $\boldsymbol{\theta}^*$ é o candidato gerado e $\boldsymbol{\theta}^{(j)}$ é o estado atual da cadeia e $\tau$ é o **tunning** da cadeia (em geral, escolhido entre .1, 1 e 10). Além disso, vamos aproveitar a estimativa de máxima verossimilhança como valor inicial para a simulação.
 
 ```{r}
 B <- 10000 # número de iterações
@@ -127,18 +233,51 @@ for(j in 2:B){
   }
 }
 
-cont/B
-
 theta_sim <- theta[ seq(B/2, B, 15),]
-acf(theta_sim)
+ts.plot(theta_sim[,1])
+acf(theta_sim[,1])
 ```
 
 
 Por fim, as estimativas intervalares para $(\alpha,\beta)$ são  
-
 ```{r}
 quantile(exp(theta_sim[,1]), c(.025,.975))
 
 # intervalos de credibilidade para beta
 quantile(exp(theta_sim[,2]), c(.025,.975))
 ```
+
+## Exercícios
+
+
+### Máximas do Rio Negro
+
+A tabela abaixo mostra os níveis máximos do Rio Negro regis
+trados no Porto de Manaus entre 2004 e 2014.
+
+
+```{r}
+# Criar os vetores de anos e valores máximos
+anos <- c(1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
+          2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014)
+
+maximas <- c(25.42, 28.76, 29.05, 27.16, 28.54, 28.96, 27.58, 29.30, 28.62, 28.21,
+             28.91, 28.27, 27.13, 28.10, 28.84, 28.18, 28.62, 29.77, 27.96, 28.62,
+             29.97, 29.33, 29.50)
+
+# Combinar os vetores em um data frame
+dados_anuais <- data.frame(
+  Ano = anos,
+  Maxima = maximas
+)
+
+# Visualizar a tabela criada
+print(dados_anuais)
+```
+
+
+ O Teorema deFisher-Tippett diz que uma sequência de máximos de variáveis aleatórias independentes e identicamente distribuídas converge em distribuição para um membro da família de distribuições de valores extremos que pode ser dividida nas famílias Gumbel, Fréchet e Weibull. 
+ 
+ 1. Utilize a aproximação Normal para verificar que a distribuição Weibull se ajusta a esses dados
+ 
+ 2. simule amostras da posteriori para o modelo Weibull utilizando o algoritmo Metropolis. Dê intervalos  de credibilidade para os parâmetros e verifique o ajuste analisando a preditiva a posteriori.

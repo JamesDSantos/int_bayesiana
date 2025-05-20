@@ -15,6 +15,7 @@ book:
     - bernoulli.qmd
     - teste.qmd
     - poisson.qmd
+    - exponencial.qmd
     - normal.qmd
     - aproximacaoNormal.qmd
     - negativeBinomial.qmd

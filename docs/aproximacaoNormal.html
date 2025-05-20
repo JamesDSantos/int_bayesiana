@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./misturas.html" rel="next">
-<link href="./negativeBinomial.html" rel="prev">
+<link href="./negativeBinomial.html" rel="next">
+<link href="./normal.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -219,14 +219,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+  <a href="./exponencial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo exponencial</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+  <a href="./normal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -237,8 +237,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -250,7 +256,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -269,8 +275,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#aproximação-da-posteriori-pela-distribuição-normal" id="toc-aproximação-da-posteriori-pela-distribuição-normal" class="nav-link active" data-scroll-target="#aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">10.1</span> Aproximação da posteriori pela distribuição normal</a></li>
-  <li><a href="#metropolis-revisitado" id="toc-metropolis-revisitado" class="nav-link" data-scroll-target="#metropolis-revisitado"><span class="header-section-number">10.2</span> Metropolis revisitado</a></li>
+  <li><a href="#a-priori-imprópria" id="toc-a-priori-imprópria" class="nav-link active" data-scroll-target="#a-priori-imprópria"><span class="header-section-number">10.1</span> A priori imprópria</a></li>
+  <li><a href="#aproximação-da-posteriori-pela-distribuição-normal" id="toc-aproximação-da-posteriori-pela-distribuição-normal" class="nav-link" data-scroll-target="#aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">10.2</span> Aproximação da posteriori pela distribuição normal</a></li>
+  <li><a href="#o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" id="toc-o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" class="nav-link" data-scroll-target="#o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal"><span class="header-section-number">10.3</span> O algoritmo Metropolis em conjunto com a aproximação normal</a></li>
   </ul>
 </nav>
     </div>
@@ -296,42 +303,78 @@ window.Quarto = {
 </header>
 
 
-<section id="aproximação-da-posteriori-pela-distribuição-normal" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">10.1</span> Aproximação da posteriori pela distribuição normal</h2>
+<section id="a-priori-imprópria" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="a-priori-imprópria"><span class="header-section-number">10.1</span> A priori imprópria</h2>
+<p>Considerando o problema de elicitar uma priori para <span class="math inline">\(\theta\in\(0,1)\)</span>, a distribuição Uniforme(0,1) surge como uma candidato confortável, uma vez que dá probabilidades iguais para quaisquer intervalos de <span class="math inline">\((0,1)\)</span> de mesmo comprimento.</p>
+<p>De modo análogo, se <span class="math inline">\(\theta\in(a,b)\)</span>, a distribuição Uniforme<span class="math inline">\((a,b)\)</span> é uma escolha interessante quando o objetivo é dar pouco peso para a informação a priori.</p>
+<p>Considere então que <span class="math inline">\(\theta\in\mathbb{R}\)</span>. Na prática, há um subintervalo <span class="math inline">\((a,b)\in\mathbb{R}\)</span> que contém quasse toda a massa da posteriori. Nesse caso, podemos utilizar a priori Uniforme<span class="math inline">\((a,b)\)</span>, obtendo <span class="math display">\[f(\theta|\boldsymbol{x})=\frac{L(\theta)\frac{1}{b-a}}{\int_a^bL(\theta)\frac{1}{b-a}d\theta}=\frac{L(\theta)}{\int_a^b L(\theta)d\theta}.\]</span> Se permitirmos que <span class="math inline">\(a=-\infty\)</span> e <span class="math inline">\(b=+\infty\)</span>, teremos <span class="math display">\[f(\theta|\boldsymbol{x})=\frac{L(\theta)\frac{1}{b-a}}{\int_a^bL(\theta)\frac{1}{b-a}d\theta}=\frac{L(\theta)}{\int_\mathbb{R} L(\theta)d\theta}\propto L(\theta).\]</span> Desde que <span class="math inline">\(\int_{\mathbb{R}}L(\theta)&lt;\infty\)</span>, teremos que <span class="math inline">\(f(\theta|\boldsymbol{x})\)</span> é de fato uma posteriori. A priori associada nesse caso é dada por <span class="math display">\[f(\theta)=1\]</span> para todo <span class="math inline">\(\theta\in\mathbb{R}\)</span>. Como essa priori não é uma função densidade, ela é denominada <strong>imprópria</strong>.</p>
+<div id="exm">
+<p><em>Priori imprópria para o modelo normal</em></p>
+<p>Seja <span class="math inline">\(x_1,\ldots,x_n\)</span> uma amostra observada do modelo Normal(<span class="math inline">\(\mu\)</span>,1), cuja função de verossimilhança é dada por <span class="math display">\[L(\mu)=\frac{1}{(2\pi)^{n/2}}e^{-\frac{n}{2}(\bar{x}-\mu)^2-\frac{n}{2}s^2}.\]</span> Considere a priori imprópria para <span class="math inline">\(\mu\)</span>. Como <span class="math display">\[\int_\mathbb{R}L(\mu)d\mu=\frac{1}{(2\pi)^{n/2}}e^{-\frac{n}{2}s^2}\int_{\mathbb{R}}e^{-\frac{n}{2}(\bar{x}-\mu)^2}d\mu=\frac{1}{(2\pi)^{n/2}}e^{-\frac{n}{2}s^2}\sqrt{\frac{2\pi}{n}}&lt;\infty,\]</span> temos que <span class="math display">\[f(\mu|\boldsymbol{x})\propto L(\mu)\propto e^{-\frac{n}{2}(\mu-\bar{x})^2},\]</span> ou seja <span class="math inline">\(\mu|\boldsymbol{x}\sim\hbox{Normal}(\bar{x},1/n)\)</span>.</p>
+</div>
+<p>Quando <span class="math inline">\(\theta\in(0,\infty)\)</span>, é usual realizar a transformação <span class="math inline">\(\lambda = \log(\theta)\in\mathbb{R}\)</span>. Considerando uma priori imprópria para <span class="math inline">\(\lambda\)</span>, teremos <span class="math display">\[f(\lambda|\boldsymbol{x})=\frac{L(e^{\lambda})}{\int_\mathbb{R}L(e^{\lambda})d\lambda},\]</span> desde que a integral no denominador seja finita. Podemos então utilizar o método do jacobiano para obter a posteriori para <span class="math inline">\(\theta\)</span>:</p>
+<p><span class="math display">\[f(\theta|\boldsymbol{x})\propto L(\theta)\frac{d\lambda}{d\theta}=L(\theta)\frac{1}{\theta}.\]</span> Portanto, quando <span class="math inline">\(\theta\in(0,1)\)</span>, utilizamos a priori (imprópria) <span class="math display">\[f(\theta)=\frac{1}{\theta},\]</span> para todo <span class="math inline">\(\theta&gt;0\)</span>, considerando que <span class="math display">\[\int_0^\infty L(\theta)\frac{1}{\theta}d\theta &lt;\infty.\]</span></p>
+<div id="exm">
+<p><em>Priori imprópria para a Poisson</em> Seja <span class="math inline">\(x_1,\ldots,x_n\)</span> uma amostra observada do modelo Poisson(<span class="math inline">\(\lambda\)</span>). Observe que <span class="math display">\[\begin{align}\int_0^\infty L(\lambda)\frac{1}{\lambda}d\lambda&amp;=\int_0^\infty \frac{e^{-n\lambda}\lambda^{\sum_{i=1}^n x_i}}{\prod_{i=1^n }x_i!}\frac{1}{\lambda}d\lambda=\frac{1}{\prod_{i=1}^nx_i!}\int_0^\infty\lambda^{\sum_{i=1}^n x_i-1}e^{-n\lambda}d\lambda\\&amp;=\frac{\Gamma(\sum_{i=1}^n x_i)}{\prod_{i=1}^n x_i!}\frac{1}{n^{\sum_{i=1}^n x_i}}&lt;\infty\end{align}\]</span> portanto, a posteriori para <span class="math inline">\(\lambda\)</span> é <span class="math display">\[f(\lambda|\boldsymbol{x})\propto L(\lambda)\frac{1}{\lambda}\propto \lambda^{\sum_{i=1}^n x_i-1}e^{-n\lambda},\]</span> ou seja, <span class="math inline">\(\lambda|\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i,n).\)</span></p>
+</div>
+</section>
+<section id="aproximação-da-posteriori-pela-distribuição-normal" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">10.2</span> Aproximação da posteriori pela distribuição normal</h2>
 <p>Assuma que <span class="math inline">\(\boldsymbol{\theta}\in\mathbb{R}^q\)</span>. Seja <span class="math inline">\(\ell(\boldsymbol{\theta})=\log L(\boldsymbol{\theta})\)</span> a função log-verossimilhança e <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> a estimativa de máxima verossimilhaça para <span class="math inline">\(\boldsymbol{\theta}\)</span>. Considere a seguinte aproximação de <span class="math inline">\(\ell(\boldsymbol{\theta})\)</span> em séries de Taylor</p>
-<p><span class="math display">\[\ell(\boldsymbol{\theta})\approx  \ell(\hat{\boldsymbol{\theta}})+\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\mathcal{H}(\hat{\boldsymbol{\theta}})(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\]</span> onde <span class="math inline">\(\boldsymbol{\theta}\)</span> é a matriz hessiana (de derivadas segunda) aplicada em <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>. Deste modo, teremos que <span class="math display">\[\pi(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}\pi(\boldsymbol{\theta})\]</span></p>
-<p>Utilizando a priori imprópria <span class="math inline">\(\pi(\boldsymbol{\theta})\)</span>, temos que <span class="math inline">\(\boldsymbol{\theta}|\boldsymbol{x}\approx \hbox{Normal}(\hat{\boldsymbol{\theta}},-\mathcal{H}(\hat{\boldsymbol{\theta}})^{-1})\)</span>.</p>
+<p><span class="math display">\[\ell(\boldsymbol{\theta})\approx  \ell(\hat{\boldsymbol{\theta}})+\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\mathcal{H}(\hat{\boldsymbol{\theta}})(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\]</span> onde <span class="math inline">\(\boldsymbol{\theta}\)</span> é a matriz hessiana (de derivadas segunda) aplicada em <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>.</p>
+<p>Deste modo, teremos que <span class="math display">\[f(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}f(\boldsymbol{\theta})\]</span></p>
+<p>Utilizando a priori imprópria <span class="math inline">\(f(\boldsymbol{\theta})\propto 1\)</span>, temos que <span class="math inline">\(\boldsymbol{\theta}|\boldsymbol{x}\approx \hbox{Normal}(\hat{\boldsymbol{\theta}},-\mathcal{H}(\hat{\boldsymbol{\theta}})^{-1})\)</span>.</p>
+<p>Se <span class="math inline">\(\theta\)</span> for um escalar, teremos</p>
+<p><span class="math display">\[f(\theta| \boldsymbol{x} )\propto \exp \left\{ -\frac{1}{2} (\theta-\hat{\theta})^2\left[-\left.\frac{d^2}{d\theta^2}\ell(\theta)\right|_{\theta=\hat{\theta}}\right]\right\}f(\boldsymbol{\theta})\]</span> e, ao utilizar a priori imprópria novamente, teremos <span class="math display">\[\theta|\boldsymbol{x}\sim\hbox{Normal}\left(\hat{\theta},-\left.\frac{d^2}{d\theta^2}\ell(\theta)\right|_{\theta=\hat{\theta}}\right).\]</span></p>
+<div class="alert alert-success">
+<p><em>Importante</em> Para que a aproximação normal faça sentido, é necessário que a priori utilizada seja a imprópria ou uma conjugada. Para tanto, é necessário que o espaço paramétrico de <span class="math inline">\(\theta\)</span> seja a reta e alguma transformação pode ser necessária.</p>
+<p>Seja então <span class="math inline">\(\psi\)</span> o parâmetro original e seja <span class="math inline">\(\theta=g(\psi)\)</span> o parâmetro transformado tal que <span class="math inline">\(\theta\in(-\infty,+\infty)\)</span>. Após aproximar a posteriori de <span class="math inline">\(\theta\)</span> para a normal:</p>
+<ol type="1">
+<li>Simule <span class="math inline">\(\theta_1,\ldots,\theta_B\)</span> da normal aproximada</li>
+<li>Crie a amostra <span class="math inline">\(\psi_1=g^{-1}(\theta_1),\ldots,\psi_B=g^{-1}(\theta_B)\)</span></li>
+<li>Faça inferências sobre <span class="math inline">\(\psi\)</span> utilizando a amostra <span class="math inline">\(\psi_1,\ldots,\psi_B\)</span>.</li>
+</ol>
+</div>
 <p>Note que as informações necessárias para a aproximação da posteriori acima podem ser obtidas via função <code>optim</code>.</p>
 <div class="alert alert-info">
-<p><strong>Exemplo </strong> A amostra abaixo foi simulada do modelo Gama<span class="math inline">\((\alpha,\beta)\)</span> (o valor dos parâmetros foram omitidos de propósito)</p>
+<p><strong>Exemplo </strong></p>
+<p>O USGS reune diversas informações. Entre elas, em https://earthquake.usgs.gov/earthquakes/search/, é possível obter informações sobre terremotos ocorridos no globo para um período longo de tempo. Os dados abaixo apresentam o tempo ocorrido entre terremos nos últimos 10 anos (entre maio de 2025 e maio de 2025)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] 0.2769550 1.1902521 1.1543901 0.6836040 1.2951363 0.8468467 0.7626888
- [8] 0.3830976 0.2270072 0.2785412 0.3853067 0.4818242 0.2021683 0.8914625
-[15] 0.7718524 0.9455476 0.8702839 0.5309044 1.2858882 1.0415047</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(gsheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Carregando pacotes exigidos: gsheet</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">'https://docs.google.com/spreadsheets/d/1Pg0AGENj8Cf9e5yqvbXnhEZ7jgY3sBSb6ETtGUwZtpQ/edit?usp=sharing'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">gsheet2tbl</span>(url)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> x<span class="sc">$</span>Tempo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Como <span class="math inline">\(\alpha,\beta&gt;0\)</span>, considere que <span class="math inline">\(\alpha=\exp\{\theta_1\}\)</span> e <span class="math inline">\(\beta=\exp\{\theta_2\}\)</span> (deste modo, <span class="math inline">\(\boldsymbol{\theta}\in\mathbb{R}^2\)</span>).</p>
+<p>Vamos supor que o modelo Gama(<span class="math inline">\(\alpha\)</span>,<span class="math inline">\(\beta\)</span>) é adequado para este banco de dados. Embora o modelo Gama possua conjugada, a mesma não é trivial para propósitos de aplicação.</p>
+<p>Vamos considerar a aproximação normal para este modelo. Como <span class="math inline">\(\alpha,\beta&gt;0\)</span>, considere as seguintes transformações para a reta:</p>
+<ol type="1">
+<li><span class="math inline">\(\alpha=\exp\{\theta_1\}\)</span></li>
+<li><span class="math inline">\(\beta=\exp\{\theta_2\}\)</span></li>
+</ol>
+<p>Deste modo, <span class="math inline">\(\boldsymbol{\theta}\in\mathbb{R}^2\)</span>.</p>
 <p>A função de log-verossimilhança deste modelo é</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>logveross <span class="ot">&lt;-</span> <span class="cf">function</span>(theta){ <span class="fu">sum</span>(<span class="fu">dgamma</span>(x, <span class="fu">exp</span>(theta[<span class="dv">1</span>]), <span class="fu">exp</span>(theta[<span class="dv">2</span>]), <span class="at">log =</span> T))</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>logveross <span class="ot">&lt;-</span> <span class="cf">function</span>(theta){ <span class="fu">sum</span>(<span class="fu">dgamma</span>(x, <span class="fu">exp</span>(theta[<span class="dv">1</span>]), <span class="fu">exp</span>(theta[<span class="dv">2</span>]), <span class="at">log =</span> T))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Podemos utilizar a função <code>optim</code> para obter as estimativas de máxima verossimilhança e a matriz hessiana. Contudo, primeiro devemos observar que esta função é um minimizador, logo, queremos que <span class="math inline">\(\boldsymbol{\theta}\)</span> que minimize <span class="math inline">\(-\ell({\boldsymbol{\theta}})\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">optim</span>( <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="cf">function</span>(q) <span class="sc">-</span><span class="fu">logveross</span>(q), <span class="at">hessian =</span> T)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>opt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">optim</span>( <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="cf">function</span>(q) <span class="sc">-</span><span class="fu">logveross</span>(q), <span class="at">hessian =</span> T)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>opt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$par
-[1] 1.245897 1.567152
+[1] -0.3936871 -0.1853257
 
 $value
-[1] 7.435047
+[1] 3295.181
 
 $counts
 function gradient 
-      65       NA 
+      67       NA 
 
 $convergence
 [1] 0
@@ -341,93 +384,66 @@ NULL
 
 $hessian
           [,1]      [,2]
-[1,]  80.46195 -69.52104
-[2,] -69.52104  69.52342</code></pre>
+[1,]  6163.371 -3038.916
+[2,] -3038.916  3038.663</code></pre>
 </div>
 </div>
 <p>No objeto <code>opt</code>, a lista <code>par</code> é o vetor com as estimativas de máxima verossimilhança, enquanto que <code>hessian</code> é o valor de <span class="math inline">\(-\mathcal{H}(\hat{\boldsymbol{\theta}})\)</span>.</p>
-<p>A inversa de <code>opt$hessian</code> vai dar a matriz de covariância entre <span class="math inline">\(\theta_1\)</span> e <span class="math inline">\(\theta_2\)</span> a posteriori.</p>
+<p>A inversa de <code>opt$hessian</code> vai dar a matriz de covariância entre <span class="math inline">\(\theta_1\)</span> e <span class="math inline">\(\theta_2\)</span> da posteriori.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">solve</span>(opt<span class="sc">$</span>hessian)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">solve</span>(opt<span class="sc">$</span>hessian)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           [,1]       [,2]
-[1,] 0.09138023 0.09137711
-[2,] 0.09137711 0.10575762</code></pre>
+<pre><code>             [,1]         [,2]
+[1,] 0.0003200819 0.0003201086
+[2,] 0.0003201086 0.0006492275</code></pre>
 </div>
 </div>
-<p>Agora, podemos simular <span class="math inline">\(\theta_1\)</span> e <span class="math inline">\(\theta_2\)</span> a posteriori:</p>
+<p>Agora, podemos simular <span class="math inline">\(\theta_1\)</span> e <span class="math inline">\(\theta_2\)</span> a posteriori, considerando a priori imprópria:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(mvtnorm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(mvtnorm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Carregando pacotes exigidos: mvtnorm</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> <span class="fu">rmvnorm</span>(<span class="dv">500</span>, opt<span class="sc">$</span>par, Sigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> <span class="fu">rmvnorm</span>(<span class="dv">500</span>, opt<span class="sc">$</span>par, Sigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Por último, podemos fazer inferências sobre <span class="math inline">\(\alpha=\exp\{\theta_1\}\)</span> e <span class="math inline">\(\beta=\exp\{\theta_2\}\)</span>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para alfa</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">1</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">=</span> <span class="fu">exp</span>(theta_sim[,<span class="dv">1</span>])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">exp</span>(theta_sim[,<span class="dv">2</span>])</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para alfa</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(alpha, <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    2.5%    97.5% 
-1.978850 6.350455 </code></pre>
+<pre><code>     2.5%     97.5% 
+0.6525359 0.6998625 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para beta</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">2</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para beta</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(beta, <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    2.5%    97.5% 
-2.582863 8.865732 </code></pre>
+<pre><code>     2.5%     97.5% 
+0.7938702 0.8752878 </code></pre>
 </div>
 </div>
-</div>
-</section>
-<section id="metropolis-revisitado" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="metropolis-revisitado"><span class="header-section-number">10.2</span> Metropolis revisitado</h2>
-<p>A diferença entre o algoritmo Metropolis e o Metropolis-Hastings está na escolha da distribuição proposta. No primeiro, a proposta é simétrica, <span class="math display">\[g(x|y)=g(y|x).\]</span> Com isso, teremos que <span class="math display">\[\frac{f(x)}{f(y)}\frac{g(y|x)}{g(x|y)}=\frac{f(x)}{f(y)}\]</span> e a probabilidade de aceitação da cadeia é baseada somente na distribuição alvo <span class="math inline">\(f\)</span>.</p>
-<p>No algoritmo Metropolis, é comum escolher a distribuição proposta como sendo uma normal. Uma escolha razoável é utilizar como proposta aproximação normal vista na seção anterior.</p>
-<div class="alert alert-info">
-<p><strong>Exemplo </strong> Consideremos novamente a amostra do exemplo anterior. A função de verossimilhança é <span class="math display">\[L(\theta)=\prod_{i=1}^n \frac{\beta(\theta_2)^{\alpha(\theta_1)}}{\Gamma(\alpha(\theta_1))} x_i^{\alpha(\theta_1)-1}e^{-\beta(\theta_2)x_i}\]</span> onde <span class="math inline">\(\alpha(\theta_1)=e^{\theta_1}\)</span>, <span class="math inline">\(\beta(\theta_2)=e^{\theta_2}\)</span>. Além disso ,considere ad prioris independentes <span class="math inline">\(\theta_i\sim\hbox{Normal}(0,100)\)</span>. Então, devemos simular do modelo</p>
-<p><span class="math display">\[\pi(\theta|\boldsymbol{x})\propto \left[\frac{\beta(\theta_2)^{\alpha(\theta_1)}}{\Gamma(\alpha(\theta_1))}\right]^n \left[\prod_{i=1}^n x_i\right]^{\alpha(\theta_1)}e^{-\beta(\theta_2)\sum_{i=1}^{n}x_i}e^{-\frac{1}{200}(\theta_1^2 + \theta_2^2)}\]</span></p>
-<p>A posteriori aproximada, que encontramos no exemplo anterior é <span class="math display">\[\boldsymbol{\theta}|\boldsymbol{x}\approx N \left[ \left(\begin{array}{c}1,24\\1,56 \end{array}\right),\left(\begin{array}{cc}0,09 &amp; 0,09\\0,09 &amp;0,11\end{array}\right)\right]\]</span></p>
-<p>Vamos aproveitar a estrutura de covariâncias acima para usar a proposta</p>
-<p><span class="math display">\[\boldsymbol{\theta}^*|\boldsymbol{x}\sim N \left[ \boldsymbol{\theta}^{(j-1)},\tau\left(\begin{array}{cc}0,09 &amp; 0,09\\0,09 &amp;0,11\end{array}\right)\right]\]</span> onde <span class="math inline">\(\boldsymbol{\theta}^*\)</span> é o candidato gerado e <span class="math inline">\(\boldsymbol{\theta}^{(j)}\)</span> é o estado atual da cadeia e <span class="math inline">\(\tau\)</span> é o <strong>tunning</strong> da cadeia.</p>
+<p>Com a amostra a posteriori simulada, podemos simular amostras da preditiva a posteriori.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># número de iterações</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(B,<span class="dv">2</span>))</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>,] <span class="ot">&lt;-</span> opt<span class="sc">$</span>par <span class="co"># valor inicial da cadeia é a emv</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="dv">1</span>             <span class="co"># tunning</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>cont <span class="ot">&lt;-</span> <span class="dv">0</span>            <span class="co"># contador de aceites</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#simule um candidato</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  theta_cand <span class="ot">&lt;-</span> <span class="fu">rmvnorm</span>(<span class="dv">1</span>, theta[j<span class="dv">-1</span>,], tau<span class="sc">*</span>Sigma)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calcule a probabilidade do salto</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  lnum <span class="ot">&lt;-</span> <span class="fu">logveross</span>(theta_cand) <span class="sc">+</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">dnorm</span>(theta_cand[<span class="dv">1</span>,],<span class="dv">0</span>,<span class="dv">10</span>, <span class="at">log =</span> T))</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  lden <span class="ot">&lt;-</span> <span class="fu">logveross</span>(theta[j<span class="dv">-1</span>,]) <span class="sc">+</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">dnorm</span>(theta[j<span class="dv">-1</span>,],<span class="dv">0</span>,<span class="dv">10</span>, <span class="at">log =</span> T))</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  prob <span class="ot">&lt;-</span> <span class="fu">exp</span>( lnum <span class="sc">-</span> lden)</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># verifique o salto</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>( u <span class="sc">&lt;</span> prob){</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    theta[j, ] <span class="ot">&lt;-</span> theta_cand</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    cont <span class="ot">&lt;-</span> cont<span class="sc">+</span><span class="dv">1</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    theta[j,] <span class="ot">&lt;-</span> theta[j<span class="dv">-1</span>,]</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>cont<span class="sc">/</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5628</code></pre>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(<span class="dv">500</span>, n))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>){</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  y_pred[i,] <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n, alpha[i], beta[i])</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> theta[ <span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>, B, <span class="dv">15</span>),]</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(theta_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Podemos então construir um intervalo de predição para a função de distribuição empírica da preditiva a posteriori e compará-lo com a distribuição empírica dos dados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Fd_sim <span class="ot">=</span> <span class="fu">apply</span>(y_pred,<span class="dv">1</span>, <span class="cf">function</span>(y){</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  Fd <span class="ot">=</span> <span class="fu">ecdf</span>(y)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Fd</span>(<span class="fu">sort</span>(x))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">apply</span>(Fd_sim,<span class="dv">1</span>, <span class="cf">function</span>(x) <span class="fu">quantile</span>(x,<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">977</span>)))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ecdf</span>(x), <span class="at">main =</span> <span class="st">''</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">sort</span>(x),qq[<span class="dv">1</span>,], <span class="at">col =</span><span class="dv">2</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">sort</span>(x),qq[<span class="dv">2</span>,], <span class="at">col =</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -436,22 +452,149 @@ $hessian
 </div>
 </div>
 </div>
+</div>
+</section>
+<section id="o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal"><span class="header-section-number">10.3</span> O algoritmo Metropolis em conjunto com a aproximação normal</h2>
+<p>Considere que desejamos simular da posteriori <span class="math inline">\(f(\theta|\boldsymbol{x})\)</span>, onde <span class="math inline">\(\theta\in\mathbb{R}^d\)</span>. Para tanto, podemos utilizar o método de Monte Carlo via Cadeias de Markov conhecido como Metropolis.</p>
+<div class="alert alert-success">
+<p><em>Metropolis</em></p>
+<p>Comece com um valo inicial <span class="math inline">\(\theta^{(0)}\)</span>. Para a <span class="math inline">\(i\)</span>-ésima iteração:</p>
+<ol type="1">
+<li><p>Simule <span class="math inline">\(\theta^*\sim\hbox{Normal}(\theta^{(i-1)},S)\)</span></p></li>
+<li><p>Calcule a razão</p></li>
+</ol>
+<p><span class="math display">\[\rho=\frac{f(\theta^*|\boldsymbol{x})}{f(\theta^{(i-1)}|\boldsymbol{x})}\]</span> 3. Simule <span class="math inline">\(u\sim\hbox{Uniforme}(0,1)\)</span>. Se <span class="math inline">\(u&lt;\rho\)</span>, faça <span class="math inline">\(\theta^{(i)}=\theta^*\)</span>. Senão, faça <span class="math inline">\(\theta^{(i)}=\theta^{(i-1)}\)</span>.</p>
+</div>
+<p>A distribuição dada no passo 1 do algoritmo acima é denominada <em>proposta</em> e uma escolha razoável para ela é a aproximação normal da posteriori.</p>
+<p>Portanto, podemos utilizar a aproximação normal como distribuição proposta para obter amostras da posteriori original.</p>
+<div class="alert alert-info">
+<p><strong>Exemplo </strong> Consideremos novamente a amostra do exemplo anterior. A função de verossimilhança, com os parâmetros transformados é dada por <span class="math display">\[L(\theta)=\prod_{i=1}^n \frac{(e^{\theta_2} )^{e ^{\theta_1}}}{\Gamma(e^{\theta_1})} x_i^{e^{\theta_1}-1}e^{-e^{\theta_2}x_i}\]</span> Além disso ,considere ad prioris independentes <span class="math inline">\(\theta_i\sim\hbox{Normal}(0,100)\)</span>, onde a variância alta foi escolhida para que a priori fosse pouco informativa. Então, devemos simular do modelo</p>
+<p><span class="math display">\[f(\theta|\boldsymbol{x})\propto L(\theta )e^{-\frac{1}{200}(\theta_1^2 + \theta_2^2)}\]</span></p>
+<p>A posteriori aproximada, que encontramos no exemplo anterior é <span class="math display">\[\boldsymbol{\theta}|\boldsymbol{x}\approx N \left[ \left(\begin{array}{c}-0,3936\\-0,1853 \end{array}\right),\left(\begin{array}{cc}0,0003 &amp; 0,0003\\0,0003 &amp;0,0006\end{array}\right)\right]\]</span></p>
+<p>Vamos aproveitar a estrutura de covariâncias acima para usar a proposta</p>
+<p><span class="math display">\[\boldsymbol{\theta}^*|\boldsymbol{x}\sim N \left[ \boldsymbol{\theta}^{(j-1)},\tau\left(\begin{array}{cc}0,0003 &amp; 0,0003\\0,0003 &amp;0,0006\end{array}\right)\right]\]</span> onde <span class="math inline">\(\boldsymbol{\theta}^*\)</span> é o candidato gerado e <span class="math inline">\(\boldsymbol{\theta}^{(j)}\)</span> é o estado atual da cadeia e <span class="math inline">\(\tau\)</span> é o <strong>tunning</strong> da cadeia (em geral, escolhido entre .1, 1 e 10). Além disso, vamos aproveitar a estimativa de máxima verossimilhança como valor inicial para a simulação.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># número de iterações</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(B,<span class="dv">2</span>))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>,] <span class="ot">&lt;-</span> opt<span class="sc">$</span>par <span class="co"># valor inicial da cadeia é a emv</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="dv">1</span>             <span class="co"># tunning</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>cont <span class="ot">&lt;-</span> <span class="dv">0</span>            <span class="co"># contador de aceites</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>B){</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#simule um candidato</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  theta_cand <span class="ot">&lt;-</span> <span class="fu">rmvnorm</span>(<span class="dv">1</span>, theta[j<span class="dv">-1</span>,], tau<span class="sc">*</span>Sigma)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calcule a probabilidade do salto</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  lnum <span class="ot">&lt;-</span> <span class="fu">logveross</span>(theta_cand) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">dnorm</span>(theta_cand[<span class="dv">1</span>,],<span class="dv">0</span>,<span class="dv">10</span>, <span class="at">log =</span> T))</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  lden <span class="ot">&lt;-</span> <span class="fu">logveross</span>(theta[j<span class="dv">-1</span>,]) <span class="sc">+</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">dnorm</span>(theta[j<span class="dv">-1</span>,],<span class="dv">0</span>,<span class="dv">10</span>, <span class="at">log =</span> T))</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  prob <span class="ot">&lt;-</span> <span class="fu">exp</span>( lnum <span class="sc">-</span> lden)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># verifique o salto</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>( u <span class="sc">&lt;</span> prob){</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    theta[j, ] <span class="ot">&lt;-</span> theta_cand</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    cont <span class="ot">&lt;-</span> cont<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    theta[j,] <span class="ot">&lt;-</span> theta[j<span class="dv">-1</span>,]</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> theta[ <span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>, B, <span class="dv">15</span>),]</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(theta_sim[,<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aproximacaoNormal_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(theta_sim[,<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aproximacaoNormal_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>Por fim, as estimativas intervalares para <span class="math inline">\((\alpha,\beta)\)</span> são</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">1</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">1</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    2.5%    97.5% 
-1.699256 5.644593 </code></pre>
+<pre><code>     2.5%     97.5% 
+0.6525617 0.6975188 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para beta</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">2</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para beta</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">2</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    2.5%    97.5% 
-2.087772 7.675778 </code></pre>
+<pre><code>     2.5%     97.5% 
+0.7914162 0.8743593 </code></pre>
 </div>
 </div>
+<section id="exercícios" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">10.4</span> Exercícios</h2>
+<section id="máximas-do-rio-negro" class="level3" data-number="10.4.1">
+<h3 data-number="10.4.1" class="anchored" data-anchor-id="máximas-do-rio-negro"><span class="header-section-number">10.4.1</span> Máximas do Rio Negro</h3>
+<p>A tabela abaixo mostra os níveis máximos do Rio Negro regis trados no Porto de Manaus entre 2004 e 2014.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar os vetores de anos e valores máximos</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>anos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1992</span>, <span class="dv">1993</span>, <span class="dv">1994</span>, <span class="dv">1995</span>, <span class="dv">1996</span>, <span class="dv">1997</span>, <span class="dv">1998</span>, <span class="dv">1999</span>, <span class="dv">2000</span>, <span class="dv">2001</span>, <span class="dv">2002</span>, <span class="dv">2003</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>          <span class="dv">2004</span>, <span class="dv">2005</span>, <span class="dv">2006</span>, <span class="dv">2007</span>, <span class="dv">2008</span>, <span class="dv">2009</span>, <span class="dv">2010</span>, <span class="dv">2011</span>, <span class="dv">2012</span>, <span class="dv">2013</span>, <span class="dv">2014</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>maximas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">25.42</span>, <span class="fl">28.76</span>, <span class="fl">29.05</span>, <span class="fl">27.16</span>, <span class="fl">28.54</span>, <span class="fl">28.96</span>, <span class="fl">27.58</span>, <span class="fl">29.30</span>, <span class="fl">28.62</span>, <span class="fl">28.21</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>             <span class="fl">28.91</span>, <span class="fl">28.27</span>, <span class="fl">27.13</span>, <span class="fl">28.10</span>, <span class="fl">28.84</span>, <span class="fl">28.18</span>, <span class="fl">28.62</span>, <span class="fl">29.77</span>, <span class="fl">27.96</span>, <span class="fl">28.62</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>             <span class="fl">29.97</span>, <span class="fl">29.33</span>, <span class="fl">29.50</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Combinar os vetores em um data frame</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>dados_anuais <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Ano =</span> anos,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Maxima =</span> maximas</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar a tabela criada</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dados_anuais)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Ano Maxima
+1  1992  25.42
+2  1993  28.76
+3  1994  29.05
+4  1995  27.16
+5  1996  28.54
+6  1997  28.96
+7  1998  27.58
+8  1999  29.30
+9  2000  28.62
+10 2001  28.21
+11 2002  28.91
+12 2003  28.27
+13 2004  27.13
+14 2005  28.10
+15 2006  28.84
+16 2007  28.18
+17 2008  28.62
+18 2009  29.77
+19 2010  27.96
+20 2011  28.62
+21 2012  29.97
+22 2013  29.33
+23 2014  29.50</code></pre>
+</div>
+</div>
+<p>O Teorema deFisher-Tippett diz que uma sequência de máximos de variáveis aleatórias independentes e identicamente distribuídas converge em distribuição para um membro da família de distribuições de valores extremos que pode ser dividida nas famílias Gumbel, Fréchet e Weibull.</p>
+<ol type="1">
+<li><p>Utilize a aproximação Normal para verificar que a distribuição Weibull se ajusta a esses dados</p></li>
+<li><p>simule amostras da posteriori para o modelo Weibull utilizando o algoritmo Metropolis. Dê intervalos de credibilidade para os parâmetros e verifique o ajuste analisando a preditiva a posteriori.</p></li>
+</ol>
 
 
+</section>
+</section>
 </div>
 </section>
 
@@ -878,13 +1021,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span>
+      <a href="./normal.html" class="pagination-link" aria-label="O modelo normal">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo normal</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./misturas.html" class="pagination-link" aria-label="Misturas de distribuições">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

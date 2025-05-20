@@ -1,0 +1,47 @@
+# O modelo exponencial
+
+Verossimilhança
+
+$$L(\lambda)=\lambda^n e^{-\lambda \sum_{i=1}^n x_i}$$
+
+Priori $\lambda\sim\hbox{Gama}(s,r)$
+
+Posteriori $\lambda\sim\hbox{Gama}(n+s,\sum_{i=1}^n x_i+r)$.
+
+Preditiva a posteriori:
+
+$$\begin{align}f(x^*|\boldsymbol{x})&=\int_0^\infty f(x^*|\lambda)f(\lambda|\boldsymbol{x})d\lambda\\ &=\int_0^\infty \lambda e^{-\lambda x^*}\frac{r_1^{s_1}}{\Gamma(s_1)}\lambda^{s_1-1}e^{-r_1\lambda}d\lambda\\
+&=\frac{r_1^{s_1}}{\Gamma(s_1)}\int_0^\infty \lambda^{s_1+1-1}e^{-\lambda(r_1+x^*)}d\lambda\\
+&=\frac{r_1^{s_1}}{\Gamma(s_1)}\frac{\Gamma(s_1+1)}{(r_1+x^*)^{s_1+1}}=s_1\frac{r_1^{s_1}}{(r_1+x^*)^{s_1}}\end{align}$$
+
+conhecida como distribuição Pareto. Sua função distribuição é dada por 
+
+$$F(x^*|\boldsymbol{x})=1-\left(\frac{r_1}{x^*+r_1}\right)^{s_1}.$$
+
+```{r}
+require(gsheet)
+url <- 'https://docs.google.com/spreadsheets/d/1UUoNR7yDcFjwag3z3C5Ime0oaRCTjTomOaegFnUU-ZU/edit?usp=sharing'
+
+tempo <- data.frame(gsheet2tbl(url))
+
+plot(ecdf(tempo[,1]))
+
+Fp <- function(x) 1-( (sum(tempo)+1)/(sum(tempo)+1+x) )^(nrow(tempo+1))
+curve(Fp(x),add=T,col=2,lwd = 3)
+```
+
+
+Outlier
+
+
+$$\begin{align}f(x_i|\boldsymbol{x}_{-i})&=\int_0^\infty f(x_i|\lambda)f(\lambda|\boldsymbol{x}_{-i})d\lambda\\ &=\int_0^\infty \lambda e^{-\lambda x_i}\frac{r_i^{s_i}}{\Gamma(s_i)}\lambda^{s_i-1}e^{-r_i\lambda}d\lambda\\
+&=\frac{(r_1-x_i)^{s_1-1}}{\Gamma(s_1-1)}\int_0^\infty \lambda^{s_1-1}e^{-\lambda r_1}d\lambda\\
+&=\frac{r_i^{s_i}}{\Gamma(s_i)}\frac{\Gamma(s_i+1)}{(r_i+x_i)^{s_i+1}}=s_i\frac{r_i^{s_i}}{(r_i+x_i)^{s_i}}\end{align}$$
+
+
+
+$$F(x_i|\boldsymbol{x}_{-i})=1-\left( 1-\frac{x_i}{r_1}\right)^{s_1-1}.$$
+
+$$1-(1-c)^n=1-\alpha$$
+
+
