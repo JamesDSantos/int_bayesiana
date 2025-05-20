@@ -247,6 +247,8 @@ quantile(exp(theta_sim[,1]), c(.025,.975))
 quantile(exp(theta_sim[,2]), c(.025,.975))
 ```
 
+</div>
+
 ## Exercícios
 
 
