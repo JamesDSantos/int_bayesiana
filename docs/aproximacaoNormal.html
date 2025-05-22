@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; Aproximação normal e seu uso com o Metropolis-Hastings – Introdução à Inferência Bayesiana</title>
+<title>11&nbsp; Aproximação normal e seu uso com o Metropolis-Hastings – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./negativeBinomial.html" rel="next">
-<link href="./normal.html" rel="prev">
+<link href="./normal_multi.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aproximacaoNormal.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aproximacaoNormal.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -231,20 +231,26 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./normal_multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O Modelo Normal Multivariado</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -256,7 +262,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -275,12 +281,12 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-priori-imprópria" id="toc-a-priori-imprópria" class="nav-link active" data-scroll-target="#a-priori-imprópria"><span class="header-section-number">10.1</span> A priori imprópria</a></li>
-  <li><a href="#aproximação-da-posteriori-pela-distribuição-normal" id="toc-aproximação-da-posteriori-pela-distribuição-normal" class="nav-link" data-scroll-target="#aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">10.2</span> Aproximação da posteriori pela distribuição normal</a></li>
-  <li><a href="#o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" id="toc-o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" class="nav-link" data-scroll-target="#o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal"><span class="header-section-number">10.3</span> O algoritmo Metropolis em conjunto com a aproximação normal</a></li>
-  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">10.4</span> Exercícios</a>
+  <li><a href="#a-priori-imprópria" id="toc-a-priori-imprópria" class="nav-link active" data-scroll-target="#a-priori-imprópria"><span class="header-section-number">11.1</span> A priori imprópria</a></li>
+  <li><a href="#aproximação-da-posteriori-pela-distribuição-normal" id="toc-aproximação-da-posteriori-pela-distribuição-normal" class="nav-link" data-scroll-target="#aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">11.2</span> Aproximação da posteriori pela distribuição normal</a></li>
+  <li><a href="#o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" id="toc-o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" class="nav-link" data-scroll-target="#o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal"><span class="header-section-number">11.3</span> O algoritmo Metropolis em conjunto com a aproximação normal</a></li>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">11.4</span> Exercícios</a>
   <ul class="collapse">
-  <li><a href="#máximas-do-rio-negro" id="toc-máximas-do-rio-negro" class="nav-link" data-scroll-target="#máximas-do-rio-negro"><span class="header-section-number">10.4.1</span> Máximas do Rio Negro</a></li>
+  <li><a href="#máximas-do-rio-negro" id="toc-máximas-do-rio-negro" class="nav-link" data-scroll-target="#máximas-do-rio-negro"><span class="header-section-number">11.4.1</span> Máximas do Rio Negro</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -290,7 +296,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></h1>
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></h1>
 </div>
 
 
@@ -307,8 +313,8 @@ window.Quarto = {
 </header>
 
 
-<section id="a-priori-imprópria" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="a-priori-imprópria"><span class="header-section-number">10.1</span> A priori imprópria</h2>
+<section id="a-priori-imprópria" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="a-priori-imprópria"><span class="header-section-number">11.1</span> A priori imprópria</h2>
 <p>Considerando o problema de elicitar uma priori para <span class="math inline">\(\theta\in\(0,1)\)</span>, a distribuição Uniforme(0,1) surge como uma candidato confortável, uma vez que dá probabilidades iguais para quaisquer intervalos de <span class="math inline">\((0,1)\)</span> de mesmo comprimento.</p>
 <p>De modo análogo, se <span class="math inline">\(\theta\in(a,b)\)</span>, a distribuição Uniforme<span class="math inline">\((a,b)\)</span> é uma escolha interessante quando o objetivo é dar pouco peso para a informação a priori.</p>
 <p>Considere então que <span class="math inline">\(\theta\in\mathbb{R}\)</span>. Na prática, há um subintervalo <span class="math inline">\((a,b)\in\mathbb{R}\)</span> que contém quasse toda a massa da posteriori. Nesse caso, podemos utilizar a priori Uniforme<span class="math inline">\((a,b)\)</span>, obtendo <span class="math display">\[f(\theta|\boldsymbol{x})=\frac{L(\theta)\frac{1}{b-a}}{\int_a^bL(\theta)\frac{1}{b-a}d\theta}=\frac{L(\theta)}{\int_a^b L(\theta)d\theta}.\]</span> Se permitirmos que <span class="math inline">\(a=-\infty\)</span> e <span class="math inline">\(b=+\infty\)</span>, teremos <span class="math display">\[f(\theta|\boldsymbol{x})=\frac{L(\theta)\frac{1}{b-a}}{\int_a^bL(\theta)\frac{1}{b-a}d\theta}=\frac{L(\theta)}{\int_\mathbb{R} L(\theta)d\theta}\propto L(\theta).\]</span> Desde que <span class="math inline">\(\int_{\mathbb{R}}L(\theta)&lt;\infty\)</span>, teremos que <span class="math inline">\(f(\theta|\boldsymbol{x})\)</span> é de fato uma posteriori. A priori associada nesse caso é dada por <span class="math display">\[f(\theta)=1\]</span> para todo <span class="math inline">\(\theta\in\mathbb{R}\)</span>. Como essa priori não é uma função densidade, ela é denominada <strong>imprópria</strong>.</p>
@@ -322,8 +328,8 @@ window.Quarto = {
 <p><em>Priori imprópria para a Poisson</em> Seja <span class="math inline">\(x_1,\ldots,x_n\)</span> uma amostra observada do modelo Poisson(<span class="math inline">\(\lambda\)</span>). Observe que <span class="math display">\[\begin{align}\int_0^\infty L(\lambda)\frac{1}{\lambda}d\lambda&amp;=\int_0^\infty \frac{e^{-n\lambda}\lambda^{\sum_{i=1}^n x_i}}{\prod_{i=1^n }x_i!}\frac{1}{\lambda}d\lambda=\frac{1}{\prod_{i=1}^nx_i!}\int_0^\infty\lambda^{\sum_{i=1}^n x_i-1}e^{-n\lambda}d\lambda\\&amp;=\frac{\Gamma(\sum_{i=1}^n x_i)}{\prod_{i=1}^n x_i!}\frac{1}{n^{\sum_{i=1}^n x_i}}&lt;\infty\end{align}\]</span> portanto, a posteriori para <span class="math inline">\(\lambda\)</span> é <span class="math display">\[f(\lambda|\boldsymbol{x})\propto L(\lambda)\frac{1}{\lambda}\propto \lambda^{\sum_{i=1}^n x_i-1}e^{-n\lambda},\]</span> ou seja, <span class="math inline">\(\lambda|\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i,n).\)</span></p>
 </div>
 </section>
-<section id="aproximação-da-posteriori-pela-distribuição-normal" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">10.2</span> Aproximação da posteriori pela distribuição normal</h2>
+<section id="aproximação-da-posteriori-pela-distribuição-normal" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="aproximação-da-posteriori-pela-distribuição-normal"><span class="header-section-number">11.2</span> Aproximação da posteriori pela distribuição normal</h2>
 <p>Assuma que <span class="math inline">\(\boldsymbol{\theta}\in\mathbb{R}^q\)</span>. Seja <span class="math inline">\(\ell(\boldsymbol{\theta})=\log L(\boldsymbol{\theta})\)</span> a função log-verossimilhança e <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> a estimativa de máxima verossimilhaça para <span class="math inline">\(\boldsymbol{\theta}\)</span>. Considere a seguinte aproximação de <span class="math inline">\(\ell(\boldsymbol{\theta})\)</span> em séries de Taylor</p>
 <p><span class="math display">\[\ell(\boldsymbol{\theta})\approx  \ell(\hat{\boldsymbol{\theta}})+\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\mathcal{H}(\hat{\boldsymbol{\theta}})(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\]</span> onde <span class="math inline">\(\boldsymbol{\theta}\)</span> é a matriz hessiana (de derivadas segunda) aplicada em <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>.</p>
 <p>Deste modo, teremos que <span class="math display">\[f(\boldsymbol{\theta}|\boldsymbol{x})\propto \exp\left\{-\frac{1}{2}(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})'\left[-\mathcal{H}(\hat{\boldsymbol{\theta}})\right](\boldsymbol{\theta}-\hat{\boldsymbol{\theta}})\right\}f(\boldsymbol{\theta})\]</span></p>
@@ -419,13 +425,13 @@ $hessian
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(alpha, <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5%     97.5% 
-0.6522336 0.6992634 </code></pre>
+0.6529422 0.6984087 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para beta</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(beta, <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5%     97.5% 
-0.7923332 0.8751207 </code></pre>
+0.7908393 0.8766698 </code></pre>
 </div>
 </div>
 <p>Com a amostra a posteriori simulada, podemos simular amostras da preditiva a posteriori.</p>
@@ -458,8 +464,8 @@ $hessian
 </div>
 </div>
 </section>
-<section id="o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal"><span class="header-section-number">10.3</span> O algoritmo Metropolis em conjunto com a aproximação normal</h2>
+<section id="o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="o-algoritmo-metropolis-em-conjunto-com-a-aproximação-normal"><span class="header-section-number">11.3</span> O algoritmo Metropolis em conjunto com a aproximação normal</h2>
 <p>Considere que desejamos simular da posteriori <span class="math inline">\(f(\theta|\boldsymbol{x})\)</span>, onde <span class="math inline">\(\theta\in\mathbb{R}^d\)</span>. Para tanto, podemos utilizar o método de Monte Carlo via Cadeias de Markov conhecido como Metropolis.</p>
 <div class="alert alert-success">
 <p><em>Metropolis</em></p>
@@ -532,21 +538,21 @@ $hessian
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">1</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5%     97.5% 
-0.6504447 0.6973628 </code></pre>
+0.6517549 0.6961878 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># intervalos de credibilidade para beta</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(<span class="fu">exp</span>(theta_sim[,<span class="dv">2</span>]), <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5%     97.5% 
-0.7916179 0.8668817 </code></pre>
+0.7950391 0.8660590 </code></pre>
 </div>
 </div>
 </div>
 </section>
-<section id="exercícios" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">10.4</span> Exercícios</h2>
-<section id="máximas-do-rio-negro" class="level3" data-number="10.4.1">
-<h3 data-number="10.4.1" class="anchored" data-anchor-id="máximas-do-rio-negro"><span class="header-section-number">10.4.1</span> Máximas do Rio Negro</h3>
+<section id="exercícios" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">11.4</span> Exercícios</h2>
+<section id="máximas-do-rio-negro" class="level3" data-number="11.4.1">
+<h3 data-number="11.4.1" class="anchored" data-anchor-id="máximas-do-rio-negro"><span class="header-section-number">11.4.1</span> Máximas do Rio Negro</h3>
 <p>A tabela abaixo mostra os níveis máximos do Rio Negro regis trados no Porto de Manaus entre 2004 e 2014.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar os vetores de anos e valores máximos</span></span>
@@ -1025,13 +1031,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./normal.html" class="pagination-link" aria-label="O modelo normal">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo normal</span></span>
+      <a href="./normal_multi.html" class="pagination-link" aria-label="O Modelo Normal Multivariado">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O Modelo Normal Multivariado</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

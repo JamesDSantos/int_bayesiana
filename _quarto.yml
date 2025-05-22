@@ -17,6 +17,7 @@ book:
     - poisson.qmd
     - exponencial.qmd
     - normal.qmd
+    - normal_multi.qmd
     - aproximacaoNormal.qmd
     - negativeBinomial.qmd
     - misturas.qmd

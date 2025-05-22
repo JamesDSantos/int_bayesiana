@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; Misturas de distribuições – Introdução à Inferência Bayesiana</title>
+<title>13&nbsp; Misturas de distribuições – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./mcmc.html" rel="next">
-<link href="./aproximacaoNormal.html" rel="prev">
+<link href="./negativeBinomial.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./misturas.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./misturas.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -219,26 +219,38 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./normal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+  <a href="./exponencial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo exponencial</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+  <a href="./normal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normal_multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O Modelo Normal Multivariado</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -250,7 +262,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -269,14 +281,14 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link active" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">11.1</span> Modelos com inflação de zeros</a>
+  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link active" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">13.1</span> Modelos com inflação de zeros</a>
   <ul class="collapse">
-  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">11.1.1</span> Exercício</a></li>
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">13.1.1</span> Exercício</a></li>
   </ul></li>
-  <li><a href="#mistura-escalonada-de-normais" id="toc-mistura-escalonada-de-normais" class="nav-link" data-scroll-target="#mistura-escalonada-de-normais"><span class="header-section-number">11.2</span> Mistura escalonada de normais</a></li>
-  <li><a href="#misturas-finitas-com-número" id="toc-misturas-finitas-com-número" class="nav-link" data-scroll-target="#misturas-finitas-com-número"><span class="header-section-number">11.3</span> Misturas finitas com número</a>
+  <li><a href="#mistura-escalonada-de-normais" id="toc-mistura-escalonada-de-normais" class="nav-link" data-scroll-target="#mistura-escalonada-de-normais"><span class="header-section-number">13.2</span> Mistura escalonada de normais</a></li>
+  <li><a href="#misturas-finitas-com-número" id="toc-misturas-finitas-com-número" class="nav-link" data-scroll-target="#misturas-finitas-com-número"><span class="header-section-number">13.3</span> Misturas finitas com número</a>
   <ul class="collapse">
-  <li><a href="#o-velho-fiel" id="toc-o-velho-fiel" class="nav-link" data-scroll-target="#o-velho-fiel"><span class="header-section-number">11.3.1</span> O velho fiel</a></li>
+  <li><a href="#o-velho-fiel" id="toc-o-velho-fiel" class="nav-link" data-scroll-target="#o-velho-fiel"><span class="header-section-number">13.3.1</span> O velho fiel</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -286,7 +298,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></h1>
 </div>
 
 
@@ -320,8 +332,8 @@ window.Quarto = {
 </ol>
 </div>
 <p>O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição estacionária é <span class="math inline">\(\pi(\theta,\boldsymbol{z}|\boldsymbol{x})\)</span></p>
-<section id="modelos-com-inflação-de-zeros" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">11.1</span> Modelos com inflação de zeros</h2>
+<section id="modelos-com-inflação-de-zeros" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">13.1</span> Modelos com inflação de zeros</h2>
 <p>Quando são observados mais zeros do que o esperado pelo modelo de contagem assumido para a verossimilhança, é usual considerar um modelo com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma variável <span class="math inline">\(Z|p\sim\hbox{Bernoulli}(\rho)\)</span> tal que:</p>
 <p><span class="math display">\[X=\left\{\begin{array}{ll}0, &amp; \hbox{se }Z=1\ \\ Y,&amp;\hbox{se }Z=0\end{array}\right.\]</span> onde <span class="math inline">\(Y\sim h(.|\theta)\)</span> é o modelo de contagem. Apenas <span class="math inline">\(X\)</span> é observado e, como</p>
 <p><span class="math display">\[\begin{align}P(X=0|\theta,p)&amp;=P(X=0|Z=0,\theta)P(Z=0|\rho)+P(X=0|Z=1,\theta)P(Z=1|\rho)\\&amp;=(1-\rho)h(0|\theta)+\rho\end{align}\]</span> a probabilidade de observar um zero está entre <span class="math inline">\(h(0|\theta)\)</span> e 1, o que caracteriza a inflação.</p>
@@ -469,9 +481,9 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 <div class="cell-output cell-output-stdout">
 <pre><code>x_til
            0            1            2            3            4            5 
-6.073093e-01 2.012828e-01 1.165382e-01 5.011305e-02 1.746574e-02 5.421993e-03 
+6.153846e-01 1.969683e-01 1.152923e-01 4.856721e-02 1.693507e-02 4.799040e-03 
            6            7            8            9 
-1.453555e-03 3.230123e-04 6.921693e-05 2.307231e-05 </code></pre>
+1.638134e-03 2.307231e-04 1.615062e-04 2.307231e-05 </code></pre>
 </div>
 </div>
 <p>Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo Poisson a e frequência relativa.</p>
@@ -495,8 +507,8 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </div>
 </div>
 </div>
-<section id="exercício" class="level3" data-number="11.1.1">
-<h3 data-number="11.1.1" class="anchored" data-anchor-id="exercício"><span class="header-section-number">11.1.1</span> Exercício</h3>
+<section id="exercício" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="exercício"><span class="header-section-number">13.1.1</span> Exercício</h3>
 <div class="alert alert-warning">
 <p>Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana, entre 1950 e 2012.</p>
 <div class="cell">
@@ -515,11 +527,11 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </div>
 </section>
 </section>
-<section id="mistura-escalonada-de-normais" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">11.2</span> Mistura escalonada de normais</h2>
+<section id="mistura-escalonada-de-normais" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">13.2</span> Mistura escalonada de normais</h2>
 </section>
-<section id="misturas-finitas-com-número" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">11.3</span> Misturas finitas com número</h2>
+<section id="misturas-finitas-com-número" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">13.3</span> Misturas finitas com número</h2>
 <p>Dizemos que <span class="math inline">\(X|\boldsymbol{\theta},\boldsymbol{p},\kappa\)</span> é um modelo de mistura finito se sua função de densidade/probabilidade é dada por</p>
 <p><span class="math display">\[f(x| \boldsymbol{\theta},\boldsymbol{p} ,\kappa )=\sum_{k=1}^\kappa p_k f_k(x|\boldsymbol{\theta}_k).\]</span></p>
 <p>Cada função <span class="math inline">\(f(.|\boldsymbol{\theta}_k)\)</span> é denominada componente da mistura e o número de componentes pode ser desconhecido.</p>
@@ -534,8 +546,8 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </ul>
 <p><span class="math display">\[\tilde{p}_k=\frac{p_kf(x_i|\boldsymbol{\theta}_k)}{\sum_{k=1}^\kappa p_kf(x_i|\boldsymbol{\theta}_k)}\]</span> * <span class="math inline">\(f(\textbf{p}|resto)\propto \prod_{k=1}^\kappa p_k^{\sum_{i=1}^n z_{i,k}+a_k-1}\)</span>, ou seja <span class="math inline">\(\textbf{p}|resto\sim\hbox{Dirichlet}(a_1+\sum_{i=1}^n z_{i,1},\ldots,a_\kappa+\sum_{i=1}^n z_{i,\kappa})\)</span></p>
 <p>Se necessário, podemos atrbuir a priori <span class="math display">\[\pi(\kappa)=\frac{1}{M},\kappa=1,2,\ldots,M\]</span> para obter a condicional completa <span class="math display">\[\pi(\kappa|resto)=\frac{\prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)}{\sum_{\kappa=1}^M \prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)},\kappa=1,\ldots,M.\]</span></p>
-<section id="o-velho-fiel" class="level3" data-number="11.3.1">
-<h3 data-number="11.3.1" class="anchored" data-anchor-id="o-velho-fiel"><span class="header-section-number">11.3.1</span> O velho fiel</h3>
+<section id="o-velho-fiel" class="level3" data-number="13.3.1">
+<h3 data-number="13.3.1" class="anchored" data-anchor-id="o-velho-fiel"><span class="header-section-number">13.3.1</span> O velho fiel</h3>
 <p>O banco de dados <code>faithful</code> mostra a duração e o tempo até a próxima erupção do geiser Velho Fiel, no parque Yellowstone. Abaixo mostramos o diagrama do tempo de espera entre erupções</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(faithful<span class="sc">$</span>waiting)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1084,13 +1096,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./aproximacaoNormal.html" class="pagination-link" aria-label="Aproximação normal e seu uso com o Metropolis-Hastings">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span>
+      <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./mcmc.html" class="pagination-link" aria-label="Tópicos em Método de Monte Carlo via Cadeias de Markov">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
