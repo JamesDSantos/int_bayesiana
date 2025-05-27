@@ -216,7 +216,20 @@ Após encontrar essas relações, podemos verificar o quão fortes elas são. Em
 * Se $\phi_{i,j}<0$ então, a correlação entre as variáveis $i$ e $j$ condicionadas às demais é **positiva**
 
 A partir dos intervalos obtibos, podemos inferir, por exemplo, que as relações entre Insulina e Dobra de pele são positivas. Isto já era esperado, pois a espessura da dobra da pele é uma medida direta da gordura subcutânea (a gordura logo abaixo da pele) e a gordura corporalé um dos principais fatores que contribuem para a resistência à insulina. 
-
-
-
 </div>
+
+## Exercícios
+
+### Carne magra em suínos
+
+Os dados de carcaça do `gRbase` contêm medições da espessura das camadas de carne e gordura em diferentes locais no dorso de um suíno de abate, juntamente com a porcentagem de carne magra em 344 carcaças. Esses dados foram utilizados para estimar os parâmetros em uma fórmula de predição para a porcentagem de carne magra com base nas medições de espessura na carcaça. 
+```{r}
+library(gRbase)
+data(carcass)
+head(carcass)
+```
+A variável `Fat11` é a espessura da camada de gordura medida entre a 11ª e a 12ª costela, a partir da parte cranial da carcaça. De modo análogo se definem `Fat12` e `Fat13`. Já `Meat11`, `Meat12` e `Meat13` se referem à espessura da camada de caarne. A variável  `LeanMeat` é a porcentagem de carne magra na carcaça, calculada como o peso da carne dividido pelo peso total da carcaça, que é composta por carne, gordura e outros tecidos.
+
+Ajuste um modelo de grafos gaussiano e determine quais variáveis podem ser utilizadas para predizer diretamente a porcentagem de carne magra.
+
+

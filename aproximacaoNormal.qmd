@@ -278,8 +278,28 @@ print(dados_anuais)
 ```
 
 
- O Teorema deFisher-Tippett diz que uma sequência de máximos de variáveis aleatórias independentes e identicamente distribuídas converge em distribuição para um membro da família de distribuições de valores extremos que pode ser dividida nas famílias Gumbel, Fréchet e Weibull. 
+ O Teorema de Fisher-Tippett diz que uma sequência de máximos de variáveis aleatórias independentes e identicamente distribuídas converge em distribuição para um membro da família de distribuições de valores extremos que pode ser dividida nas famílias Gumbel, Fréchet e Weibull. 
  
  1. Utilize a aproximação Normal para verificar que a distribuição Weibull se ajusta a esses dados
  
  2. simule amostras da posteriori para o modelo Weibull utilizando o algoritmo Metropolis. Dê intervalos  de credibilidade para os parâmetros e verifique o ajuste analisando a preditiva a posteriori.
+ 
+###  Tempo entre chegadas utilizando da distribuição Lindley
+
+Os dados abaixo representam o tempo que 100 clientes esperaram para serem atendidos em um banco e foram retirados de [aqui](https://www.sciencedirect.com/science/article/abs/pii/S037847540700211X)
+
+```{r}
+dados <- c(0.8, 0.8, 1.3, 1.5, 1.8, 1.9, 1.9, 2.1, 2.6, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5, 3.6, 4.0, 4.1, 4.2, 4.2, 4.3, 4.3, 4.4, 4.4, 4.6, 4.7, 4.7, 4.8, 4.9, 4.9, 5.0, 5.3, 5.5, 5.7, 5.7, 6.1, 6.2, 6.2, 6.2, 6.3,6.7, 6.9, 7.1, 7.1, 7.1, 7.1, 7.4, 7.6, 7.7, 8.0, 8.2, 8.6, 8.6, 8.6, 8.8, 8.8, 8.9, 8.9, 9.5, 9.6, 9.7, 9.8, 10.7, 10.9, 11.0, 11.0, 11.1, 11.2, 11.2, 11.5, 11.9, 12.4, 12.5, 12.9, 13.0, 13.1, 13.3, 13.6, 13.7, 13.9,14.1, 15.4, 15.4, 17.3, 17.3, 18.1, 18.2, 18.4, 18.9, 19.0,           19.9, 20.6, 21.3, 21.4, 21.9, 23.0, 27.0, 31.6, 33.1, 38.5)
+```
+
+1. Embora a distribuição exponencial seja a primeira escolha, no trabalho original os autores discutem que esta distribuição não oferece um bom ajuste para estes dados. Utilizando a distribuição preditiva a posteriori obtida a partir da priori conjugada da exponencial, obtenha evidências sobre a afirmação dos pesquisadores.
+
+2. Como alternativa, os pesquisadores sugeriram a utilização da distribuição Lindley, cuja função densidade é dada por
+
+$$f(x|\theta)=\frac{\theta^2}{\theta+1}(1+x) e^{-\theta x},$$
+onde $x,\theta>0$. Faça $\lambda=\log(\theta)$. Utilizando uma priori imprópria para $\lambda$ e a aproximação normal, verifique a afirmação dos pesquisadores de que a distribuição Lindley é apropriada para este conjunto de dados.
+
+3. Refaça o item anterior utilizando a posteriori
+$$f(\lambda|\boldsymbol{x})\propto \prod_{i=1}^nf(x_i|e^{\lambda})f(\lambda),$$
+onde $f(\lambda)$ é uma priori própria. Para tanto, utilize o algoritmo Metropolis para obter simulações da posteriori e considere a aproximação normal obtida no item anterior para construir a proposta deste simulador.
+
