@@ -19,6 +19,7 @@ book:
     - normal.qmd
     - normal_multi.qmd
     - aproximacaoNormal.qmd
+    - regressao.qmd
     - negativeBinomial.qmd
     - misturas.qmd
     - poisson.qmd
