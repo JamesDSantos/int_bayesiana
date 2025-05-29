@@ -288,6 +288,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">12.1</span> Introdução</a></li>
+  <li><a href="#a-priori-g-de-zellner" id="toc-a-priori-g-de-zellner" class="nav-link" data-scroll-target="#a-priori-g-de-zellner"><span class="header-section-number">12.2</span> A priori <span class="math inline">\(G\)</span> de Zellner</a></li>
   </ul>
 </nav>
     </div>
@@ -349,7 +350,7 @@ window.Quarto = {
 &amp;=(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})'\boldsymbol{C}_1(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})+\hat{\boldsymbol{\beta}}'(\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{\beta}_0'\boldsymbol{C}_0\boldsymbol{\beta}_0-\tilde{\boldsymbol{\beta}}'\boldsymbol{C}_1\tilde{\boldsymbol{\beta}}
 \end{align}\]</span> Além disso, pode-se mostrar que <span class="math display">\[\hat{\boldsymbol{\beta}}'(\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{\beta}_0'\boldsymbol{C}_0\boldsymbol{\beta}_0-\tilde{\boldsymbol{\beta}}'\boldsymbol{C}_1\tilde{\boldsymbol{\beta}}=(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X}^{-1}))^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)\]</span> <span class="math display">\[\begin{align}f(\boldsymbol{\beta},\phi|\text{dados})&amp;\propto\phi^{\frac{q}{2}}e^{-\frac{\phi}{2}(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})'\boldsymbol{C}_1(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})}\phi^{\frac{n+n_0}{2}-1}e^{-\frac{\phi}{2}(SQR+s_0+(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X}^{-1}))^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0))}\end{align}\]</span> ou seja <span class="math display">\[\begin{align}\boldsymbol{\beta}|\phi,\hbox{dados}&amp;\sim\hbox{Normal}(\tilde{\boldsymbol{\beta}},\phi^{-1}\boldsymbol{C}_1^{-1})\\
 \phi|\text{dados}&amp;\sim\hbox{Gama}\left(\frac{n_0+n}{2},\frac{s_1}{2}\right)
-\end{align}\]</span> onde <span class="math display">\[s_1=SQR+s_0+(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X}^{-1}))^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)\]</span></p>
+\end{align}\]</span> onde <span class="math display">\[s_1=SQR+s_0+(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X})^{-1})^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)\]</span></p>
 <p>O estimador de Bayes para <span class="math inline">\(\boldsymbol{\beta}\)</span> é</p>
 <p><span class="math display">\[\tilde{\boldsymbol{\beta}}=\boldsymbol{C}_1^{-1}[ (\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{C}_0\boldsymbol{\beta}_0]\]</span></p>
 <p>Para elicitar corretamente a priori conjugada é necessário elicitar a matriz <span class="math inline">\(\boldsymbol{C}_0\)</span>, que é um desafio. A solução mais simples é considerar que <span class="math inline">\(\boldsymbol{C_0}=\lambda \text{I}_q\)</span> e valores pequenos de <span class="math inline">\(\lambda\)</span> levam a uma informação a priori mais difusa. Essa solução é utilizada na inferência frequentista, conforme podemos ver abaixo.</p>
@@ -397,7 +398,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Vamos ajustar um modelo de regressão linear com <span class="math inline">\(\boldsymbol{\beta}_0=\text{0}_6\)</span>, <span class="math inline">\(n_0=0,01,s_0=0,01\)</span>, <span class="math inline">\(\boldsymbol{C}_0=\lambda\text{I}_6\)</span> para diferentes valores de <span class="math inline">\(\lambda\)</span>. Abaixo, aprentamos a estimativa de bayes para <span class="math inline">\(\boldsymbol{\beta}\)</span> para diferentes valores de <span class="math inline">\(\lambda\)</span></p>
+<p>Vamos ajustar um modelo de regressão linear com <span class="math inline">\(\boldsymbol{\beta}_0=\text{0}_6\)</span>, <span class="math inline">\(n_0=0,01,s_0=0,01\)</span>, <span class="math inline">\(\boldsymbol{C}_0=\lambda\text{I}_6\)</span> para diferentes valores de <span class="math inline">\(\lambda\)</span>. Abaixo, apresentamos as estimativas de bayes para <span class="math inline">\(\boldsymbol{\beta}\)</span> com diferentes valores de <span class="math inline">\(\lambda\)</span>. Note como as estimativas são influenciadas por <span class="math inline">\(\lambda\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">cbind</span>(<span class="dv">1</span>,banco2[,<span class="sc">-</span><span class="dv">1</span>]))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span>  banco2[,<span class="dv">1</span>]</span>
@@ -428,36 +429,83 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<section id="section" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="section"><span class="header-section-number">12.2</span> </h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg<span class="sc">~</span> cyl <span class="sc">+</span> disp <span class="sc">+</span> hp <span class="sc">+</span> wt, <span class="at">data =</span> banco2)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = mpg ~ cyl + disp + hp + wt, data = banco2)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--3.0121 -1.5402 -0.3699  0.6793  4.5356 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 64.92479    9.95173   6.524 5.39e-07 ***
-cyl          0.09999    0.72702   0.138   0.8916    
-disp        -3.29786    2.79434  -1.180   0.2482    
-hp          -4.25491    1.93079  -2.204   0.0363 *  
-wt          -2.25412    0.95433  -2.362   0.0256 *  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 2.337 on 27 degrees of freedom
-Multiple R-squared:  0.869, Adjusted R-squared:  0.8496 
-F-statistic: 44.79 on 4 and 27 DF,  p-value: 1.536e-11</code></pre>
-</div>
 </div>
 </section>
+<section id="a-priori-g-de-zellner" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="a-priori-g-de-zellner"><span class="header-section-number">12.2</span> A priori <span class="math inline">\(G\)</span> de Zellner</h2>
+<p>A maior dificuldade na priori conjugada está na dificuldade em introduzir a estrutura de correlação a priori para <span class="math inline">\(\boldsymbol{\beta}\)</span>. A priori <span class="math inline">\(G\)</span> de Zellner resolve essa questão. Para tanto, observe que <span class="math display">\[\hat{\boldsymbol{\beta}}\sim\hbox{Normal}(\boldsymbol{\beta},\phi^{-1}(\boldsymbol{X}'\boldsymbol{X})^{-1})\]</span> A ideia central é utilizar a matriz <span class="math inline">\((\boldsymbol{X}'\boldsymbol{X})^{-1}\)</span> para construção da estrutura de covariâncias a priori para <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>A priori de <span class="math inline">\(G\)</span> de Zellner é dada por <span class="math display">\[\begin{align}\boldsymbol{\beta}|\phi&amp;\sim\hbox{Normal}(\boldsymbol{\beta}_0,\phi^{-1}\lambda^{-1}(\boldsymbol{X}'\boldsymbol{X})^{-1})\\f(\phi)&amp;\propto \frac{1}{\phi}\end{align}\]</span> Deste modo ,a posteriori é dada por</p>
+<p><span class="math display">\[\begin{align}f(\boldsymbol{\beta},\phi|\text{dados})&amp;\propto \phi^\frac{n}{2}e^{-\frac{\phi}{2}(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}})'(\boldsymbol{X}'\boldsymbol{X})(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}})-\frac{\phi}{2}SQR}\times\\&amp;|\phi\boldsymbol{X}'\boldsymbol{X}|^{1/2}e^{-\frac{\phi}{2}(\boldsymbol{\beta}-\boldsymbol{\beta}_0)'\lambda(\boldsymbol{X}'\boldsymbol{X})(\boldsymbol{\beta}-\boldsymbol{\beta}_0)]}\frac{1}{\phi}\\&amp;=\phi^{\frac{q}{2}}e^{-\frac{\phi}{2}[(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}})'(\boldsymbol{X}'\boldsymbol{X})(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}})+\lambda(\boldsymbol{\beta}-\boldsymbol{\beta}_0)'\boldsymbol{X}'\boldsymbol{X}(\boldsymbol{\beta}-\boldsymbol{\beta}_0)]}\phi^{\frac{n}{2}-1}e^{\frac{\phi}{2}SQR}\end{align}\]</span> Pode mostrar que o termo na primeira exponencial acima é dado por <span class="math display">\[(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})'(1+\lambda)\boldsymbol{X}'\boldsymbol{X}(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})+(\boldsymbol{\beta}_0-\tilde{\boldsymbol{\beta}})'\frac{\lambda}{1+\lambda}\boldsymbol{X}'\boldsymbol{X}(\boldsymbol{\beta}_0-\tilde{\boldsymbol{\beta}})\]</span> onde <span class="math display">\[\tilde{\boldsymbol{\beta}}=\frac{\lambda}{1+\lambda}\boldsymbol{\beta}_0+\frac{1}{1+\lambda}\hat{\boldsymbol{\beta}}.\]</span> Então, <span class="math display">\[\begin{align}
+\boldsymbol{\beta}|\phi,\hbox{dados}&amp;\sim\hbox{Normal}(\tilde{\boldsymbol{\beta}}, \phi^{-1}(1+\lambda)^{-1}(\boldsymbol{X}'\boldsymbol{X})^{1-})\\
+\phi|\text{dados}&amp;\sim\hbox{Gama}\left(\frac{n}{2},\frac{s_1}{2}\right),
+\end{align}\]</span> onde <span class="math display">\[s_1=SQR+\frac{\lambda}{1+\lambda}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'\boldsymbol{X}'\boldsymbol{X}^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)\]</span></p>
+<div class="alert alert-info">
+<p><strong>Exemplo mtcars</strong></p>
+<p>Vamos refazer o problema anterior considerando ainda <span class="math inline">\(\boldsymbol{\beta}=\text{0}_5\)</span> para diferentes valores de <span class="math inline">\(\lambda\)</span>. Nesse caso</p>
+<p><span class="math display">\[\tilde{\boldsymbol{\beta}}=\frac{1}{1+\lambda}\hat{\boldsymbol{\beta}}.\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">cbind</span>(<span class="dv">1</span>,banco2[,<span class="sc">-</span><span class="dv">1</span>]))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span>  banco2[,<span class="dv">1</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>S <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>beta_til <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda) (S<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>m<span class="ot">=</span><span class="dv">6</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">seq</span>(.<span class="dv">01</span>,<span class="dv">4</span>,.<span class="dv">01</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(l <span class="cf">in</span> lambda){</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  resp <span class="ot">&lt;-</span> <span class="fu">rbind</span>(resp, <span class="fu">beta_til</span>(l)[,<span class="dv">1</span>])</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.window</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">10</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,m))</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">2</span>],<span class="at">col=</span><span class="dv">1</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">3</span>],<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">4</span>],<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">5</span>],<span class="at">col=</span><span class="dv">4</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">names</span>(banco2)[<span class="sc">-</span><span class="dv">1</span>],<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">bty=</span><span class="st">'n'</span>,<span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="regressao_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Podemos perceber que a priori <span class="math inline">\(G\)</span> de Zellner é menos sensível do que a priori conjugada. Selecionando <span class="math inline">\(\lambda=0,1\)</span>, vamos simular amostras da posteriori e analisar se 0 é um valor plausível para cada <span class="math inline">\(\beta\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(mvtnorm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Carregando pacotes exigidos: mvtnorm</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulando phi</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> S<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>SQR <span class="ot">=</span> <span class="fu">t</span>((y<span class="sc">-</span>X<span class="sc">%*%</span>beta_hat))<span class="sc">%*%</span>(y<span class="sc">-</span>X<span class="sc">%*%</span>beta_hat)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">=</span> SQR<span class="sc">+</span>(<span class="fu">t</span>(beta_hat)<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>X<span class="sc">%*%</span>beta_hat)<span class="sc">*</span>.<span class="dv">01</span><span class="sc">/</span>(<span class="dv">1</span><span class="fl">+.01</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">500</span>,n<span class="sc">/</span><span class="dv">2</span>, .<span class="dv">5</span><span class="sc">*</span>(SQR<span class="sc">+</span><span class="fu">drop</span>(s1)))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fu">beta_til</span>(.<span class="dv">01</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">5</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>)beta[i,] <span class="ot">=</span> <span class="fu">rmvnorm</span>(<span class="dv">1</span>, mu,S<span class="sc">/</span>(phi[i]<span class="sc">*</span><span class="fl">1.01</span>) )</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">=</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">2</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">2</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">3</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">3</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">4</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">4</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">5</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">5</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="regressao_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Da análise acima, a posteriori de <code>cyl</code> contém zero, o que implica que é possível que ela não faça diferença no modelo.</p>
 </div>
 
 

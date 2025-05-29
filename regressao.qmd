@@ -224,7 +224,7 @@ require(mvtnorm)
 beta_hat <- S%*%t(X)%*%y
 SQR = t((y-X%*%beta_hat))%*%(y-X%*%beta_hat)
 s1 = SQR+(t(beta_hat)%*%t(X)%*%X%*%beta_hat)*.01/(1+.01)
-n - length(y)
+n = length(y)
 phi = rgamma(500,n/2, .5*(SQR+drop(s1)))
 
 mu = beta_til(.01)

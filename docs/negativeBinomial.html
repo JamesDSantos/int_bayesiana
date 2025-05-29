@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>12&nbsp; Binomial negativa – Introdução à Inferência Bayesiana</title>
+<title>13&nbsp; Binomial negativa – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./misturas.html" rel="next">
-<link href="./aproximacaoNormal.html" rel="prev">
+<link href="./regressao.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -110,7 +110,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./negativeBinomial.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Binomial negativa</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./negativeBinomial.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Binomial negativa</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -209,14 +209,20 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./regressao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">O modelo de regressão linear normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -228,7 +234,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -247,9 +253,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#o-modelo-binomial-negativo" id="toc-o-modelo-binomial-negativo" class="nav-link active" data-scroll-target="#o-modelo-binomial-negativo"><span class="header-section-number">12.1</span> O modelo binomial negativo</a></li>
-  <li><a href="#priori-para-phi-condicionado" id="toc-priori-para-phi-condicionado" class="nav-link" data-scroll-target="#priori-para-phi-condicionado"><span class="header-section-number">12.2</span> Priori para <span class="math inline">\(\phi\)</span> condicionado</a></li>
-  <li><a href="#priori-para-phi" id="toc-priori-para-phi" class="nav-link" data-scroll-target="#priori-para-phi"><span class="header-section-number">12.3</span> Priori para <span class="math inline">\(\phi\)</span></a></li>
+  <li><a href="#o-modelo-binomial-negativo" id="toc-o-modelo-binomial-negativo" class="nav-link active" data-scroll-target="#o-modelo-binomial-negativo"><span class="header-section-number">13.1</span> O modelo binomial negativo</a></li>
+  <li><a href="#priori-para-phi-condicionado" id="toc-priori-para-phi-condicionado" class="nav-link" data-scroll-target="#priori-para-phi-condicionado"><span class="header-section-number">13.2</span> Priori para <span class="math inline">\(\phi\)</span> condicionado</a></li>
+  <li><a href="#priori-para-phi" id="toc-priori-para-phi" class="nav-link" data-scroll-target="#priori-para-phi"><span class="header-section-number">13.3</span> Priori para <span class="math inline">\(\phi\)</span></a></li>
   </ul>
 </nav>
     </div>
@@ -258,7 +264,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Binomial negativa</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Binomial negativa</span></h1>
 </div>
 
 
@@ -275,22 +281,22 @@ window.Quarto = {
 </header>
 
 
-<section id="o-modelo-binomial-negativo" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="o-modelo-binomial-negativo"><span class="header-section-number">12.1</span> O modelo binomial negativo</h2>
+<section id="o-modelo-binomial-negativo" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="o-modelo-binomial-negativo"><span class="header-section-number">13.1</span> O modelo binomial negativo</h2>
 <p>A distribuição Poisson é muito comum em problemas de contagem. Como sua esperança e variância são iguais, o termo sobredispersão foi cunhado na literatura como uma variância maior que a média, o que seria indício de que o modelo Poisson não é adequado (de modo análogo, há o conceito de subdispersão, mas não é um fenômeno comum).</p>
 <p>Dizemos que <span class="math inline">\(X|\rho,\phi\sim\hbox{Binomial Negativa}\)</span> se</p>
 <p><span class="math display">\[p(x|\rho,\phi)=\frac{\Gamma(\phi+x)}{x!\Gamma(\phi)}\rho^\phi(1-\rho)^x,\]</span> onde <span class="math inline">\(x\in\mathbb{N}\)</span>, <span class="math inline">\(\rho\in(0,1)\)</span> e <span class="math inline">\(\phi&gt;0\)</span>.</p>
 <p>Existem diversos motivos para considerar o modelo binomial negativo uma alternativa quando o modelo Poisson não parece ser adequado. Primeiro, temos que <span class="math inline">\(E(X|\rho,\phi)=\phi(1-\rho)/\rho\)</span> e <span class="math inline">\(Var(X|\rho,\phi)=E(X|\rho,\phi)/\rho\)</span>, logo, a sobredispersão está presente no modelo. Além disso, se <span class="math inline">\(X|\lambda\sim\hbox{Poisson}(\lambda)\)</span> e <span class="math inline">\(\lambda\sim\hbox{Gama}(\phi, \rho/(1-\rho))\)</span>, então <span class="math inline">\(X|\phi,\rho\sim\hbox{Binomial Negativa}(\phi,\rho)\)</span> logo, este modelo é uma mistura do modelo Poisson. Por último, fazendo <span class="math display">\[\mu=\phi\frac{1-\rho}{\rho}\Rightarrow \rho(\phi)=\frac{\phi}{\phi+\mu},\]</span> pode-de mostrar que <span class="math display">\[\lim_{\phi\rightarrow\infty}p(x|\phi)=\frac{e^{-\mu}\mu^x}{x!}\]</span> ou seja, o modelo Poisson também pode ser vist como um caso limite do binomial negativo.</p>
 </section>
-<section id="priori-para-phi-condicionado" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="priori-para-phi-condicionado"><span class="header-section-number">12.2</span> Priori para <span class="math inline">\(\phi\)</span> condicionado</h2>
+<section id="priori-para-phi-condicionado" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="priori-para-phi-condicionado"><span class="header-section-number">13.2</span> Priori para <span class="math inline">\(\phi\)</span> condicionado</h2>
 <p>Quando <span class="math inline">\(\phi\)</span> é conhecido, a verossimilhança do modelo se torna</p>
 <p><span class="math display">\[L(\rho|\phi)\propto \rho^{n\phi}(1-\rho)^{\sum_{i=1}^n x_i},\]</span> logo, o modelo Beta<span class="math inline">\((a,b)\)</span> é conjugado, com a posteriori dada por <span class="math display">\[\rho|\boldsymbol{x},\phi\sim\hbox{Beta}\left(n\phi+a,\sum_{i=1}^n x_i+b\right).\]</span></p>
 <p>A priori de Jeffreys é dada por</p>
 <p><span class="math display">\[\pi(\rho)\propto \frac{1}{\rho(1-\rho)^{1/2}},\]</span> o que implica na posteriori <span class="math display">\[\rho|\boldsymbol{x},\phi\sim\hbox{Beta}\left(n\phi,\sum_{i=1}^n x_i+\frac{1}{2}\right).\]</span></p>
 </section>
-<section id="priori-para-phi" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="priori-para-phi"><span class="header-section-number">12.3</span> Priori para <span class="math inline">\(\phi\)</span></h2>
+<section id="priori-para-phi" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="priori-para-phi"><span class="header-section-number">13.3</span> Priori para <span class="math inline">\(\phi\)</span></h2>
 <p>Seja <span class="math inline">\(\pi(\phi)\pi(\rho)\)</span> a priori para <span class="math inline">\((\phi,\rho)\)</span>. Então, teremos que</p>
 <p><span class="math display">\[\pi(\phi,\rho|\boldsymbol{x})\propto \frac{\prod_{i=1}^n\Gamma(\phi+x_i)}{\Gamma(\phi)^n}\rho^{n\phi}(1-\rho)^{\sum_{i=1}^n x_i}\pi(\phi)\pi(\rho).\]</span></p>
 <p>Assumindo qualquer uma das prioris da seção anterior, teremos</p>
@@ -740,13 +746,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./aproximacaoNormal.html" class="pagination-link" aria-label="Aproximação normal e seu uso com o Metropolis-Hastings">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span>
+      <a href="./regressao.html" class="pagination-link" aria-label="O modelo de regressão linear normal">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">O modelo de regressão linear normal</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./misturas.html" class="pagination-link" aria-label="Misturas de distribuições">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
