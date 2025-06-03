@@ -397,7 +397,7 @@ de distribuição empírica e a preditiva a posteriori.
 
 
 ```{r}
-n <- length(x)
+n <- length(y)
 y_pred <- array(NA_real_, c(500, n))
 for(i in 1:500){
   y_pred[i,] <- rnorm(n, X%*%beta[i,], 1/sqrt(phi[i]))

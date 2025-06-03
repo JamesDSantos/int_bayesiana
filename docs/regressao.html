@@ -290,6 +290,10 @@ window.Quarto = {
   <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">12.1</span> Introdução</a></li>
   <li><a href="#a-priori-g-de-zellner" id="toc-a-priori-g-de-zellner" class="nav-link" data-scroll-target="#a-priori-g-de-zellner"><span class="header-section-number">12.2</span> A priori <span class="math inline">\(G\)</span> de Zellner</a></li>
   <li><a href="#seleção-de-regressoras" id="toc-seleção-de-regressoras" class="nav-link" data-scroll-target="#seleção-de-regressoras"><span class="header-section-number">12.3</span> Seleção de regressoras</a></li>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">12.4</span> Exercícios</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">12.4.1</span> 1.</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -349,7 +353,7 @@ window.Quarto = {
 &amp;=\boldsymbol{\beta}'\boldsymbol{C}_1\boldsymbol{\beta}-2\boldsymbol{\beta}'\boldsymbol{C}_1[\underbrace{\boldsymbol{C}_1^{-1}( (\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{C}_0\boldsymbol{\beta}_0)}_{\tilde{\boldsymbol{\beta}}}]+\hat{\boldsymbol{\beta}}'(\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{\beta}_0'\boldsymbol{C}_0\boldsymbol{\beta}_0\\
 &amp;=\boldsymbol{\beta}'\boldsymbol{C}_1\boldsymbol{\beta}-2\boldsymbol{\beta}'\boldsymbol{C}_1\tilde{\boldsymbol{\beta}}\pm\tilde{\boldsymbol{\beta}}'\boldsymbol{C}_1\tilde{\boldsymbol{\beta}}+\hat{\boldsymbol{\beta}}'(\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{\beta}_0'\boldsymbol{C}_0\boldsymbol{\beta}_0\\
 &amp;=(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})'\boldsymbol{C}_1(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})+\hat{\boldsymbol{\beta}}'(\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{\beta}_0'\boldsymbol{C}_0\boldsymbol{\beta}_0-\tilde{\boldsymbol{\beta}}'\boldsymbol{C}_1\tilde{\boldsymbol{\beta}}
-\end{align}\]</span> Além disso, pode-se mostrar que <span class="math display">\[\hat{\boldsymbol{\beta}}'(\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{\beta}_0'\boldsymbol{C}_0\boldsymbol{\beta}_0-\tilde{\boldsymbol{\beta}}'\boldsymbol{C}_1\tilde{\boldsymbol{\beta}}=(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X}^{-1}))^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)\]</span> <span class="math display">\[\begin{align}f(\boldsymbol{\beta},\phi|\text{dados})&amp;\propto\phi^{\frac{q}{2}}e^{-\frac{\phi}{2}(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})'\boldsymbol{C}_1(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})}\phi^{\frac{n+n_0}{2}-1}e^{-\frac{\phi}{2}(SQR+s_0+(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X}^{-1}))^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0))}\end{align}\]</span> ou seja <span class="math display">\[\begin{align}\boldsymbol{\beta}|\phi,\hbox{dados}&amp;\sim\hbox{Normal}(\tilde{\boldsymbol{\beta}},\phi^{-1}\boldsymbol{C}_1^{-1})\\
+\end{align}\]</span> Além disso, pode-se mostrar que <span class="math display">\[\hat{\boldsymbol{\beta}}'(\boldsymbol{X}'\boldsymbol{X})\hat{\boldsymbol{\beta}}+\boldsymbol{\beta}_0'\boldsymbol{C}_0\boldsymbol{\beta}_0-\tilde{\boldsymbol{\beta}}'\boldsymbol{C}_1\tilde{\boldsymbol{\beta}}=(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X})^{-1})^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)\]</span> <span class="math display">\[\begin{align}f(\boldsymbol{\beta},\phi|\text{dados})&amp;\propto\phi^{\frac{q}{2}}e^{-\frac{\phi}{2}(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})'\boldsymbol{C}_1(\boldsymbol{\beta}-\tilde{\boldsymbol{\beta}})}\phi^{\frac{n+n_0}{2}-1}e^{-\frac{\phi}{2}(SQR+s_0+(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X})^{-1})^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0))}\end{align}\]</span> ou seja <span class="math display">\[\begin{align}\boldsymbol{\beta}|\phi,\hbox{dados}&amp;\sim\hbox{Normal}(\tilde{\boldsymbol{\beta}},\phi^{-1}\boldsymbol{C}_1^{-1})\\
 \phi|\text{dados}&amp;\sim\hbox{Gama}\left(\frac{n_0+n}{2},\frac{s_1}{2}\right)
 \end{align}\]</span> onde <span class="math display">\[s_1=SQR+s_0+(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)'(\boldsymbol{C}_0+(\boldsymbol{X}'\boldsymbol{X})^{-1})^{-1}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}_0)\]</span></p>
 <p>O estimador de Bayes para <span class="math inline">\(\boldsymbol{\beta}\)</span> é</p>
@@ -399,16 +403,16 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Vamos ajustar um modelo de regressão linear com <span class="math inline">\(\boldsymbol{\beta}_0=\text{0}_6\)</span>, <span class="math inline">\(n_0=0,01,s_0=0,01\)</span>, <span class="math inline">\(\boldsymbol{C}_0=\lambda\text{I}_6\)</span> para diferentes valores de <span class="math inline">\(\lambda\)</span>. Abaixo, apresentamos as estimativas de Bayes para <span class="math inline">\(\boldsymbol{\beta}\)</span> com diferentes valores de <span class="math inline">\(\lambda\)</span>. Para verificar como as estimativas são influenciadas por <span class="math inline">\(\lambda\)</span>, vamos representar as estimativas de máxima verossimilhança nas linhas tracejadas.</p>
+<p>Vamos ajustar um modelo de regressão linear com <span class="math inline">\(\boldsymbol{\beta}_0=\text{0}_5\)</span>, <span class="math inline">\(n_0=0,01,s_0=0,01\)</span>, <span class="math inline">\(\boldsymbol{C}_0=\lambda\text{I}_5\)</span> para diferentes valores de <span class="math inline">\(\lambda\)</span>. Abaixo, apresentamos as estimativas de Bayes para <span class="math inline">\(\boldsymbol{\beta}\)</span> com diferentes valores de <span class="math inline">\(\lambda\)</span>. Para verificar como as estimativas são influenciadas por <span class="math inline">\(\lambda\)</span>, vamos representar as estimativas de máxima verossimilhança nas linhas tracejadas. Observe que as estimativas falham em se aproximar das estimativas de máxima verossmilhança mesmo para <span class="math inline">\(\lambda\)</span> pequeno</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">cbind</span>(<span class="dv">1</span>,banco2[,<span class="sc">-</span><span class="dv">1</span>]))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span>  banco2[,<span class="dv">1</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>beta_til <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda) <span class="fu">solve</span>( <span class="fu">diag</span>(lambda,<span class="dv">5</span>)<span class="sc">+</span><span class="fu">t</span>(X)<span class="sc">%*%</span>X)<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>beta_emv <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>beta_til <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda) <span class="fu">solve</span>( <span class="fu">diag</span>(lambda,<span class="dv">5</span>) <span class="sc">+</span> <span class="fu">t</span>(X)<span class="sc">%*%</span>X )<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>beta_emv <span class="ot">&lt;-</span> <span class="fu">beta_til</span>(<span class="dv">0</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">20</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">seq</span>(.<span class="dv">01</span>,m,.<span class="dv">01</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">seq</span>(.<span class="dv">001</span>,m,.<span class="dv">001</span>)</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">=</span> <span class="cn">NULL</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(l <span class="cf">in</span> lambda){</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  resp <span class="ot">&lt;-</span> <span class="fu">rbind</span>(resp, <span class="fu">beta_til</span>(l)[,<span class="dv">1</span>])</span>
@@ -424,10 +428,11 @@ window.Quarto = {
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span>beta_emv[<span class="dv">4</span>,<span class="dv">1</span>],<span class="at">col=</span><span class="dv">3</span>, <span class="at">lty =</span> <span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">5</span>],<span class="at">col=</span><span class="dv">4</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span>beta_emv[<span class="dv">5</span>,<span class="dv">1</span>],<span class="at">col=</span><span class="dv">4</span>, <span class="at">lty =</span> <span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">cbind</span>(lambda[<span class="dv">1</span>],resp[<span class="dv">1</span>,]), <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">cex=</span> <span class="fl">1.2</span>)</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">names</span>(banco2)[<span class="sc">-</span><span class="dv">1</span>],<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">bty=</span><span class="st">'n'</span>,<span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">names</span>(banco2)[<span class="sc">-</span><span class="dv">1</span>],<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">bty=</span><span class="st">'n'</span>,<span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">xlab=</span><span class="fu">expression</span>(lambda), <span class="at">ylab=</span><span class="st">'Estimativas dos coeficientes de regressão'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -437,7 +442,6 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>O exemplo acima mostrou um comportamento aparentemente contraditório. Ao fazer <span class="math inline">\(\lambda\)</span> pequeno, espera-se que a inferência seja baseada nos dados. Em contradição, a posteriori favoreceu o modelo nulo, no qual todos os coeficientes da regressão são nulos. Esse comportamento é conhecido como <strong>Paradoxo de Lindley</strong> e ele ocorre porque a probabilidade a priori da região de interesse (onde os coeficientes são não-nulos) se espalha muito, diminuindo a massa da prior sobre valores onde a verossimilhança é alta.</p>
 </section>
 <section id="a-priori-g-de-zellner" class="level2" data-number="12.2">
 <h2 data-number="12.2" class="anchored" data-anchor-id="a-priori-g-de-zellner"><span class="header-section-number">12.2</span> A priori <span class="math inline">\(G\)</span> de Zellner</h2>
@@ -455,25 +459,29 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">cbind</span>(<span class="dv">1</span>,banco2[,<span class="sc">-</span><span class="dv">1</span>]))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span>  banco2[,<span class="dv">1</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>S <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>beta_til <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda) (S<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Sa <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>beta_til <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda) (Sa<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>m<span class="ot">=</span><span class="dv">5</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">seq</span>(.<span class="dv">01</span>,<span class="dv">4</span>,.<span class="dv">01</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="fu">seq</span>(.<span class="dv">001</span>,<span class="dv">4</span>,.<span class="dv">01</span>)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">=</span> <span class="cn">NULL</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(l <span class="cf">in</span> lambda){</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  resp <span class="ot">&lt;-</span> <span class="fu">rbind</span>(resp, <span class="fu">beta_til</span>(l)[,<span class="dv">1</span>])</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.window</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">1</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,m))</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">2</span>],<span class="at">col=</span><span class="dv">1</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">3</span>],<span class="at">col=</span><span class="dv">2</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">4</span>],<span class="at">col=</span><span class="dv">3</span>)</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">5</span>],<span class="at">col=</span><span class="dv">4</span>)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">names</span>(banco2)[<span class="sc">-</span><span class="dv">1</span>],<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">bty=</span><span class="st">'n'</span>,<span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.window</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="fl">2.5</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,m))</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">2</span>],<span class="at">col=</span><span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> beta_emv[<span class="dv">2</span>,<span class="dv">1</span>], <span class="at">col =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">3</span>],<span class="at">col=</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> beta_emv[<span class="dv">3</span>,<span class="dv">1</span>], <span class="at">col =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">4</span>],<span class="at">col=</span><span class="dv">3</span>, <span class="at">lwd=</span> <span class="dv">2</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> beta_emv[<span class="dv">4</span>,<span class="dv">1</span>], <span class="at">col =</span> <span class="dv">3</span>, <span class="at">lwd =</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lambda, resp[,<span class="dv">5</span>],<span class="at">col=</span><span class="dv">4</span>, <span class="at">lwd=</span> <span class="dv">2</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> beta_emv[<span class="dv">5</span>,<span class="dv">1</span>], <span class="at">col =</span> <span class="dv">4</span>, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">names</span>(banco2)[<span class="sc">-</span><span class="dv">1</span>],<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">bty=</span><span class="st">'n'</span>,<span class="at">lty=</span><span class="dv">1</span>, <span class="at">bg =</span> <span class="st">'white'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -482,29 +490,40 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Podemos perceber que a priori <span class="math inline">\(G\)</span> de Zellner é menos sensível que a priori conjugada. Selecionando <span class="math inline">\(\lambda=0,1\)</span>, vamos simular amostras da posteriori e analisar se 0 é um valor plausível para cada <span class="math inline">\(\beta\)</span>.</p>
+<p>Podemos perceber que a priori <span class="math inline">\(G\)</span> de Zellner é menos sensível que a priori conjugada. Selecionando <span class="math inline">\(\lambda=0,01\)</span>, vamos simular amostras da posteriori e analisar se 0 é um valor plausível para cada <span class="math inline">\(\beta\)</span>. Abaixo apresentamos as densidades a posteriori estimadas e os respectivos intervalos de credibilidade 95%.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(mvtnorm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Carregando pacotes exigidos: mvtnorm</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulando phi</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>S <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> S<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>SQR <span class="ot">=</span> <span class="fu">t</span>((y<span class="sc">-</span>X<span class="sc">%*%</span>beta_hat))<span class="sc">%*%</span>(y<span class="sc">-</span>X<span class="sc">%*%</span>beta_hat)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">=</span> SQR<span class="sc">+</span>(<span class="fu">t</span>(beta_hat)<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>X<span class="sc">%*%</span>beta_hat)<span class="sc">*</span>.<span class="dv">01</span><span class="sc">/</span>(<span class="dv">1</span><span class="fl">+.01</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">500</span>,n<span class="sc">/</span><span class="dv">2</span>, .<span class="dv">5</span><span class="sc">*</span>(SQR<span class="sc">+</span><span class="fu">drop</span>(s1)))</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fu">beta_til</span>(.<span class="dv">01</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">5</span>))</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>)beta[i,] <span class="ot">=</span> <span class="fu">rmvnorm</span>(<span class="dv">1</span>, mu,S<span class="sc">/</span>(phi[i]<span class="sc">*</span><span class="fl">1.01</span>) )</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">=</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">2</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">2</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">3</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">3</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">4</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">4</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">5</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">5</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">cbind</span>(<span class="dv">1</span>,banco2[,<span class="sc">-</span><span class="dv">1</span>]))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> banco2[,<span class="dv">1</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>SX <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> .<span class="dv">01</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>beta_emv <span class="ot">&lt;-</span> SX<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>SQR <span class="ot">=</span> <span class="fu">t</span>((y<span class="sc">-</span>X<span class="sc">%*%</span>beta_emv))<span class="sc">%*%</span>(y<span class="sc">-</span>X<span class="sc">%*%</span>beta_emv)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">=</span> SQR<span class="sc">+</span>(<span class="fu">t</span>(beta_emv)<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>X<span class="sc">%*%</span>beta_emv)<span class="sc">*</span>lambda<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">500</span>,n<span class="sc">/</span><span class="dv">2</span>, .<span class="dv">5</span><span class="sc">*</span><span class="fu">drop</span>(s1))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> beta_emv<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">5</span>))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>)beta[i,] <span class="ot">=</span> <span class="fu">rmvnorm</span>(<span class="dv">1</span>, mu,SX<span class="sc">/</span>(phi[i]<span class="sc">*</span><span class="fl">1.01</span>) )</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">=</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">2</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">2</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">quantile</span>(beta[,<span class="dv">2</span>], <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(qq[<span class="dv">1</span>],<span class="dv">0</span>,qq[<span class="dv">2</span>],<span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">3</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">3</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">quantile</span>(beta[,<span class="dv">3</span>], <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(qq[<span class="dv">1</span>],<span class="dv">0</span>,qq[<span class="dv">2</span>],<span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">4</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">4</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">quantile</span>(beta[,<span class="dv">4</span>], <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(qq[<span class="dv">1</span>],<span class="dv">0</span>,qq[<span class="dv">2</span>],<span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">5</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">5</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">quantile</span>(beta[,<span class="dv">5</span>], <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(qq[<span class="dv">1</span>],<span class="dv">0</span>,qq[<span class="dv">2</span>],<span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -514,10 +533,8 @@ window.Quarto = {
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Observe que o valor zero está na região de alta densidade para todos os parâmetros, o que contradiz nossa análise exploratória e mostra uma limitação na escolha de <span class="math inline">\(\lambda\)</span></p>
+<p>Observe que zero está na região de alta densidade para todos os parâmetros, o que contradiz nossa análise exploratória. É possível que o modelo esteja mal especificado, especialmente por causa do número de variáveis regressoras.</p>
 </div>
-<p>O exemplo acima mostrou um comportamento aparentemente contraditório. Ao fazer <span class="math inline">\(\lambda\)</span> pequeno, espera-se que a inferência seja baseada nos dados. Em contradição, a posteriori favoreceu o modelo nulo, no qual todos os coeficientes da regressão são nulos. Esse comportamento é conhecido como <strong>Paradoxo de Lindley</strong> e ele ocorre porque a probabilidade a priori da região de interesse (onde os coeficientes são não-nulos) se espalha muito, diminuindo a massa da prior sobre valores onde a verossimilhança é alta.</p>
-<p>Uma solução para o Paradoxo de Lindley é</p>
 </section>
 <section id="seleção-de-regressoras" class="level2" data-number="12.3">
 <h2 data-number="12.3" class="anchored" data-anchor-id="seleção-de-regressoras"><span class="header-section-number">12.3</span> Seleção de regressoras</h2>
@@ -552,7 +569,7 @@ window.Quarto = {
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># matriz de regressoras (com o intercepto)</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">cbind</span>(<span class="dv">1</span>,banco2[,<span class="sc">-</span><span class="dv">1</span>]))</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> banco2[,<span class="dv">1</span>]</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="dv">5</span><span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> .<span class="dv">01</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>B <span class="ot">=</span> <span class="dv">5000</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># simulando phi</span></span>
@@ -560,11 +577,11 @@ window.Quarto = {
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>beta_emv <span class="ot">&lt;-</span> Sa<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>SQR <span class="ot">=</span> <span class="fu">t</span>((y<span class="sc">-</span>X<span class="sc">%*%</span>beta_emv))<span class="sc">%*%</span>(y<span class="sc">-</span>X<span class="sc">%*%</span>beta_emv)</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">=</span> SQR <span class="sc">+</span> (<span class="fu">t</span>(beta_emv) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span>X<span class="sc">%*%</span> beta_emv )<span class="sc">*</span>lambda<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">rgamma</span>(B,n<span class="sc">/</span><span class="dv">2</span>, .<span class="dv">5</span><span class="sc">*</span>(SQR<span class="sc">+</span><span class="fu">drop</span>(s1)))</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">rgamma</span>(B,n<span class="sc">/</span><span class="dv">2</span>, .<span class="dv">5</span><span class="sc">*</span><span class="fu">drop</span>(s1))</span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co"># simulando mu</span></span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> beta_emv<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(B,<span class="dv">5</span>))</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(B,<span class="fu">ncol</span>(X)))</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B)beta[i,] <span class="ot">=</span> <span class="fu">rmvnorm</span>(<span class="dv">1</span>, mu,Sa<span class="sc">/</span>(phi[i]<span class="sc">*</span>(<span class="dv">1</span><span class="sc">+</span>lambda)) )</span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># encontrando as estimativas a posteriori</span></span>
@@ -576,17 +593,111 @@ window.Quarto = {
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>k  <span class="ot">=</span> <span class="fu">var</span>(vi)<span class="sc">/</span><span class="dv">2</span></span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.633099</code></pre>
+<pre><code>[1] 13.03661</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculando o DIC</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">loglik</span>(<span class="fu">c</span>(beta_hat,phi_hat), y, X) <span class="sc">+</span><span class="dv">2</span><span class="sc">*</span>k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 290.3083</code></pre>
+<pre><code>[1] 171.5675</code></pre>
+</div>
+</div>
+<p>Em seguida, vamos calcular o DIC removendo uma variável de cada vez, explorando se haveria melhoria em remover variáveis. Obtivemos a tabela abaixo, o que nos levou a decisão de aceitar o modelo <code>hp</code> e <code>wt</code></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>        Regressoras DIC
+1 disp, cyl, hp, wt 171
+2      disp, hp, wt 170
+3       cyl, hp, wt 171
+4       cyl, hp, wt 172
+5     cyl, disp, hp 172
+6            hp, wt 169
+7          dips, wt 171
+8          disp, hp 171
+9                wt 175</code></pre>
+</div>
+</div>
+<p>Vamos verificar o modelo com as variáveis <code>hp</code> e <code>wt</code>. Abaixo apresentamos as densidades a posteriori estimadas e os respectivos intervalos de credibilidade 95%. Temos evidências claras do efeito negativo.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(mvtnorm)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># simulando phi</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">cbind</span>(<span class="dv">1</span>,banco2[,<span class="sc">-</span><span class="dv">1</span>][,<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>]))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> banco2[,<span class="dv">1</span>]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>SX <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> .<span class="dv">01</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>beta_emv <span class="ot">&lt;-</span> SX<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>y</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>SQR <span class="ot">=</span> <span class="fu">t</span>((y<span class="sc">-</span>X<span class="sc">%*%</span>beta_emv))<span class="sc">%*%</span>(y<span class="sc">-</span>X<span class="sc">%*%</span>beta_emv)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">=</span> SQR<span class="sc">+</span>(<span class="fu">t</span>(beta_emv)<span class="sc">%*%</span><span class="fu">t</span>(X)<span class="sc">%*%</span>X<span class="sc">%*%</span>beta_emv)<span class="sc">*</span>lambda<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(y)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">500</span>,n<span class="sc">/</span><span class="dv">2</span>, .<span class="dv">5</span><span class="sc">*</span><span class="fu">drop</span>(s1))</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> beta_emv<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(<span class="dv">500</span>,<span class="fu">ncol</span>(X)))</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>)beta[i,] <span class="ot">=</span> <span class="fu">rmvnorm</span>(<span class="dv">1</span>, mu,SX<span class="sc">/</span>(phi[i]<span class="sc">*</span><span class="fl">1.01</span>) )</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">=</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">2</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">2</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">quantile</span>(beta[,<span class="dv">2</span>], <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(qq[<span class="dv">1</span>],<span class="dv">0</span>,qq[<span class="dv">2</span>],<span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(beta[,<span class="dv">3</span>]), <span class="at">main =</span><span class="fu">names</span>(banco2)[<span class="dv">3</span>],<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">quantile</span>(beta[,<span class="dv">3</span>], <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(qq[<span class="dv">1</span>],<span class="dv">0</span>,qq[<span class="dv">2</span>],<span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="regressao_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para verificar a adequação deste modelo, podemos utilizar a comparação usual entre a função de distribuição empírica e a preditiva a posteriori.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(<span class="dv">500</span>, n))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>){</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  y_pred[i,] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, X<span class="sc">%*%</span>beta[i,], <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(phi[i]))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>Fd_sim <span class="ot">=</span> <span class="fu">apply</span>(y_pred,<span class="dv">1</span>, <span class="cf">function</span>(x){</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  Fd <span class="ot">=</span> <span class="fu">ecdf</span>(x)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Fd</span>(<span class="fu">sort</span>(y))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">apply</span>(Fd_sim,<span class="dv">1</span>, <span class="cf">function</span>(x) <span class="fu">quantile</span>(x,<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">977</span>)))</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ecdf</span>(y), <span class="at">main =</span> <span class="st">''</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">sort</span>(y),qq[<span class="dv">1</span>,], <span class="at">col =</span><span class="dv">2</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">sort</span>(y),qq[<span class="dv">2</span>,], <span class="at">col =</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="regressao_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
 </div>
+<p>Observe que o ajuste não é adequado, dando evidências de que modelo escolhido não se ajsuta bem para este conjunto de dados</p>
+</div>
+</section>
+<section id="exercícios" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">12.4</span> Exercícios</h2>
+<section id="section" class="level3" data-number="12.4.1">
+<h3 data-number="12.4.1" class="anchored" data-anchor-id="section"><span class="header-section-number">12.4.1</span> 1.</h3>
+<p>Os dados deste exemplos se referem ao número de espécies de tartarugas nas várias Ilhas Galápagos, sob o nome <code>gala</code>, disponíveis na biblioteca <code>faraway</code>. O conjunto de dados contém 30 casos (ilhas) e sete variáveis.</p>
+<p>As variáveis são Species</p>
+<ul>
+<li><p>Species - o número de espécies de tartarugas encontradas na ilha,</p></li>
+<li><p>Endemics — o número de espécies endêmicas</p></li>
+<li><p>Area — a área da ilha (km²)</p></li>
+<li><p>Elevation — a maior elevação da ilha (m)</p></li>
+<li><p>Nearest — a distância da ilha mais próxima (km)</p></li>
+<li><p>Scruz — a distância da Ilha Santa Cruz (km)</p></li>
+<li><p>Adjacent — a área da ilha adjacente (km²).</p></li>
+</ul>
+<p>Verifique se é possível ajustar um modelo linear para a varíavel <code>Species</code> utilizando as demais como regressoras.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
