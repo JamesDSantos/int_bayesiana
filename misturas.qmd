@@ -1,21 +1,15 @@
 # Misturas de distribuições
 
-Dizemos que $X\sim f(.)$ é uma mistura se existe uma variável $Z$ tal que
+Dizemos que a função densidade/probabilidade de $X\sim f(.)$ é uma mistura de distribuições se existe uma variável $Z$ tal que
 
 $$f(x)=\int f(x|z)f(z)dz.$$
 
 A variável $Z$ é denominada latente e a função $f(x,z)$ é denominada modelo aumentado.
 
-Seja $(X_1,Z_1),\ldots,(X_n,Y_n)$ uma amostra aleatória do modelo aumentado $f(x,z|\theta)$ e seja $\pi(\theta)$ a priori para $\theta$. Existem situações nas quais é mais fácil simular do modelo
-$$\pi(\theta,\boldsymbol{z}|\boldsymbol{x})\varpropto f(\boldsymbol{x},\boldsymbol{z}|\theta)\pi(\theta).$$
+Seja $(X_1,Z_1),\ldots,(X_n,Z_n)$ uma amostra aleatória do modelo aumentado $f(x,z|\theta)$ e seja $f(\theta)$ a priori para $\theta$. Existem situações nas quais é mais fácil simular da distribuição do modelo
+$$f(\theta,\boldsymbol{z}|\boldsymbol{x})\varpropto f(\boldsymbol{x},\boldsymbol{z}|\theta)f(\theta).$$
 
-A distribuição de $\theta$ (ou $\boldsymbol{Z}$) dado as demais variáveis do modelo é denominada condicional completa, que neste problema são:
-
-$$f(\boldsymbol{z}|\boldsymbol{x},\theta)$$
-e
-$$\pi(\theta|\boldsymbol{z},\boldsymbol{x},\theta)$$
-
-Em particular, se é fácil simular das condicionais completas, podemos utilizar o Amostrador de Gibbs, que consiste no seguinte algoritmo:
+Em particular, se é fácil simular das condicionais completas, podemos utilizar o Amostrador de Gibbs, que consiste no seguinte algoritmo.
 
 <div class='alert alert-success'>
 <strong>Amostrador de Gibbs</strong>
@@ -26,11 +20,248 @@ No $j$-ésimo passo:
 
 1. Simule $\boldsymbol{z^{(j)}}\sim f(\boldsymbol{z}|\boldsymbol{x},\theta^{(j-1)})$
 
-2. Simule $\theta^{(j)}\sim \pi(\theta|\boldsymbol{z},\boldsymbol{x})$
+2. Simule $\theta^{(j)}\sim f(\theta|\boldsymbol{z}^{(j)},\boldsymbol{x})$
 
 </div>
 
-O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição estacionária é $\pi(\theta,\boldsymbol{z}|\boldsymbol{x})$
+O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição estacionária é $f(\theta,\boldsymbol{z}|\boldsymbol{x})$
+
+
+## O modelo t-Student como uma mistura normal-gama
+
+A função densidade do modelo t-Student é dada por
+$$f(x|\mu,\phi,\nu)=\frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2})}\sqrt{\frac{\phi}{\pi\nu}}\left[1+\frac{\phi}{\nu}\left(x-\mu\right)^2\right]^{-\frac{\nu+1}{2}},$$
+onde $x,\mu\in\mathbb{R}$ e $\phi,\nu>0$. Se $\nu>1$, então $E(X)=\mu$ e se $\nu>2$, $Var(X)=\nu/(\phi(\nu-2))$.
+
+Considere que $X|Z,\mu,\phi\sim\hbox{Normal}(\mu,(z\phi)^{-1})$ e $Z\sim\hbox{Gama}(\nu/2,\nu/2)$. Então 
+
+$$\begin{align}
+f(x|\mu,\phi,\nu)&=\int_0^\infty f(x|z,\mu,\phi)f(z|\nu)dz=\int_0^\infty \sqrt{\frac{\phi z}{2\pi}}e^{-\frac{z\phi}{2}(x-\mu)^2}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}z^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}z}dz\\
+&=\sqrt{\frac{\phi}{2\pi}}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}\int_0^\infty z^{\frac{\nu+1}{2}-1} \exp\left\{-z\frac{\nu}{2}\left[1+\frac{\phi}{\nu}(x-\mu)^2\right]\right\}dz\\
+&=\frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2})}\sqrt{\frac{\phi}{\pi\nu}}\left[1+\frac{\phi}{\nu}\left(x-\mu\right)^2\right]^{-\frac{\nu+1}{2}}.
+\end{align}$$
+
+Portanto, a distribuição normal-gama é uma mistura para a $t$-Student e a verossimilhança aumentada para este modelo é
+
+$$\begin{align}L(\mu,\phi,\nu)&=\prod_{i=1}^n f(x_i|z_i,\mu,\phi)f(z|\nu)= \prod_{i=1}^n \sqrt{\frac{\phi z_i}{2\pi}}e^{-\frac{z_i\phi}{2}(x_i-\mu)^2}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}z_i^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}z_i}\\
+\end{align}$$
+
+Considerando que $\mu|\phi \sim\hbox{Normal}(m,(\lambda\phi)^{-1})$, $\phi\sim\hbox{Gama}(n_0/2,s_0/2)$ temos a seguinte posteriori baseada no modelo aumentado:
+
+$$f(\mu,\phi,\nu|\boldsymbol{x})\propto \left[\prod_{i=1}^n \sqrt{\frac{\phi z_i}{2\pi}}e^{-\frac{z_i\phi}{2}(x_i-\mu)^2}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}z_i^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}z_i}\right]\times \phi^{1/2}e^{-\frac{\lambda}{2} \phi(\mu-m)^2}\times\phi^{\frac{n_0}{2}-1}e^{-\frac{s_0}{2}\phi}\times f(\nu)$$
+Pode-se mostrar que
+
+$$\begin{align}\mu|\hbox{resto}&\sim\hbox{Normal}\left(\frac{\sum_{i=1}^n z_i x_i+\lambda m}{\lambda+\sum_{i=1}^n z_i},\left[\phi\left(\lambda+\sum_{i=1}^{n}z_i\right)\right]^{-1}\right)\\
+\phi|\hbox{resto}&\sim\hbox{Gama}\left(\frac{n+n_0+1}{2},\frac{1}{2}\left[s_0+\lambda(\mu-m)^2+\sum_{i=1}^n z_i(x_i-\mu)^2\right]\right)\\
+z_i|\hbox{resto}&\sim\hbox{Gama}\left(\frac{\nu+1}{2},\frac{\phi(x_i-\mu)^2+\nu}{2}\right)\end{align}$$
+
+A condicional completa para $\nu$ é dada por
+$$f(\nu|\hbox{resto})\propto \frac{(\nu/2)^{n\nu/2}}{\Gamma(\nu/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}\sum_{i=1}^nz_i}f(\nu)$$
+
+Observe que a condicional completa para $\nu$ não possui um núcleo conhecido. Para facilitar a simulação, podemos considerar que o espaço paramétrico de $\nu$ é uma coleção com $M<\infty$ pontos. Então, teremos que
+$$f(\nu_0|\hbox{resto})\approx P(\nu=\nu_0|\hbox{resto})\propto \frac{(\nu_0/2)^{n\nu_0/2}}{\Gamma(\nu_0/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu_0}{2}-1}e^{-\frac{\nu}{2}\sum_{i=1}^nz_i}f(\nu_0)$$
+e podemos utilizar o simulador `sample` do `R`. Estudos sugerem que a priori escolhida deve favorecer valores baixos para $\nu$. Vamos utilizar a priori $\nu\sim\hbox{Exponencial}(r_0)$
+
+
+</div class='alert alert-info'>
+**Volatilidade no mercado financeiro**
+
+Considere que você tem uma empresa e deseja atrair investimento. Um modo bastante tradicional é encontrar um sócio para injetar dinheiro. Por sua vez, o sócio passa a ser dono de parte da empresa. Essa é a ideia por trás das ações. Parte da empresa é fatiada em partes denominadas ações, que são negociadas na bolsa de valores. Qualquer indivíduo com uma ação é dono de uma fração da empresa. Se a empresa cresce, seu valor cresce e aquela fração correspondente à ação passa a valer mais. Se a empresa entre em crise, ação passa a valer menos.
+
+Contudo, o preço não está baseado apenas no quanto a empresa vale no momento, mas como os milhares de donos estão se sentindo no momento com relação à ela. Caso os acionistas acreditem que a empresa vai perder valor, eles podem começar a vender suas ações. Com o aumento oferta, o preço cai. Se por outro lado o mercado acredita que a empresa vai aumentar seu lucro, os pedidos por compra no mercado aumentam e os donos das ações evitam negociá-las, criando uma demanada maior que a oferta e aumentando o preço do ativo.
+
+Portanto, o preço das ações está associado às oscilações de humor do mercado. Neste sentido, a variabilidade do preço é uma medida fundamental e é denominada volatilidade. 
+
+Existem várias maneiras de medir a volatilidade. Para o nosso exemplo, seja $p_t$ o preço de fechamento da ação no dia $t$. Calculamos o log retorno da ação no dia $t$ como  
+
+$$x_t=\log(p_t)-\log(p_{t-1}).$$
+O cálculo do log-retorno é útil para remover a tendência do preço. Isso ocorre porque a tendência de $\log(p_t)$ tende a ser localmente linear. Desse modo, é esperado que $E(x_t)$ esteja próximo de zero. É importante saber que, embora $x_1,\ldots,x_n$ sejam não correlacionados, em geral eles são dependentes e não são identicamente distribuídos. Contudo, mesmo que $x_1,\ldots,x_n$ sejam dependentes e não identicamente distribuídos, o modelo t-Student costuma apresentar um bom ajuste, especialmente devido à sua capacidade de capturar caudas pesadas.
+
+Para o mercado financeiro, o desvio padrão do log retorno é denominado volatidade (ou volatilidade total), ou seja,
+
+$$\hbox{volatidade}=\sigma\sqrt{\frac{\nu}{\nu-2}}$$
+O parâmetro $\sigma=1/\sqrt{\phi}$ da distribuição $t$-Student é interpretado como  volatilidade basal ou o fator de escala da dispersão dos retornos. Ele representa a magnitude "típica" das flutuações, enquanto o parâmetro $\nu$ informa sobre a frequência e a intensidade dos eventos de cauda (denominados "shocks", no jargão do mercado).
+
+Um $\sigma$ maior significa que, mesmo sem considerar as caudas, os retornos tendem a se espalhar mais. Quando combinado com um $\nu$ baixo, isso indica um ativo que não só tem flutuações grandes, mas também é propenso a flutuações muito grandes e muito pequenas com maior frequência.
+
+Vamos analisar os log-retornos diários da Magazine Luiza (MGLU) entre 06/06/2024 e  04/06/2025
+
+```{r}
+require(gsheet)
+url_mglu <- 'https://docs.google.com/spreadsheets/d/1dnxASqmPoOPo0MTeY_NoYmkhK8yZDlWPaACGrLhLgHI/edit?usp=sharing'
+
+dados <- gsheet2tbl(url_mglu)
+head(dados)
+```
+
+Observe que os dados estão organizados com os fechamentos mais recentes aparecendo primeiro. Vamos calcular os log-retornos.
+
+```{r}
+fechamento = as.numeric(dados$Último)
+n = length(fechamento)
+fechamento = fechamento[n:1]
+
+magalu <- diff(log(fechamento))
+hist(magalu, freq= FALSE, main='Log-retorno MGLU3')
+lines(density(magalu), lwd = 2)
+ts.plot(magalu,main ='Log-retornos por dia')
+```
+
+Vamos estimar a volatilidade basal e os graus de liberdade para estes dados. Vamos considerar $\lambda=n_0=s_0=0,01$, $r_0=1$ e $m=0$. Para os valores possíveis dos graus de liberdade, vamos considerar os conjunto $\{0.5, 0.75, 1, 1.25,\ldots,40\}$.
+
+```{r}
+x = magalu
+n = length(x)
+B = 5000
+# valores possiveis para nu
+nu_seq = seq(.5,40,.25)
+
+# hiperparâmetros
+l = .01
+m = 0 
+n0 = 0.01
+s0 = 0.01
+r0 = 1
+
+# valores iniciais
+nu = .5
+mu = 0
+z = rep(1,n) 
+phi = 1
+
+for(i in 1:B){
+  
+  # mu dado o resto
+  media = (sum(z*x)+l*m)/( l + sum(z))
+  desvio = 1/sqrt(phi[i]*( l + sum(z)))
+  mu[i+1] = rnorm(1, media, desvio )
+  
+  # phi dado o resto
+  alfa = (n+n0+1)/2
+  beta = .5*( s0 + l*(mu[i+1] - m)^2 + sum( (x-mu[i+1])^2 ) )
+  phi[i+1] = rgamma(1, alfa, beta)
+  
+  # z_i dado o resto
+  alfa = .5*(nu[i]+1)
+  beta = .5*(phi[i+1]*(x-mu[i+1])^2 + nu[i]) 
+  z = rgamma(n, alfa, beta )
+  
+  # nu dado o resto
+  log_p = .5*n*nu_seq*log(nu_seq/2) - n*lgamma(nu_seq/2)+.5*nu_seq*sum(log(z))-.5*nu_seq*sum(z)- nu_seq*r0
+  nu[i+1] = sample(nu_seq,1,T,exp(log_p-max(log_p)))
+}
+
+mu_magalu  = mu[seq(B/2,B,15)]
+nu_magalu  = nu[seq(B/2,B,15)]
+vol_magalu = 1/sqrt(phi[seq(B/2,B,15)])
+```
+Abaixo, apresentamos os traços e a autocorrelação para as amostros da posteriori para $\nu$ e $\sigma=1/\sqrt{\phi}$, após o *burn-in* e o $thinning$.
+
+```{r}
+oo = par( mfrow=c(2,2))
+ts.plot(nu_magalu, main='Traço para os graus de liberdade')
+acf(nu_magalu, main='Autocorrelação para os graus de liberdade')
+ts.plot(vol_magalu, main='Traço para a volatilidade')
+acf(vol_magalu, main='Autocorrelação para a volatilidade')
+par(oo)
+```
+
+Com a amostra a posteriori simulada, podemos simular amostras da preditiva a posteriori. Podemos então construir um intervalo de predição para a função de distribuição empírica da preditiva a posteriori e compará-lo com a distribuição empírica dos dados. O gráfico abaixo mostra que o modelo é adequado.
+
+
+```{r}
+y_pred <- array(NA_real_, c(length((nu_magalu)), n))
+for(i in 1:length((nu_magalu))){
+  y_pred[i,] <- mu_magalu[i] + rt(n, nu_magalu[i])*vol_magalu[i]
+}
+
+Fd_sim = apply(y_pred,1, function(y){
+  Fd = ecdf(y)
+  Fd(sort(x))
+})
+
+qq = apply(Fd_sim,1, function(x) quantile(x,c(.025,.977)))
+
+plot(ecdf(x), main = '')
+lines(sort(x),qq[1,], col =2)
+lines(sort(x),qq[2,], col =2)
+```
+
+Portanto, temos que a volatilidade basal estimada para o log-retorno diário da Magazine Luiza durente o intervalo de estudo foi  0,04 (ou 4%), o que é considerado elevado. Os graus de liberdade foram estimados em 7,3. Este resultado era esperado, pois o setor varejista de e-commerce está sujeito as oscilações de taxas de juros, inflação, poder de compra do consumidor. Além disso, pode-se somar a forte concorrência e o endividamento atual da empresa
+
+```{r}
+mean(vol_magalu)
+```
+
+
+Para ilustrar melhor estes  conceitos, vamos repetir a análise para a empresa Engie Brasil Energia (EGIE3). Espera-se menos volatilidade, uma vez que empresas do setor elétrico geralmente têm receitas mais previsíveis, regulamentação estável e são consideradas "defensivas".
+
+```{r}
+url_egie <- 'https://docs.google.com/spreadsheets/d/1qvv5RC5U5L-5snoz_QyzXB2v_etOMChBViypnl4XYMk/edit?usp=sharing'
+dados2 <- gsheet2tbl(url_egie)
+fechamento2 = as.numeric(dados2$Último)
+n = length(fechamento2)
+fechamento2 = fechamento2[n:1]
+
+egie <- diff(log(fechamento2))
+plot(density(egie), main = 'Log-retornos diários',xlim=c(-.2,.2))
+lines(density(magalu),col =2)
+legend('topleft',c('Magalu','Egie'), col=2:1, lwd = 1, bty = 'n')
+``` 
+
+```{r echo = FALSE}
+x = egie
+n = length(x)
+B = 5000
+# valores possiveis para nu
+nu_seq = seq(.5,40,.25)
+
+# hiperparâmetros
+l = .01
+m = 0 
+n0 = 0.01
+s0 = 0.01
+r0 = 1
+
+# valores iniciais
+nu = .5
+mu = 0
+z = rep(1,n) 
+phi = 1
+
+for(i in 1:B){
+  
+  # mu dado o resto
+  media = (sum(z*x)+l*m)/( l + sum(z))
+  desvio = 1/sqrt(phi[i]*( l + sum(z)))
+  mu[i+1] = rnorm(1, media, desvio )
+  
+  # phi dado o resto
+  alfa = (n+n0+1)/2
+  beta = .5*( s0 + l*(mu[i+1] - m)^2 + sum( (x-mu[i+1])^2 ) )
+  phi[i+1] = rgamma(1, alfa, beta)
+  
+  # z_i dado o resto
+  alfa = .5*(nu[i]+1)
+  beta = .5*(phi[i+1]*(x-mu[i+1])^2 + nu[i]) 
+  z = rgamma(n, alfa, beta )
+  
+  # nu dado o resto
+  log_p = .5*n*nu_seq*log(nu_seq/2) - n*lgamma(nu_seq/2)+.5*nu_seq*sum(log(z))-.5*nu_seq*sum(z)-nu_seq*r0
+  nu[i+1] = sample(nu_seq,1,T,exp(log_p-max(log_p)))
+}
+
+mu_egie  = mu[seq(B/2,B,15)]
+nu_egie  = nu[seq(B/2,B,15)]
+vol_egie = 1/sqrt(phi[seq(B/2,B,15)])
+```
+
+
+A volatilidade basal estimada para a EGIE no período foi de 1,2%. A probabilidade de que esta volatilidade seja menor que a da MGLU é de 0,999, o que corrobora com o esperado. Os graus de liberdade foram estimados em 8,07.
+
+</div>
+
+
 
 ## Modelos com inflação de zeros
 
