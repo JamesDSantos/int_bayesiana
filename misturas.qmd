@@ -63,7 +63,7 @@ $$f(\nu_0|\hbox{resto})\approx P(\nu=\nu_0|\hbox{resto})\propto \frac{(\nu_0/2)^
 e podemos utilizar o simulador `sample` do `R`. Estudos sugerem que a priori escolhida deve favorecer valores baixos para $\nu$. Vamos utilizar a priori $\nu\sim\hbox{Exponencial}(r_0)$
 
 
-</div class='alert alert-info'>
+<div class='alert alert-info'>
 **Volatilidade no mercado financeiro**
 
 Considere que você tem uma empresa e deseja atrair investimento. Um modo bastante tradicional é encontrar um sócio para injetar dinheiro. Por sua vez, o sócio passa a ser dono de parte da empresa. Essa é a ideia por trás das ações. Parte da empresa é fatiada em partes denominadas ações, que são negociadas na bolsa de valores. Qualquer indivíduo com uma ação é dono de uma fração da empresa. Se a empresa cresce, seu valor cresce e aquela fração correspondente à ação passa a valer mais. Se a empresa entre em crise, ação passa a valer menos.
@@ -261,7 +261,37 @@ A volatilidade basal estimada para a EGIE no período foi de 1,2%. A probabilida
 
 </div>
 
+<div class=alert alert-success>
+**A distribuição t-Student multivariada e o estudo de portifólios**
 
+Um portfólio, no contexto financeiro, é um conjunto de investimentos que um indivíduo ou uma instituição possui. Alguns investimentos tendem a reagir de forma semelhante aos humeores do mercado. Por exemplo, considerando os log-retornos diários do Banco do Brasil (BBSA3) e Itaú Unibanco (ITUB4) no ano de 2024, temos uma correlação de 0,18. Portanto, se dois ativos dentro do portifólio são correlacionados, o risco deveria aumentar.
+
+Podemos relacionar a distribuição t-Student$_{\nu}(\boldsymbol{\mu},\Phi^{-1})$ ($p$ multivariada) como a seguinte mistura:
+
+$$\begin{align}\boldsymbol{x}|z,\boldsymbol{\mu},\Phi&\sim \hbox{Normal}_p(\boldsymbol{\mu},z^{-1}\Phi^{-1})\\z&\sim\hbox{Gama}\left(\frac{\nu}{2},\frac{\nu}{2}\right)\end{align}$$
+Considerando uma amostra $\boldsymbol{x}_1,\ldots,\boldsymbol{x}_n$ eas prioris $\boldsymbol{\mu}|\Phi\sim\hbox{Normal}_p(\boldsymbol{m}_0,\lambda^{-1}\Phi^{-1})$, $\Phi\sim\hbox{Wishart}(n_0,S_0)$ e $\nu\sim\hbox{Exponencial}(r_0)$, temos as seguintes condicionais completas:
+
+$$\begin{align}\boldsymbol{\mu}|\hbox{resto}&\sim\hbox{Normal}_p\left(\frac{\sum_{i=1}^n z_i\boldsymbol{x}_i+\lambda\boldsymbol{m}_0}{\lambda+\sum_{i=1}^n z_i},\Phi^{-1}/(\lambda + \sum_{i=1}^n z_i)\right)\\\Phi|\hbox{resto}&\sim\hbox{Gama}\left(n+n_0+1,[S_0^{-1}+\lambda(\boldsymbol{\mu}-\boldsymbol{m}_0)(\boldsymbol{\mu}-\boldsymbol{m}_0)'+\sum_{i=1}^n z_i(\boldsymbol{x}_i-\boldsymbol{\mu})(\boldsymbol{x}_i-\boldsymbol{\mu})']^{-1}\right)\\
+z_i|\hbox{resto}&\sim\hbox{Gama}\left(\frac{\nu+p}{2},\frac{\nu+(\boldsymbol{x}_i-\boldsymbol{\mu})'\Phi(\boldsymbol{x}_i-\boldsymbol{\mu})}{2}\right)\\
+f(\nu|\hbox{resto})&\propto \left(\frac{\nu}{2}\right)^{\frac{n\nu}{2}}\frac{1}{\Gamma(\nu/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu}{2}}e^{-\nu(r_0+\frac{1}{2}\sum_{i=1}^n z_i)}
+\end{align}$$
+
+Seja $p$ o número de ações dentro do portifólio e seja $w_i$ a proporção da $i$-ésima ação dentro do portifólio. Então $\Phi$ pode ser utilizada para os seguintes fins:
+
+* Cálculo da volatilidade do portifólio:
+
+$$\sigma_p=\sqrt{\boldsymbol{w}'\Phi^{-1}\boldsymbol{w}}$$
+
+* Cálculo do portifólio ótimo: a melhor composição da proporção das ações dentro do portifólio é dada por
+
+$$\boldsymbol{w}=\Phi\boldsymbol{1}_p$$
+e a respectiva volatilidade por portifólio é dada por
+$$\sigma_p=\sqrt{\textbf{1}_p'\Phi \textbf{1}_p}$$
+
+
+* Relação entre ações: uma estratégia protetiva é a diversificação de ativos. Isto porque ativos diversos tendem a se comportar de modo diferente com os humores do mercado, protegendo o capital de eventuais crises. um grafo de dependências condicionais utilizando $\Phi$ pode ser contruído para verificar a denpendência entre as ações. Isto é útil para proteção de capital.
+
+</div>
 
 ## Modelos com inflação de zeros
 
@@ -635,3 +665,128 @@ hist(mu1[seq(B/2,B,30)])
 hist(mu2[seq(B/2,B,30)])
 
 ```
+
+## Exercícios
+
+### Volatilidade individual das ações da B3
+
+As ações são divididas por segmentos. Abaixo mostramos os segmentos e suas principais
+ações na bolsa brasileira.
+
+```{r echo = FALSE}
+# Criando um data frame com as informações
+dados_acoes <- data.frame(
+  Setor = c(
+    "Financeiro", "Financeiro", "Financeiro", "Financeiro", "Financeiro",
+    "Materiais Básicos", "Materiais Básicos", "Materiais Básicos", "Materiais Básicos", "Materiais Básicos",
+    "Petróleo, Gás e Biocombustíveis", "Petróleo, Gás e Biocombustíveis", "Petróleo, Gás e Biocombustíveis", "Petróleo, Gás e Biocombustíveis", "Petróleo, Gás e Biocombustíveis",
+    "Utilidade Pública", "Utilidade Pública", "Utilidade Pública", "Utilidade Pública", "Utilidade Pública",
+    "Consumo Cíclico", "Consumo Cíclico", "Consumo Cíclico", "Consumo Cíclico", "Consumo Cíclico",
+    "Consumo Não Cíclico", "Consumo Não Cíclico", "Consumo Não Cíclico", "Consumo Não Cíclico", "Consumo Não Cíclico",
+    "Bens Industriais", "Bens Industriais", "Bens Industriais", "Bens Industriais", "Bens Industriais",
+    "Tecnologia", "Tecnologia", "Tecnologia", "Tecnologia", "Tecnologia",
+    "Saúde", "Saúde", "Saúde", "Saúde", "Saúde",
+    "Comunicações", "Comunicações", "Comunicações", "Comunicações", "Comunicações"
+  ),
+  Ação = c(
+    "Itaú Unibanco", "Bradesco", "Banco do Brasil", "B3", "Itaúsa",
+    "Vale", "Suzano", "Gerdau", "CSN", "Klabin",
+    "Petrobras PN", "Prio", "Petrobras ON", "Vibra Energia", "Cosan",
+    "Eletrobras ON", "Engie Brasil", "Cemig", "Taesa", "Sabesp",
+    "Lojas Renner", "Magazine Luiza", "Localiza", "CVC Brasil", "Embraer",
+    "Ambev", "Raia Drogasil", "JBS", "Assaí", "Hypera Pharma",
+    "Weg", "Rumo", "CCR", "Grupo Vamos", "Indústrias Romi",
+    "Totvs", "Locaweb", "Intelbras", "Méliuz", "Infracommerce",
+    "Rede D'Or", "Hapvida", "Fleury", "Qualicorp", "Hermes Pardini",
+    "Telefônica Brasil", "Tim", "Oi", "Unifique", "Brisanet"
+  ),
+  Ticker = c(
+    "ITUB4", "BBDC4", "BBAS3", "B3SA3", "ITSA4",
+    "VALE3", "SUZB3", "GGBR4", "CSNA3", "KLBN11",
+    "PETR4", "PRIO3", "PETR3", "VBBR3", "CSAN3",
+    "ELET3", "EGIE3", "CMIG4", "TAEE11", "SBSP3",
+    "LREN3", "MGLU3", "RENT3", "CVCB3", "EMBR3",
+    "ABEV3", "RADL3", "JBS3", "ASAI3", "HYPE3",
+    "WEGE3", "RAIL3", "CCRO3", "VAMO3", "ROMI3",
+    "TOTS3", "LWSA3", "INTB3", "CASH3", "IFCM3",
+    "RDOR3", "HAPV3", "FLRY3", "QUAL3", "PARD3",
+    "VIVT3", "TIMS3", "OIBR3", "FIQE3", "BRIT3"
+  )
+)
+# # Carregue as bibliotecas necessárias para a visualização
+ library(knitr)
+ library(dplyr) # Para agrupar e ordenar se desejar
+
+ dados_acoes <- dados_acoes %>%
+   arrange(Setor, Ação)
+
+# # Usar kable para renderizar a tabela diretamente no Quarto
+# # O 'group_rows' é uma funcionalidade que o kableExtra adiciona para agrupar linhas.
+# # Se não quiser o kableExtra, remova as linhas relacionadas a group_rows.
+
+# # Instale kableExtra se não tiver: install.packages("kableExtra")
+ library(kableExtra)
+
+ dados_acoes %>%
+   group_by(Setor) %>%
+   kable("html", caption = "Principais Ações da B3 por Setor") %>%
+   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE) %>%
+   group_rows(index = table(dados_acoes$Setor)) # Isso agrupa visualmente as linhas por setor
+# ```
+
+# Se você preferir uma saída simples em Markdown (sem a funcionalidade de group_rows tão elaborada):
+# ```{r}
+# library(knitr)
+# library(dplyr)
+
+# # ... (coloque o código do data frame dados_acoes que está acima) ...
+
+# # Ordenar por Setor para melhor visualização
+# dados_acoes <- dados_acoes %>%
+#   arrange(Setor, Acao)
+
+# kable(dados_acoes, format = "markdown", caption = "Principais Ações da B3 por Setor")
+# ```
+
+# Se você quiser testar a saída em markdown diretamente no console:
+# cat(kable(dados_acoes, format = "markdown", caption = "Principais Ações da B3 por Setor"))
+```
+
+Neste exercício vamos explorar a volatilidadde basal dos log-retornos das
+ações da B3 utilizando a distribuição $t$-Student. O pacote `rb3` é útil para obter os preços das ações brasileiras O comando abaixo faz o download de todos os dados do ano de 2024.
+
+
+
+```{r}
+library('rb3')
+# coletando os dados da B3 de 2024
+df_2024 <- cotahist_get("2024-01-01", "yearly")
+dados <- data.frame(df_2024$HistoricalPrices)
+```
+
+O ticker da empresa está na coluna `cod_negociacao` e o preço de fechamento na coluna `preco_ult`. Para obter os dados de uma ação específica, basta fazer o filtro na coluna. Por exemplo, a série de preços da Vale pode ser obtida do seguinte modo:
+
+```{r}
+vale3 <- dados$preco_ult[ dados$cod_negociacao == 'VALE3' ]
+ts.plot(vale3, xlab='Dia',ylab='Preço de fechamento')
+
+```
+
+Obtenha estimativas pontuais e intervalares para a volatilidade basal e para os 
+graus de liberdade de cada ação. Crie um diagrama de dispersão, identificando por 
+esquemas de cores ou símbolos o segmento das ações. Discua quais ações e quais seguimentos são menos arriscados. Faça intervalos de credibilidade ou testes de hipóteses para corroborar sua discussão.
+
+### Análise de um portifólio
+
+Utilizando as ações dadas no exemplo anterior.
+
+1. Para cada setor, calcule a volatilidade do portifólio ótimo.
+
+2. Calcule a volatlidade do portifólio ótimo utilizando todos os setores. 
+
+3. Ainda utilizando todo os setores, faça um grafo de dependências condicionais
+
+4. Procure por ações com baixa volatilidade e  sem relações diretas. Contrua seu próprio portifólio, misturando ações de diferentes segmentos.
+
+5. Calcule a volatilidade do seu portifólio e compare com a volatilidade geral e a volatlidade por segmentos.
+ 

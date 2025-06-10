@@ -102,6 +102,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -297,6 +301,11 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#o-velho-fiel" id="toc-o-velho-fiel" class="nav-link" data-scroll-target="#o-velho-fiel"><span class="header-section-number">14.4.1</span> O velho fiel</a></li>
   </ul></li>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">14.5</span> Exercícios</a>
+  <ul class="collapse">
+  <li><a href="#volatilidade-individual-das-ações-da-b3" id="toc-volatilidade-individual-das-ações-da-b3" class="nav-link" data-scroll-target="#volatilidade-individual-das-ações-da-b3"><span class="header-section-number">14.5.1</span> Volatilidade individual das ações da B3</a></li>
+  <li><a href="#análise-de-um-portifólio" id="toc-análise-de-um-portifólio" class="nav-link" data-scroll-target="#análise-de-um-portifólio"><span class="header-section-number">14.5.2</span> Análise de um portifólio</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -356,7 +365,7 @@ f(x|\mu,\phi,\nu)&amp;=\int_0^\infty f(x|z,\mu,\phi)f(z|\nu)dz=\int_0^\infty \sq
 z_i|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{\nu+1}{2},\frac{\phi(x_i-\mu)^2+\nu}{2}\right)\end{align}\]</span></p>
 <p>A condicional completa para <span class="math inline">\(\nu\)</span> é dada por <span class="math display">\[f(\nu|\hbox{resto})\propto \frac{(\nu/2)^{n\nu/2}}{\Gamma(\nu/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}\sum_{i=1}^nz_i}f(\nu)\]</span></p>
 <p>Observe que a condicional completa para <span class="math inline">\(\nu\)</span> não possui um núcleo conhecido. Para facilitar a simulação, podemos considerar que o espaço paramétrico de <span class="math inline">\(\nu\)</span> é uma coleção com <span class="math inline">\(M&lt;\infty\)</span> pontos. Então, teremos que <span class="math display">\[f(\nu_0|\hbox{resto})\approx P(\nu=\nu_0|\hbox{resto})\propto \frac{(\nu_0/2)^{n\nu_0/2}}{\Gamma(\nu_0/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu_0}{2}-1}e^{-\frac{\nu}{2}\sum_{i=1}^nz_i}f(\nu_0)\]</span> e podemos utilizar o simulador <code>sample</code> do <code>R</code>. Estudos sugerem que a priori escolhida deve favorecer valores baixos para <span class="math inline">\(\nu\)</span>. Vamos utilizar a priori <span class="math inline">\(\nu\sim\hbox{Exponencial}(r_0)\)</span></p>
-</section></main></div>
+<div class="alert alert-info">
 <p><strong>Volatilidade no mercado financeiro</strong></p>
 <p>Considere que você tem uma empresa e deseja atrair investimento. Um modo bastante tradicional é encontrar um sócio para injetar dinheiro. Por sua vez, o sócio passa a ser dono de parte da empresa. Essa é a ideia por trás das ações. Parte da empresa é fatiada em partes denominadas ações, que são negociadas na bolsa de valores. Qualquer indivíduo com uma ação é dono de uma fração da empresa. Se a empresa cresce, seu valor cresce e aquela fração correspondente à ação passa a valer mais. Se a empresa entre em crise, ação passa a valer menos.</p>
 <p>Contudo, o preço não está baseado apenas no quanto a empresa vale no momento, mas como os milhares de donos estão se sentindo no momento com relação à ela. Caso os acionistas acreditem que a empresa vai perder valor, eles podem começar a vender suas ações. Com o aumento oferta, o preço cai. Se por outro lado o mercado acredita que a empresa vai aumentar seu lucro, os pedidos por compra no mercado aumentam e os donos das ações evitam negociá-las, criando uma demanada maior que a oferta e aumentando o preço do ativo.</p>
@@ -505,7 +514,7 @@ z_i|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{\nu+1}{2},\frac{\phi(x_i-\mu)^2+
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(vol_magalu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.04358369</code></pre>
+<pre><code>[1] 0.04370491</code></pre>
 </div>
 </div>
 <p>Para ilustrar melhor estes conceitos, vamos repetir a análise para a empresa Engie Brasil Energia (EGIE3). Espera-se menos volatilidade, uma vez que empresas do setor elétrico geralmente têm receitas mais previsíveis, regulamentação estável e são consideradas “defensivas”.</p>
@@ -529,10 +538,32 @@ z_i|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{\nu+1}{2},\frac{\phi(x_i-\mu)^2+
 </div>
 </div>
 <p>A volatilidade basal estimada para a EGIE no período foi de 1,2%. A probabilidade de que esta volatilidade seja menor que a da MGLU é de 0,999, o que corrobora com o esperado. Os graus de liberdade foram estimados em 8,07.</p>
-
-
+</div>
+<div class="alert" data-alert-success="">
+<p><strong>A distribuição t-Student multivariada e o estudo de portifólios</strong></p>
+<p>Um portfólio, no contexto financeiro, é um conjunto de investimentos que um indivíduo ou uma instituição possui. Alguns investimentos tendem a reagir de forma semelhante aos humeores do mercado. Por exemplo, considerando os log-retornos diários do Banco do Brasil (BBSA3) e Itaú Unibanco (ITUB4) no ano de 2024, temos uma correlação de 0,18. Portanto, se dois ativos dentro do portifólio são correlacionados, o risco deveria aumentar.</p>
+<p>Podemos relacionar a distribuição t-Student<span class="math inline">\(_{\nu}(\boldsymbol{\mu},\Phi^{-1})\)</span> (<span class="math inline">\(p\)</span> multivariada) como a seguinte mistura:</p>
+<p><span class="math display">\[\begin{align}\boldsymbol{x}|z,\boldsymbol{\mu},\Phi&amp;\sim \hbox{Normal}_p(\boldsymbol{\mu},z^{-1}\Phi^{-1})\\z&amp;\sim\hbox{Gama}\left(\frac{\nu}{2},\frac{\nu}{2}\right)\end{align}\]</span> Considerando uma amostra <span class="math inline">\(\boldsymbol{x}_1,\ldots,\boldsymbol{x}_n\)</span> eas prioris <span class="math inline">\(\boldsymbol{\mu}|\Phi\sim\hbox{Normal}_p(\boldsymbol{m}_0,\lambda^{-1}\Phi^{-1})\)</span>, <span class="math inline">\(\Phi\sim\hbox{Wishart}(n_0,S_0)\)</span> e <span class="math inline">\(\nu\sim\hbox{Exponencial}(r_0)\)</span>, temos as seguintes condicionais completas:</p>
+<p><span class="math display">\[\begin{align}\boldsymbol{\mu}|\hbox{resto}&amp;\sim\hbox{Normal}_p\left(\frac{\sum_{i=1}^n z_i\boldsymbol{x}_i+\lambda\boldsymbol{m}_0}{\lambda+\sum_{i=1}^n z_i},\Phi^{-1}/(\lambda + \sum_{i=1}^n z_i)\right)\\\Phi|\hbox{resto}&amp;\sim\hbox{Gama}\left(n+n_0+1,[S_0^{-1}+\lambda(\boldsymbol{\mu}-\boldsymbol{m}_0)(\boldsymbol{\mu}-\boldsymbol{m}_0)'+\sum_{i=1}^n z_i(\boldsymbol{x}_i-\boldsymbol{\mu})(\boldsymbol{x}_i-\boldsymbol{\mu})']^{-1}\right)\\
+z_i|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{\nu+p}{2},\frac{\nu+(\boldsymbol{x}_i-\boldsymbol{\mu})'\Phi(\boldsymbol{x}_i-\boldsymbol{\mu})}{2}\right)\\
+f(\nu|\hbox{resto})&amp;\propto \left(\frac{\nu}{2}\right)^{\frac{n\nu}{2}}\frac{1}{\Gamma(\nu/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu}{2}}e^{-\nu(r_0+\frac{1}{2}\sum_{i=1}^n z_i)}
+\end{align}\]</span></p>
+<p>Seja <span class="math inline">\(p\)</span> o número de ações dentro do portifólio e seja <span class="math inline">\(w_i\)</span> a proporção da <span class="math inline">\(i\)</span>-ésima ação dentro do portifólio. Então <span class="math inline">\(\Phi\)</span> pode ser utilizada para os seguintes fins:</p>
+<ul>
+<li>Cálculo da volatilidade do portifólio:</li>
+</ul>
+<p><span class="math display">\[\sigma_p=\sqrt{\boldsymbol{w}'\Phi^{-1}\boldsymbol{w}}\]</span></p>
+<ul>
+<li>Cálculo do portifólio ótimo: a melhor composição da proporção das ações dentro do portifólio é dada por</li>
+</ul>
+<p><span class="math display">\[\boldsymbol{w}=\Phi\boldsymbol{1}_p\]</span> e a respectiva volatilidade por portifólio é dada por <span class="math display">\[\sigma_p=\sqrt{\textbf{1}_p'\Phi \textbf{1}_p}\]</span></p>
+<ul>
+<li>Relação entre ações: uma estratégia protetiva é a diversificação de ativos. Isto porque ativos diversos tendem a se comportar de modo diferente com os humores do mercado, protegendo o capital de eventuais crises. um grafo de dependências condicionais utilizando <span class="math inline">\(\Phi\)</span> pode ser contruído para verificar a denpendência entre as ações. Isto é útil para proteção de capital.</li>
+</ul>
+</div>
+</section>
 <section id="modelos-com-inflação-de-zeros" class="level2" data-number="14.2">
-<h2 data-number="14.2" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">14.2</span> Modelos com inflação de zeros</h2>
+<h2 data-number="14.2" class="anchored" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">14.2</span> Modelos com inflação de zeros</h2>
 <p>Quando são observados mais zeros do que o esperado pelo modelo de contagem assumido para a verossimilhança, é usual considerar um modelo com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma variável <span class="math inline">\(Z|p\sim\hbox{Bernoulli}(\rho)\)</span> tal que:</p>
 <p><span class="math display">\[X=\left\{\begin{array}{ll}0, &amp; \hbox{se }Z=1\ \\ Y,&amp;\hbox{se }Z=0\end{array}\right.\]</span> onde <span class="math inline">\(Y\sim h(.|\theta)\)</span> é o modelo de contagem. Apenas <span class="math inline">\(X\)</span> é observado e, como</p>
 <p><span class="math display">\[\begin{align}P(X=0|\theta,p)&amp;=P(X=0|Z=0,\theta)P(Z=0|\rho)+P(X=0|Z=1,\theta)P(Z=1|\rho)\\&amp;=(1-\rho)h(0|\theta)+\rho\end{align}\]</span> a probabilidade de observar um zero está entre <span class="math inline">\(h(0|\theta)\)</span> e 1, o que caracteriza a inflação.</p>
@@ -680,9 +711,9 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 <div class="cell-output cell-output-stdout">
 <pre><code>x_til
            0            1            2            3            4            5 
-6.081168e-01 2.006829e-01 1.149232e-01 5.103595e-02 1.765032e-02 5.698860e-03 
-           6            7            8 
-1.522772e-03 2.768677e-04 9.228923e-05 </code></pre>
+6.048406e-01 2.018827e-01 1.181994e-01 5.025149e-02 1.723501e-02 5.421993e-03 
+           6            7            8            9 
+1.545845e-03 4.845185e-04 1.153615e-04 2.307231e-05 </code></pre>
 </div>
 </div>
 <p>Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo Poisson a e frequência relativa.</p>
@@ -707,7 +738,7 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </div>
 </div>
 <section id="exercício" class="level3" data-number="14.2.1">
-<h3 data-number="14.2.1" data-anchor-id="exercício"><span class="header-section-number">14.2.1</span> Exercício</h3>
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="exercício"><span class="header-section-number">14.2.1</span> Exercício</h3>
 <div class="alert alert-warning">
 <p>Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana, entre 1950 e 2012.</p>
 <div class="cell">
@@ -727,10 +758,10 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </section>
 </section>
 <section id="mistura-escalonada-de-normais" class="level2" data-number="14.3">
-<h2 data-number="14.3" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">14.3</span> Mistura escalonada de normais</h2>
+<h2 data-number="14.3" class="anchored" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">14.3</span> Mistura escalonada de normais</h2>
 </section>
 <section id="misturas-finitas-com-número" class="level2" data-number="14.4">
-<h2 data-number="14.4" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">14.4</span> Misturas finitas com número</h2>
+<h2 data-number="14.4" class="anchored" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">14.4</span> Misturas finitas com número</h2>
 <p>Dizemos que <span class="math inline">\(X|\boldsymbol{\theta},\boldsymbol{p},\kappa\)</span> é um modelo de mistura finito se sua função de densidade/probabilidade é dada por</p>
 <p><span class="math display">\[f(x| \boldsymbol{\theta},\boldsymbol{p} ,\kappa )=\sum_{k=1}^\kappa p_k f_k(x|\boldsymbol{\theta}_k).\]</span></p>
 <p>Cada função <span class="math inline">\(f(.|\boldsymbol{\theta}_k)\)</span> é denominada componente da mistura e o número de componentes pode ser desconhecido.</p>
@@ -746,7 +777,7 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 <p><span class="math display">\[\tilde{p}_k=\frac{p_kf(x_i|\boldsymbol{\theta}_k)}{\sum_{k=1}^\kappa p_kf(x_i|\boldsymbol{\theta}_k)}\]</span> * <span class="math inline">\(f(\textbf{p}|resto)\propto \prod_{k=1}^\kappa p_k^{\sum_{i=1}^n z_{i,k}+a_k-1}\)</span>, ou seja <span class="math inline">\(\textbf{p}|resto\sim\hbox{Dirichlet}(a_1+\sum_{i=1}^n z_{i,1},\ldots,a_\kappa+\sum_{i=1}^n z_{i,\kappa})\)</span></p>
 <p>Se necessário, podemos atrbuir a priori <span class="math display">\[\pi(\kappa)=\frac{1}{M},\kappa=1,2,\ldots,M\]</span> para obter a condicional completa <span class="math display">\[\pi(\kappa|resto)=\frac{\prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)}{\sum_{\kappa=1}^M \prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)},\kappa=1,\ldots,M.\]</span></p>
 <section id="o-velho-fiel" class="level3" data-number="14.4.1">
-<h3 data-number="14.4.1" data-anchor-id="o-velho-fiel"><span class="header-section-number">14.4.1</span> O velho fiel</h3>
+<h3 data-number="14.4.1" class="anchored" data-anchor-id="o-velho-fiel"><span class="header-section-number">14.4.1</span> O velho fiel</h3>
 <p>O banco de dados <code>faithful</code> mostra a duração e o tempo até a próxima erupção do geiser Velho Fiel, no parque Yellowstone. Abaixo mostramos o diagrama do tempo de espera entre erupções</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(faithful<span class="sc">$</span>waiting)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -867,12 +898,371 @@ e^{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2}\phi^{-1/2}e^{-\frac{\phi_1}{2
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="exercícios" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">14.5</span> Exercícios</h2>
+<section id="volatilidade-individual-das-ações-da-b3" class="level3" data-number="14.5.1">
+<h3 data-number="14.5.1" class="anchored" data-anchor-id="volatilidade-individual-das-ações-da-b3"><span class="header-section-number">14.5.1</span> Volatilidade individual das ações da B3</h3>
+<p>As ações são divididas por segmentos. Abaixo mostramos os segmentos e suas principais ações na bolsa brasileira.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Anexando pacote: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Os seguintes objetos são mascarados por 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Os seguintes objetos são mascarados por 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Anexando pacote: 'kableExtra'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>O seguinte objeto é mascarado por 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Principais Ações da B3 por Setor</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Setor</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Ação</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Ticker</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Bens Industriais</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">CCR</td>
+<td style="text-align: left;">CCRO3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Grupo Vamos</td>
+<td style="text-align: left;">VAMO3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Indústrias Romi</td>
+<td style="text-align: left;">ROMI3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Rumo</td>
+<td style="text-align: left;">RAIL3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Weg</td>
+<td style="text-align: left;">WEGE3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Comunicações</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Brisanet</td>
+<td style="text-align: left;">BRIT3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Oi</td>
+<td style="text-align: left;">OIBR3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Telefônica Brasil</td>
+<td style="text-align: left;">VIVT3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Tim</td>
+<td style="text-align: left;">TIMS3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Unifique</td>
+<td style="text-align: left;">FIQE3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Consumo Cíclico</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">CVC Brasil</td>
+<td style="text-align: left;">CVCB3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Embraer</td>
+<td style="text-align: left;">EMBR3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Localiza</td>
+<td style="text-align: left;">RENT3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Lojas Renner</td>
+<td style="text-align: left;">LREN3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Magazine Luiza</td>
+<td style="text-align: left;">MGLU3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Consumo Não Cíclico</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Ambev</td>
+<td style="text-align: left;">ABEV3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Assaí</td>
+<td style="text-align: left;">ASAI3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Hypera Pharma</td>
+<td style="text-align: left;">HYPE3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">JBS</td>
+<td style="text-align: left;">JBS3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Raia Drogasil</td>
+<td style="text-align: left;">RADL3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Financeiro</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">B3</td>
+<td style="text-align: left;">B3SA3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Banco do Brasil</td>
+<td style="text-align: left;">BBAS3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Bradesco</td>
+<td style="text-align: left;">BBDC4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Itaú Unibanco</td>
+<td style="text-align: left;">ITUB4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Itaúsa</td>
+<td style="text-align: left;">ITSA4</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Materiais Básicos</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">CSN</td>
+<td style="text-align: left;">CSNA3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Gerdau</td>
+<td style="text-align: left;">GGBR4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Klabin</td>
+<td style="text-align: left;">KLBN11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Suzano</td>
+<td style="text-align: left;">SUZB3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Vale</td>
+<td style="text-align: left;">VALE3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Petróleo, Gás e Biocombustíveis</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Cosan</td>
+<td style="text-align: left;">CSAN3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Petrobras ON</td>
+<td style="text-align: left;">PETR3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Petrobras PN</td>
+<td style="text-align: left;">PETR4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Prio</td>
+<td style="text-align: left;">PRIO3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Vibra Energia</td>
+<td style="text-align: left;">VBBR3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Saúde</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Fleury</td>
+<td style="text-align: left;">FLRY3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Hapvida</td>
+<td style="text-align: left;">HAPV3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Hermes Pardini</td>
+<td style="text-align: left;">PARD3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Qualicorp</td>
+<td style="text-align: left;">QUAL3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Rede D'Or</td>
+<td style="text-align: left;">RDOR3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Tecnologia</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Infracommerce</td>
+<td style="text-align: left;">IFCM3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Intelbras</td>
+<td style="text-align: left;">INTB3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Locaweb</td>
+<td style="text-align: left;">LWSA3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Méliuz</td>
+<td style="text-align: left;">CASH3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Totvs</td>
+<td style="text-align: left;">TOTS3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Utilidade Pública</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Cemig</td>
+<td style="text-align: left;">CMIG4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Eletrobras ON</td>
+<td style="text-align: left;">ELET3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Engie Brasil</td>
+<td style="text-align: left;">EGIE3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Sabesp</td>
+<td style="text-align: left;">SBSP3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Taesa</td>
+<td style="text-align: left;">TAEE11</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Neste exercício vamos explorar a volatilidadde basal dos log-retornos das ações da B3 utilizando a distribuição <span class="math inline">\(t\)</span>-Student. O pacote <code>rb3</code> é útil para obter os preços das ações brasileiras O comando abaixo faz o download de todos os dados do ano de 2024.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'rb3'</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># coletando os dados da B3 de 2024</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>df_2024 <span class="ot">&lt;-</span> <span class="fu">cotahist_get</span>(<span class="st">"2024-01-01"</span>, <span class="st">"yearly"</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(df_2024<span class="sc">$</span>HistoricalPrices)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O ticker da empresa está na coluna <code>cod_negociacao</code> e o preço de fechamento na coluna <code>preco_ult</code>. Para obter os dados de uma ação específica, basta fazer o filtro na coluna. Por exemplo, a série de preços da Vale pode ser obtida do seguinte modo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>vale3 <span class="ot">&lt;-</span> dados<span class="sc">$</span>preco_ult[ dados<span class="sc">$</span>cod_negociacao <span class="sc">==</span> <span class="st">'VALE3'</span> ]</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(vale3, <span class="at">xlab=</span><span class="st">'Dia'</span>,<span class="at">ylab=</span><span class="st">'Preço de fechamento'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Obtenha estimativas pontuais e intervalares para a volatilidade basal e para os graus de liberdade de cada ação. Crie um diagrama de dispersão, identificando por esquemas de cores ou símbolos o segmento das ações. Discua quais ações e quais seguimentos são menos arriscados. Faça intervalos de credibilidade ou testes de hipóteses para corroborar sua discussão.</p>
+</section>
+<section id="análise-de-um-portifólio" class="level3" data-number="14.5.2">
+<h3 data-number="14.5.2" class="anchored" data-anchor-id="análise-de-um-portifólio"><span class="header-section-number">14.5.2</span> Análise de um portifólio</h3>
+<p>Utilizando as ações dadas no exemplo anterior.</p>
+<ol type="1">
+<li><p>Para cada setor, calcule a volatilidade do portifólio ótimo.</p></li>
+<li><p>Calcule a volatlidade do portifólio ótimo utilizando todos os setores.</p></li>
+<li><p>Ainda utilizando todo os setores, faça um grafo de dependências condicionais</p></li>
+<li><p>Procure por ações com baixa volatilidade e sem relações diretas. Contrua seu próprio portifólio, misturando ações de diferentes segmentos.</p></li>
+<li><p>Calcule a volatilidade do seu portifólio e compare com a volatilidade geral e a volatlidade por segmentos.</p></li>
+</ol>
 
 
 </section>
 </section>
 
- <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1305,7 +1695,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav>
- <!-- /content -->
+</div> <!-- /content -->
 
 
 
