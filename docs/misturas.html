@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>14&nbsp; Misturas de distribuições – Introdução à Inferência Bayesiana</title>
+<title>15&nbsp; Misturas de distribuições – Introdução à Inferência Bayesiana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,7 +148,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./misturas.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./misturas.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -253,14 +253,20 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./logistica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Regressão logística</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./misturas.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -272,7 +278,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -291,20 +297,20 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#o-modelo-t-student-como-uma-mistura-normal-gama" id="toc-o-modelo-t-student-como-uma-mistura-normal-gama" class="nav-link active" data-scroll-target="#o-modelo-t-student-como-uma-mistura-normal-gama"><span class="header-section-number">14.1</span> O modelo t-Student como uma mistura normal-gama</a></li>
-  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">14.2</span> Modelos com inflação de zeros</a>
+  <li><a href="#o-modelo-t-student-como-uma-mistura-normal-gama" id="toc-o-modelo-t-student-como-uma-mistura-normal-gama" class="nav-link active" data-scroll-target="#o-modelo-t-student-como-uma-mistura-normal-gama"><span class="header-section-number">15.1</span> O modelo t-Student como uma mistura normal-gama</a></li>
+  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">15.2</span> Modelos com inflação de zeros</a>
   <ul class="collapse">
-  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">14.2.1</span> Exercício</a></li>
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">15.2.1</span> Exercício</a></li>
   </ul></li>
-  <li><a href="#mistura-escalonada-de-normais" id="toc-mistura-escalonada-de-normais" class="nav-link" data-scroll-target="#mistura-escalonada-de-normais"><span class="header-section-number">14.3</span> Mistura escalonada de normais</a></li>
-  <li><a href="#misturas-finitas-com-número" id="toc-misturas-finitas-com-número" class="nav-link" data-scroll-target="#misturas-finitas-com-número"><span class="header-section-number">14.4</span> Misturas finitas com número</a>
+  <li><a href="#mistura-escalonada-de-normais" id="toc-mistura-escalonada-de-normais" class="nav-link" data-scroll-target="#mistura-escalonada-de-normais"><span class="header-section-number">15.3</span> Mistura escalonada de normais</a></li>
+  <li><a href="#misturas-finitas-com-número" id="toc-misturas-finitas-com-número" class="nav-link" data-scroll-target="#misturas-finitas-com-número"><span class="header-section-number">15.4</span> Misturas finitas com número</a>
   <ul class="collapse">
-  <li><a href="#o-velho-fiel" id="toc-o-velho-fiel" class="nav-link" data-scroll-target="#o-velho-fiel"><span class="header-section-number">14.4.1</span> O velho fiel</a></li>
+  <li><a href="#o-velho-fiel" id="toc-o-velho-fiel" class="nav-link" data-scroll-target="#o-velho-fiel"><span class="header-section-number">15.4.1</span> O velho fiel</a></li>
   </ul></li>
-  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">14.5</span> Exercícios</a>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">15.5</span> Exercícios</a>
   <ul class="collapse">
-  <li><a href="#volatilidade-individual-das-ações-da-b3" id="toc-volatilidade-individual-das-ações-da-b3" class="nav-link" data-scroll-target="#volatilidade-individual-das-ações-da-b3"><span class="header-section-number">14.5.1</span> Volatilidade individual das ações da B3</a></li>
-  <li><a href="#análise-de-um-portifólio" id="toc-análise-de-um-portifólio" class="nav-link" data-scroll-target="#análise-de-um-portifólio"><span class="header-section-number">14.5.2</span> Análise de um portifólio</a></li>
+  <li><a href="#volatilidade-individual-das-ações-da-b3" id="toc-volatilidade-individual-das-ações-da-b3" class="nav-link" data-scroll-target="#volatilidade-individual-das-ações-da-b3"><span class="header-section-number">15.5.1</span> Volatilidade individual das ações da B3</a></li>
+  <li><a href="#análise-de-um-portifólio" id="toc-análise-de-um-portifólio" class="nav-link" data-scroll-target="#análise-de-um-portifólio"><span class="header-section-number">15.5.2</span> Análise de um portifólio</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -314,7 +320,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></h1>
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></h1>
 </div>
 
 
@@ -346,8 +352,8 @@ window.Quarto = {
 </ol>
 </div>
 <p>O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição estacionária é <span class="math inline">\(f(\theta,\boldsymbol{z}|\boldsymbol{x})\)</span></p>
-<section id="o-modelo-t-student-como-uma-mistura-normal-gama" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="o-modelo-t-student-como-uma-mistura-normal-gama"><span class="header-section-number">14.1</span> O modelo t-Student como uma mistura normal-gama</h2>
+<section id="o-modelo-t-student-como-uma-mistura-normal-gama" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="o-modelo-t-student-como-uma-mistura-normal-gama"><span class="header-section-number">15.1</span> O modelo t-Student como uma mistura normal-gama</h2>
 <p>A função densidade do modelo t-Student é dada por <span class="math display">\[f(x|\mu,\phi,\nu)=\frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2})}\sqrt{\frac{\phi}{\pi\nu}}\left[1+\frac{\phi}{\nu}\left(x-\mu\right)^2\right]^{-\frac{\nu+1}{2}},\]</span> onde <span class="math inline">\(x,\mu\in\mathbb{R}\)</span> e <span class="math inline">\(\phi,\nu&gt;0\)</span>. Se <span class="math inline">\(\nu&gt;1\)</span>, então <span class="math inline">\(E(X)=\mu\)</span> e se <span class="math inline">\(\nu&gt;2\)</span>, <span class="math inline">\(Var(X)=\nu/(\phi(\nu-2))\)</span>.</p>
 <p>Considere que <span class="math inline">\(X|Z,\mu,\phi\sim\hbox{Normal}(\mu,(z\phi)^{-1})\)</span> e <span class="math inline">\(Z\sim\hbox{Gama}(\nu/2,\nu/2)\)</span>. Então</p>
 <p><span class="math display">\[\begin{align}
@@ -514,7 +520,7 @@ z_i|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{\nu+1}{2},\frac{\phi(x_i-\mu)^2+
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(vol_magalu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.04348459</code></pre>
+<pre><code>[1] 0.04363258</code></pre>
 </div>
 </div>
 <p>Para ilustrar melhor estes conceitos, vamos repetir a análise para a empresa Engie Brasil Energia (EGIE3). Espera-se menos volatilidade, uma vez que empresas do setor elétrico geralmente têm receitas mais previsíveis, regulamentação estável e são consideradas “defensivas”.</p>
@@ -562,8 +568,8 @@ f(\nu|\hbox{resto})&amp;\propto \left(\frac{\nu}{2}\right)^{\frac{n\nu}{2}}\frac
 </ul>
 </div>
 </section>
-<section id="modelos-com-inflação-de-zeros" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">14.2</span> Modelos com inflação de zeros</h2>
+<section id="modelos-com-inflação-de-zeros" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">15.2</span> Modelos com inflação de zeros</h2>
 <p>Quando são observados mais zeros do que o esperado pelo modelo de contagem assumido para a verossimilhança, é usual considerar um modelo com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma variável <span class="math inline">\(Z|p\sim\hbox{Bernoulli}(\rho)\)</span> tal que:</p>
 <p><span class="math display">\[X=\left\{\begin{array}{ll}0, &amp; \hbox{se }Z=1\ \\ Y,&amp;\hbox{se }Z=0\end{array}\right.\]</span> onde <span class="math inline">\(Y\sim h(.|\theta)\)</span> é o modelo de contagem. Apenas <span class="math inline">\(X\)</span> é observado e, como</p>
 <p><span class="math display">\[\begin{align}P(X=0|\theta,p)&amp;=P(X=0|Z=0,\theta)P(Z=0|\rho)+P(X=0|Z=1,\theta)P(Z=1|\rho)\\&amp;=(1-\rho)h(0|\theta)+\rho\end{align}\]</span> a probabilidade de observar um zero está entre <span class="math inline">\(h(0|\theta)\)</span> e 1, o que caracteriza a inflação.</p>
@@ -711,9 +717,9 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 <div class="cell-output cell-output-stdout">
 <pre><code>x_til
            0            1            2            3            4            5 
-6.089705e-01 2.001292e-01 1.161921e-01 5.048221e-02 1.765032e-02 4.683679e-03 
+6.105856e-01 1.975451e-01 1.164459e-01 5.089751e-02 1.751188e-02 5.352776e-03 
            6            7            8 
-1.476628e-03 3.460846e-04 6.921693e-05 </code></pre>
+1.268977e-03 3.691569e-04 2.307231e-05 </code></pre>
 </div>
 </div>
 <p>Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo Poisson a e frequência relativa.</p>
@@ -737,8 +743,8 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </div>
 </div>
 </div>
-<section id="exercício" class="level3" data-number="14.2.1">
-<h3 data-number="14.2.1" class="anchored" data-anchor-id="exercício"><span class="header-section-number">14.2.1</span> Exercício</h3>
+<section id="exercício" class="level3" data-number="15.2.1">
+<h3 data-number="15.2.1" class="anchored" data-anchor-id="exercício"><span class="header-section-number">15.2.1</span> Exercício</h3>
 <div class="alert alert-warning">
 <p>Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana, entre 1950 e 2012.</p>
 <div class="cell">
@@ -757,11 +763,11 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </div>
 </section>
 </section>
-<section id="mistura-escalonada-de-normais" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">14.3</span> Mistura escalonada de normais</h2>
+<section id="mistura-escalonada-de-normais" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">15.3</span> Mistura escalonada de normais</h2>
 </section>
-<section id="misturas-finitas-com-número" class="level2" data-number="14.4">
-<h2 data-number="14.4" class="anchored" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">14.4</span> Misturas finitas com número</h2>
+<section id="misturas-finitas-com-número" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">15.4</span> Misturas finitas com número</h2>
 <p>Dizemos que <span class="math inline">\(X|\boldsymbol{\theta},\boldsymbol{p},\kappa\)</span> é um modelo de mistura finito se sua função de densidade/probabilidade é dada por</p>
 <p><span class="math display">\[f(x| \boldsymbol{\theta},\boldsymbol{p} ,\kappa )=\sum_{k=1}^\kappa p_k f_k(x|\boldsymbol{\theta}_k).\]</span></p>
 <p>Cada função <span class="math inline">\(f(.|\boldsymbol{\theta}_k)\)</span> é denominada componente da mistura e o número de componentes pode ser desconhecido.</p>
@@ -776,8 +782,8 @@ I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
 </ul>
 <p><span class="math display">\[\tilde{p}_k=\frac{p_kf(x_i|\boldsymbol{\theta}_k)}{\sum_{k=1}^\kappa p_kf(x_i|\boldsymbol{\theta}_k)}\]</span> * <span class="math inline">\(f(\textbf{p}|resto)\propto \prod_{k=1}^\kappa p_k^{\sum_{i=1}^n z_{i,k}+a_k-1}\)</span>, ou seja <span class="math inline">\(\textbf{p}|resto\sim\hbox{Dirichlet}(a_1+\sum_{i=1}^n z_{i,1},\ldots,a_\kappa+\sum_{i=1}^n z_{i,\kappa})\)</span></p>
 <p>Se necessário, podemos atrbuir a priori <span class="math display">\[\pi(\kappa)=\frac{1}{M},\kappa=1,2,\ldots,M\]</span> para obter a condicional completa <span class="math display">\[\pi(\kappa|resto)=\frac{\prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)}{\sum_{\kappa=1}^M \prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)},\kappa=1,\ldots,M.\]</span></p>
-<section id="o-velho-fiel" class="level3" data-number="14.4.1">
-<h3 data-number="14.4.1" class="anchored" data-anchor-id="o-velho-fiel"><span class="header-section-number">14.4.1</span> O velho fiel</h3>
+<section id="o-velho-fiel" class="level3" data-number="15.4.1">
+<h3 data-number="15.4.1" class="anchored" data-anchor-id="o-velho-fiel"><span class="header-section-number">15.4.1</span> O velho fiel</h3>
 <p>O banco de dados <code>faithful</code> mostra a duração e o tempo até a próxima erupção do geiser Velho Fiel, no parque Yellowstone. Abaixo mostramos o diagrama do tempo de espera entre erupções</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(faithful<span class="sc">$</span>waiting)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -900,10 +906,10 @@ e^{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2}\phi^{-1/2}e^{-\frac{\phi_1}{2
 </div>
 </section>
 </section>
-<section id="exercícios" class="level2" data-number="14.5">
-<h2 data-number="14.5" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">14.5</span> Exercícios</h2>
-<section id="volatilidade-individual-das-ações-da-b3" class="level3" data-number="14.5.1">
-<h3 data-number="14.5.1" class="anchored" data-anchor-id="volatilidade-individual-das-ações-da-b3"><span class="header-section-number">14.5.1</span> Volatilidade individual das ações da B3</h3>
+<section id="exercícios" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">15.5</span> Exercícios</h2>
+<section id="volatilidade-individual-das-ações-da-b3" class="level3" data-number="15.5.1">
+<h3 data-number="15.5.1" class="anchored" data-anchor-id="volatilidade-individual-das-ações-da-b3"><span class="header-section-number">15.5.1</span> Volatilidade individual das ações da B3</h3>
 <p>As ações são divididas por segmentos. Abaixo mostramos os segmentos e suas principais ações na bolsa brasileira.</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
@@ -1247,8 +1253,8 @@ Anexando pacote: 'kableExtra'</code></pre>
 </div>
 <p>Obtenha estimativas pontuais e intervalares para a volatilidade basal e para os graus de liberdade de cada ação. Crie um diagrama de dispersão, identificando por esquemas de cores ou símbolos o segmento das ações. Discua quais ações e quais seguimentos são menos arriscados. Faça intervalos de credibilidade ou testes de hipóteses para corroborar sua discussão.</p>
 </section>
-<section id="análise-de-um-portifólio" class="level3" data-number="14.5.2">
-<h3 data-number="14.5.2" class="anchored" data-anchor-id="análise-de-um-portifólio"><span class="header-section-number">14.5.2</span> Análise de um portifólio</h3>
+<section id="análise-de-um-portifólio" class="level3" data-number="15.5.2">
+<h3 data-number="15.5.2" class="anchored" data-anchor-id="análise-de-um-portifólio"><span class="header-section-number">15.5.2</span> Análise de um portifólio</h3>
 <p>Utilizando as ações dadas no exemplo anterior.</p>
 <ol type="1">
 <li><p>Para cada setor, calcule a volatilidade do portifólio ótimo.</p></li>
@@ -1686,12 +1692,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./mcmc.html" class="pagination-link" aria-label="Tópicos em Método de Monte Carlo via Cadeias de Markov">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
