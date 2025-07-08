@@ -295,12 +295,12 @@ $$\sigma_p=\sqrt{\textbf{1}_p'\Phi \textbf{1}_p}$$
 
 ## Modelos com inflação de zeros
 
-Quando são observados mais zeros do que o esperado pelo modelo de contagem assumido para a verossimilhança, é usual considerar um modelo com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma variável $Z|p\sim\hbox{Bernoulli}(\rho)$ tal que:
+Quando são observados mais zeros do que o esperado pelo modelo de contagem assumido para a verossimilhança, é usual considerar um modelo com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma variável latente $Z|p\sim\hbox{Bernoulli}(\rho)$ tal que:
 
 $$X=\left\{\begin{array}{ll}0, & \hbox{se }Z=1\ \\ Y,&\hbox{se }Z=0\end{array}\right.$$
-onde $Y\sim h(.|\theta)$ é o modelo de contagem. Apenas $X$ é observado e, como 
+onde $Y\sim h(.|\theta)$ é o modelo de contagem. Seja $f(.|\theta,\rho)$ a função de probabilidade de $X$. Então 
 
-$$\begin{align}P(X=0|\theta,p)&=P(X=0|Z=0,\theta)P(Z=0|\rho)+P(X=0|Z=1,\theta)P(Z=1|\rho)\\&=(1-\rho)h(0|\theta)+\rho\end{align}$$
+$$\begin{align}f(0|\theta,\rho)&=\sum_{z=0}^1 P(X=0|Z=z,\theta)P(Z=z|\rho)\\&=(1-\rho)h(0|\theta)+\rho\end{align}$$
 a probabilidade de observar um zero está entre $h(0|\theta)$ e 1, o que caracteriza a inflação.
 
 Agora, considere um modelo inflacionado de zeros aumentado:
@@ -317,7 +317,7 @@ logo, a distribuição conjunta $f(x,z|\theta,\rho)$ é dada por
 
 
 
-$$\begin{array}{c|cc}\hline & x=0 & \hbox{qualquer }x> 0 \\ \hline
+$$\begin{array}{c|cc}\hline & x=0 & x> 0 \\ \hline
 z=0 & h(0|\theta)(1-\rho) & h(x|\theta)(1-\rho) \\
 z=1 & \rho & 0 \\ \hline
 \end{array}
@@ -334,11 +334,11 @@ $$\begin{align}
 \prod_{i=1}^n f(x_i,z_i|\theta,\rho)&=
 (1-\rho)^{n-\sum_{i=1}^n z_i}\rho^{\sum_{i=1}^n z_iI(x_i=0)}\prod_{i=1}^n [h(x_i|\theta)]^{1-z_i}\end{align}$$
 
-Considere, a priori, que $\theta$ e $\rho$ são independentes. Seja $\pi(\theta)$ a priori para $\theta$ e considere que $\rho\sim\hbox{Beta}(a,b)$. Então, as condicionais completas para $\theta$ e $\rho$ são
+Considere, a priori, que $\theta$ e $\rho$ são independentes. Seja $\pi(\theta)$ a função de densidade/probabilidade a priori para $\theta$ e considere que $\rho\sim\hbox{Beta}(a,b)$. Então, as condicionais completas para $\theta$ e $\rho$ são
 
 $$\begin{align}
-\pi(\theta|\rho,\boldsymbol{z},\boldsymbol{x})&\propto \prod_{i=1}^n h(x_i|\theta)^{1-z_i}\pi(\theta),\\
-\pi(\rho|\theta,\boldsymbol{z},\boldsymbol{x})&\propto \rho^{\sum_{i=1}^n z_iI(x_i=0)+a-1}(1-\rho)^{n-\sum_{i=1}^n z_i+b-1},\\
+f(\theta|\rho,\boldsymbol{z},\boldsymbol{x})&\propto \prod_{i=1}^n h(x_i|\theta)^{1-z_i}\pi(\theta),\\
+f(\rho|\theta,\boldsymbol{z},\boldsymbol{x})&\propto \rho^{\sum_{i=1}^n z_iI(x_i=0)+a-1}(1-\rho)^{n-\sum_{i=1}^n z_i+b-1},\\
 \end{align}$$
 
 Para a condicional completa de $z_i$, notemos que 
@@ -348,7 +348,7 @@ e que
 $$P(Z_i=z|x_i=0)= \left\{\begin{array}{ll}\frac{P(Z_i=0,X_i=0)}{P(X_i=0)}=\frac{h(0|\theta)(1-\rho)}{\rho+(1-\rho)h(0|\theta)},&,z=0\\
 \frac{P(Z_i=1,X_i=0)}{P(X_i=0)}=\frac{\rho}{\rho+(1-\rho)h(0|\theta)},&z=1\end{array}\right.,$$
 logo
-$$\pi(z_i|\theta,\rho,\boldsymbol{x},\boldsymbol{z}_{(-i)})=\left\{\begin{array}{ll}\hbox{Bernoulli}\left( \frac{\rho}{\rho+(1-\rho)h(0|\theta)}\right),&\hbox{ se }x_i=0\\
+$$f(z_i|\theta,\rho,\boldsymbol{x},\boldsymbol{z}_{(-i)})=\left\{\begin{array}{ll}\hbox{Bernoulli}\left( \frac{\rho}{\rho+(1-\rho)h(0|\theta)}\right),&\hbox{ se }x_i=0\\
 I(z_i=0),&\hbox{ se } x_i>0\\ \end{array}\right.$$
 
 Portanto, um amostrador de Gibbs para um modelo inflacionado de zeros é
@@ -361,30 +361,31 @@ Faça $j=0$ e dê os valores iniciais $\theta^{(0)}$ e $\rho^{(0)}$.
 No $j$-ésimo passo:
 
 1. Para $i\in\{1,\ldots,n\}$, se $x_i>0$ faça $z_i=0$. Senão, simule
-$$z_i^{(j)}\sim \hbox{Bernoulli}\left(\frac{\rho^{(j-1)}}{\rho^{(j-1)}+(1-\rho^{(j-1)})h(x_i|\theta^{(j-1)})}\right)$$ 
+$$z_i^{(j)}\sim \hbox{Bernoulli}\left(\frac{\rho^{(j-1)}}{\rho^{(j-1)}+(1-\rho^{(j-1)})h(0|\theta^{(j-1)})}\right)$$ 
 
-2. Simule $\rho^{(j)}\sim\hbox{Beta}(a+\sum_{i=1}^n z_i^{(j)}I(x_i=0),b+n-\sum_{i=1}^n z_i^{(j)})$
+2. Simule $$\rho^{(j)}\sim\hbox{Beta}(a+\sum_{i=1}^n z_i^{(j)}I(x_i=0),b+n-\sum_{i=1}^n z_i^{(j)})$$
 
 3. Simule $\theta^{(j)}$ de 
-$$\pi(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})\propto \prod_{i=1}^n h(x_i|\theta^{(j)})^{1-z_i^{(j)}}\pi(\theta^{(j)}).$$
+$$f(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})\propto \prod_{i=1}^n h(x_i|\theta)^{1-z_i^{(j)}}\pi(\theta).$$
 </div>
 
 <div class='alert alert-info'>
-<strong>Exemplo - A Poisson inflada de zeros </strong>
+<strong>Exemplo - O modelo Poisson inflado de zeros </strong>
 
 
 Neste exemplo, vamos considerar que a distribuição da contagem é Poisson($\theta$) e que $\theta\sim\hbox{Gama}(r,s)$. Então,
 
 $$\begin{align}
-\pi(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})&\propto \prod_{i=1}^{n} h(x_{i} | \theta )^{ 1-z_{i}^{(j)} }\pi(\theta)= 
+f(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})&\propto \prod_{i=1}^{n} h(x_{i} | \theta )^{ 1-z_{i}^{(j)} }\pi(\theta)\\&= 
  \prod_{i=1}^{n} \left[\frac{ e^{-\theta}\theta^{x_i} }{x_i!}\right]^{1-z_{i}^{(j)}}\frac{s^r}{\Gamma(r)}\theta^{r-1} e^{-s\theta}\\&\propto \theta^{\sum_{i=1}^n x_i(1-z_i^{(j)})+r-1}e^{-(n-\sum_{i=1}^n z_i^{(j)}+s)\theta}
  \end{align},$$
 
-ou seja, $\theta^{(j)}|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i(1-z_i^{(j)})+r,n-\sum_{i=1}^n z_i^{(j)}+s)$
+ou seja, $$\theta^{(j)}|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i(1-z_i^{(j)})+r,n-\sum_{i=1}^n z_i^{(j)}+s)$$
  
 </div>
 
 <div class='alert alert-info'>
+**Exemplo. Número anual de furacões grandes**
 
 Os dados abaixo representam o número anual de furacões atlânticos grandes (categoria 4 ou 5) entre 1987 e 2012, nos Estados Unidos.
 
@@ -396,18 +397,20 @@ fur <-  c(0, 0 ,1,
 0, 0, 0)
 ```
 
-A frequência relativa de zeros é 0,58. Considerando o modelo Poisson$(\theta)$ com $\pi(\theta)\propto \theta^{-1}$, temos que
+A frequência relativa de zeros é 0,58. Considerando o modelo Poisson$(\theta)$ com $f(\theta)\propto \theta^{-1}$, apresentamos abaixo o gráfico da frequência relativa com a respectiva probabilidade preditiva a posteriori. Observe que o modelo falha em capturar a probabilidade de zero, indicando que o modelo Poisson é inadequado para estes conjunto de dados.
 
-```{r echo = T}
+```{r echo = F}
 r1 <- sum(fur)
-s1 <- length(fur)
-plot(table(fur)/s1, type= 'p', xlab='No. anual de mortes pod fur', ylab = 'Probabilidade', col = 'cyan3', pch=16)
+s1 <- n <- length(fur)
+plot(table(fur)/s1, type= 'p', xlab='No. anual de furacões atlânticos nos Estados Unidos', ylab = 'Probabilidade', col = 'cyan3', pch=16)
 lines(0:4,table(fur)/s1, col = 'cyan3')
 points(0:4, dnbinom(0:4, size = r1, prob = s1/(1+s1)), pch=16, col = 'brown')
 lines(0:4, dnbinom(0:4, size = r1, prob = s1/(1+s1)), col = 'brown')
 
 legend('bottomleft',c('Freq. relativa','Pred. post. Poisson'), fill=c('cyan3','brown'), bty='n')
 ```
+
+Abaixo, implementamos o amostrador de Gibbs para o modelo Poisson Inflado de zeros. Consideramos as densidades a priori $\rho\hbox{Beta}(1,1)$ e $\theta\sim\hbox{Gama}(.1,.1)$.
 
 ```{r}
 
@@ -445,6 +448,7 @@ for(i in 1:B){
 }
 ```
 
+
 Vamos descartar a metade das simulações e usar um **thinning** igual a 15:
 
 ```{r}
@@ -458,7 +462,7 @@ acf(theta_sim)
 acf(rho_sim)
 ```
 
-Vamos estimar as probabilidade de ocorrerem $k$ mortes via preditiva posteriori:
+Por último, realizamos algumas simulações da preditiva a posteriori e esstimamos as probabilidades para os pontos mais frequentes. Em seguida, comparamos estes valores com frequência relativa observada. Note que o ajuste deste modelo é adequado para o conjunto de dados.
 
 ```{r}
 # tamanho do vetor simulado
@@ -473,23 +477,12 @@ for(j in 1:Bs){
 # probabilidades estimadas via ZIP
 p_zip <- prop.table(table(x_til))
 
-p_zip
-
-```
-
-Abaixo mostramos as probabilidades preditas do modelo ZIP, do modelo Poisson a e frequência relativa.
-
-```{r echo = T}
-r1 <- sum(fur)
-s1 <- length(fur)
-plot(table(fur)/s1, type= 'p', xlab='No. anual de mortes pod fur', ylab = 'Probabilidade', col = 'cyan3', pch=16)
-lines(0:4,table(fur)/s1, col = 'cyan3')
-points(0:4, dnbinom(0:4, size = r1, prob = s1/(1+s1)), pch=16, col = 'brown')
-lines(0:4, dnbinom(0:4, size = r1, prob = s1/(1+s1)), col = 'brown')
+plot(table(fur)/n, type= 'p', xlab='No. anual furacões atlânticos', ylab = 'Probabilidade', col = 'cyan3', pch=16)
+lines(0:4,table(fur)/n, col = 'cyan3')
 points(names(p_zip),p_zip, pch=16,col = 'magenta')
 lines(names(p_zip),p_zip,col = 'magenta')
 
-legend('bottomleft',c('Freq. relativa','Pred. post. Poisson', 'Pred. post. ZIP'), fill=c('cyan3','brown', 'magenta'), bty='n')
+legend('bottomleft',c('Freq. relativa','Pred. post. do modelo ZIP'), fill=c('cyan3','brown', 'magenta'), bty='n')
 ```
 
 </div>

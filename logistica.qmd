@@ -108,7 +108,7 @@ As estimativas para $\boldsymbol{\beta}$ são
 ```{r}
 colMeans(beta_post)
 ```
-O intervalo de credibilidade de 95% para $\beta_1$, dado abaixo, apresenta exidências de que $\beta_1>1$
+O intervalo de credibilidade de 95% para $\beta_1$, dado abaixo, apresenta evidências de que $\beta_1>1$
 ```{r}
 quantile(beta_post[,2], c(.025, .975))
 ```

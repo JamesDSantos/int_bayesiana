@@ -21,9 +21,9 @@ book:
     - aproximacaoNormal.qmd
     - regressao.qmd
     - logistica.qmd
+    - loglinear.qmd
     - negativeBinomial.qmd
     - misturas.qmd
-    - poisson.qmd
     - mcmc.qmd
     - references.qmd
 
