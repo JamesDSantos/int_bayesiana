@@ -13,6 +13,7 @@ Em um estudo apresentado em @brockmann1996satellite, descobriu-se que a formaç�
  
 ```{r}
 require(asbio)
+data(crabs)
 plot(crabs$weight ,crabs$satell, xlab = 'Peso', ylab='Número de satélites')
 ```
 

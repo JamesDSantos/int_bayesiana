@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "loglinear.html",
+    "href": "loglinear.html",
+    "title": "14  Regressão log-linear",
+    "section": "",
+    "text": "14.1 Introdução e dados\nOs caranguejos-ferradura vêm para a praia em pares para desovar. A fêmea, acompanhada de um macho, deposita seus ovos. Além desses casais, existem machos que não estão em par. Eles também chegam à praia e se aglomeram ao redor dos casais que estão desovando. Esses machos “solteiros” (chamados de machos satélites) competem com o macho que já está emparelhado com a fêmea. O objetivo deles é conseguir fertilizar os ovos da fêmea.\nEm um estudo apresentado em Brockmann (1996), descobriu-se que a formação desses grupos de machos satélites não é aleatória. Não são fatores do ambiente que determinam onde eles se aglomeram, mas sim características da fêmea. Os dados deste estudo estão no pacote asbio sob o nome crabs. Abaixo, apresentamos o número de caranguejos satélites comparados com o peso da fêmea. Observe que:\nrequire(asbio)\n\nCarregando pacotes exigidos: asbio\n\n\nWarning: pacote 'asbio' foi compilado no R versão 4.5.1\n\n\nCarregando pacotes exigidos: tcltk\n\ndata(crabs)\nplot(crabs$weight ,crabs$satell, xlab = 'Peso', ylab='Número de satélites')\nA variável de interesse aqui é o número de satélites (\\(Y\\)) e o objetivo é determinar como ela varia com o peso \\(x\\). Deste modo, estamos interessados na regressão \\(E(Y|x)\\). Como se trata de um modelo de contagem, podemos assumir que \\(Y|x\\sim\\hbox{Poisson}(\\lambda(x))\\).\nAssim como na regressão logística, é usual reparametrizar o modelo Poisson de modo que o novo espaço paramétro seja \\(\\mathbb{R}\\). A transformação usual é \\(\\eta=\\log(\\lambda)\\), o que implica em \\(\\lambda=e^\\eta\\).\nA principal vantagem desta nova parametrização está no fato de que, em geral, \\[\\eta_i = \\beta_0+\\beta_1 x_i=\\underbrace{(1\\;\\;x_i)}_{\\boldsymbol{x}'_i}\\underbrace{\\left(\\begin{array}{c}\\beta_0\\\\\\beta_1 \\end{array}\\right)}_{\\boldsymbol{\\beta}}=\\boldsymbol{x}'_i\\boldsymbol{\\beta}.\\]\nComo os parâmetros são semelhantes aos do modelo de regressão linear, podemos utilizar as mesmas priori discutidas anteriormente para este novo modelo.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Regressão log-linear</span>"
+    ]
+  },
+  {
+    "objectID": "loglinear.html#introdução-e-dados",
+    "href": "loglinear.html#introdução-e-dados",
+    "title": "14  Regressão log-linear",
+    "section": "",
+    "text": "Observa-se um aumento no número de satélites conforme o peso aumenta, embora essa relação não pareça ser linear.\nHá um aumento na variância com o aumento do peso.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Regressão log-linear</span>"
+    ]
+  },
+  {
+    "objectID": "loglinear.html#regressão-log-linear-regressão-poisson",
+    "href": "loglinear.html#regressão-log-linear-regressão-poisson",
+    "title": "14  Regressão log-linear",
+    "section": "14.2 Regressão log-linear (regressão Poisson)",
+    "text": "14.2 Regressão log-linear (regressão Poisson)\nSeja \\(Y_1,\\ldots,Y_n\\) uma amostra de variáveis independentes com \\(Y_i|\\boldsymbol{x}\\sim\\hbox{Poisson}(\\lambda_i)\\) onde \\[\\log(\\lambda_i)=\\boldsymbol{x}'_i\\boldsymbol{\\beta},\\] e \\(\\boldsymbol{\\beta}\\) e \\(\\boldsymbol{x}_i\\) são vetores de comprimento \\(k\\). A função de verossimilhança para este modelo é dada por \\[L(\\boldsymbol{\\beta})=\\prod_{i=1}^n \\frac{e^{-\\lambda_i}\\lambda_i^{y_i}}{y_i!}.\\]\nComo priori, considere inicalmente que:\n\\[\\begin{align}\\boldsymbol{\\beta}|\\phi &\\sim\\hbox{Normal}(\\textbf{0}_k,\\phi^{-1}(\\boldsymbol{X}'\\boldsymbol{X})^{-1} )\\\\ \\phi&\\sim \\hbox{Gama}(\\nu/2,b/2) \\end{align}\\] o que implica em \\[\\boldsymbol{\\beta}\\sim t_{\\nu}(\\textbf{0}_k, \\frac{b}{\\nu}\\left(\\boldsymbol{X}'\\boldsymbol{X})^{-1}\\right).\\]\nA posteriori é dada por\n\\[f(\\boldsymbol{\\beta}|\\boldsymbol{y},\\boldsymbol{x})\\propto L(\\boldsymbol{\\beta})f(\\boldsymbol{\\beta})\\]\nPodemos então simular desta posteriori através do algoritmo Metropolis, utilizando como proposta a distribuição aproximada do estimador de máxima verossimilhança para \\(\\boldsymbol{\\beta}\\).\n\nExemplo\nVamos ajustar o modelo de regressão log-linear para os dados da introdução.\n\nrequire(mvtnorm)\n\nCarregando pacotes exigidos: mvtnorm\n\n# hperparâmetros\nnu = b = 3\n\n# matriz de regressoras\nX &lt;- cbind(1, crabs$weight) \n\n# vetor de respostas\ny &lt;- crabs$satell\n\n# obtendo as estimativas de máxima verossimilhança e o informação de Fisher\nmod &lt;- glm( y~X-1, family=poisson( link = 'log'))\nemv &lt;- mod$coefficients\nmatriz_escala &lt;- (summary(mod))$cov.unscaled\n\n# implementando a função log-posteriori\nSigma &lt;- solve(t(X)%*%X)\nlogPost &lt;- function(beta){\n  eta = X%*%matrix(beta, ncol = 1)\n  lambda  =  exp(eta)\n  log_vero = sum( dpois(y,lambda, log = T))\n  log_prio = dmvt(beta, sigma = (b/nu)*Sigma, df = nu)\n  log_vero + log_prio\n}\n\n# simulando da posteriori\nB = 50000\nbeta_sim &lt;- array(NA_real_, c(B+1, length(emv)))\nbeta_sim[1,] &lt;- emv\nfor(i in 1:B){\n  beta_cand &lt;- rmvnorm(1, emv, matriz_escala)\n  alpha = exp(logPost(beta_cand) - logPost(beta_sim[i,]))\n  u = runif(1)\n  ifelse( u &lt;alpha, beta_sim[i+1,] &lt;- beta_cand, beta_sim[i+1,] &lt;- beta_sim[i,])\n}\n\nbeta_post &lt;- beta_sim[ seq(B/2, B, 15), ]\n\nAs estimativas para \\(\\boldsymbol{\\beta}\\) são\n\ncolMeans(beta_post)\n\n[1] -0.4357442  0.5909071\n\n\nO intervalo de credibilidade de 95% para \\(\\beta_1\\), dado abaixo, apresenta evidências de que \\(\\beta_1&gt;1\\)\n\nquantile(beta_post[,2], c(.025, .975))\n\n     2.5%     97.5% \n0.5001927 0.6779112 \n\n\nAo testat \\(H:\\beta_1&gt;0\\), temos evidências decisivas sobre o efeito positivo no aumento do peso da fêmea no número de machos satélites.\n\nmean(beta_post[,2]&gt;0)\n\n[1] 1\n\n\nAbaixo, apresentamos o gráfico do início da seção com a curva \\[\\hat{\\lambda}(x)=\\exp\\{-0.44+  0.59x\\}\\]\n\n\n\n\n\n\n\n\n\nÉ possível mostrar, comparando as frequências relativas com as probabilidades da preditiva a posteriori, que este modelo não é adequado. Contudo, uma análise conduzida com as demais variáveis mostra que o modelo log-linear é adequado.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Regressão log-linear</span>"
+    ]
+  },
+  {
+    "objectID": "loglinear.html#exercício",
+    "href": "loglinear.html#exercício",
+    "title": "14  Regressão log-linear",
+    "section": "14.3 Exercício",
+    "text": "14.3 Exercício\nComplete a análise dos dados da introdução.\n\nVerifique quais variáveis devem compor o modelo\nAnalise o modelo final, comparando as frequências relativas com as probabilidades obtidas pela preditiva a posteriori.\n\n\n\n\n\nBrockmann, H Jane. 1996. “Satellite Male Groups in Horseshoe Crabs, Limulus Polyphemus.” Ethology 102 (1): 1–21.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Regressão log-linear</span>"
+    ]
+  }
+]

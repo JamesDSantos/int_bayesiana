@@ -16,11 +16,17 @@ O seguinte exemplo, retirado do livro Applied Linear Statistical Models by Kutne
 
 Observe que o aumento da dose implica no aumento do número de mortes. Estamos interessados em modelar a probabildade de um inseto morrer ao ser exposto por certa dose desta toxina. Podemos estimar essa probabilidade através da frequência relativa, que pode ser conferida no gráfico abaixo.
 
+
+
+
 ```{r echo = FALSE}
 dose <- 1:6
 freq_rel <- c(23, 53, 93, 126, 172, 197)/250
 plot(dose, freq_rel, pch=16, xlab = 'Dose', ylab = 'Frequência relativa')
 ```
+
+
+
 
 Seja $Y_i=1$ se o $i$-ésimo inseto morreu após a exposição da dose $x_i$ e $Y_i=0$ em caso contrário. Teremos então que $Y_i|x_i\sim\hbox{Bernoulli}(p(x_i))$, uma vez que a letalidade depende da dose. Como
 $$E(Y_i|x_i)=p(x_i)$$
@@ -57,6 +63,9 @@ Podemos então simular desta posteriori através do algoritmo Metropolis, utiliz
 **Exemplo**
 
 Vamos ajustaro o modelo de regressão logística para os dados da introdução.
+
+
+
 
 ```{r}
 require(mvtnorm)
@@ -103,23 +112,47 @@ beta_post <- beta_sim[ seq(B/2, B, 15), ]
   
 ```
 
+
+
+
 As estimativas para $\boldsymbol{\beta}$ são 
+
+
+
 
 ```{r}
 colMeans(beta_post)
 ```
+
+
+
 O intervalo de credibilidade de 95% para $\beta_1$, dado abaixo, apresenta evidências de que $\beta_1>1$
+
+
+
 ```{r}
 quantile(beta_post[,2], c(.025, .975))
 ```
+
+
+
 Ao testat $H:\beta_1>0$, temos evidências decisivas sobre o efeito positivo no aumento da dosagem na probabilidade de morte.
+
+
+
 ```{r}
 mean(beta_post[,2]>0)
 ```
 
 
+
+
+
 Abaixo, apresentamos o gráfico do início da seção com a curva 
 $$\hat{p}(x)=\frac{e^{-2,71+0,689x}}{1+e^{-2,71+0,689x}}$$
+
+
+
 
 
 ```{r echo = FALSE}
@@ -130,6 +163,9 @@ logit = function(x) sapply(x, function(x) exp(-2.71+.689*x)/(1+exp(-2.71+.689*x)
 curve(logit(x), add= T, lwd = 2)
 
 ```
+
+
+
 
 </div>
 
@@ -159,6 +195,9 @@ Vimos anteriormente diagnósticas e de saúde de 768 mulheres da tribo Pima, que
 
 Abaixo, apresentamos novamente como obter o banco de dados.
 
+
+
+
 ```{r}
 require(gsheet)
 url <- 'https://docs.google.com/spreadsheets/d/1TFvnPYCZ9CwUBs8P3FM8OMAxSmDsCktmu6h2k-OR7z8/edit?usp=sharing'
@@ -166,5 +205,8 @@ url <- 'https://docs.google.com/spreadsheets/d/1TFvnPYCZ9CwUBs8P3FM8OMAxSmDsCktm
 dados <- data.frame( gsheet2tbl(url))
 head(dados)
 ```
+
+
+
 
 Através de um modelo de regressão logística, encontre quais são as variaáveis adequadas para o problema e estime a curva logit. 
