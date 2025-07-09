@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>16&nbsp; Misturas de distribuições – Introdução à Inferência Bayesiana</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./mcmc.html" rel="next">
+<link href="./negativeBinomial.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./misturas.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introdução à Inferência Bayesiana</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">summary.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conjugada.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Famílias conjugadas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./estimacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">O estimador de bayes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bernoulli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">O modelo Bernoulli</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./teste.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poisson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O modelo Poisson</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exponencial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">O modelo exponencial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">O modelo normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normal_multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">O Modelo Normal Multivariado</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./aproximacaoNormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aproximação normal e seu uso com o Metropolis-Hastings</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regressao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">O modelo de regressão linear normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Regressão logística</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./loglinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Regressão log-linear</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./negativeBinomial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./misturas.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#o-modelo-t-student-como-uma-mistura-normal-gama" id="toc-o-modelo-t-student-como-uma-mistura-normal-gama" class="nav-link active" data-scroll-target="#o-modelo-t-student-como-uma-mistura-normal-gama"><span class="header-section-number">16.1</span> O modelo t-Student como uma mistura normal-gama</a></li>
+  <li><a href="#modelos-com-inflação-de-zeros" id="toc-modelos-com-inflação-de-zeros" class="nav-link" data-scroll-target="#modelos-com-inflação-de-zeros"><span class="header-section-number">16.2</span> Modelos com inflação de zeros</a>
+  <ul class="collapse">
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">16.2.1</span> Exercício</a></li>
+  </ul></li>
+  <li><a href="#mistura-escalonada-de-normais" id="toc-mistura-escalonada-de-normais" class="nav-link" data-scroll-target="#mistura-escalonada-de-normais"><span class="header-section-number">16.3</span> Mistura escalonada de normais</a></li>
+  <li><a href="#misturas-finitas-com-número" id="toc-misturas-finitas-com-número" class="nav-link" data-scroll-target="#misturas-finitas-com-número"><span class="header-section-number">16.4</span> Misturas finitas com número</a>
+  <ul class="collapse">
+  <li><a href="#o-velho-fiel" id="toc-o-velho-fiel" class="nav-link" data-scroll-target="#o-velho-fiel"><span class="header-section-number">16.4.1</span> O velho fiel</a></li>
+  </ul></li>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios"><span class="header-section-number">16.5</span> Exercícios</a>
+  <ul class="collapse">
+  <li><a href="#volatilidade-individual-das-ações-da-b3" id="toc-volatilidade-individual-das-ações-da-b3" class="nav-link" data-scroll-target="#volatilidade-individual-das-ações-da-b3"><span class="header-section-number">16.5.1</span> Volatilidade individual das ações da B3</a></li>
+  <li><a href="#análise-de-um-portifólio" id="toc-análise-de-um-portifólio" class="nav-link" data-scroll-target="#análise-de-um-portifólio"><span class="header-section-number">16.5.2</span> Análise de um portifólio</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Misturas de distribuições</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Dizemos que a função densidade/probabilidade de <span class="math inline">\(X\sim f(.)\)</span> é uma mistura de distribuições se existe uma variável <span class="math inline">\(Z\)</span> tal que</p>
+<p><span class="math display">\[f(x)=\int f(x|z)f(z)dz.\]</span></p>
+<p>A variável <span class="math inline">\(Z\)</span> é denominada latente e a função <span class="math inline">\(f(x,z)\)</span> é denominada modelo aumentado.</p>
+<p>Seja <span class="math inline">\((X_1,Z_1),\ldots,(X_n,Z_n)\)</span> uma amostra aleatória do modelo aumentado <span class="math inline">\(f(x,z|\theta)\)</span> e seja <span class="math inline">\(f(\theta)\)</span> a priori para <span class="math inline">\(\theta\)</span>. Existem situações nas quais é mais fácil simular da distribuição do modelo <span class="math display">\[f(\theta,\boldsymbol{z}|\boldsymbol{x})\varpropto f(\boldsymbol{x},\boldsymbol{z}|\theta)f(\theta).\]</span></p>
+<p>Em particular, se é fácil simular das condicionais completas, podemos utilizar o Amostrador de Gibbs, que consiste no seguinte algoritmo.</p>
+<div class="alert alert-success">
+<p><strong>Amostrador de Gibbs</strong></p>
+<p>Inicie a cadeia com fazendo <span class="math inline">\(j=0\)</span> e escolhendo <span class="math inline">\(\theta^{(0)}\)</span></p>
+<p>No <span class="math inline">\(j\)</span>-ésimo passo:</p>
+<ol type="1">
+<li><p>Simule <span class="math inline">\(\boldsymbol{z^{(j)}}\sim f(\boldsymbol{z}|\boldsymbol{x},\theta^{(j-1)})\)</span></p></li>
+<li><p>Simule <span class="math inline">\(\theta^{(j)}\sim f(\theta|\boldsymbol{z}^{(j)},\boldsymbol{x})\)</span></p></li>
+</ol>
+</div>
+<p>O Amostrador de Gibbs é uma cadeia de Markov cuja distribuição estacionária é <span class="math inline">\(f(\theta,\boldsymbol{z}|\boldsymbol{x})\)</span></p>
+<section id="o-modelo-t-student-como-uma-mistura-normal-gama" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="o-modelo-t-student-como-uma-mistura-normal-gama"><span class="header-section-number">16.1</span> O modelo t-Student como uma mistura normal-gama</h2>
+<p>A função densidade do modelo t-Student é dada por <span class="math display">\[f(x|\mu,\phi,\nu)=\frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2})}\sqrt{\frac{\phi}{\pi\nu}}\left[1+\frac{\phi}{\nu}\left(x-\mu\right)^2\right]^{-\frac{\nu+1}{2}},\]</span> onde <span class="math inline">\(x,\mu\in\mathbb{R}\)</span> e <span class="math inline">\(\phi,\nu&gt;0\)</span>. Se <span class="math inline">\(\nu&gt;1\)</span>, então <span class="math inline">\(E(X)=\mu\)</span> e se <span class="math inline">\(\nu&gt;2\)</span>, <span class="math inline">\(Var(X)=\nu/(\phi(\nu-2))\)</span>.</p>
+<p>Considere que <span class="math inline">\(X|Z,\mu,\phi\sim\hbox{Normal}(\mu,(z\phi)^{-1})\)</span> e <span class="math inline">\(Z\sim\hbox{Gama}(\nu/2,\nu/2)\)</span>. Então</p>
+<p><span class="math display">\[\begin{align}
+f(x|\mu,\phi,\nu)&amp;=\int_0^\infty f(x|z,\mu,\phi)f(z|\nu)dz=\int_0^\infty \sqrt{\frac{\phi z}{2\pi}}e^{-\frac{z\phi}{2}(x-\mu)^2}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}z^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}z}dz\\
+&amp;=\sqrt{\frac{\phi}{2\pi}}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}\int_0^\infty z^{\frac{\nu+1}{2}-1} \exp\left\{-z\frac{\nu}{2}\left[1+\frac{\phi}{\nu}(x-\mu)^2\right]\right\}dz\\
+&amp;=\frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2})}\sqrt{\frac{\phi}{\pi\nu}}\left[1+\frac{\phi}{\nu}\left(x-\mu\right)^2\right]^{-\frac{\nu+1}{2}}.
+\end{align}\]</span></p>
+<p>Portanto, a distribuição normal-gama é uma mistura para a <span class="math inline">\(t\)</span>-Student e a verossimilhança aumentada para este modelo é</p>
+<p><span class="math display">\[\begin{align}L(\mu,\phi,\nu)&amp;=\prod_{i=1}^n f(x_i|z_i,\mu,\phi)f(z|\nu)= \prod_{i=1}^n \sqrt{\frac{\phi z_i}{2\pi}}e^{-\frac{z_i\phi}{2}(x_i-\mu)^2}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}z_i^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}z_i}\\
+\end{align}\]</span></p>
+<p>Considerando que <span class="math inline">\(\mu|\phi \sim\hbox{Normal}(m,(\lambda\phi)^{-1})\)</span>, <span class="math inline">\(\phi\sim\hbox{Gama}(n_0/2,s_0/2)\)</span> temos a seguinte posteriori baseada no modelo aumentado:</p>
+<p><span class="math display">\[f(\mu,\phi,\nu|\boldsymbol{x})\propto \left[\prod_{i=1}^n \sqrt{\frac{\phi z_i}{2\pi}}e^{-\frac{z_i\phi}{2}(x_i-\mu)^2}\frac{(\nu/2)^{\nu/2}}{\Gamma(\nu/2)}z_i^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}z_i}\right]\times \phi^{1/2}e^{-\frac{\lambda}{2} \phi(\mu-m)^2}\times\phi^{\frac{n_0}{2}-1}e^{-\frac{s_0}{2}\phi}\times f(\nu)\]</span> Pode-se mostrar que</p>
+<p><span class="math display">\[\begin{align}\mu|\hbox{resto}&amp;\sim\hbox{Normal}\left(\frac{\sum_{i=1}^n z_i x_i+\lambda m}{\lambda+\sum_{i=1}^n z_i},\left[\phi\left(\lambda+\sum_{i=1}^{n}z_i\right)\right]^{-1}\right)\\
+\phi|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{n+n_0+1}{2},\frac{1}{2}\left[s_0+\lambda(\mu-m)^2+\sum_{i=1}^n z_i(x_i-\mu)^2\right]\right)\\
+z_i|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{\nu+1}{2},\frac{\phi(x_i-\mu)^2+\nu}{2}\right)\end{align}\]</span></p>
+<p>A condicional completa para <span class="math inline">\(\nu\)</span> é dada por <span class="math display">\[f(\nu|\hbox{resto})\propto \frac{(\nu/2)^{n\nu/2}}{\Gamma(\nu/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu}{2}-1}e^{-\frac{\nu}{2}\sum_{i=1}^nz_i}f(\nu)\]</span></p>
+<p>Observe que a condicional completa para <span class="math inline">\(\nu\)</span> não possui um núcleo conhecido. Para facilitar a simulação, podemos considerar que o espaço paramétrico de <span class="math inline">\(\nu\)</span> é uma coleção com <span class="math inline">\(M&lt;\infty\)</span> pontos. Então, teremos que <span class="math display">\[f(\nu_0|\hbox{resto})\approx P(\nu=\nu_0|\hbox{resto})\propto \frac{(\nu_0/2)^{n\nu_0/2}}{\Gamma(\nu_0/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu_0}{2}-1}e^{-\frac{\nu}{2}\sum_{i=1}^nz_i}f(\nu_0)\]</span> e podemos utilizar o simulador <code>sample</code> do <code>R</code>. Estudos sugerem que a priori escolhida deve favorecer valores baixos para <span class="math inline">\(\nu\)</span>. Vamos utilizar a priori <span class="math inline">\(\nu\sim\hbox{Exponencial}(r_0)\)</span></p>
+<div class="alert alert-info">
+<p><strong>Volatilidade no mercado financeiro</strong></p>
+<p>Considere que você tem uma empresa e deseja atrair investimento. Um modo bastante tradicional é encontrar um sócio para injetar dinheiro. Por sua vez, o sócio passa a ser dono de parte da empresa. Essa é a ideia por trás das ações. Parte da empresa é fatiada em partes denominadas ações, que são negociadas na bolsa de valores. Qualquer indivíduo com uma ação é dono de uma fração da empresa. Se a empresa cresce, seu valor cresce e aquela fração correspondente à ação passa a valer mais. Se a empresa entre em crise, ação passa a valer menos.</p>
+<p>Contudo, o preço não está baseado apenas no quanto a empresa vale no momento, mas como os milhares de donos estão se sentindo no momento com relação à ela. Caso os acionistas acreditem que a empresa vai perder valor, eles podem começar a vender suas ações. Com o aumento oferta, o preço cai. Se por outro lado o mercado acredita que a empresa vai aumentar seu lucro, os pedidos por compra no mercado aumentam e os donos das ações evitam negociá-las, criando uma demanada maior que a oferta e aumentando o preço do ativo.</p>
+<p>Portanto, o preço das ações está associado às oscilações de humor do mercado. Neste sentido, a variabilidade do preço é uma medida fundamental e é denominada volatilidade.</p>
+<p>Existem várias maneiras de medir a volatilidade. Para o nosso exemplo, seja <span class="math inline">\(p_t\)</span> o preço de fechamento da ação no dia <span class="math inline">\(t\)</span>. Calculamos o log retorno da ação no dia <span class="math inline">\(t\)</span> como</p>
+<p><span class="math display">\[x_t=\log(p_t)-\log(p_{t-1}).\]</span> O cálculo do log-retorno é útil para remover a tendência do preço. Isso ocorre porque a tendência de <span class="math inline">\(\log(p_t)\)</span> tende a ser localmente linear. Desse modo, é esperado que <span class="math inline">\(E(x_t)\)</span> esteja próximo de zero. É importante saber que, embora <span class="math inline">\(x_1,\ldots,x_n\)</span> sejam não correlacionados, em geral eles são dependentes e não são identicamente distribuídos. Contudo, mesmo que <span class="math inline">\(x_1,\ldots,x_n\)</span> sejam dependentes e não identicamente distribuídos, o modelo t-Student costuma apresentar um bom ajuste, especialmente devido à sua capacidade de capturar caudas pesadas.</p>
+<p>Para o mercado financeiro, o desvio padrão do log retorno é denominado volatidade (ou volatilidade total), ou seja,</p>
+<p><span class="math display">\[\hbox{volatidade}=\sigma\sqrt{\frac{\nu}{\nu-2}}\]</span> O parâmetro <span class="math inline">\(\sigma=1/\sqrt{\phi}\)</span> da distribuição <span class="math inline">\(t\)</span>-Student é interpretado como volatilidade basal ou o fator de escala da dispersão dos retornos. Ele representa a magnitude “típica” das flutuações, enquanto o parâmetro <span class="math inline">\(\nu\)</span> informa sobre a frequência e a intensidade dos eventos de cauda (denominados “shocks”, no jargão do mercado).</p>
+<p>Um <span class="math inline">\(\sigma\)</span> maior significa que, mesmo sem considerar as caudas, os retornos tendem a se espalhar mais. Quando combinado com um <span class="math inline">\(\nu\)</span> baixo, isso indica um ativo que não só tem flutuações grandes, mas também é propenso a flutuações muito grandes e muito pequenas com maior frequência.</p>
+<p>Vamos analisar os log-retornos diários da Magazine Luiza (MGLU) entre 06/06/2024 e 04/06/2025</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(gsheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Carregando pacotes exigidos: gsheet</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>url_mglu <span class="ot">&lt;-</span> <span class="st">'https://docs.google.com/spreadsheets/d/1dnxASqmPoOPo0MTeY_NoYmkhK8yZDlWPaACGrLhLgHI/edit?usp=sharing'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(url_mglu)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  Data       Último Abertura Máxima Mínima Vol.   `Var%`
+  &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
+1 04.06.2025 10.04  10.34    10.44  9.41   55.98M -2.05%
+2 03.06.2025 10.25  9.52     10.29  9.43   39.05M 7.44% 
+3 02.06.2025 9.54   9.45     9.89   9.37   28.12M 3.47% 
+4 30.05.2025 9.22   9.2      9.33   09.02  27.72M 1.54% 
+5 29.05.2025 09.08  9.56     9.65   09.08  30.46M -4.92%
+6 28.05.2025 9.55   9.26     9.77   9.23   40.27M 2.25% </code></pre>
+</div>
+</div>
+<p>Observe que os dados estão organizados com os fechamentos mais recentes aparecendo primeiro. Vamos calcular os log-retornos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fechamento <span class="ot">=</span> <span class="fu">as.numeric</span>(dados<span class="sc">$</span>Último)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(fechamento)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fechamento <span class="ot">=</span> fechamento[n<span class="sc">:</span><span class="dv">1</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>magalu <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(fechamento))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(magalu, <span class="at">freq=</span> <span class="cn">FALSE</span>, <span class="at">main=</span><span class="st">'Log-retorno MGLU3'</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(magalu), <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(magalu,<span class="at">main =</span><span class="st">'Log-retornos por dia'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vamos estimar a volatilidade basal e os graus de liberdade para estes dados. Vamos considerar <span class="math inline">\(\lambda=n_0=s_0=0,01\)</span>, <span class="math inline">\(r_0=1\)</span> e <span class="math inline">\(m=0\)</span>. Para os valores possíveis dos graus de liberdade, vamos considerar os conjunto <span class="math inline">\(\{0.5, 0.75, 1, 1.25,\ldots,40\}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> magalu</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(x)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>B <span class="ot">=</span> <span class="dv">5000</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># valores possiveis para nu</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>nu_seq <span class="ot">=</span> <span class="fu">seq</span>(.<span class="dv">5</span>,<span class="dv">40</span>,.<span class="dv">25</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># hiperparâmetros</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>l <span class="ot">=</span> .<span class="dv">01</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">0</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>n0 <span class="ot">=</span> <span class="fl">0.01</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>s0 <span class="ot">=</span> <span class="fl">0.01</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>r0 <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># valores iniciais</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">=</span> .<span class="dv">5</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>z <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>,n) </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B){</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># mu dado o resto</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  media <span class="ot">=</span> (<span class="fu">sum</span>(z<span class="sc">*</span>x)<span class="sc">+</span>l<span class="sc">*</span>m)<span class="sc">/</span>( l <span class="sc">+</span> <span class="fu">sum</span>(z))</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  desvio <span class="ot">=</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(phi[i]<span class="sc">*</span>( l <span class="sc">+</span> <span class="fu">sum</span>(z)))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  mu[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, media, desvio )</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># phi dado o resto</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  alfa <span class="ot">=</span> (n<span class="sc">+</span>n0<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">=</span> .<span class="dv">5</span><span class="sc">*</span>( s0 <span class="sc">+</span> l<span class="sc">*</span>(mu[i<span class="sc">+</span><span class="dv">1</span>] <span class="sc">-</span> m)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">sum</span>( (x<span class="sc">-</span>mu[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> ) )</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  phi[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, alfa, beta)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># z_i dado o resto</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  alfa <span class="ot">=</span> .<span class="dv">5</span><span class="sc">*</span>(nu[i]<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">=</span> .<span class="dv">5</span><span class="sc">*</span>(phi[i<span class="sc">+</span><span class="dv">1</span>]<span class="sc">*</span>(x<span class="sc">-</span>mu[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> nu[i]) </span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">=</span> <span class="fu">rgamma</span>(n, alfa, beta )</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># nu dado o resto</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  log_p <span class="ot">=</span> .<span class="dv">5</span><span class="sc">*</span>n<span class="sc">*</span>nu_seq<span class="sc">*</span><span class="fu">log</span>(nu_seq<span class="sc">/</span><span class="dv">2</span>) <span class="sc">-</span> n<span class="sc">*</span><span class="fu">lgamma</span>(nu_seq<span class="sc">/</span><span class="dv">2</span>)<span class="sc">+</span>.<span class="dv">5</span><span class="sc">*</span>nu_seq<span class="sc">*</span><span class="fu">sum</span>(<span class="fu">log</span>(z))<span class="sc">-</span>.<span class="dv">5</span><span class="sc">*</span>nu_seq<span class="sc">*</span><span class="fu">sum</span>(z)<span class="sc">-</span> nu_seq<span class="sc">*</span>r0</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  nu[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">=</span> <span class="fu">sample</span>(nu_seq,<span class="dv">1</span>,T,<span class="fu">exp</span>(log_p<span class="sc">-</span><span class="fu">max</span>(log_p)))</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>mu_magalu  <span class="ot">=</span> mu[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">15</span>)]</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>nu_magalu  <span class="ot">=</span> nu[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">15</span>)]</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>vol_magalu <span class="ot">=</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(phi[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">15</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Abaixo, apresentamos os traços e a autocorrelação para as amostros da posteriori para <span class="math inline">\(\nu\)</span> e <span class="math inline">\(\sigma=1/\sqrt{\phi}\)</span>, após o <em>burn-in</em> e o <span class="math inline">\(thinning\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">=</span> <span class="fu">par</span>( <span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(nu_magalu, <span class="at">main=</span><span class="st">'Traço para os graus de liberdade'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(nu_magalu, <span class="at">main=</span><span class="st">'Autocorrelação para os graus de liberdade'</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(vol_magalu, <span class="at">main=</span><span class="st">'Traço para a volatilidade'</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(vol_magalu, <span class="at">main=</span><span class="st">'Autocorrelação para a volatilidade'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com a amostra a posteriori simulada, podemos simular amostras da preditiva a posteriori. Podemos então construir um intervalo de predição para a função de distribuição empírica da preditiva a posteriori e compará-lo com a distribuição empírica dos dados. O gráfico abaixo mostra que o modelo é adequado.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="fu">c</span>(<span class="fu">length</span>((nu_magalu)), n))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>((nu_magalu))){</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  y_pred[i,] <span class="ot">&lt;-</span> mu_magalu[i] <span class="sc">+</span> <span class="fu">rt</span>(n, nu_magalu[i])<span class="sc">*</span>vol_magalu[i]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>Fd_sim <span class="ot">=</span> <span class="fu">apply</span>(y_pred,<span class="dv">1</span>, <span class="cf">function</span>(y){</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  Fd <span class="ot">=</span> <span class="fu">ecdf</span>(y)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Fd</span>(<span class="fu">sort</span>(x))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">=</span> <span class="fu">apply</span>(Fd_sim,<span class="dv">1</span>, <span class="cf">function</span>(x) <span class="fu">quantile</span>(x,<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">977</span>)))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ecdf</span>(x), <span class="at">main =</span> <span class="st">''</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">sort</span>(x),qq[<span class="dv">1</span>,], <span class="at">col =</span><span class="dv">2</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">sort</span>(x),qq[<span class="dv">2</span>,], <span class="at">col =</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Portanto, temos que a volatilidade basal estimada para o log-retorno diário da Magazine Luiza durente o intervalo de estudo foi 0,04 (ou 4%), o que é considerado elevado. Os graus de liberdade foram estimados em 7,3. Este resultado era esperado, pois o setor varejista de e-commerce está sujeito as oscilações de taxas de juros, inflação, poder de compra do consumidor. Além disso, pode-se somar a forte concorrência e o endividamento atual da empresa</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(vol_magalu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04378573</code></pre>
+</div>
+</div>
+<p>Para ilustrar melhor estes conceitos, vamos repetir a análise para a empresa Engie Brasil Energia (EGIE3). Espera-se menos volatilidade, uma vez que empresas do setor elétrico geralmente têm receitas mais previsíveis, regulamentação estável e são consideradas “defensivas”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>url_egie <span class="ot">&lt;-</span> <span class="st">'https://docs.google.com/spreadsheets/d/1qvv5RC5U5L-5snoz_QyzXB2v_etOMChBViypnl4XYMk/edit?usp=sharing'</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>dados2 <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(url_egie)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>fechamento2 <span class="ot">=</span> <span class="fu">as.numeric</span>(dados2<span class="sc">$</span>Último)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(fechamento2)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>fechamento2 <span class="ot">=</span> fechamento2[n<span class="sc">:</span><span class="dv">1</span>]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>egie <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">log</span>(fechamento2))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(egie), <span class="at">main =</span> <span class="st">'Log-retornos diários'</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">2</span>,.<span class="dv">2</span>))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(magalu),<span class="at">col =</span><span class="dv">2</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topleft'</span>,<span class="fu">c</span>(<span class="st">'Magalu'</span>,<span class="st">'Egie'</span>), <span class="at">col=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">bty =</span> <span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A volatilidade basal estimada para a EGIE no período foi de 1,2%. A probabilidade de que esta volatilidade seja menor que a da MGLU é de 0,999, o que corrobora com o esperado. Os graus de liberdade foram estimados em 8,07.</p>
+</div>
+<div class="alert" data-alert-success="">
+<p><strong>A distribuição t-Student multivariada e o estudo de portifólios</strong></p>
+<p>Um portfólio, no contexto financeiro, é um conjunto de investimentos que um indivíduo ou uma instituição possui. Alguns investimentos tendem a reagir de forma semelhante aos humeores do mercado. Por exemplo, considerando os log-retornos diários do Banco do Brasil (BBSA3) e Itaú Unibanco (ITUB4) no ano de 2024, temos uma correlação de 0,18. Portanto, se dois ativos dentro do portifólio são correlacionados, o risco deveria aumentar.</p>
+<p>Podemos relacionar a distribuição t-Student<span class="math inline">\(_{\nu}(\boldsymbol{\mu},\Phi^{-1})\)</span> (<span class="math inline">\(p\)</span> multivariada) como a seguinte mistura:</p>
+<p><span class="math display">\[\begin{align}\boldsymbol{x}|z,\boldsymbol{\mu},\Phi&amp;\sim \hbox{Normal}_p(\boldsymbol{\mu},z^{-1}\Phi^{-1})\\z&amp;\sim\hbox{Gama}\left(\frac{\nu}{2},\frac{\nu}{2}\right)\end{align}\]</span> Considerando uma amostra <span class="math inline">\(\boldsymbol{x}_1,\ldots,\boldsymbol{x}_n\)</span> eas prioris <span class="math inline">\(\boldsymbol{\mu}|\Phi\sim\hbox{Normal}_p(\boldsymbol{m}_0,\lambda^{-1}\Phi^{-1})\)</span>, <span class="math inline">\(\Phi\sim\hbox{Wishart}(n_0,S_0)\)</span> e <span class="math inline">\(\nu\sim\hbox{Exponencial}(r_0)\)</span>, temos as seguintes condicionais completas:</p>
+<p><span class="math display">\[\begin{align}\boldsymbol{\mu}|\hbox{resto}&amp;\sim\hbox{Normal}_p\left(\frac{\sum_{i=1}^n z_i\boldsymbol{x}_i+\lambda\boldsymbol{m}_0}{\lambda+\sum_{i=1}^n z_i},\Phi^{-1}/(\lambda + \sum_{i=1}^n z_i)\right)\\\Phi|\hbox{resto}&amp;\sim\hbox{Gama}\left(n+n_0+1,[S_0^{-1}+\lambda(\boldsymbol{\mu}-\boldsymbol{m}_0)(\boldsymbol{\mu}-\boldsymbol{m}_0)'+\sum_{i=1}^n z_i(\boldsymbol{x}_i-\boldsymbol{\mu})(\boldsymbol{x}_i-\boldsymbol{\mu})']^{-1}\right)\\
+z_i|\hbox{resto}&amp;\sim\hbox{Gama}\left(\frac{\nu+p}{2},\frac{\nu+(\boldsymbol{x}_i-\boldsymbol{\mu})'\Phi(\boldsymbol{x}_i-\boldsymbol{\mu})}{2}\right)\\
+f(\nu|\hbox{resto})&amp;\propto \left(\frac{\nu}{2}\right)^{\frac{n\nu}{2}}\frac{1}{\Gamma(\nu/2)^n}\left(\prod_{i=1}^n z_i\right)^{\frac{\nu}{2}}e^{-\nu(r_0+\frac{1}{2}\sum_{i=1}^n z_i)}
+\end{align}\]</span></p>
+<p>Seja <span class="math inline">\(p\)</span> o número de ações dentro do portifólio e seja <span class="math inline">\(w_i\)</span> a proporção da <span class="math inline">\(i\)</span>-ésima ação dentro do portifólio. Então <span class="math inline">\(\Phi\)</span> pode ser utilizada para os seguintes fins:</p>
+<ul>
+<li>Cálculo da volatilidade do portifólio:</li>
+</ul>
+<p><span class="math display">\[\sigma_p=\sqrt{\boldsymbol{w}'\Phi^{-1}\boldsymbol{w}}\]</span></p>
+<ul>
+<li>Cálculo do portifólio ótimo: a melhor composição da proporção das ações dentro do portifólio é dada por</li>
+</ul>
+<p><span class="math display">\[\boldsymbol{w}=\Phi\boldsymbol{1}_p\]</span> e a respectiva volatilidade por portifólio é dada por <span class="math display">\[\sigma_p=\sqrt{\textbf{1}_p'\Phi \textbf{1}_p}\]</span></p>
+<ul>
+<li>Relação entre ações: uma estratégia protetiva é a diversificação de ativos. Isto porque ativos diversos tendem a se comportar de modo diferente com os humores do mercado, protegendo o capital de eventuais crises. um grafo de dependências condicionais utilizando <span class="math inline">\(\Phi\)</span> pode ser contruído para verificar a denpendência entre as ações. Isto é útil para proteção de capital.</li>
+</ul>
+</div>
+</section>
+<section id="modelos-com-inflação-de-zeros" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="modelos-com-inflação-de-zeros"><span class="header-section-number">16.2</span> Modelos com inflação de zeros</h2>
+<p>Quando são observados mais zeros do que o esperado pelo modelo de contagem assumido para a verossimilhança, é usual considerar um modelo com inflação de zeros. Nesse tipo de modelo, assumimos que existe uma variável latente <span class="math inline">\(Z|p\sim\hbox{Bernoulli}(\rho)\)</span> tal que:</p>
+<p><span class="math display">\[X=\left\{\begin{array}{ll}0, &amp; \hbox{se }Z=1\ \\ Y,&amp;\hbox{se }Z=0\end{array}\right.\]</span> onde <span class="math inline">\(Y\sim h(.|\theta)\)</span> é o modelo de contagem. Seja <span class="math inline">\(f(.|\theta,\rho)\)</span> a função de probabilidade de <span class="math inline">\(X\)</span>. Então</p>
+<p><span class="math display">\[\begin{align}f(0|\theta,\rho)&amp;=\sum_{z=0}^1 P(X=0|Z=z,\theta)P(Z=z|\rho)\\&amp;=(1-\rho)h(0|\theta)+\rho\end{align}\]</span> a probabilidade de observar um zero está entre <span class="math inline">\(h(0|\theta)\)</span> e 1, o que caracteriza a inflação.</p>
+<p>Agora, considere um modelo inflacionado de zeros aumentado:</p>
+<p><span class="math display">\[f(x,z|\theta,\rho)=f(x|z,\theta)f(z|\rho)=f(x|z,\theta)\rho^z(1-\rho)^{1-z}.\]</span> Note que</p>
+<p><span class="math display">\[f(x|z,\theta)=\left\{
+\begin{array}{ll}
+h(x|\theta),&amp;\hbox{ se }z=0,\\
+I(x=0),&amp;\hbox{ se }z=1\\
+\end{array}\right.\]</span> logo, a distribuição conjunta <span class="math inline">\(f(x,z|\theta,\rho)\)</span> é dada por</p>
+<p><span class="math display">\[\begin{array}{c|cc}\hline &amp; x=0 &amp; x&gt; 0 \\ \hline
+z=0 &amp; h(0|\theta)(1-\rho) &amp; h(x|\theta)(1-\rho) \\
+z=1 &amp; \rho &amp; 0 \\ \hline
+\end{array}
+\]</span> Então,</p>
+<p><span class="math display">\[\begin{align}
+\prod_{i=1}^n f(x_i,z_i|\theta,\rho)&amp;=\prod_{i=1}^n [h(0|\theta)(1-\rho)]^{I(x_i=0,z_i=0)}[h(x_i|\theta)(1-\rho)]^{I(x_i&gt;0,z_i=0)}\rho^{I(x_i=0,z_i=1)}\\
+&amp;=\prod_{i=1}^n [h(x_i|\theta)(1-\rho)]^{I(z_i=0)}\rho^{I(x_i=0,z_i=1)}\\
+&amp;=\prod_{i=1}^n(1-\rho)^{I(z_i=0)}\rho^{I(x_i=0,z_i=1)}\prod_{i=1}^n [h(x_i|\theta)]^{I(z_i=0)}\end{align}\]</span> e, notando que <span class="math inline">\(I(z_i=0)=1-z_i,\)</span></p>
+<p><span class="math display">\[\begin{align}
+\prod_{i=1}^n f(x_i,z_i|\theta,\rho)&amp;=
+(1-\rho)^{n-\sum_{i=1}^n z_i}\rho^{\sum_{i=1}^n z_iI(x_i=0)}\prod_{i=1}^n [h(x_i|\theta)]^{1-z_i}\end{align}\]</span></p>
+<p>Considere, a priori, que <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\rho\)</span> são independentes. Seja <span class="math inline">\(\pi(\theta)\)</span> a função de densidade/probabilidade a priori para <span class="math inline">\(\theta\)</span> e considere que <span class="math inline">\(\rho\sim\hbox{Beta}(a,b)\)</span>. Então, as condicionais completas para <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\rho\)</span> são</p>
+<p><span class="math display">\[\begin{align}
+f(\theta|\rho,\boldsymbol{z},\boldsymbol{x})&amp;\propto \prod_{i=1}^n h(x_i|\theta)^{1-z_i}\pi(\theta),\\
+f(\rho|\theta,\boldsymbol{z},\boldsymbol{x})&amp;\propto \rho^{\sum_{i=1}^n z_iI(x_i=0)+a-1}(1-\rho)^{n-\sum_{i=1}^n z_i+b-1},\\
+\end{align}\]</span></p>
+<p>Para a condicional completa de <span class="math inline">\(z_i\)</span>, notemos que <span class="math display">\[P(Z_i=1|x_i&gt;0)=\frac{P(Z_i=1,X_i&gt;0)}{P(X_i&gt;0)}=0,\]</span> e que</p>
+<p><span class="math display">\[P(Z_i=z|x_i=0)= \left\{\begin{array}{ll}\frac{P(Z_i=0,X_i=0)}{P(X_i=0)}=\frac{h(0|\theta)(1-\rho)}{\rho+(1-\rho)h(0|\theta)},&amp;,z=0\\
+\frac{P(Z_i=1,X_i=0)}{P(X_i=0)}=\frac{\rho}{\rho+(1-\rho)h(0|\theta)},&amp;z=1\end{array}\right.,\]</span> logo <span class="math display">\[f(z_i|\theta,\rho,\boldsymbol{x},\boldsymbol{z}_{(-i)})=\left\{\begin{array}{ll}\hbox{Bernoulli}\left( \frac{\rho}{\rho+(1-\rho)h(0|\theta)}\right),&amp;\hbox{ se }x_i=0\\
+I(z_i=0),&amp;\hbox{ se } x_i&gt;0\\ \end{array}\right.\]</span></p>
+<p>Portanto, um amostrador de Gibbs para um modelo inflacionado de zeros é</p>
+<div class="alert alert-success">
+<p><strong>Amostrador de Gibbs para o modelo inflado de zeros</strong></p>
+<p>Faça <span class="math inline">\(j=0\)</span> e dê os valores iniciais <span class="math inline">\(\theta^{(0)}\)</span> e <span class="math inline">\(\rho^{(0)}\)</span>.</p>
+<p>No <span class="math inline">\(j\)</span>-ésimo passo:</p>
+<ol type="1">
+<li><p>Para <span class="math inline">\(i\in\{1,\ldots,n\}\)</span>, se <span class="math inline">\(x_i&gt;0\)</span> faça <span class="math inline">\(z_i=0\)</span>. Senão, simule <span class="math display">\[z_i^{(j)}\sim \hbox{Bernoulli}\left(\frac{\rho^{(j-1)}}{\rho^{(j-1)}+(1-\rho^{(j-1)})h(0|\theta^{(j-1)})}\right)\]</span></p></li>
+<li><p>Simule <span class="math display">\[\rho^{(j)}\sim\hbox{Beta}(a+\sum_{i=1}^n z_i^{(j)}I(x_i=0),b+n-\sum_{i=1}^n z_i^{(j)})\]</span></p></li>
+<li><p>Simule <span class="math inline">\(\theta^{(j)}\)</span> de <span class="math display">\[f(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})\propto \prod_{i=1}^n h(x_i|\theta)^{1-z_i^{(j)}}\pi(\theta).\]</span></p></li>
+</ol>
+</div>
+<div class="alert alert-info">
+<p><strong>Exemplo - O modelo Poisson inflado de zeros </strong></p>
+<p>Neste exemplo, vamos considerar que a distribuição da contagem é Poisson(<span class="math inline">\(\theta\)</span>) e que <span class="math inline">\(\theta\sim\hbox{Gama}(r,s)\)</span>. Então,</p>
+<p><span class="math display">\[\begin{align}
+f(\theta|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x})&amp;\propto \prod_{i=1}^{n} h(x_{i} | \theta )^{ 1-z_{i}^{(j)} }\pi(\theta)\\&amp;=
+\prod_{i=1}^{n} \left[\frac{ e^{-\theta}\theta^{x_i} }{x_i!}\right]^{1-z_{i}^{(j)}}\frac{s^r}{\Gamma(r)}\theta^{r-1} e^{-s\theta}\\&amp;\propto \theta^{\sum_{i=1}^n x_i(1-z_i^{(j)})+r-1}e^{-(n-\sum_{i=1}^n z_i^{(j)}+s)\theta}
+\end{align},\]</span></p>
+<p>ou seja, <span class="math display">\[\theta^{(j)}|\rho^{(j)},\boldsymbol{z}^{(j)},\boldsymbol{x}\sim\hbox{Gama}(\sum_{i=1}^n x_i(1-z_i^{(j)})+r,n-\sum_{i=1}^n z_i^{(j)}+s)\]</span></p>
+</div>
+<div class="alert alert-info">
+<p><strong>Exemplo. Número anual de furacões grandes</strong></p>
+<p>Os dados abaixo representam o número anual de furacões atlânticos grandes (categoria 4 ou 5) entre 1987 e 2012, nos Estados Unidos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fur <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span> ,<span class="dv">1</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">2</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A frequência relativa de zeros é 0,58. Considerando o modelo Poisson<span class="math inline">\((\theta)\)</span> com <span class="math inline">\(f(\theta)\propto \theta^{-1}\)</span>, apresentamos abaixo o gráfico da frequência relativa com a respectiva probabilidade preditiva a posteriori. Observe que o modelo falha em capturar a probabilidade de zero, indicando que o modelo Poisson é inadequado para estes conjunto de dados.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Abaixo, implementamos o amostrador de Gibbs para o modelo Poisson Inflado de zeros. Consideramos as densidades a priori <span class="math inline">\(\rho\hbox{Beta}(1,1)\)</span> e <span class="math inline">\(\theta\sim\hbox{Gama}(.1,.1)\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hiperparâmetros para rho</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> b <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># hiperparâmetros para theta</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>r<span class="ot">=</span>.<span class="dv">1</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>s<span class="ot">=</span>.<span class="dv">1</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># tamanho da amostra</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(fur) </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># valores iniciais da cadeia</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">mean</span>(fur)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="fu">mean</span>(fur <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># amostrador de Gibbs</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B){</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulando z</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  prob <span class="ot">&lt;-</span> rho[i]<span class="sc">/</span> ( (<span class="dv">1</span><span class="sc">-</span>rho[i])<span class="sc">*</span><span class="fu">dpois</span>(<span class="dv">0</span>,theta[i]) <span class="sc">+</span> rho[i])</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(fur[j] <span class="sc">&gt;</span><span class="dv">0</span>){ z[j] <span class="ot">&lt;-</span> <span class="dv">0</span>} <span class="cf">else</span>{</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>      z[j] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,prob)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulando rho</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  rho[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rbeta</span>( <span class="dv">1</span>, a <span class="sc">+</span> <span class="fu">sum</span>( z <span class="sc">*</span> (fur <span class="sc">==</span> <span class="dv">0</span>)) , n<span class="sc">-</span> <span class="fu">sum</span>(z)<span class="sc">+</span> b )</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulando theta</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>  theta[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="fu">sum</span>( fur<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>z) ) <span class="sc">+</span> r,  n <span class="sc">-</span> <span class="fu">sum</span>(z) <span class="sc">+</span> s)</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Vamos descartar a metade das simulações e usar um <strong>thinning</strong> igual a 15:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> theta[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">15</span>)]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>rho_sim <span class="ot">&lt;-</span> rho[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">15</span>)]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>oo <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(theta_sim, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(rho_sim, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(theta_sim)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(rho_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Por último, realizamos algumas simulações da preditiva a posteriori e esstimamos as probabilidades para os pontos mais frequentes. Em seguida, comparamos estes valores com frequência relativa observada. Note que o ajuste deste modelo é adequado para o conjunto de dados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tamanho do vetor simulado</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Bs <span class="ot">&lt;-</span> <span class="fu">length</span>(theta_sim)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>x_til <span class="ot">&lt;-</span> <span class="fu">array</span>( <span class="cn">NA_real_</span>, <span class="fu">c</span>(Bs,n))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>Bs){</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>( n, <span class="dv">1</span>, rho_sim[j])</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  x_til[j,] <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span><span class="fu">rpois</span>(n, theta_sim[j])</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilidades estimadas via ZIP</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>p_zip <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(x_til))</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(fur)<span class="sc">/</span>n, <span class="at">type=</span> <span class="st">'p'</span>, <span class="at">xlab=</span><span class="st">'No. anual furacões atlânticos'</span>, <span class="at">ylab =</span> <span class="st">'Probabilidade'</span>, <span class="at">col =</span> <span class="st">'cyan3'</span>, <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>,<span class="fu">table</span>(fur)<span class="sc">/</span>n, <span class="at">col =</span> <span class="st">'cyan3'</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">names</span>(p_zip),p_zip, <span class="at">pch=</span><span class="dv">16</span>,<span class="at">col =</span> <span class="st">'magenta'</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">names</span>(p_zip),p_zip,<span class="at">col =</span> <span class="st">'magenta'</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'bottomleft'</span>,<span class="fu">c</span>(<span class="st">'Freq. relativa'</span>,<span class="st">'Pred. post. do modelo ZIP'</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">'cyan3'</span>,<span class="st">'brown'</span>, <span class="st">'magenta'</span>), <span class="at">bty=</span><span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<section id="exercício" class="level3" data-number="16.2.1">
+<h3 data-number="16.2.1" class="anchored" data-anchor-id="exercício"><span class="header-section-number">16.2.1</span> Exercício</h3>
+<div class="alert alert-warning">
+<p>Abaixo, segue o número anual de tornados em Lafayette Parish, Louisiana, entre 1950 e 2012.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tor <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">0</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Ajuste o modelo Poisson.</p></li>
+<li><p>Ajuste o modelo Poisson inflado de zeros.</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="mistura-escalonada-de-normais" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="mistura-escalonada-de-normais"><span class="header-section-number">16.3</span> Mistura escalonada de normais</h2>
+</section>
+<section id="misturas-finitas-com-número" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="misturas-finitas-com-número"><span class="header-section-number">16.4</span> Misturas finitas com número</h2>
+<p>Dizemos que <span class="math inline">\(X|\boldsymbol{\theta},\boldsymbol{p},\kappa\)</span> é um modelo de mistura finito se sua função de densidade/probabilidade é dada por</p>
+<p><span class="math display">\[f(x| \boldsymbol{\theta},\boldsymbol{p} ,\kappa )=\sum_{k=1}^\kappa p_k f_k(x|\boldsymbol{\theta}_k).\]</span></p>
+<p>Cada função <span class="math inline">\(f(.|\boldsymbol{\theta}_k)\)</span> é denominada componente da mistura e o número de componentes pode ser desconhecido.</p>
+<p>Assim como o modelo com zeros inflacionados, podemos utilizar uma variável latente <span class="math inline">\(\textbf{z}_i|\kappa=(z_{i,1},\ldots,z_{i,\kappa})\sim\hbox{Multinomial}(p_1\ldots,p_\kappa|\sum_{k=1}^\kappa z_{ik}=1)\)</span>, obtendo o seguinte modelo aumentado</p>
+<p><span class="math display">\[f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}\]</span></p>
+<p>A função de verossimilhança aumentada para este modelo é</p>
+<p><span class="math display">\[\prod_{i=1}^n f(x_i|\boldsymbol{\theta},\textbf{z}_i,\kappa)=\prod_{i=1}^n\prod_{k=1}^\kappa \left[f\left(x_i|\boldsymbol{\theta}_k\right)\right]^{z_{i,k}}.\]</span></p>
+<p>Considere as prioris <span class="math inline">\(\pi(\boldsymbol{\theta}|\kappa)=\prod_{k=1}^\kappa \pi(\boldsymbol{\theta}_k)\)</span> e <span class="math inline">\(\textbf{p}|\kappa\sim\hbox{Dirichlet}(a_1,\ldots,a_\kappa)\)</span>, onde <span class="math display">\[f(\textbf{p}|\kappa)\propto \prod_{k=1}^\kappa p_k^{a_k-1}\]</span> com <span class="math inline">\(\sum_{k=1}^\kappa p_k=1\)</span>. As condicionais completas para este problema são</p>
+<ul>
+<li><p><span class="math inline">\(\begin{align}f(\boldsymbol{\theta}_k|resto)\propto \prod_{i:z_{i,k}=1}f(x_i|\boldsymbol{\theta}_k)\pi(\boldsymbol{\theta}_k)\end{align}\)</span></p></li>
+<li><p><span class="math inline">\(\begin{align}f(\textbf{z}_i|resto)\propto \prod_{k=1}^\kappa \left[p_kf(x_i|\boldsymbol{\theta}_k)\right]^{z_{i,k}}\end{align}\)</span> ou seja, <span class="math inline">\(\textbf{z}_i|rest\sim\hbox{Multinomial}(\tilde{p}_1,\ldots,\tilde{p}_\kappa)\)</span>, onde</p></li>
+</ul>
+<p><span class="math display">\[\tilde{p}_k=\frac{p_kf(x_i|\boldsymbol{\theta}_k)}{\sum_{k=1}^\kappa p_kf(x_i|\boldsymbol{\theta}_k)}\]</span> * <span class="math inline">\(f(\textbf{p}|resto)\propto \prod_{k=1}^\kappa p_k^{\sum_{i=1}^n z_{i,k}+a_k-1}\)</span>, ou seja <span class="math inline">\(\textbf{p}|resto\sim\hbox{Dirichlet}(a_1+\sum_{i=1}^n z_{i,1},\ldots,a_\kappa+\sum_{i=1}^n z_{i,\kappa})\)</span></p>
+<p>Se necessário, podemos atrbuir a priori <span class="math display">\[\pi(\kappa)=\frac{1}{M},\kappa=1,2,\ldots,M\]</span> para obter a condicional completa <span class="math display">\[\pi(\kappa|resto)=\frac{\prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)}{\sum_{\kappa=1}^M \prod_{i=1}^n\prod_{k=1}^\kappa f(x_i|\boldsymbol{\theta}_k)^{z_{i,k}}\pi(\boldsymbol{\theta}_k)\pi(\textbf{p}|\kappa)\pi(\textbf{z}_i|\kappa)},\kappa=1,\ldots,M.\]</span></p>
+<section id="o-velho-fiel" class="level3" data-number="16.4.1">
+<h3 data-number="16.4.1" class="anchored" data-anchor-id="o-velho-fiel"><span class="header-section-number">16.4.1</span> O velho fiel</h3>
+<p>O banco de dados <code>faithful</code> mostra a duração e o tempo até a próxima erupção do geiser Velho Fiel, no parque Yellowstone. Abaixo mostramos o diagrama do tempo de espera entre erupções</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(faithful<span class="sc">$</span>waiting)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>É possível notar classes, uma com tempo e entre erupções menor que 70 com tempo maior. Temos as seguintes estimativas iniciais:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## elementos na classe 1</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> faithful<span class="sc">$</span>waiting</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> x <span class="sc">&lt;</span> <span class="dv">70</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># proporção na classe 1</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3786765</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># média e desvio padrão na classe 1</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>( x[z])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 55.15534</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>( x[z])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.266558</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## elementos na classe 2</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># proporção na classe 2</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(z<span class="sc">==</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6213235</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># média e desvio padrão na classe 2</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>( x[z<span class="sc">==</span>F])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 80.49112</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>( x[z<span class="sc">==</span>F])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.456667</code></pre>
+</div>
+</div>
+<p>Vamos considerar que as duas componentes possuem distribuição normal. Para cada componente, teremos as seguintes prioris:</p>
+<p><span class="math display">\[\pi(\mu_i,\phi_i)=\frac{\phi^{1/2}_i}{\sqrt{2\pi C}}e^{-\frac{\phi_i}{2C}(\mu_i-m_i)^2}\frac{b^a}{\Gamma(a)}\phi_i^{a-1}e^{b\phi_i},\]</span></p>
+<p><span class="math display">\[p\sim\hbox{Beta}(r,s)\]</span></p>
+<p><span class="math display">\[z_i\sim\hbox{Bernoulli}(p)\]</span></p>
+<p>O modelo aumentado é <span class="math display">\[f(x_i|\mu,\phi,z_{i})=\left[\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)}\right]^{z_i}\left[\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)}\right]^{1-z_i}\]</span> As condicionais completas são:</p>
+<p><span class="math display">\[\begin{align}f(\mu_1|resto) &amp;\propto \exp\left\{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2\right\}\exp\left\{-\frac{\phi_1}{2C} z_i(\mu_1-m_1)^2\right\}\\&amp;\propto \exp\left\{-\frac{\phi_1}{2}\left(\sum_{i=1}^n z_i+C^{-1}\right) \left(\mu_1-\frac{\sum_{i=1}^{n}x_iz_i+m_1C^{-1}}{\sum_{i=1}^n z_i+C^{-1}}\right)^2\right\}\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}f(\mu_2|resto) &amp;\propto \exp\left\{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2\right\}\exp\left\{-\frac{\phi_2}{2C} (1-z_i)(\mu_2-m_2)^2\right\}\\&amp;\propto \exp\left\{-\frac{\phi_2}{2}\left(\sum_{i=1}^n (1-z_i)+C^{-1}\right) \left(\mu_2-\frac{\sum_{i=1}^{n}x_i(1-z_i)+m_1C^{-1}}{\sum_{i=1}^n (1-z_i)+C^{-1}}\right)^2\right\}\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}f(\phi_2|resto)&amp;\propto \phi_2^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_2}{2}\sum_{i=1}^n (1-z_i)(x_i-\mu_2)^2}\phi^{-1/2}_2e^{-\frac{\phi_2}{2}(\mu_2-m_2)^2}\phi_2^{a/2-1}e^{-\phi_2 b/2}\\ &amp;\propto \phi_2^{\frac{1}{2}(1+a+\sum_{i=1}^{n}(1-z_i)-1}e^{-\frac{\phi_2}{2}[\sum_{i=1}^n(1-z_i)(x_i-\mu_2)^2 +(\mu_2-m_2)^2 + b]}\end{align}\]</span> <span class="math display">\[\begin{align}f(\phi_1|resto)&amp;\propto \phi^{-\frac{1}{2}\sum_{i=1}^{n}z_i}
+e^{-\frac{\phi_1}{2}\sum_{i=1}^n z_i(x_i-\mu_1)^2}\phi^{-1/2}e^{-\frac{\phi_1}{2}(\mu_1-m_1)^2}\phi_1^{a/2-1}e^{-\phi_1 b/2}\\ &amp;\propto \phi_1^{\frac{1}{2}(1+a+\sum_{i=1}^{n}z_i)-1}e^{-\frac{\phi_1}{2}[\sum_{i=1}^nz_i(x_i-\mu_1)^2 +(\mu_1-m_1)^2 + b]}\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}f(p|resto)\propto \prod_{i=1}^n p^{z_i}(1-p)^{1-z_i}p^{r-1}(1-p)^{s-1}\propto p^{r+\sum_{i=1}^n z_i-1}(1-p)^{s+\sum_{i=1}^n (1-z_i)-1}\end{align}\]</span></p>
+<p><span class="math display">\[f(z_i|resto)\propto\left[ p\frac{\phi_1^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_1}{2}(x_i-\mu_1)^2}\right]^{z_i}\left[ (1-p)\frac{\phi_2^{1/2}}{\sqrt{2\pi}}e^{-\frac{\phi_2}{2}(x_i-\mu_2)^2}\right]^{1-z_i}\]</span></p>
+<p>Abaixo implementamos o amostrador de Gibbs</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="dv">50000</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># hiperparmametros</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="dv">65</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="dv">80</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>r<span class="ot">=</span> <span class="dv">4</span>; s <span class="ot">=</span> <span class="dv">6</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="dv">1</span>; b <span class="ot">=</span> .<span class="dv">1</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># valores iniciais</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> x <span class="sc">&lt;</span> <span class="dv">70</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>phi1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">36</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>phi2 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">25</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>mu1 <span class="ot">=</span> mu2 <span class="ot">=</span>  p <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>B){</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># mu dado o resto</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  m1_post <span class="ot">&lt;-</span> ( <span class="fu">sum</span>(x<span class="sc">*</span>z) <span class="sc">+</span> m1<span class="sc">/</span>C) <span class="sc">/</span> ( <span class="fu">sum</span>(z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  m2_post <span class="ot">&lt;-</span> ( <span class="fu">sum</span>(x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>z)) <span class="sc">+</span> m1<span class="sc">/</span>C) <span class="sc">/</span> ( <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  s1_post <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ( ( <span class="fu">sum</span>(z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )<span class="sc">*</span>phi1[i] )</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>  s2_post <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> ( ( <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>C )<span class="sc">*</span>phi2[i] )</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>  mu1[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, m1_post, <span class="fu">sqrt</span>( s1_post) )</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>  mu2[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, m2_post, <span class="fu">sqrt</span>( s2_post) )</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># phi dado resto</span></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>  phi1[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="dv">1</span> <span class="sc">+</span> a <span class="sc">+</span> <span class="fu">sum</span>(z), <span class="fu">sum</span>( z<span class="sc">*</span>(x <span class="sc">-</span> mu1[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> (mu1[i<span class="sc">+</span><span class="dv">1</span>]<span class="sc">-</span>m1)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> b)</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>  phi2[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>, <span class="dv">1</span> <span class="sc">+</span> a <span class="sc">+</span> <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z), <span class="fu">sum</span>( (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span>(x <span class="sc">-</span> mu2[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> (mu2[i<span class="sc">+</span><span class="dv">1</span>]<span class="sc">-</span>m2)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> b)</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># p dado resto</span></span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>  p[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, r <span class="sc">+</span> <span class="fu">sum</span>(z), s <span class="sc">+</span> <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>z) )</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># z dado resto</span></span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>  aux1 <span class="ot">&lt;-</span> p[i<span class="sc">+</span><span class="dv">1</span>]<span class="sc">*</span><span class="fu">dnorm</span>(x,mu1[i<span class="sc">+</span><span class="dv">1</span>], <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(phi1[i<span class="sc">+</span><span class="dv">1</span>]))</span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>  aux2 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>p[i<span class="sc">+</span><span class="dv">1</span>])<span class="sc">*</span><span class="fu">dnorm</span>(x,mu2[i<span class="sc">+</span><span class="dv">1</span>], <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(phi2[i<span class="sc">+</span><span class="dv">1</span>]))</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">length</span>(x), <span class="dv">1</span>, aux1<span class="sc">/</span>( aux1 <span class="sc">+</span> aux2))</span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mu1[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">30</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mu2[<span class="fu">seq</span>(B<span class="sc">/</span><span class="dv">2</span>,B,<span class="dv">30</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-19-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exercícios" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="exercícios"><span class="header-section-number">16.5</span> Exercícios</h2>
+<section id="volatilidade-individual-das-ações-da-b3" class="level3" data-number="16.5.1">
+<h3 data-number="16.5.1" class="anchored" data-anchor-id="volatilidade-individual-das-ações-da-b3"><span class="header-section-number">16.5.1</span> Volatilidade individual das ações da B3</h3>
+<p>As ações são divididas por segmentos. Abaixo mostramos os segmentos e suas principais ações na bolsa brasileira.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Anexando pacote: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Os seguintes objetos são mascarados por 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Os seguintes objetos são mascarados por 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Anexando pacote: 'kableExtra'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>O seguinte objeto é mascarado por 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Principais Ações da B3 por Setor</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Setor</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Ação</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Ticker</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Bens Industriais</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">CCR</td>
+<td style="text-align: left;">CCRO3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Grupo Vamos</td>
+<td style="text-align: left;">VAMO3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Indústrias Romi</td>
+<td style="text-align: left;">ROMI3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Rumo</td>
+<td style="text-align: left;">RAIL3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Bens Industriais</td>
+<td style="text-align: left;">Weg</td>
+<td style="text-align: left;">WEGE3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Comunicações</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Brisanet</td>
+<td style="text-align: left;">BRIT3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Oi</td>
+<td style="text-align: left;">OIBR3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Telefônica Brasil</td>
+<td style="text-align: left;">VIVT3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Tim</td>
+<td style="text-align: left;">TIMS3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Comunicações</td>
+<td style="text-align: left;">Unifique</td>
+<td style="text-align: left;">FIQE3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Consumo Cíclico</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">CVC Brasil</td>
+<td style="text-align: left;">CVCB3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Embraer</td>
+<td style="text-align: left;">EMBR3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Localiza</td>
+<td style="text-align: left;">RENT3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Lojas Renner</td>
+<td style="text-align: left;">LREN3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Cíclico</td>
+<td style="text-align: left;">Magazine Luiza</td>
+<td style="text-align: left;">MGLU3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Consumo Não Cíclico</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Ambev</td>
+<td style="text-align: left;">ABEV3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Assaí</td>
+<td style="text-align: left;">ASAI3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Hypera Pharma</td>
+<td style="text-align: left;">HYPE3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">JBS</td>
+<td style="text-align: left;">JBS3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Consumo Não Cíclico</td>
+<td style="text-align: left;">Raia Drogasil</td>
+<td style="text-align: left;">RADL3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Financeiro</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">B3</td>
+<td style="text-align: left;">B3SA3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Banco do Brasil</td>
+<td style="text-align: left;">BBAS3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Bradesco</td>
+<td style="text-align: left;">BBDC4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Itaú Unibanco</td>
+<td style="text-align: left;">ITUB4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Financeiro</td>
+<td style="text-align: left;">Itaúsa</td>
+<td style="text-align: left;">ITSA4</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Materiais Básicos</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">CSN</td>
+<td style="text-align: left;">CSNA3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Gerdau</td>
+<td style="text-align: left;">GGBR4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Klabin</td>
+<td style="text-align: left;">KLBN11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Suzano</td>
+<td style="text-align: left;">SUZB3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Materiais Básicos</td>
+<td style="text-align: left;">Vale</td>
+<td style="text-align: left;">VALE3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Petróleo, Gás e Biocombustíveis</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Cosan</td>
+<td style="text-align: left;">CSAN3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Petrobras ON</td>
+<td style="text-align: left;">PETR3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Petrobras PN</td>
+<td style="text-align: left;">PETR4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Prio</td>
+<td style="text-align: left;">PRIO3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Petróleo, Gás e Biocombustíveis</td>
+<td style="text-align: left;">Vibra Energia</td>
+<td style="text-align: left;">VBBR3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Saúde</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Fleury</td>
+<td style="text-align: left;">FLRY3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Hapvida</td>
+<td style="text-align: left;">HAPV3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Hermes Pardini</td>
+<td style="text-align: left;">PARD3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Qualicorp</td>
+<td style="text-align: left;">QUAL3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Saúde</td>
+<td style="text-align: left;">Rede D'Or</td>
+<td style="text-align: left;">RDOR3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Tecnologia</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Infracommerce</td>
+<td style="text-align: left;">IFCM3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Intelbras</td>
+<td style="text-align: left;">INTB3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Locaweb</td>
+<td style="text-align: left;">LWSA3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Méliuz</td>
+<td style="text-align: left;">CASH3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Tecnologia</td>
+<td style="text-align: left;">Totvs</td>
+<td style="text-align: left;">TOTS3</td>
+</tr>
+<tr class="odd" data-grouplength="5">
+<td colspan="3" style="border-bottom: 1px solid"><strong>Utilidade Pública</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Cemig</td>
+<td style="text-align: left;">CMIG4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Eletrobras ON</td>
+<td style="text-align: left;">ELET3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Engie Brasil</td>
+<td style="text-align: left;">EGIE3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Sabesp</td>
+<td style="text-align: left;">SBSP3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Utilidade Pública</td>
+<td style="text-align: left;">Taesa</td>
+<td style="text-align: left;">TAEE11</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Neste exercício vamos explorar a volatilidadde basal dos log-retornos das ações da B3 utilizando a distribuição <span class="math inline">\(t\)</span>-Student. O pacote <code>rb3</code> é útil para obter os preços das ações brasileiras O comando abaixo faz o download de todos os dados do ano de 2024.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'rb3'</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># coletando os dados da B3 de 2024</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>df_2024 <span class="ot">&lt;-</span> <span class="fu">cotahist_get</span>(<span class="st">"2024-01-01"</span>, <span class="st">"yearly"</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(df_2024<span class="sc">$</span>HistoricalPrices)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O ticker da empresa está na coluna <code>cod_negociacao</code> e o preço de fechamento na coluna <code>preco_ult</code>. Para obter os dados de uma ação específica, basta fazer o filtro na coluna. Por exemplo, a série de preços da Vale pode ser obtida do seguinte modo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>vale3 <span class="ot">&lt;-</span> dados<span class="sc">$</span>preco_ult[ dados<span class="sc">$</span>cod_negociacao <span class="sc">==</span> <span class="st">'VALE3'</span> ]</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts.plot</span>(vale3, <span class="at">xlab=</span><span class="st">'Dia'</span>,<span class="at">ylab=</span><span class="st">'Preço de fechamento'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="misturas_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Obtenha estimativas pontuais e intervalares para a volatilidade basal e para os graus de liberdade de cada ação. Crie um diagrama de dispersão, identificando por esquemas de cores ou símbolos o segmento das ações. Discua quais ações e quais seguimentos são menos arriscados. Faça intervalos de credibilidade ou testes de hipóteses para corroborar sua discussão.</p>
+</section>
+<section id="análise-de-um-portifólio" class="level3" data-number="16.5.2">
+<h3 data-number="16.5.2" class="anchored" data-anchor-id="análise-de-um-portifólio"><span class="header-section-number">16.5.2</span> Análise de um portifólio</h3>
+<p>Utilizando as ações dadas no exemplo anterior.</p>
+<ol type="1">
+<li><p>Para cada setor, calcule a volatilidade do portifólio ótimo.</p></li>
+<li><p>Calcule a volatlidade do portifólio ótimo utilizando todos os setores.</p></li>
+<li><p>Ainda utilizando todo os setores, faça um grafo de dependências condicionais</p></li>
+<li><p>Procure por ações com baixa volatilidade e sem relações diretas. Contrua seu próprio portifólio, misturando ações de diferentes segmentos.</p></li>
+<li><p>Calcule a volatilidade do seu portifólio e compare com a volatilidade geral e a volatlidade por segmentos.</p></li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./negativeBinomial.html" class="pagination-link" aria-label="Binomial negativa">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Binomial negativa</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./mcmc.html" class="pagination-link" aria-label="Tópicos em Método de Monte Carlo via Cadeias de Markov">
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Tópicos em Método de Monte Carlo via Cadeias de Markov</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -599,12 +599,12 @@ window.Quarto = {
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>k  <span class="ot">=</span> <span class="fu">var</span>(vi)<span class="sc">/</span><span class="dv">2</span></span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 13.75012</code></pre>
+<pre><code>[1] 13.00604</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculando o DIC</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">loglik</span>(<span class="fu">c</span>(beta_hat,phi_hat), y, X) <span class="sc">+</span><span class="dv">2</span><span class="sc">*</span>k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 172.8981</code></pre>
+<pre><code>[1] 171.5719</code></pre>
 </div>
 </div>
 <p>Em seguida, vamos calcular o DIC removendo uma variável de cada vez, explorando se haveria melhoria em remover variáveis. Obtivemos a tabela abaixo, o que nos levou a decisão de aceitar o modelo <code>hp</code> e <code>wt</code></p>

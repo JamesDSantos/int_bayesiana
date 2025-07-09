@@ -380,7 +380,7 @@ window.Quarto = {
 </div>
 <p>Seja <span class="math inline">\(Y_i=1\)</span> se o <span class="math inline">\(i\)</span>-ésimo inseto morreu após a exposição da dose <span class="math inline">\(x_i\)</span> e <span class="math inline">\(Y_i=0\)</span> em caso contrário. Teremos então que <span class="math inline">\(Y_i|x_i\sim\hbox{Bernoulli}(p(x_i))\)</span>, uma vez que a letalidade depende da dose. Como <span class="math display">\[E(Y_i|x_i)=p(x_i)\]</span> a estimação da probabilidade da letalidade da dose é um problema de regressão. Contudo, pode-se perceber que a relação entre <span class="math inline">\(y_i\)</span> e <span class="math inline">\(x_i\)</span> não pode ser linear, uma vez que <span class="math inline">\(p(x)\)</span> está restrito ao intervalo (0,1) para todo valor de <span class="math inline">\(x\)</span>. Podemos reparametrizar o problema, de modo que o novo espaço paramétrico pertença a reta. A pametrização usual utiliza função logit:</p>
 <p><span class="math display">\[\eta=\hbox{logit}(p)=\log\left(\frac{p}{1-p}\right),\]</span> o que implica em <span class="math display">\[p=\frac{e^\eta}{1+e^\eta}.\]</span></p>
-<p>A principal vantagem desta nova parametrização estão no fato de que, em geral, <span class="math display">\[\eta_i = \beta_0+\beta_1 x_i=\underbrace{(1\;\;x_i)}_{\boldsymbol{x}'_i}\underbrace{\left(\begin{array}{c}\beta_0\\\beta_1 \end{array}\right)}_{\boldsymbol{\beta}}=\boldsymbol{x}'_i\boldsymbol{\beta}.\]</span></p>
+<p>A principal vantagem desta nova parametrização está no fato de que, em geral, <span class="math display">\[\eta_i = \beta_0+\beta_1 x_i=\underbrace{(1\;\;x_i)}_{\boldsymbol{x}'_i}\underbrace{\left(\begin{array}{c}\beta_0\\\beta_1 \end{array}\right)}_{\boldsymbol{\beta}}=\boldsymbol{x}'_i\boldsymbol{\beta}.\]</span></p>
 <p>Como os parâmetros são os mesmos do modelo de regressão linear, podemos utilizar as mesmas priori discutidas anteriormente para este novo modelo.</p>
 </section>
 <section id="o-model-de-regressão-logística" class="level2" data-number="13.2">
@@ -443,7 +443,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(beta_post)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -2.7145147  0.6888578</code></pre>
+<pre><code>[1] -2.7201249  0.6899183</code></pre>
 </div>
 </div>
 <p>O intervalo de credibilidade de 95% para <span class="math inline">\(\beta_1\)</span>, dado abaixo, apresenta evidências de que <span class="math inline">\(\beta_1&gt;1\)</span></p>
@@ -451,7 +451,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(beta_post[,<span class="dv">2</span>], <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5%     97.5% 
-0.6334415 0.7441429 </code></pre>
+0.6380463 0.7465398 </code></pre>
 </div>
 </div>
 <p>Ao testat <span class="math inline">\(H:\beta_1&gt;0\)</span>, temos evidências decisivas sobre o efeito positivo no aumento da dosagem na probabilidade de morte.</p>

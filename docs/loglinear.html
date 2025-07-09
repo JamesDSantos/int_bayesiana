@@ -344,7 +344,7 @@ window.Quarto = {
 <section id="introdução-e-dados" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="introdução-e-dados"><span class="header-section-number">14.1</span> Introdução e dados</h2>
 <p>Os caranguejos-ferradura vêm para a praia em pares para desovar. A fêmea, acompanhada de um macho, deposita seus ovos. Além desses casais, existem machos que não estão em par. Eles também chegam à praia e se aglomeram ao redor dos casais que estão desovando. Esses machos “solteiros” (chamados de machos satélites) competem com o macho que já está emparelhado com a fêmea. O objetivo deles é conseguir fertilizar os ovos da fêmea.</p>
-<p>Em um estudo apresentado em <span class="citation" data-cites="brockmann1996satellite">Brockmann (<a href="references.html#ref-brockmann1996satellite" role="doc-biblioref">1996</a>)</span>, descobriu-se que a formação desses grupos de machos satélites não é aleatória. Não são fatores do ambiente que determinam onde eles se aglomeram, mas sim características da fêmea. Os dados deste estudo estão no pacote <code>asbio</code> sob o nome <code>crabs</code>. Abaixo, apresentamos o número de caranguejos satélites comparados com o peso da fêmea. Observe que:</p>
+<p>Em um estudo apresentado em <span class="citation" data-cites="brockmann1996satellite">Brockmann (<a href="#ref-brockmann1996satellite" role="doc-biblioref">1996</a>)</span>, descobriu-se que a formação desses grupos de machos satélites não é aleatória. Não são fatores do ambiente que determinam onde eles se aglomeram, mas sim características da fêmea. Os dados deste estudo estão no pacote <code>asbio</code> sob o nome <code>crabs</code>. Abaixo, apresentamos o número de caranguejos satélites comparados com o peso da fêmea. Observe que:</p>
 <ol type="1">
 <li><p>Observa-se um aumento no número de satélites conforme o peso aumenta, embora essa relação não pareça ser linear.</p></li>
 <li><p>Há um aumento na variância com o aumento do peso.</p></li>
@@ -432,15 +432,15 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(beta_post)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.4357442  0.5909071</code></pre>
+<pre><code>[1] -0.4341032  0.5894419</code></pre>
 </div>
 </div>
 <p>O intervalo de credibilidade de 95% para <span class="math inline">\(\beta_1\)</span>, dado abaixo, apresenta evidências de que <span class="math inline">\(\beta_1&gt;1\)</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(beta_post[,<span class="dv">2</span>], <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     2.5%     97.5% 
-0.5001927 0.6779112 </code></pre>
+<pre><code>    2.5%    97.5% 
+0.499258 0.678503 </code></pre>
 </div>
 </div>
 <p>Ao testat <span class="math inline">\(H:\beta_1&gt;0\)</span>, temos evidências decisivas sobre o efeito positivo no aumento do peso da fêmea no número de machos satélites.</p>
@@ -472,7 +472,7 @@ window.Quarto = {
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-brockmann1996satellite" class="csl-entry" role="listitem">
 Brockmann, H Jane. 1996. <span>“Satellite Male Groups in Horseshoe Crabs, Limulus Polyphemus.”</span> <em>Ethology</em> 102 (1): 1–21.
 </div>
