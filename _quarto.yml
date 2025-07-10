@@ -24,6 +24,7 @@ book:
     - loglinear.qmd
     - negativeBinomial.qmd
     - misturas.qmd
+    - series.qmd
     - mcmc.qmd
     - references.qmd
 
